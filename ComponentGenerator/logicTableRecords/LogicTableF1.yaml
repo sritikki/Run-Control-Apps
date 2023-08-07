@@ -1,0 +1,16 @@
+record_name: LogicTableF1
+record_type: F1
+record_length: 388
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: LTPrefix            
+- name: COLUMN_ID
+  type: integer           
+- name: COMPARE_TYPE
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.LtCompareType 
+- name: arg
+  type: internal
+  existing_java_type: LogicTableArg
+         

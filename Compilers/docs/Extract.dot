@@ -1,0 +1,101 @@
+digraph RunControlGeneratoFileFlowr {
+rankdir=TB
+//Nodes
+graph [label="Extract Compilers\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22 ranksep="1 equally" compound=true ];
+labeljust=center;
+
+// Files
+subgraph cluster_type { label="Types" node [shape=plaintext] 
+    EFC[label="Extract Filter" shape=rect style=filled color=pink]
+    ECC[label="Extract Column" shape=rect style=filled color=pink]
+    EOC[label="Extracr Output" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_progess { label="Progress Colours"  node [shape=plaintext] 
+    c1[label="TBD" shape=oval style=filled color=pink]
+    c2[label="AST 1" shape=oval style=filled color=beige]
+    c3[label="AST 2" shape=oval style=filled color=cornsilk]
+    c4[label="AST 2" shape=oval style=filled color=yellow]
+    c5[label="Emit 1" shape=oval style=filled color=gold]
+    c6[label="Emit 2" shape=oval style=filled color=orange]
+    c7[label="Emit 2" shape=oval style=filled color=yellowgreen]
+    c8[label="Done" shape=oval style=filled color=lawngreen]
+}
+
+c1 -> c2 -> c3 -> c4 -> c5 -> c6 -> c7 -> c8
+
+subgraph cluster_fil { label="Filters" node [shape=plaintext] 
+    SEL[label="Select If" shape=rect style=filled color=cornsilk]
+    SKIP[label="Skip If" shape=rect style=filled color=pink]
+}
+
+
+subgraph cluster_ass { label="Assignments" node [shape=plaintext] 
+    COLAS[label="Column Assignment" shape=rect style=filled color=gold]
+    COLREFASS[label="Column Ref Assignment" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_wr { label="Write Statements" node [shape=plaintext] 
+    WRITE[label="Write Statement
+    Should we make only here?" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_arith { label="Arithmetic Expressions" node [shape=plaintext] 
+    ARITH[label="Arithmetic Expressions" shape=rect style=filled color=gold]
+}
+
+subgraph cluster_comp { label="Comparisons" node [shape=plaintext] 
+    COMP[label="Comparisons" shape=rect style=filled color=gold]
+}
+
+subgraph cluster_logic { label="Logical Expressions" node [shape=plaintext] 
+    LOGEXP[label="Logical Expressions" shape=rect style=filled color=gold]
+}
+
+subgraph cluster_data { label="Data" node [shape=plaintext] 
+    FIELDS[label="Fields" shape=rect style=filled color=gold]
+    CONST[label="Constants" shape=rect style=filled color=gold]
+    LOOKUP[label="Lookups" shape=rect style=filled color=pink]
+    LOOKFLD[label="Lookup Fields" shape=rect style=filled color=pink]
+    ACCUM[label="Accumulators" shape=rect style=filled color=gold]
+    DATE[label="Dates" shape=rect style=filled color=pink]
+    COLREF[label="Column Ref" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_func { label="Functions" node [shape=plaintext] 
+    FUNC[label="Functions" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_cast { label="Casting" node [shape=plaintext] 
+    CAST[label="Casting" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_jlt { label="JLT Generation" node [shape=plaintext] 
+    JLT[label="JLT data gathering" shape=rect style=filled color=pink]
+}
+
+
+EFC -> SEL [lhead=cluster_fil, ltail=cluster_type color=pink penwidth=4]
+
+ECC -> COLAS [lhead=cluster_ass, ltail=cluster_type color=pink penwidth=4]
+
+LOGEXP -> COMP [lhead=cluster_comp, ltail=cluster_logic color=pink penwidth=4]
+COMP -> ARITH [lhead=cluster_arith, ltail=cluster_comp color=pink penwidth=4]
+EOC -> COLREFASS [lhead=cluster_ass, ltail=cluster_type color=pink penwidth=4]
+SEL -> LOGEXP [lhead=cluster_logic, ltail=cluster_fil color=pink penwidth=4]
+
+EOC -> WRITE [lhead=cluster_wr, ltail=cluster_type color=pink penwidth=4]
+
+COLAS -> LOGEXP [lhead=cluster_logic, ltail=cluster_ass color=pink penwidth=4]
+ARITH -> COLREF [lhead=cluster_data, ltail=cluster_arith color=pink penwidth=4]
+
+LOOKUP -> CAST [lhead=cluster_cast, ltail=cluster_data color=pink penwidth=4]
+
+LOGEXP -> FUNC [lhead=cluster_func, ltail=cluster_logic color=pink penwidth=4]
+FUNC -> CONST [lhead=cluster_data, ltail=cluster_func color=pink  penwidth=4]
+
+WRITE -> LOGEXP [lhead=cluster_logic, ltail=cluster_wr color=pink penwidth=4]
+
+LOOKFLD -> JLT [lhead=cluster_jlt, ltail=cluster_data color=pink penwidth=4]
+
+}

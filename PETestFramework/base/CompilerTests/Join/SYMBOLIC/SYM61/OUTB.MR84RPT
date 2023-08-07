@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 4
+COLUMN = {FDWA_LB586_from_LB654.CO_CD, Runday(); $SRC_LKUP_CD="N", $TIMEX_LKUP_CD="N" }
+ERROR: line 1:83: The symbol $TIMEX_LKUP_CD is not defined in lookup FDWA_LB586_from_LB654.

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="../../../xsl/PMSpec.xsl"?><PMSpec>
+
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+	<Name>FIXES</Name>
+	<Title>RTC Tests to be added to regression</Title>
+	<Description>Things we have fixed - may merge into the other tests later</Description>
+	<Category>PeTests/RTCs</Category>
+	<CQ>Ignore me</CQ>
+	<Note>Add something if you want</Note>
+	<Tests>
+		<Test>
+			<Name>WREXT</Name>
+			<Header>WREXT</Header>
+			<Description>Write Extract from logic</Description>
+			<Source>WBXML</Source>
+			<RTC>21242</RTC>
+			<XMLFiles>
+				<XMLFile>
+					<Name>WRITE_TEST_EXTR[9959].xml</Name>
+					<Replacements/>
+				</XMLFile>
+			</XMLFiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+					<DDName>EXTR003</DDName>
+					<SPACE>TRK</SPACE>
+					<PRIMARY>1</PRIMARY>
+					<SECONDARY>1</SECONDARY>
+					<RECFM>VB</RECFM>
+					<LRECL>300</LRECL>
+				</ExtractFile>
+				<ExtractFile>
+					<DDName>EXTR004</DDName>
+					<SPACE>TRK</SPACE>
+					<PRIMARY>1</PRIMARY>
+					<SECONDARY>1</SECONDARY>
+					<RECFM>VB</RECFM>
+					<LRECL>300</LRECL>
+				</ExtractFile>
+			</ExtractFiles>
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+		</Test>
+		<Test>
+			<Name>SPLITS</Name>
+			<Header>SPLITS</Header>
+			<Description>Split pipes</Description>
+			<Source>WBXML</Source>
+			<RTC>21365</RTC>
+			<XMLFiles>
+				<XMLFile>
+					<Name>split2Threads.xml</Name>
+					<Replacements/>
+				</XMLFile>
+			</XMLFiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYP2</DDName>
+					<FileName>ALLTYPE.SPLIT</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+					<DDName>EXTR001</DDName>
+					<SPACE>TRK</SPACE>
+					<PRIMARY>1</PRIMARY>
+					<SECONDARY>1</SECONDARY>
+					<RECFM>VB</RECFM>
+					<LRECL>300</LRECL>
+				</ExtractFile>
+			</ExtractFiles>
+ 			<FormatFiles>
+				<FormatFile>
+					<DDName>FMTOUT01</DDName>
+					<SPACE>CYL</SPACE>
+					<PRIMARY>1</PRIMARY>
+					<SECONDARY>1</SECONDARY>
+					<RECFM>VB</RECFM>
+					<LRECL>300</LRECL>
+				</FormatFile>
+			</FormatFiles>
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+		</Test>
+		<Test>
+			<Name>CFXC</Name>
+			<Header>CFXC</Header>
+			<Description>Tests CFxC and CFCx with dates</Description>
+			<Source>WBXML</Source>
+			<RTC>21523</RTC>
+			<XMLFiles>
+				<XMLFile>
+					<Name>Date_functions_1[11676].xml</Name>
+					<Replacements/>
+				</XMLFile>
+			</XMLFiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>DATE2</DDName>
+					<FileName>DATE2</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+					<DDName>TESTOUT1</DDName>
+					<SPACE>TRK</SPACE>
+					<PRIMARY>1</PRIMARY>
+					<SECONDARY>1</SECONDARY>
+					<RECFM>VB</RECFM>
+					<LRECL>300</LRECL>
+				</ExtractFile>
+			</ExtractFiles> 
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+		</Test>
+	</Tests>
+</PMSpec>

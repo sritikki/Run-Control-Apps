@@ -1,0 +1,44 @@
+---
+name: "OVERFLW"
+title: "Overflow Tests"
+description: "Do we catch the overflow"
+category: "PeTests/OLD"
+cq: ""
+note: ""
+tests:
+- name: "OFLOW"
+  header: "OFLOW"
+  description: "Overflow error"
+  source: "WBXML"
+  xmlfiles:
+  - name: "CALCU_USING_CALC_NUM_OVERFLOW[4953].xml"
+  eventfiles:
+  - ddname: "SALESIGN"
+    dsn: "GEBT.REGRI.SALES.CO.ALL.SIGN"
+  - ddname: "SALESPCK"
+    dsn: "GEBT.REGRI.SALES.CO.ALL.SIGN.PACKED"
+  extractfiles:
+  - ddname: "EXTR020"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+    workfile: "20"
+  formatfiles:
+  - ddname: "F0004953"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+    workfile: "20"
+  errorfiles:
+  - ddname: "MR88LOG"
+    filename: "MR88LOG"
+    startkey: "Report DD Name"
+    stopkey: "End of file"
+  expectedresult:
+    message: "pass"
+    rc: "8"
+

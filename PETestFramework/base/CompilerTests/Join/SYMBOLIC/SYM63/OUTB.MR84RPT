@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 4
+COLUMN = {FDWA_LB586_from_LB654.CO_CD, Runday(); $SRC_LKUPX_CD="N", $TIME_LKUP_CD="N",$NOTME="N" }
+ERROR: line 1:94: The symbol $NOTME is not defined in lookup FDWA_LB586_from_LB654.
+ERROR: line 1:64: The symbol $SRC_LKUPX_CD is not defined in lookup FDWA_LB586_from_LB654.

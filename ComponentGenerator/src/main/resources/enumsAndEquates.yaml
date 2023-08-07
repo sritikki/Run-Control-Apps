@@ -1,0 +1,10 @@
+# Where to get the component and record definitions and where to write the generated classes
+package_name: org.genevaers.repository.components.enums
+source_directory: components
+target_directory: ../Repository/target/generated-sources
+pe_target_directory: ../../pe/PM4/MAC
+description: There are a number of key values that are used to generate Java enums and assembler equates
+enums: 
+-  name:   MetadataEnums
+   source: MetadataEnums.yaml
+   target: components

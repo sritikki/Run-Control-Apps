@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN={NUMER} + "fred"
+ERROR: line 1:18: Invalid data type found in an arithmetic expression; see fred (Const String)

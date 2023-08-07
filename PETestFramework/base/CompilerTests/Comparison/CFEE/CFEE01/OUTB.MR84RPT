@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {DMY} = {NUMER} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:10: Date/Time format conflict comparing DMY (AlphaNum - DMY) with NUMER (ZonedDec)

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {MSKNM_MSKNM.NUMER} * 2 = {MSKNUM_MSKNUM_NUMER.ALNUM} THEN ENDIF
+ERROR: line 1:62: There are no statements in the THEN block

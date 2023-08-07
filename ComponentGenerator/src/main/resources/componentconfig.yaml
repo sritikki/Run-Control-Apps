@@ -1,0 +1,69 @@
+# Where to get the component and record definitions and where to write the generated classes
+package_name: org.genevaers.repository.components
+source_directory: components
+target_directory: ../Repository/target/generated-sources/
+description: | 
+      The component records are used to define the Java classes used in the MR91 repository.
+      
+      Which are the components of the in memory database used by the Preprocessor.
+components:
+  - 
+    name: ControlRecord
+    source: controlRecord.yaml
+    target: components
+  - 
+    name: PhysicalFile
+    source: PhysicalFile.yaml
+    target: components
+  - 
+    name: UserExit
+    source: exit.yaml
+    target: components
+  - 
+    name: LogicalRecord
+    source: logicalRecord.yaml
+    target: components
+  - 
+    name: LRField
+    source: LRField.yaml
+    target: components
+  - 
+    name: LRIndex
+    source: LRIndex.yaml
+    target: components
+  - 
+    name: LookupPathKey
+    source: LookupPathKey.yaml
+    target: components
+  - 
+    name: ViewDefinition
+    source: ViewDefinition.yaml
+    target: components
+  - 
+    name: ViewColumn
+    source: ViewColumn.yaml
+    target: components
+  - 
+    name: ViewSortKey
+    source: ViewSortKey.yaml
+    target: components
+  - 
+    name: ViewSource
+    source: ViewSource.yaml
+    target: components
+  - 
+    name: ViewColumnSource
+    source: ViewColumnSource.yaml
+    target: components
+  - 
+    name: OutputFile
+    source: OutputFile.yaml
+    target: components
+  - 
+    name: ReportHeader
+    source: ReportHeader.yaml
+    target: components
+  - 
+    name: ReportFooter
+    source: ReportFooter.yaml
+    target: components

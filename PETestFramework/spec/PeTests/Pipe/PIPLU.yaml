@@ -1,0 +1,30 @@
+---
+name: "PIPLU"
+title: "Pipe with lookup"
+description: "Check how pipes work with views using lookups"
+category: "PeTests/Pipe"
+cq: ""
+note: ""
+tests:
+- name: "PIPLU01"
+  header: "Separate"
+  description: "Case where the lookup is referencing a separate file."
+  source: "WBXML"
+  xmlfiles:
+  - name: "toklu.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "PIPE"
+  reffiles:
+  - ddname: "LKUPALL"
+    filename: "ALLTYPE.LOOKUP"
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0001006"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "FB"
+    lrecl: "41"

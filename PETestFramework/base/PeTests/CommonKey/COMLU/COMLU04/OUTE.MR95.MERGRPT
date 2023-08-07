@@ -1,0 +1,68 @@
+1                                   GVBXRCK                                                                                          
+                                CONTROL REPORT                                                                                       
+                                                                                                                                     
+ RUN      DATE:  13/05/17                                                                                                            
+ COMPLETE TIME:  14:10:10                                                                                                            
+                                                                                                                                     
+0------------------------------------------------------------------------------------------------------------------                  
+ GVBXRCK PARAMETERS:                                                                                                                 
+                                                                                                                                     
+0ENTITY   DDNAME   *CATEGORIES* PART  TY DU PL  KP KL BL TP   EP PP DB2 GDG ** DATASET TEMPLATE **                       OUT CATEGORY
+ -------- -------- ------------ ----- -- -- --  -- -- -- --  --- -- --- --- -------------------------------------------- ------------
+ EMPLO    EMPLO%!! N            00/00       00  01 03 03 00  000 00                                                                  
+ PRODD    PRODD%!! N            00/00       00  01 03 03 00  000 00                                                                  
+ BREAKLEN          03                                                                                                                
+ LRBUFFER          001                                                                                                               
+ EXTENSION         002                                                                                                               
+ NOTFND            CONTINUE                                                                                                          
+1------------------------------------------------------------------------------------------------------------------                  
+ PARTITION 00 SUMMARY TOTALS                                                                                                         
+0 DDNAME  ENTITY/SRC INPUT REC COUNT  INPUT LENGTH      INPUT BYTES      DUPLICATE REC COUNT                                         
+ -------- ---------- ---------------  ------------  -------------------  -------------------                                         
+ EMPLON00 EMPLO   /N               5          80                    400                    0                                         
+ PRODDN00 PRODD   /N               5          80                    400                    0                                         
+ GENERATED TRANSACT                0                                  0                                                              
+           SUBTOTALS              10                                800                    0                                         
+                                                                                                                                     
+0------------------------------------------------------------------------------------------------------------------                  
+ (E) LOOKUPS FOUND                   0                                                                                               
+ (E) LOOKUPS NOT FOUND               0                                                                                               
+ (T) LOOKUPS FOUND                   0                                                                                               
+ (T) LOOKUPS NOT FOUND               0                                                                                               
+ (X) LOOKUPS FOUND                   0                                                                                               
+ (X) LOOKUPS NOT FOUND               0                                                                                               
+ (R) LOOKUPS FOUND                   0                                                                                               
+ (R) LOOKUPS NOT FOUND               0                                                                                               
+ (B) LOOKUPS FOUND                   5                                                                                               
+ (B) LOOKUPS NOT FOUND               0                                                                                               
+                                                                                                                                     
+ BUFFER USE:             194  BUFFER MAX:       1,048,576                                                                            
+                                                                                                                                     
+ BREAK   KEY COUNT                   5                                                                                               
+ SRB/TCB SW  COUNT                   0                                                                                               
+                                                                                                                                     
+0------------------------------------------------------------------------------------------------------------------                  
+1------------------------------------------------------------------------------------------------------------------                  
+ GVBXRCK GRAND TOTALS                                                                                                                
+                                                                                                                                     
+0                    INPUT REC COUNT                    INPUT BYTES      DUPLICATE REC COUNT                                         
+                     ---------------                -------------------  -------------------                                         
+                                  10                                800                    0                                         
+0(E) LOOKUPS FOUND                   0                                                                                               
+ (E) LOOKUPS NOT FOUND               0                                                                                               
+ (T) LOOKUPS FOUND                   0                                                                                               
+ (T) LOOKUPS NOT FOUND               0                                                                                               
+ (X) LOOKUPS FOUND                   0                                                                                               
+ (X) LOOKUPS NOT FOUND               0                                                                                               
+ (R) LOOKUPS FOUND                   0                                                                                               
+ (R) LOOKUPS NOT FOUND               0                                                                                               
+ (B) LOOKUPS FOUND                   5                                                                                               
+ (B) LOOKUPS NOT FOUND               0                                                                                               
+                                                                                                                                     
+ EXT    USE:               0  EXT    MAX:       2,097,152                                                                            
+ EXT  COUNT:               0  EXT  QUEUE:               0                                                                            
+                                                                                                                                     
+ BREAK   KEY COUNT                   5                                                                                               
+ SRB/TCB SW  COUNT                   0                                                                                               
+                                                                                                                                     
+0------------------------------------------------------------------------------------------------------------------                  

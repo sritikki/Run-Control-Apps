@@ -1,0 +1,17 @@
+#Logical Record Field
+component_name: LRIndex
+members:
+- name: componentId 
+  type: integer
+- name: name
+  type: string
+- name: keyNumber 
+  type: short
+- name: lrId
+  type: integer
+- name: fieldID
+  type: integer
+- name: effectiveDateStart
+  type: boolean
+- name: effectiveDateEnd
+  type: boolean

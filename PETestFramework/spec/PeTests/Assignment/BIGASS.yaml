@@ -1,0 +1,26 @@
+---
+name: "BIGASS"
+title: "Big Bang Assignment Tests"
+description: "Assignment tests to a type by row"
+category: "PeTests/Assignment"
+cq: ""
+note: ""
+tests:
+- name: "MRGEASS"
+  header: "All Assignments"
+  description: "Assignments to all types from all Lookup types"
+  source: "WBXML"
+  xmlfiles:
+  - name: "mergeAssAll.xml"
+- name: "MRGLESS"
+  header: "Less Assignments"
+  description: "Assignments cut down to test RUNVIEWS"
+  source: "WBXML"
+  xmlfiles:
+  - name: "mergeAssAll.xml"
+- name: "ALIGN"
+  header: "ALIGN"
+  description: "Align left, right, and centre"
+  source: "WBXML"
+  xmlfiles:
+  - name: "AlignText[9832].xml"

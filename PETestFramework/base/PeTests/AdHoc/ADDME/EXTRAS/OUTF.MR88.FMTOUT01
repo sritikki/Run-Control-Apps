@@ -1,0 +1,94 @@
+ADDA    1Positive tens    :Extras      9   22   22   22     22   22          22   22   22   22   22   22   22   22   22   22   22
+ADDA    2Negative tens    :Extras      9  -18  238  -18  65518  -18  4294967278  -18  -18   18  -18  -18  -18  -18  -18  -18  -18
+ARTDM2  1Positive tens    :Event       9   -5   -5    -10  -10         -15  -15  -20  -25  -30  -35  -40  -40  -45       -45  -50
+ARTDM2  1Positive tens    :Lookup      9                                                                                         
+ARTDM2  1Positive tens    :Prior       9   -5   -5    -10  -10         -15  -15  -20  -25  -30  -35  -40  -40  -45       -45  -50
+ARTDM2  2Negative tens    :Event       9 -123    5 -32758   10 -2147483633   15   20  -25   30   35   40   40   45        45   50
+ARTDM2  2Negative tens    :Lookup      9                                                                                         
+ARTDM2  2Negative tens    :Prior       9   -5   -5    -10  -10         -15  -15  -20  -25  -30  -35  -40  -40  -45       -45  -50
+ARTDP2  1Positive tens    :Event       9    5    5     10   10          15   15   20   25   30   35   40   40   45        45   50
+ARTDP2  1Positive tens    :Lookup      9                                                                                         
+ARTDP2  1Positive tens    :Prior       9    5    5     10   10          15   15   20   25   30   35   40   40   45        45   50
+ARTDP2  2Negative tens    :Event       9  123   -5  32758  -10  2147483633  -15  -20   25  -30  -35  -40  -40  -45       -45  -50
+ARTDP2  2Negative tens    :Lookup      9                                                                                         
+ARTDP2  2Negative tens    :Prior       9    5    5     10   10          15   15   20   25   30   35   40   40   45        45   50
+ARTMDF  1Positive tens    :Event       9 -222 -222   -111 -111         -74  -74  -56  -44  -37  -32  -28  -28  -25-2469  -25  -22
+ARTMDF  1Positive tens    :Lookup      9                                                                                         
+ARTMDF  1Positive tens    :Prior       9 -222 -222   -111 -111         -74  -74  -56  -44  -37  -32  -28  -28  -25-2469  -25  -22
+ARTMDF  2Negative tens    :Event       9   -9  222         111               74   56  -44   37   32   28   28   25 2469   25   22
+ARTMDF  2Negative tens    :Lookup      9                                                                                         
+ARTMDF  2Negative tens    :Prior       9 -222 -222   -111 -111         -74  -74  -56  -44  -37  -32  -28  -28  -25-2469  -25  -22
+ARTMMF  1Positive tens    :Event       9  -11  -11    -21  -21         -31  -31  -41  -51  -61  -71  -81  -81  -91   -2  -91 -101
+ARTMMF  1Positive tens    :Lookup      9                                                                                         
+ARTMMF  1Positive tens    :Prior       9  -11  -11    -21  -21         -31  -31  -41  -51  -61  -71  -81  -81  -91   -2  -91 -101
+ARTMMF  2Negative tens    :Event       9 -247    9 -65517   19 -4294967267   29   39  -51   59   69   79   79   89        89   99
+ARTMMF  2Negative tens    :Lookup      9                                                                                         
+ARTMMF  2Negative tens    :Prior       9  -11  -11    -21  -21         -31  -31  -41  -51  -61  -71  -81  -81  -91   -2  -91 -101
+ARTMPF  1Positive tens    :Event       9    9    9     19   19          29   29   39   49   59   69   79   79   89        89   99
+ARTMPF  1Positive tens    :Lookup      9                                                                                         
+ARTMPF  1Positive tens    :Prior       9    9    9     19   19          29   29   39   49   59   69   79   79   89        89   99
+ARTMPF  2Negative tens    :Event       9  245  -11  65515  -21  4294967265  -31  -41   49  -61  -71  -81  -81  -91   -2  -91 -101
+ARTMPF  2Negative tens    :Lookup      9                                                                                         
+ARTMPF  2Negative tens    :Prior       9    9    9     19   19          29   29   39   49   59   69   79   79   89        89   99
+ARTMTF  1Positive tens    :Event       9  -20  -20    -40  -40         -60  -60  -80 -100 -120 -140 -160 -160 -180   -2 -180 -200
+ARTMTF  1Positive tens    :Lookup      9                                                                                         
+ARTMTF  1Positive tens    :Prior       9  -20  -20    -40  -40         -60  -60  -80 -100 -120 -140 -160 -160 -180   -2 -180 -200
+ARTMTF  2Negative tens    :Event       9 -492   20-131032   40 -8589934532   60   80 -100  120  140  160  160  180    2  180  200
+ARTMTF  2Negative tens    :Lookup      9                                                                                         
+ARTMTF  2Negative tens    :Prior       9  -20  -20    -40  -40         -60  -60  -80 -100 -120 -140 -160 -160 -180   -2 -180 -200
+ARTPM1  1Positive tens    :Event       9    9    9     19   19          29   29   39   49   59   69   79   79   89        89   99
+ARTPM1  1Positive tens    :Lookup      9                                                                                         
+ARTPM1  1Positive tens    :Prior       9    9    9     19   19          29   29   39   49   59   69   79   79   89        89   99
+ARTPM1  2Negative tens    :Event       9  245  -11  65515  -21  4294967265  -31  -41   49  -61  -71  -81  -81  -91   -2  -91 -101
+ARTPM1  2Negative tens    :Lookup      9                                                                                         
+ARTPM1  2Negative tens    :Prior       9    9    9     19   19          29   29   39   49   59   69   79   79   89        89   99
+ARTPP1  1Positive tens    :Event       9   11   11     21   21          31   31   41   51   61   71   81   81   91    2   91  101
+ARTPP1  1Positive tens    :Lookup      9                                                                                         
+ARTPP1  1Positive tens    :Prior       9   11   11     21   21          31   31   41   51   61   71   81   81   91    2   91  101
+ARTPP1  2Negative tens    :Event       9  247   -9  65517  -19  4294967267  -29  -39   51  -59  -69  -79  -79  -89       -89  -99
+ARTPP1  2Negative tens    :Lookup      9                                                                                         
+ARTPP1  2Negative tens    :Prior       9   11   11     21   21          31   31   41   51   61   71   81   81   91    2   91  101
+ARTTM2  1Positive tens    :Event       9  -20  -20    -40  -40         -60  -60  -80 -100 -120 -140 -160 -160 -180   -2 -180 -200
+ARTTM2  1Positive tens    :Lookup      9                                                                                         
+ARTTM2  1Positive tens    :Prior       9  -20  -20    -40  -40         -60  -60  -80 -100 -120 -140 -160 -160 -180   -2 -180 -200
+ARTTM2  2Negative tens    :Event       9 -492   20-131032   40 -8589934532   60   80 -100  120  140  160  160  180    2  180  200
+ARTTM2  2Negative tens    :Lookup      9                                                                                         
+ARTTM2  2Negative tens    :Prior       9  -20  -20    -40  -40         -60  -60  -80 -100 -120 -140 -160 -160 -180   -2 -180 -200
+ARTTP2  1Positive tens    :Event       9   20   20     40   40          60   60   80  100  120  140  160  160  180    2  180  200
+ARTTP2  1Positive tens    :Lookup      9                                                                                         
+ARTTP2  1Positive tens    :Prior       9   20   20     40   40          60   60   80  100  120  140  160  160  180    2  180  200
+ARTTP2  2Negative tens    :Event       9  492  -20 131032  -40  8589934532  -60  -80  100 -120 -140 -160 -160 -180   -2 -180 -200
+ARTTP2  2Negative tens    :Lookup      9                                                                                         
+ARTTP2  2Negative tens    :Prior       9   20   20     40   40          60   60   80  100  120  140  160  160  180    2  180  200
+ART1MF  1Positive tens    :Event       9   -9   -9    -19  -19         -29  -29  -39  -49  -59  -69  -79  -79  -89       -89  -99
+ART1MF  1Positive tens    :Lookup      9                                                                                         
+ART1MF  1Positive tens    :Prior       9   -9   -9    -19  -19         -29  -29  -39  -49  -59  -69  -79  -79  -89       -89  -99
+ART1MF  2Negative tens    :Event       9 -245   11 -65515   21 -4294967265   31   41  -49   61   71   81   81   91    2   91  101
+ART1MF  2Negative tens    :Lookup      9                                                                                         
+ART1MF  2Negative tens    :Prior       9   -9   -9    -19  -19         -29  -29  -39  -49  -59  -69  -79  -79  -89       -89  -99
+ART1PF  1Positive tens    :Event       9   11   11     21   21          31   31   41   51   61   71   81   81   91    2   91  101
+ART1PF  1Positive tens    :Lookup      9                                                                                         
+ART1PF  1Positive tens    :Prior       9   11   11     21   21          31   31   41   51   61   71   81   81   91    2   91  101
+ART1PF  2Negative tens    :Event       9  247   -9  65517  -19  4294967267  -29  -39   51  -59  -69  -79  -79  -89       -89  -99
+ART1PF  2Negative tens    :Lookup      9                                                                                         
+ART1PF  2Negative tens    :Prior       9   11   11     21   21          31   31   41   51   61   71   81   81   91    2   91  101
+ART2DF  1Positive tens    :Event       9  222  222    111  111          74   74   56   44   37   32   28   28   25 2469   25   22
+ART2DF  1Positive tens    :Lookup      9                                                                                         
+ART2DF  1Positive tens    :Prior       9  222  222    111  111          74   74   56   44   37   32   28   28   25 2469   25   22
+ART2DF  2Negative tens    :Event       9    9 -222        -111              -74  -56   44  -37  -32  -28  -28  -25-2469  -25  -22
+ART2DF  2Negative tens    :Lookup      9                                                                                         
+ART2DF  2Negative tens    :Prior       9  222  222    111  111          74   74   56   44   37   32   28   28   25 2469   25   22
+ART2TF  1Positive tens    :Event       9   20   20     40   40          60   60   80  100  120  140  160  160  180    2  180  200
+ART2TF  1Positive tens    :Lookup      9                                                                                         
+ART2TF  1Positive tens    :Prior       9   20   20     40   40          60   60   80  100  120  140  160  160  180    2  180  200
+ART2TF  2Negative tens    :Event       9  492  -20 131032  -40  8589934532  -60  -80  100 -120 -140 -160 -160 -180   -2 -180 -200
+ART2TF  2Negative tens    :Lookup      9                                                                                         
+ART2TF  2Negative tens    :Prior       9   20   20     40   40          60   60   80  100  120  140  160  160  180    2  180  200
+DIVA    1Positive tens    :Extras      9    5    5    5      5    5           5    5    5    5    5    5    5    5    5    5    5
+DIVA    2Negative tens    :Extras      9    5    5    5      5    5           5    5    5    5    5    5    5    5    5    5    5
+MULA    1Positive tens    :Extras      9  121  121  121    121  121         121  121  121  100  121  121  121  121  121  121  121
+MULA    2Negative tens    :Extras      9   81   81   81     81   81          81   81   81  100   81   81   81   81   81   81   81
+PrvCol  1Positive tens    :Extras        10  8 18  5  10   1      18   10   padding                                              
+PrvCol  2Negative tens    :Extras        10  8 18  5  10   1      18   10   padding                                              
+SUBA    1Positive tens    :Extras      9   19   19   19     19   19          19   19   19   19   19   19   19   19   19   19   19
+SUBA    2Negative tens    :Extras      9   -1  255   -1  65535   -1  4294967295   -1   -1    1   -1   -1   -1   -1   -1   -1   -1

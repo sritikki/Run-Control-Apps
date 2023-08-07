@@ -1,0 +1,10 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN={NUMER} / {NUMER}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+                 //
+                 //   Move a constant into the DT area          |------------------+
+                 //                                             V                  |
+       1      3  00003263  DTC   00000000/00000000/00000000    61    30  ZonedDec  "1"                                           
+                                  Signed /  Left  /rnd=0000     3     0  None     

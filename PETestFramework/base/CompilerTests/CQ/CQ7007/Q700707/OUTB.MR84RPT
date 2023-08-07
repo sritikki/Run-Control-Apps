@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {MSKNM_NUMER.HMS}
+ERROR: line 1:22: Date/time conflict assigning to sort key column 1 "Column Number 1" (AlphaNum - YMD) from lookup field HMS (AlphaNum - HMS)

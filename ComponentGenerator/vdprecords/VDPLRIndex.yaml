@@ -1,0 +1,42 @@
+#Control Record
+#Not really much here
+#Used for financial management to define fiscal paramaters
+record_name: VDPLRIndex
+component_name: LRIndex
+record_id: 500
+record_length: 100
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  component_field: none
+- name: prefix.recordId
+  type: mappingOnly
+  component_field: componentId
+- name: prefix.sequenceNbr
+  type: mappingOnly
+  component_field: keyNumber
+- name: lr_index_name
+  type: string
+  maxlength: 48
+  component_field: name
+- name: lr_id
+  type: integer
+  component_field: LrId
+- name: xlrfield_id
+  type: integer
+  component_field: fieldID
+- name: effective_datestart_ind
+  type: boolean
+  component_field: effectiveDateStart
+- name: high_range_tbl_ind
+  type: boolean
+  component_field: none
+- name: effective_dateend_ind
+  type: boolean
+  component_field: effectiveDateEnd
+- name: padding1
+  type: string
+  maxlength: 17
+  padding : true
+  component_field: none

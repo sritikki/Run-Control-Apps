@@ -1,0 +1,10 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.project.sourcePaths": [
+        "RunControlGenerator",
+        "Repository",
+        "GenevaIO",
+        "Compilers"
+    ],
+    "java.project.explorer.showNonJavaResources": true
+}

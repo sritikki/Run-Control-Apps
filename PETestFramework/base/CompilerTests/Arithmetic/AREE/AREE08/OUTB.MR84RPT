@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN={CDMY} + {CDMY}
+ERROR: line 1:9: Date/time invalid in an arithmetic expression; see CDMY (ZonedDec - CYMD)
+ERROR: line 1:18: Date/time invalid in an arithmetic expression; see CDMY (ZonedDec - CYMD)

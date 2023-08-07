@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {EFFDATE_MSKNM_NUMER.ALNUM, {CYM}} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:33: The field 'CYM' used as an effective date in a lookup path has a date or time format of LowerCase that cannot be converted into the form CCYYMMDD

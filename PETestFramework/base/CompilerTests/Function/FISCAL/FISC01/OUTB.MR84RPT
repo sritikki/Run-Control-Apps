@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF FISCALYEAR() = {NUMER} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:17: Date/Time format conflict comparing  (Date - CYMD) with NUMER (ZonedDec)

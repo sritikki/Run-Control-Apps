@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=043,PROCEDURE={F0RAU})
+ERROR: line 1:54: The type of the module 'F0RAU' in the PROCEDURE parameter of the WRITE function is not a write exit. Only write exits can be used

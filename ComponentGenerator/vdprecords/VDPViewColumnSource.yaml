@@ -1,0 +1,71 @@
+record_name: VDPViewColumnSource
+record_id: 4000
+component_name: ViewColumnSource
+record_type: VDP_COLUMN_SOURCE
+record_length: 340
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  component_field: none
+- name: prefix.recordId
+  type: mappingOnly
+  component_field: componentId
+- name: prefix.viewId
+  type: mappingOnly
+  component_field: viewId
+- name: prefix.columnId
+  type: mappingOnly
+  component_field: columnID
+- name: prefix.sequenceNbr
+  type: mappingOnly
+  component_field: sequenceNumber
+- name: prefix.inputFileId
+  type: mappingOnly
+  component_field: viewSourceId 
+- name: column_source_type
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ColumnSourceType
+  component_field: sourceType
+- name: view_src_lr_id
+  type: integer
+  component_field: viewSrcLrId
+- name: view_src_lr_field_id
+  type: integer
+  component_field: viewSrcLrFieldId
+- name: src_join_id
+  type: integer
+  component_field: srcJoinId
+- name: value_length
+  type: integer
+  component_field: valueLength
+- name: src_value
+  type: string
+  maxlength: 256
+  component_field: srcValue
+- name: src_logic_id
+  type: integer
+  component_field: none
+- name: src_program_id
+  type: integer
+  component_field: none
+- name: hier_struct_nbr
+  type: short
+  component_field: none
+- name: hier_logical_lvl_nbr
+  type: short
+  component_field: none
+- name: desc_lr_id
+  type: integer
+  component_field: none
+- name: desc_xlr_field_id
+  type: integer
+  component_field: SortTitleFieldId
+- name: desc_join_id
+  type: integer
+  component_field: SortTitleLookupId
+- name: padding1
+  type: string
+  maxlength: 16
+  padding : true
+  component_field: none

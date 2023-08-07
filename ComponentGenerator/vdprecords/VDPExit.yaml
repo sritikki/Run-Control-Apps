@@ -1,0 +1,39 @@
+record_name: VDPExit
+component_name: UserExit
+dsect_name: exit_pgm
+record_id: 210
+record_length: 1428
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  component_field: none
+- name: prefix.recordId
+  type: mappingOnly
+  component_field: componentId
+- name: program_name
+  type: string
+  maxlength: 48
+  component_field: name
+- name: mod_name
+  type: string
+  maxlength: 48
+  component_field: executable
+- name: exit_type
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ExitType
+  component_field: exitType
+- name: program_type
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ProgramType
+  component_field: programType
+- name: optimizable
+  type: boolean
+  component_field: optimizable
+# There is stuff that can be ignored
+- name: padding1
+  type: string
+  maxlength: 1299
+  padding : true
+  component_field: none
+  

@@ -1,0 +1,70 @@
+# Where to get the component and record definitions and where to write the generated classes
+package_name: org.genevaers.genevaio.ltfile
+source_directory: logicTableRecords
+target_directory: ../GenevaIO/target/generated-sources
+pe_target_directory: ../../pe/PM4/MAC
+description: The Logic Table (LT) records are written to the XLT and or JLT files and are read by the 
+       Performance Engine process to define functions to be executed.
+records:
+  - 
+    name: LTPrefix
+    source: LTPrefix.yaml
+    target: ltfile
+    record_part: true
+  - 
+    name: LogicTableArg
+    source: LogicTableArg.yaml
+    target: ltfile
+    record_part: true
+  - 
+    name: LogicTableCC
+    source: LogicTableCC.yaml
+    target: ltfile
+  - 
+    name: LogicTableF0
+    source: LogicTableF0.yaml
+    target: ltfile
+  - 
+    name: LogicTableF1
+    source: LogicTableF1.yaml
+    target: ltfile
+  - 
+    name: LogicTableF2
+    source: LogicTableF2.yaml
+    target: ltfile
+  - 
+    name: LogicTableGeneration
+    source: LogicTableGeneration.yaml
+    target: ltfile
+  - 
+    name: LogicTableHD
+    source: LogicTableHD.yaml
+    target: ltfile
+  - 
+    name: LogicTableName
+    source: LogicTableName.yaml
+    target: ltfile
+  - 
+    name: LogicTableNameF1
+    source: LogicTableNameF1.yaml
+    target: ltfile
+  - 
+    name: LogicTableNameF2
+    source: LogicTableNameF2.yaml
+    target: ltfile
+  - 
+    name: LogicTableNameValue
+    source: LogicTableNameValue.yaml
+    target: ltfile
+  - 
+    name: LogicTableNV
+    source: LogicTableNV.yaml
+    target: ltfile
+  - 
+    name: LogicTableRE
+    source: LogicTableRE.yaml
+    target: ltfile
+  - 
+    name: LogicTableWR
+    source: LogicTableWR.yaml
+    target: ltfile

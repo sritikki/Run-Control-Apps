@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN={ALNUM} + {NUMER}
+ERROR: line 1:9: Invalid data type found in an arithmetic expression; see ALNUM (AlphaNum)

@@ -1,0 +1,60 @@
+---
+name: "SKCOLS"
+title: "Assignments to a Sort Key Title Column"
+description: "Test column assignments to Sort Key Column from different\n\t\ttypes\
+  \ and sources\n\t\tSort Key Columns check can be of the types with or without dates.\n\
+  \t\tWe need to check for the generation of SKE, SKL, SKA, and SKC\n\t\tA full check\
+  \ of all the types is probably not needed since the\n\t\tassignment check table\n\
+  \t\tIs the same as used for normal fields\n\t\tWe do need to check for an invalid\
+  \ sort key (not found)\n\t\tFor each of the SK instruction types.\n\t\tAnd to make\
+  \ the error messages specific to sort keys?\n\t\tDoes it make sense to have a masked\
+  \ numeric sort key column?"
+category: "MR91/SortKey"
+cq: ""
+note: ""
+tests:
+- name: "SKCOL02"
+  header: "SKCOL02"
+  description: "SKE for a Alpha Numeric"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "SKallTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: "COLUMN = {HMS}"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "the end"
+- name: "SKCOL03"
+  header: "SKCOL03"
+  description: "SKE for a Numeric"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "SKallTypes.xml"
+    replacements:
+    - replace: "COLUMN = {NUMER}"
+      with: "COLUMN = {MSKNM}"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "the end"
+- name: "SKCOL09"
+  header: "SKCOL09"
+  description: "SLK from an numeric"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "SKallTypes.xml"
+    replacements:
+    - replace: "COLUMN = {NUMER}"
+      with: "COLUMN = {MSKNM_MSKNM.NUMER}"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "the end"

@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<?xml-stylesheet type="text/xsl" href="../xsl/PMSpec.xsl"?>
+<PMSpec>
+    <Name>PIPFM</Name>
+    <Title>Pipe File Format</Title>
+    <Description>Check how pipes handle different output format types</Description>
+    <Category>PeTests/Pipe</Category>
+    <CQ></CQ>
+    <Note></Note>
+    <Tests>
+        <Test>
+            <Name>PIPFM01</Name>
+            <Header>FB</Header>
+            <Description>Check Pipe with FB format type</Description>
+            <Source>WBXML</Source>
+            <XMLFiles>
+              <XMLFile>
+                <Name>tokfm.xml</Name>
+                <Replacements>
+                    <Replacement>
+                        <Replace>%PFTYPE%</Replace>
+                        <With>PIPE</With>
+                    </Replacement>  
+                </Replacements>                                      
+              </XMLFile>
+            </XMLFiles>
+            <RefFiles>
+            </RefFiles>                    
+            <EventFiles>
+                <EventFile>
+                    <DDName>ALLTYPE</DDName>
+                    <FileName>ALLTYPE</FileName>
+                </EventFile>
+            </EventFiles>
+            <ExtractFiles>
+                <ExtractFile>
+                    <DDName>F0011234</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>FB</RECFM>
+                    <LRECL>38</LRECL>
+                    <BLKSIZE>76</BLKSIZE>
+                </ExtractFile>
+            </ExtractFiles>            
+            <Result>
+                <Success>
+                </Success>
+            </Result>
+        </Test>                
+        <Test>
+            <Name>PIPFM02</Name>
+            <Header>F</Header>
+            <Description>Check Pipe with F format type</Description>
+            <Source>WBXML</Source>
+            <XMLFiles>
+              <XMLFile>
+                <Name>tokfm.xml</Name>
+                <Replacements>
+                    <Replacement>
+                        <Replace>%PFTYPE%</Replace>
+                        <With>PIPE</With>
+                    </Replacement>  
+                </Replacements>                                      
+              </XMLFile>
+            </XMLFiles>
+            <RefFiles>
+            </RefFiles>                    
+            <EventFiles>
+                <EventFile>
+                    <DDName>ALLTYPE</DDName>
+                    <FileName>ALLTYPE</FileName>
+                </EventFile>
+            </EventFiles>
+            <ExtractFiles>
+                <ExtractFile>
+                    <DDName>F0011234</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>F</RECFM>
+                    <LRECL>38</LRECL>
+                </ExtractFile>
+            </ExtractFiles>            
+            <Result>
+                <Success>
+                </Success>
+            </Result>
+        </Test>                
+        <Test>
+            <Name>PIPFM03</Name>
+            <Header>VB</Header>
+            <Description>Check Pipe with VB format type</Description>
+            <Source>WBXML</Source>
+            <XMLFiles>
+              <XMLFile>
+                <Name>tokfm.xml</Name>
+                <Replacements>
+                    <Replacement>
+                        <Replace>%PFTYPE%</Replace>
+                        <With>PIPE</With>
+                    </Replacement>  
+                </Replacements>                                      
+              </XMLFile>
+            </XMLFiles>
+            <RefFiles>
+            </RefFiles>                    
+            <EventFiles>
+                <EventFile>
+                    <DDName>ALLTYPE</DDName>
+                    <FileName>ALLTYPE</FileName>
+                </EventFile>
+            </EventFiles>
+            <ExtractFiles>
+                <ExtractFile>
+                    <DDName>F0011234</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>42</LRECL>
+                    <BLKSIZE>88</BLKSIZE>
+                </ExtractFile>
+            </ExtractFiles>            
+            <Result>
+                <Success>
+                </Success>
+            </Result>
+        </Test>                
+        <Test>
+            <Name>PIPFM04</Name>
+            <Header>V</Header>
+            <Description>Check Pipe with V format type</Description>
+            <Source>WBXML</Source>
+            <XMLFiles>
+              <XMLFile>
+                <Name>tokfm.xml</Name>
+                <Replacements>
+                    <Replacement>
+                        <Replace>%PFTYPE%</Replace>
+                        <With>PIPE</With>
+                    </Replacement>  
+                </Replacements>                                      
+              </XMLFile>
+            </XMLFiles>
+            <RefFiles>
+            </RefFiles>                    
+            <EventFiles>
+                <EventFile>
+                    <DDName>ALLTYPE</DDName>
+                    <FileName>ALLTYPE</FileName>
+                </EventFile>
+            </EventFiles>
+            <ExtractFiles>
+                <ExtractFile>
+                    <DDName>F0011234</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>V</RECFM>
+                    <LRECL>42</LRECL>
+                    <BLKSIZE>46</BLKSIZE>
+                </ExtractFile>
+            </ExtractFiles>            
+            <Result>
+                <Success>
+                </Success>
+            </Result>
+        </Test>                
+    </Tests>
+</PMSpec>

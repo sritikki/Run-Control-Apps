@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {BADDEFAULTNUM.ALNUM} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: Step number 1 of the lookup path 'BADDEFAULTNUM' contains an invalid numeric symbol value '3BADNUM3'.  Check the value of the numeric symbol value in the lookup path definition

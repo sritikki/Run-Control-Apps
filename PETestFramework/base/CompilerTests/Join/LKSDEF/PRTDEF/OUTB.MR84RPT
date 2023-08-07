@@ -1,0 +1,20 @@
+INFO: Compiling extract-phase cell logic for column 2
+COLUMN = {CQ10600_LOOKUP_PATH.FIELD3}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      2  00009871  JOIN  00001930/00002172/00004073     1     0  AlphaNum  "2728"                                              5     7
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      2  00009871  LKE   00001929/00002171/00144337     6     5  AlphaNum  00001929/00002171/00144337     1     5  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     2     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       3      2  00009871  LKS   00000000/00000000/00002728     6    10  AlphaNum  "Fred      "                                  
+                                 Unsigned/  Left  /rnd=0000     2     0  None     
+       4      2  00009871  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    5     7
+       5      2  00009871  DTL   00001930/00002172/00144342    16    65  AlphaNum  00000000/00000000/00000000     6    65  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     2     0  None     
+       6      2  00009871  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    8
+                 //
+                 //   Move a constant into the DT area          |------------------+
+                 //                                             V                  |
+       7      2  00009871  DTC   00001929/00002171/00000000     6    65  AlphaNum  ""                                            
+                                 Unsigned/  Left  /rnd=0000     2     0  None     

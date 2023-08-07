@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 3
+COL.99 = {NUMER}
+ERROR: line 1:5: The column number 99 is greater than the number of columns defined. There are only 13 columns
+ERROR: line 1:11: Date/Time format conflict assigning to column 13 "CMDY Column" (Packed - CYMD) from NUMER (ZonedDec)

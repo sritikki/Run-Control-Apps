@@ -1,0 +1,42 @@
+component_name: ViewColumnSource
+vdp_source: VDPViewColumnSource
+members:
+- name: componentId 
+  type: integer
+  vdp_source: prefix.recordId
+- name: sequenceNumber 
+  type: short
+  vdp_source: prefix.sequenceNbr
+- name: columnID
+  type: integer
+  vdp_source: prefix.columnId
+- name: columnNumber
+  type: integer
+- name: viewId
+  type: integer
+  vdp_source: prefix.viewId
+- name: viewSourceId
+  type: integer
+  vdp_source: prefix.inputFileId
+- name: sourceType
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ColumnSourceType
+- name: viewSrcLrId
+  type: integer
+- name: viewSrcLrFieldId
+  type: integer
+- name: srcJoinId
+  type: integer
+- name: valueLength
+  type: integer
+- name: srcValue
+  type: string
+- name: logicText
+  type: string
+  vdp_source: none
+- name: SortTitleLookupId
+  type: integer
+  vdp_source: desc_join_id
+- name: SortTitleFieldId
+  type: integer
+  vdp_source: desc_xlr_field_id

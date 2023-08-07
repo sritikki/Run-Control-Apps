@@ -1,0 +1,16 @@
+---
+name: "DBCONV"
+title: "Convert WB DB to WB XML"
+description: "Generic spec to use to convert form old WB DB to WB XML"
+category: "MR91/Convert2WBXML"
+cq: ""
+note: ""
+tests:
+- name: "WBDB"
+  header: "WBDB"
+  description: ""
+  source: "DB"
+  dbdetails: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"

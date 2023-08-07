@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {ALNUM_SYM_MSKNM_NUMER.ALNUM; $SYM1 = "TEST"} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:42: Length of symbol $SYM1 value TEST (Constant String 4 chars ) is greater than its lookup field (AlphaNum 3 chars).

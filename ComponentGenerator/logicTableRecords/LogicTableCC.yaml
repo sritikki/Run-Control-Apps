@@ -1,0 +1,32 @@
+record_name: LogicTableCC
+record_type: CC
+record_length: 820
+fields:
+- name: prefix  
+  type: mappingOnly
+  existing_java_type: LTPrefix
+- name: value1_area  
+  type: dsect_operand
+  value: 0CL260            
+- name: value1_length  
+  type: integer
+- name: value1  
+  type: string
+  maxlength: 256
+- name: value2_area  
+  type: dsect_operand
+  value: 0CL260
+- name: value2_length  
+  type: integer
+- name: value2  
+  type: string
+  maxlength: 256
+- name: compare_type  
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.LtCompareType            
+- name: field_content_code  
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.DateCode
+- name: padding  
+  type: string
+  maxlength: 256

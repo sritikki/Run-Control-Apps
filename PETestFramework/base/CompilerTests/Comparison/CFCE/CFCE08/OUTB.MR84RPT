@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if "0" = {NUMER}  THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:8: Data type conflict comparing 0 (Const String) with NUMER (ZonedDec)

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {BSORT}
+ERROR: line 1:11: Data type conflict assigning to column 1 "Column Number 1" (AlphaNum) from BSORT (BinaSort)

@@ -1,0 +1,778 @@
+codes:
+  - function_code: ADDA
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description:  Add to an accumulator from another accumulator
+  - function_code: ADDC
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description:  Add a constant value to an accumulator
+  - function_code: ADDE
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description:  Add an event field value to an accumulator
+  - function_code: ADDL
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description:  Add a lookup field value to an accumulator
+  - function_code: ADDP
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description:  Add a prior event field value to an accumulator
+  - function_code: ADDX
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Add a prior event field value to an accumulator
+    
+  - function_code: CFAA
+    lt_record_type: NAMEVALUE
+    category: Comparison
+    description: Compare two accumulated values
+  - function_code: CFAC
+    lt_record_type: NAMEVALUE
+    category: Comparison
+    description: Compare an event field value to a constant value
+  - function_code: CFAE
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare two event field values
+  - function_code: CFAL
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare an event field value to a lookup field value
+  - function_code: CFAP
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare an event field value to a prior event field value
+  - function_code: CFAX
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare an event field value to a prior event field value
+    
+  - function_code: CFCA
+    lt_record_type: NAMEVALUE
+    category: Comparison
+    description: Compare a constant value to an accumulated value
+  - function_code: CFCC
+    lt_record_type: CC
+    category: Comparison
+    description: Compare two constant values
+  - function_code: CFCE
+    lt_record_type: F1
+    category: Comparison
+    description: Compare two event field values
+  - function_code: CFCL
+    lt_record_type: F1
+    category: Comparison
+    description: Compare an event field value to a lookup field value
+  - function_code: CFCP
+    lt_record_type: F1
+    category: Comparison
+    description: Compare an event field value to a prior event field value
+  - function_code: CFCX
+    lt_record_type: F1
+    category: Comparison
+    description: Compare an event field value to a prior event field value
+    
+  - function_code: CFEA
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare an event field value to an accumulated value
+  - function_code: CFEC
+    lt_record_type: F1
+    category: Comparison
+    description: Compare an event field value to a constant value
+  - function_code: CFEE
+    lt_record_type: F2
+    category: Comparison
+    description: Compare two event field values
+  - function_code: CFEL
+    lt_record_type: F2
+    category: Comparison
+    description: Compare an event field value to a lookup field value
+  - function_code: CFEP
+    lt_record_type: F2
+    category: Comparison
+    description: Compare an event field value to a prior event field value
+  - function_code: CFEX
+    lt_record_type: F2
+    category: Comparison
+    description: Compare an event field value to a prior event field value
+    
+  - function_code: CFLA
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare a lookup field value to an accumulated value
+  - function_code: CFLC
+    lt_record_type: F1
+    category: Comparison
+    description: Compare a lookup field value to a constant value
+  - function_code: CFLE
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+  - function_code: CFLL
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+  - function_code: CFLP
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+  - function_code: CFLX
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+    
+  - function_code: CFPA
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare a lookup field value to an accumulated value
+  - function_code: CFPC
+    lt_record_type: F1
+    category: Comparison
+    description: Compare a prior event field value to a constant value
+  - function_code: CFPE
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+  - function_code: CFPL
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+  - function_code: CFPP
+    lt_record_type: F2
+    category: Comparison
+    description: Compare two prior event field values
+  - function_code: CFPX
+    lt_record_type: F2
+    category: Comparison
+    description: Compare two prior event field values
+    
+  - function_code: CFXA
+    lt_record_type: NAMEF1
+    category: Comparison
+    description: Compare a lookup field value to an accumulated value
+  - function_code: CFXC
+    lt_record_type: F1
+    category: Comparison
+    description: Compare a prior event field value to a constant value
+  - function_code: CFXE
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+  - function_code: CFXL
+    lt_record_type: F2
+    category: Comparison
+    description: Compare a lookup field value to a prior event field value
+  - function_code: CFXP
+    lt_record_type: F2
+    category: Comparison
+    description: Compare two prior event field values
+  - function_code: CFXX
+    lt_record_type: F2
+    category: Comparison
+    description: Compare two prior event field values
+    
+  - function_code: CNE 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNumeric function applied to an event field
+  - function_code: CNL 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNumeric function applied to a lookup field
+  - function_code: CNP 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNumeric function applied to a lookup field
+  - function_code: CNX 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNumeric function applied to a lookup field
+    
+  - function_code: CSE 
+    lt_record_type: F1
+    category: Comparison
+    description: IsSpaces function applied to an event field
+  - function_code: CSL 
+    lt_record_type: F1
+    category: Comparison
+    description: IsSpaces function applied to a lookup field
+  - function_code: CSP 
+    lt_record_type: F1
+    category: Comparison
+    description: IsSpaces function applied to a lookup field
+  - function_code: CSX 
+    lt_record_type: F1
+    category: Comparison
+    description: IsSpaces function applied to a lookup field
+    
+  - function_code: CTA 
+    lt_record_type: NAMEF1
+    category: Assignment
+    description:  Write an accumulator value to a CT column
+  - function_code: CTC 
+    lt_record_type: F1
+    category: Assignment
+    description:  Write a constant value to a CT column
+  - function_code: CTE 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write an event field value to a CT column
+  - function_code: CTL 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write a lookup field value to a CT column
+  - function_code: CTP 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write a prior event field value to a CT column
+  - function_code: CTX 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write a prior event field value to a CT column
+    
+  - function_code: CXE 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNulls function applied to an event field
+  - function_code: CXL 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNulls function applied to a lookup field
+  - function_code: CXP 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNulls function applied to a prior field
+  - function_code: CXX 
+    lt_record_type: F1
+    category: Comparison
+    description: IsNulls function applied to a column reference
+    
+  - function_code: DIM1
+    lt_record_type: NAME
+    category: Directive
+    description: Declare a local variable(1 byte)
+  - function_code: DIM2
+    lt_record_type: NAME
+    category: Directive
+    description: Declare a local variable(2 byte)
+  - function_code: DIM4
+    lt_record_type: NAME
+    category: Directive
+    description: Declare a local variable(4 byte)
+  - function_code: DIM8
+    lt_record_type: NAME
+    category: Directive
+    description: Declare a local variable(8 byte)
+  - function_code: DIMD
+    lt_record_type: NAME
+    category: Directive
+    description: Declare a date variable
+  - function_code: DIMN
+    lt_record_type: NAME
+    category: Directive
+    description: Declare a numeric variable
+  - function_code: DIMS
+    lt_record_type: NAME
+    category: Directive
+    description: Decalre a string variable
+    
+  - function_code: DIVA
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Divide an accumulated value by an accumulated value
+  - function_code: DIVC
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Divide an accumulated value by a constant value
+  - function_code: DIVE
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Divide an accumulated value by an event field value
+  - function_code: DIVL
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Divide an accumulated value by a lookup field value
+  - function_code: DIVP
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Divide an accumulated value by a prior event field value
+  - function_code: DIVX
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Divide an accumulated value by a prior event field value
+    
+  - function_code: DTA 
+    lt_record_type: NAMEF1
+    category: Assignment
+    description:  Write an accumulated value to a DT column
+  - function_code: DTC 
+    lt_record_type: F1
+    category: Assignment
+    description:  Write a constant value to a DT column
+  - function_code: DTE 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write an event field value to a DT column
+  - function_code: DTL 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write a lookup field value to a DT column
+  - function_code: DTP 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write prior event field value to a DT column
+  - function_code: DTX 
+    lt_record_type: F2
+    category: Assignment
+    description:  Write prior event field value to a DT column
+    
+  - function_code: EN  
+    lt_record_type: F0
+    category: Directive
+    description: end of an event set
+  - function_code: ES  
+    lt_record_type: F0
+    category: Directive
+    description: start of an event set
+  - function_code: ET  
+    lt_record_type: F0
+    category: Directive
+    description: start of a token event set
+    
+  - function_code: FNCC
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two constant arguments
+  - function_code: FNCE
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two constant arguments
+  - function_code: FNCL
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two constant arguments
+  - function_code: FNCP
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two constant arguments
+  - function_code: FNCX
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two constant arguments
+    
+  - function_code: FNEC
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with event field and a constant argument
+  - function_code: FNEE
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two event field arguments
+  - function_code: FNEL
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with an event field and a lookup argument
+  - function_code: FNEP
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with an event field and a lookup argument
+  - function_code: FNEX
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with an event field and a lookup argument
+    
+  - function_code: FNLC
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNLE
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNLL
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two lookup field arguments
+  - function_code: FNLP
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNLX
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+    
+  - function_code: FNPC
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNPE
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNPL
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two lookup field arguments
+  - function_code: FNPP
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNPX
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+    
+  - function_code: FNXC
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNXE
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNXL
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with two lookup field arguments
+  - function_code: FNXP
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+  - function_code: FNXX
+    lt_record_type: NAMEF2
+    category: Function
+    description: Set accumulator to result of function with lookup field and a constant argument
+    
+  - function_code: FNE
+    lt_record_type: NAMEF1
+    category: Function
+    description: Set accumulator to result of function with an event field argument
+  - function_code: FNL
+    lt_record_type: NAMEF1
+    category: Function
+    description: Set accumulator to result of function with lookup field argument
+  - function_code: FNP
+    lt_record_type: NAMEF1
+    category: Function
+    description: Set accumulator to result of function with prior field argument
+    
+  - function_code: GEN 
+    lt_record_type: GENERATION
+    category: GENERATION
+    description: Generation Record
+  - function_code: GOTO
+    lt_record_type: F0
+    category: Directive
+    description: Name says it all
+    
+  - function_code: HD  
+    lt_record_type: HD
+    category: Directive
+    description: Start of Logic Table
+    
+  - function_code: JOIN
+    lt_record_type: F1
+    category: Lookup
+    description:  Make a Join
+    
+  - function_code: KSLK
+    lt_record_type: F1
+    category: Lookup
+    description:  Description to be completed
+    
+  - function_code: LKC 
+    lt_record_type: F1
+    category: Lookup
+    description:  Add a constant value to the lookup key
+    
+  - function_code: LKDC
+    lt_record_type: F1
+    category: Lookup
+    description:  Description to be completed
+  - function_code: LKDE
+    lt_record_type: F1
+    category: Lookup
+    description:  Description to be completed
+  - function_code: LKDL
+    lt_record_type: F1
+    category: Lookup
+    description:  Description to be completed
+  - function_code: LKDX
+    lt_record_type: F1
+    category: Lookup
+    description:  Description to be completed
+    
+  - function_code: LKE 
+    lt_record_type: F2
+    category: Lookup
+    description:  Add an event field value to the lookup key
+  - function_code: LKL 
+    lt_record_type: F2
+    category: Lookup
+    description:  Add a lookup field value to the lookup key
+  - function_code: LKLR
+    lt_record_type: F1
+    category: Lookup
+    description:  Does the next step
+  - function_code: LKS 
+    lt_record_type: F1
+    category: Lookup
+    description:  Add a symbolic value to the lookup key
+  - function_code: LKX 
+    lt_record_type: F2
+    category: Lookup
+    description:  Add a prior event field value to the lookup key
+    
+  - function_code: LUEX
+    lt_record_type: RE
+    category: Lookup
+    description: Lookup exit
+  - function_code: LUSM
+    lt_record_type: RE
+    category: Lookup
+    description: Lookup from memory
+    
+  - function_code: MULC
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Multiply an accumulated value by a constant value
+  - function_code: MULE
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Multiply an accumulated value by an event field value
+  - function_code: MULL
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Multiply an accumulated value by a lookup field value
+  - function_code: MULP
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Multiply an accumulated value by a prior event field value
+  - function_code: MULA
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Multiply an accumulated value by an accumulated value
+  - function_code: MULX
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Multiply a previous extract column value
+    
+  - function_code: NV  
+    lt_record_type: NV
+    category: Directive
+    description: new view
+    
+  - function_code: REEX
+    lt_record_type: RE
+    category: Directive
+    description: read exit
+  - function_code: RENX
+    lt_record_type: RE
+    category: Directive
+    description: read next physical file
+  - function_code: RETK
+    lt_record_type: RE
+    category: Directive
+    description: read token
+    
+  - function_code: SETA
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Set an accumulator from an accumulator
+  - function_code: SETC
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Set an accumulator from a constant
+  - function_code: SETE
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Set an accumulator from an event field
+  - function_code: SETL
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Set an accumulator from a lookup field
+  - function_code: SETP
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Set an accumulator from a prior event field
+  - function_code: SETX
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Set an accumulator from a prior event field
+    
+  - function_code: SFCE
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a constant for a current source field
+  - function_code: SFCL
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a constant for a lookup field
+  - function_code: SFCP
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a constant for a prior source field
+  - function_code: SFCX
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a constant for a column
+    
+  - function_code: SFEC
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a current source field for a constant
+  - function_code: SFEE
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a current source field for a current source field
+  - function_code: SFEL
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a current source field for a lookup field
+  - function_code: SFEP
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a current source field for a prior source field
+  - function_code: SFEX
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a current source field for a column
+    
+  - function_code: SFLC
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a lookup field for a constant
+  - function_code: SFLE
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a lookup field for a current source field
+  - function_code: SFLL
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a lookup field for a lookup field
+  - function_code: SFLP
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a lookup field for a prior source field
+  - function_code: SFLX
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a lookup field for a column
+    
+  - function_code: SFPC
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a prior source field for a constant
+  - function_code: SFPE
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a prior source field for a current source field
+  - function_code: SFPL
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a prior source field for a lookup field
+  - function_code: SFPP
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a prior source field for a prior source field
+  - function_code: SFPX
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a prior source field for a column
+    
+  - function_code: SFXC
+    lt_record_type: F1
+    category: Seacrh
+    description: Search within a column for a constant
+  - function_code: SFXE
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a column for a current source field
+  - function_code: SFXL
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a column for a lookup field
+  - function_code: SFXP
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a column for a prior source field
+  - function_code: SFXX
+    lt_record_type: F2
+    category: Seacrh
+    description: Search within a column for a column
+    
+  - function_code: SKA 
+    lt_record_type: NAMEF1
+    category: Sort
+    description: Sort key value from an accumulated value
+  - function_code: SKC 
+    lt_record_type: F1
+    category: Sort
+    description: Sort key value from a constant
+  - function_code: SKE 
+    lt_record_type: F2 
+    category: Sort
+    description: Sort key value from an event field
+  - function_code: SKL 
+    lt_record_type: F2
+    category: Sort
+    description: Sort key value from a lookup value
+  - function_code: SKP 
+    lt_record_type: F2
+    category: Sort
+    description: Sort key value from a prior event field
+  - function_code: SKX 
+    lt_record_type: F2
+    category: Sort
+    description: Sort key value from a prior event field
+    
+  - function_code: SUBA
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Subtract an accumulated value from an accumulator
+  - function_code: SUBC
+    lt_record_type: NAMEVALUE
+    category: Arithmetic
+    description: Subtract a constant value from an accumulator
+  - function_code: SUBE
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Subtract an event field value from an accumulator
+  - function_code: SUBL
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Subtract a lookup field value from an accumulator
+  - function_code: SUBP
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Subtract a prior event field value from an accumulator
+  - function_code: SUBX
+    lt_record_type: NAMEF1
+    category: Arithmetic
+    description: Subtract a prior event field value from an accumulator
+    
+  - function_code: WRDT
+    lt_record_type: WR
+    category: Write
+    description: Write the data record
+  - function_code: WRIN
+    lt_record_type: WR
+    category: Write
+    description: Write the input record
+  - function_code: WRSU
+    lt_record_type: WR
+    category: Write
+    description: Write a summarised record
+  - function_code: WRTK
+    lt_record_type: WR
+    category: Write
+    description: Write to a token
+  - function_code: WRXT
+    lt_record_type: WR
+    category: Write
+    description: Write the extract record
+

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {DMY} > Q1() THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:10: In a comparison, '>' cannot be used with RUNQUARTER, FISCALQUARTER and Qn functions. They can only be used with '=' (in the quarter) and '<>' (not in the quarter)

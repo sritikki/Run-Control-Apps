@@ -1,0 +1,85 @@
+# This beast contains data about how many of the various componeents there are
+# the text character format, number of decimals
+# When the VDP was generated
+# a crosscheck number on he size of the VDP and the number of records
+record_name: VDPGenerationRecord
+component_name: none
+dsect_name: GENERATION
+record_id: 1
+record_length: 257
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  type: mappingOnly
+- name: run_nbr
+  type: integer
+- name: run_date
+  type: string
+  maxlength: 8
+- name: environment_id
+  type: integer
+- name: big_endian_ind
+  type: boolean
+- name: ascii_ind
+  type: boolean
+- name: version_info
+  type: short
+- name: server_count
+  type: integer
+- name: input_file_count
+  type: integer
+- name: pgm_file_count
+  type: integer
+- name: lr_count
+  type: integer
+- name: lr_field_count
+  type: integer
+- name: lr_index_field_count
+  type: integer
+- name: join_step_count
+  type: integer
+- name: pgm_parm_count
+  type: integer
+- name: view_count
+  type: integer
+- name: extract_record_count
+  type: integer
+- name: run_cpu_seconds
+  type: integer
+- name: max_std_ext_file_nbr
+  type: integer
+- name: padding1
+  type: short
+  padding : true
+- name: max_decimal_digits
+  type: byte
+- name: max_decimal_places
+  type: byte
+- name: padding2
+  type: short
+  padding : true
+- name: description
+  type: string
+  maxlength: 48
+- name: date
+  type: string
+  maxlength: 10
+- name: padding3
+  type: byte
+  padding : true
+- name: time
+  type: string
+  maxlength: 8
+- name: padding4
+  type: string
+  maxlength: 29
+  padding : true
+- name: vdp_byte_count
+  type: integer
+- name: record_count
+  type: integer
+- name: padding5
+  type: string
+  maxlength: 55
+  padding : true

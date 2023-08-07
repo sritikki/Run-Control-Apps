@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {EFFDATE_SYM_MSKNM_NUMER.ALNUM; $SYM1 = {ALNUM} } = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 0:0: Conversion data type conflict in look-up 'EFFDATE_SYM_MSKNM_NUMER' step 1 field 1 (AlphaNum) to (ZonedDec).

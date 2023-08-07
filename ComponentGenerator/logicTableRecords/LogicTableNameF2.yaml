@@ -1,0 +1,21 @@
+record_name: LogicTableNameF2
+record_type: V2
+record_length: 36
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: LTPrefix 
+- name: column_id
+  type: integer           
+- name: compare_type
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.LtCompareType 
+- name: arg1
+  type: internal
+  existing_java_type: LogicTableArg
+- name: arg2
+  type: internal
+  existing_java_type: LogicTableArg
+- name: accumulator_name
+  type: string
+  maxlength: 48

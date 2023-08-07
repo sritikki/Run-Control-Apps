@@ -1,0 +1,28 @@
+---
+name: "PIPCA"
+title: "Pipe File Cascade"
+description: "Check how pipes handles cascading between views"
+category: "PeTests/Pipe"
+cq: ""
+note: ""
+tests:
+- name: "PIPCA01"
+  header: "5"
+  description: "Check Token cascade with 5 views"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokca.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "PIPE"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0001002"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "FB"
+    lrecl: "38"

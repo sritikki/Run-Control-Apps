@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {CYM_SYM_MSKNM_NUMER.ALNUM; $SYM1 = DATE("2010058",CCYYMMDD)} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:55: The date/time constant '2010058' used in the first argument to a DATE function is not a valid date or time to match the date or time format CCYYMMDD used in the second argument

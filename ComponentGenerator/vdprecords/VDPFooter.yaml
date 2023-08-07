@@ -1,0 +1,48 @@
+record_name: VDPFooter
+component_name: ReportFooter
+dsect_name: footer_lines
+record_id: 1400
+record_length: 360
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  component_field: none
+- name: prefix.recordId
+  type: mappingOnly
+  component_field: componentId
+- name: function
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ReportFunction
+  component_field: function
+- name: justification
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.JustifyId
+  component_field: justification
+- name: row_nbr
+  type: short
+  component_field: row
+- name: col_nbr
+  type: short
+  component_field: column
+- name: footer_length
+  type: short
+  component_field: footerLength
+- name: padding
+  type: short
+  padding : true
+- name: mask
+  type: string
+  maxlength: 48
+  component_field: mask
+  default: ""
+- name: footer_text
+  type: string
+  maxlength: 256
+  component_field: text
+  default: ""
+- name: padding2
+  type: string
+  maxlength: 16
+  padding : true
+  component_field: none

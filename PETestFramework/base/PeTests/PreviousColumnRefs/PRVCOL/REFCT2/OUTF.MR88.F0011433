@@ -1,0 +1,11 @@
+1POSITIVE NUMBERS :0000000001231POSITIVE NUMBERS :        4444        4444          11          11
+2BIG BINR NUMBERS :0000000001232BIG BINR NUMBERS :       65534       65534         127         127
+3-ve binary 1 2 3 :0000000001233-ve binary 1 2 3 :      131068      131068         255         255
+4-ve zoned/packed :0000000001234-ve zoned/packed :        4444        4444          11          11
+5-ve bsort psort  :0000000001235-ve bsort psort  :        4444        4444          11          11
+6NEGATIVE EDNUM   :0000000001236NEGATIVE EDNUM   :        4444        4444          11          11
+7Column nums      :0000000001237Column nums      :           4           4           1           1
+8Rev Column nums  :0000000001238Rev Column nums  :          18          18          10          10
+9-ve Col nums     :0000000001239-ve Col nums     :      131068      131068         255         255
+9-ve Rev Cols nums:0000000001239-ve Rev Cols nums:      131054      131054         246         246
+9FAIL LOOKUP  here:0000000001239FAIL LOOKUP  here:           4           4           1           1

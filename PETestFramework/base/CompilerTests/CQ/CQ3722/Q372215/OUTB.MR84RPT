@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 6
+COLUMN = {MSKNM}
+ERROR: line 1:11: Data type conflict assigning to column 6 "Column Number 2" (Binary) from MSKNM (MaskNum :: -Z,ZZ9.99)

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if 13 * 3 = "FRED"  THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:11: Data type conflict comparing 39 (Const Number) with FRED (Const String)

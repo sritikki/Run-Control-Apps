@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 13
+COLUMN={NUMER} + BATCHDATE(0)
+ERROR: line 1:18: Date/time invalid in an arithmetic expression; see BATCHDATE (Date - CYMD)
+ERROR: line 1:16: Date/Time format conflict assigning to column 13 "CMDY Column" (Packed - CYMD) from accumulated value (Geneva)

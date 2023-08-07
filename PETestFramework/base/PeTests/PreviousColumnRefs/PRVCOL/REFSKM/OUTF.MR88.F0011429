@@ -1,0 +1,11 @@
+1POSITIVE NUMBERS :1POSITIVE NUMBERS :col3 data I Am Here   I Am Here   col3 data 
+2BIG BINR NUMBERS :2BIG BINR NUMBERS :col3 data I Am Here   I Am Here   col3 data 
+3-ve binary 1 2 3 :3-ve binary 1 2 3 :col3 data I Am Here   I Am Here   col3 data 
+4-ve zoned/packed :4-ve zoned/packed :col3 data I Am Here   I Am Here   col3 data 
+5-ve bsort psort  :5-ve bsort psort  :col3 data I Am Here   I Am Here   col3 data 
+6NEGATIVE EDNUM   :6NEGATIVE EDNUM   :col3 data I Am Here   I Am Here   col3 data 
+7Column nums      :7Column nums      :col3 data I Am Here   I Am Here   col3 data 
+8Rev Column nums  :8Rev Column nums  :col3 data I Am Here   I Am Here   col3 data 
+9-ve Col nums     :9-ve Col nums     :col3 data I Am Here   I Am Here   col3 data 
+9-ve Rev Cols nums:9-ve Rev Cols nums:col3 data I Am Here   I Am Here   col3 data 
+9FAIL LOOKUP  here:9FAIL LOOKUP  here:col3 data I Am Here   I Am Here   col3 data 

@@ -1,0 +1,14 @@
+record_name: VDPColumnLogic
+record_id: 4201
+component_name: none
+record_type: VDP_COLUMN_LOGIC
+record_length: 0
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+- name: logic_Length
+  type: short
+- name: logic
+  type: varstring
+  size_from:  logicLength

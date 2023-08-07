@@ -1,0 +1,5 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {ALNUM} + "FRED"  = "MYFRED" THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:5: Invalid data type found in an arithmetic expression; see ALNUM (AlphaNum)
+ERROR: line 1:14: Invalid data type found in an arithmetic expression; see FRED (Const String)
+ERROR: line 1:22: Data type conflict comparing accumulated value (Geneva) with MYFRED (Const String)

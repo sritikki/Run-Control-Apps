@@ -1,0 +1,36 @@
+---
+name: "SELIF"
+title: "Format SELECTIF Function Tests"
+description: ""
+category: "PeTests/Format"
+cq: ""
+note: ""
+tests:
+- name: "SELIF"
+  header: ""
+  description: "Simple"
+  source: "WBXML"
+  xmlfiles:
+  - name: "FormatCompileTest[12087].xml"
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "122"
+    comparable: "true"
+    workfile: "1"
+  formatfiles:
+  - ddname: "F0012087"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+    workfile: "1"
+
+

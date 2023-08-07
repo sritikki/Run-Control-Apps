@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if "String" LIKE BATCHDATE()   THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:13: The arguments to the LIKE function must be either a string or have a string data type

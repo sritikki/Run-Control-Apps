@@ -1,0 +1,134 @@
+package org.genevaers.utilities;
+
+/*
+ * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
+public class TestEnvironment {
+	private static final String PMHLQ2 = "PMHLQ";
+	private static final String OVERRIDE = "OVERRIDE";
+	private static final String GVBLOAD = ".GVBLOAD";
+
+	static Logger logger = Logger.getLogger("org.genevaers.utilities.FMSuiteEnvironment");
+
+	private static Map<String, String> environmentVariables = new HashMap<>();
+
+	private TestEnvironment() {
+		initialiseFromTheEnvironment();
+	}
+
+	public static void initialiseFromTheEnvironment() {
+		getEnvVarOrDefault("OSNAME", System.getProperty("os.name"));
+
+		String locroot = System.getProperty("user.dir");
+		locroot = locroot.replaceAll("^[Cc]:", "");
+		locroot = locroot.replace("\\", "/");
+
+		getEnvVarOrDefault("LOCALROOT", locroot);
+		getEnvVarOrDefault("SPECFILELIST", "fmspeclist.yaml");
+		getEnvVarOrDefault("RUNTESTS", "N");
+		getEnvVarOrDefault("CLEARLOCAL", "N");
+		getEnvVarOrDefault("CLEARJUNIT", "Y");
+		getEnvVarOrDefault("CLEARREMOTE", "N");
+		getEnvVarOrDefault("PUTEVENTREF", "N");
+
+		String dataSet = getEnvVarOrDefault("DATASET_PREFIX", "");
+		String buildToTest = getEnvVarOrDefault("BUILD_TO_TEST", "");
+		String pmhlq;
+		if (buildToTest.isEmpty()) {
+			if (dataSet.isEmpty()) {
+				pmhlq = getEnvVarOrDefault(PMHLQ2, "");
+			} else {
+				pmhlq = dataSet;
+				environmentVariables.put(PMHLQ2, pmhlq);
+			}
+		} else {
+			pmhlq = buildToTest;
+			environmentVariables.put(PMHLQ2, pmhlq);
+		}
+		if (getEnvVarOrDefault("PMLOAD", "").isEmpty()) {
+			environmentVariables.put("PMLOAD", pmhlq + GVBLOAD);
+		}
+		if (getEnvVarOrDefault(OVERRIDE, "").isEmpty()) {
+			environmentVariables.put(OVERRIDE, pmhlq + GVBLOAD);
+		} else {
+			environmentVariables.put(OVERRIDE, getEnvVarOrDefault(OVERRIDE, "") + GVBLOAD);
+		}
+		getEnvVarOrDefault("VDPXSD", pmhlq + ".GVBXSD(GVBSVDP)");
+		getEnvVarOrDefault("TEST_HLQ", "");
+		getEnvVarOrDefault("DBSUB", "DM12");
+		getEnvVarOrDefault("DBSDSNL", "DSN.V12R1M0.SDSNLOAD");
+		getEnvVarOrDefault("DBSDSNE", "DSN.V12R1M0.SDSNEXIT");
+		getEnvVarOrDefault("DBRUNLD", "DSN121.RUNLIB.LOAD");
+		getEnvVarOrDefault("DBTIADP", "DSNTIA12");
+		getEnvVarOrDefault("RUNOS", "ZOS");
+		getEnvVarOrDefault("TSO_SERVER", "sp13.svl.ibm.com");
+		getEnvVarOrDefault("OUTDIR", "out");
+		getEnvVarOrDefault("GENERATE_COVERAGE", "N");
+		getEnvVarOrDefault("GENERATE_VDPFLOW", "N");
+		getEnvVarOrDefault("TSO_USERID", "");
+		getEnvVarOrDefault("TSO_PASSWORD", "");
+		getEnvVarOrDefault("COVERAGEONLY", "N");
+		getEnvVarOrDefault("MESSAGE_COVERAGE", "N");
+		getEnvVarOrDefault("REF_TRACE", "N");
+		getEnvVarOrDefault("EXTRACT_TRACE", "N");
+		getEnvVarOrDefault("VIEW", "0");
+		getEnvVarOrDefault("FROMREC", "0");
+		getEnvVarOrDefault("THRUREC", "0");
+		getEnvVarOrDefault("FROMLTROW", "0");
+		getEnvVarOrDefault("THRULTROW", "0");
+		getEnvVarOrDefault("FROMCOL", "0");
+		getEnvVarOrDefault("THRUCOL", "0");
+	}
+
+	private static String getEnvVarOrDefault(String env, String def) {
+		String value = System.getenv(env);
+		if (value == null) {
+			value = def;
+		}
+		environmentVariables.put(env.toUpperCase(), value);
+		return value;
+	}
+
+	public static String get(String key) {
+		if(environmentVariables.isEmpty()) {
+			initialiseFromTheEnvironment();
+		}
+		return environmentVariables.get(key);
+	}
+
+	public void dumpVariables() {
+		logger.info("Environment Variables:\n");
+		for (Entry<String, String> entry : environmentVariables.entrySet()) {
+			String value = entry.getValue();
+			if(entry.getKey().equalsIgnoreCase("TSO_PASSWORD")) {
+				value = "******";
+			}
+			String msg = String.format("%s=%s%n", entry.getKey(), value);
+			System.out.print(msg);
+		}
+	}
+	
+	public static Map<String, String> getEnvironmentVariables() {
+		return environmentVariables;
+	}
+}

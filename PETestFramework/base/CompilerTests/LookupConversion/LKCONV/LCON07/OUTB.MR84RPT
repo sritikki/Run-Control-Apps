@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {CONVLKUP.ALNUM}
+ERROR: line 1:19: Conversion data type conflict in look-up 'CONVLKUP' step 1 field 1 (AlphaNum) to (BinaSort).

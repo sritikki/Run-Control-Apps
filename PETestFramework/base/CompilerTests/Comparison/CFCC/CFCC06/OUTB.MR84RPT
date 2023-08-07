@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if RUNDAY() = "1900010112595900999"  THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:13: The date/time constant '1900010112595900999' is too long. The maximum is 16 characters

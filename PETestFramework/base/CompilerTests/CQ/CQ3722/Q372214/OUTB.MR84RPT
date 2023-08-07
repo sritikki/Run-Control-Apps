@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 5
+COLUMN = {MSKNM}
+ERROR: line 1:11: Data type conflict assigning to column 5 "Column Number 1" (PackSort) from MSKNM (MaskNum :: -Z,ZZ9.99)

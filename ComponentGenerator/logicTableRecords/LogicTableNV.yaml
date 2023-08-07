@@ -1,0 +1,29 @@
+record_name: LogicTableNV
+record_type: NV
+record_length: 60
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: LTPrefix            
+- name: view_type
+  type: enum      
+  existing_java_type: org.genevaers.repository.components.enums.ViewType
+- name: source_lr_id
+  type: integer           
+- name: record_length
+  type: short
+- name: LITTLE_ENDIAN
+  type: boolean
+- name: padding
+  type: byte
+- name: sort_key_len
+  type: short
+- name: sort_title_len
+  type: short
+- name: dt_area_len
+  type: short
+- name: ct_col_count
+  type: short
+- name: viewID
+  type: integer
+# Note assembler has this as MAX_EXTRACT_RECORDS   DS  FL04           

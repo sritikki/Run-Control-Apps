@@ -1,0 +1,43 @@
+component_name: ViewSource
+vdp_source: VDPViewSource
+members:
+- name: componentId 
+  type: integer
+  vdp_source: prefix.recordId
+- name: sequenceNumber 
+  type: short
+  vdp_source: prefix.sequenceNbr
+- name: sourceLFID 
+  type: integer
+  vdp_source: prefix.inputFileId
+- name: sourceLRID
+  type: integer
+  vdp_source: ViewSrcLrId
+- name: outputLFID 
+  type: integer
+  vdp_source: none
+- name: outputPFID
+  type: integer
+  vdp_source: none
+- name: viewId
+  type: integer
+  vdp_source: prefix.viewId
+- name: extractFilter
+  type: string
+  vdp_source: none
+- name: extractOutputLogic
+  type: string
+  vdp_source: none
+- name: writeExitId
+  type: integer
+  vdp_source: none
+- name: writeExitParams
+  type: string
+  vdp_source: none
+- name: columnSourcesByNumber
+  type: map
+  key: ColumnNumber
+  key_type: Integer
+  sorted: true
+  values: org.genevaers.repository.components.ViewColumnSource
+  values_type: ViewColumnSource

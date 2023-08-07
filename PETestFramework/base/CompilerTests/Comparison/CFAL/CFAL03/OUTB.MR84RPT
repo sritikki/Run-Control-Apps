@@ -1,0 +1,24 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {NUMER} * 2  = {MSKNM_MSKNM.NUMER} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      1  00003263  DIMN  Declare g_3263_1284_1264_1_0  =  0
+       2      1  00003263  SETE  00001284/00001264/00063313    25     3  ZonedDec 
+             g_3263_1284_1264_1_0   Signed / Right  /rnd=0000     3     0  None     
+       3      1  00003263  MULC  g_3263_1284_1264_1_0  *= "2"  
+       4      1  00003263  JOIN  00001285/00001364/00000442     1     0  AlphaNum  "1531"                                              7    10
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       5      1  00003263  LKE   00001284/00001264/00063319    18     8  MaskNum   00001284/00001264/00063319     1     3  MaskNum  
+                                  Signed / Right  /rnd=0000     4     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       6      1  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    7    10
+       7      1  00003263  CFLA  00001285/00001364/00065313    25     3  ZonedDec  EQ                                                 8    10
+             g_3263_1284_1264_1_0   Signed / Right  /rnd=0000     3     0  None     
+       8      1  00003263  DTE   00001284/00001264/00063311     1     9  AlphaNum  00000000/00000000/00000000     1    30  AlphaNum 
+                                  Signed / Right  /rnd=0000     1     0  None       Signed /  Left  /rnd=0000     1     0  None     
+       9      1  00003263  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   11
+                 //
+                 //   Move a constant into the DT area          |------------------+
+                 //                                             V                  |
+      10      1  00003263  DTC   00000000/00000000/00000000     1    30  AlphaNum  "NO"                                          
+                                  Signed /  Left  /rnd=0000     1     0  None     

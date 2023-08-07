@@ -1,0 +1,36 @@
+---
+name: "CMIALL"
+title: "Compare all integer cases"
+description: "Compare different types"
+category: "PeTests/Comparison/Integer"
+cq: ""
+note: ""
+tests:
+- name: "CMIALL"
+  header: "Big Bang"
+  description: "All Cases"
+  source: "WBXML"
+  decimalplaces: "0"
+  xmlfiles:
+  - name: "CMISORTED.xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "CMPTYPE"
+  reffiles:
+  - ddname: "LKUPALL"
+    filename: "CMPTYPE.LOOKUP"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "100"
+  formatfiles:
+  - ddname: "F0010905"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"

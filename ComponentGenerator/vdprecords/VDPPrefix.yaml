@@ -1,0 +1,25 @@
+#VDP Prefix
+#The common header all VDP records have
+record_name: VDPPrefix
+record_id: 0
+record_length: 24
+description: Common header for the records. Leave first in the list!
+component_name: none
+fields:
+- name: rec_len
+  type: short
+- name: rdw_flags
+  type: short
+- name: view_id
+  type: integer
+- name: input_file_id
+  type: integer
+- name: column_id
+  type: integer
+- name: record_type
+  type: short
+- name: sequence_nbr
+  type: short
+- name: record_id
+  type: integer
+

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {DMY}
+ERROR: line 1:11: Date/Time format conflict assigning to column 1 "Column Number 1" (AlphaNum) from DMY (AlphaNum - DMY)

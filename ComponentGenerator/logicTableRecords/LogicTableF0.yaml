@@ -1,0 +1,7 @@
+record_name: LogicTableF0
+record_type: F0
+record_length: 36
+fields:
+ - name: prefix
+   type: mappingOnly
+   existing_java_type: LTPrefix 

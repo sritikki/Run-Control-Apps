@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {CONVLKUP.ALNUM}
+ERROR: Step number 1 of the lookup path 'CONVLKUP' contains an invalid date constant '2010052M00000000'. Check the value of the date constant in the lookup path definition and it should be in CCYYMMDD format

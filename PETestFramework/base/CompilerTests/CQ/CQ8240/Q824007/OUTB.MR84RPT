@@ -1,0 +1,11 @@
+INFO: Compiling extract-phase cell logic for column 8
+COLUMN = 0 - {BCD}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      8  00003263  DIMN  Declare g_3263_1284_1264_8_0  =  0
+       2      8  00003263  SETC  g_3263_1284_1264_8_0  =  "0"  
+       3      8  00003263  SUBE  00001284/00001264/00063318    15     3  BCD      
+             g_3263_1284_1264_8_0   Signed / Right  /rnd=0000     3     0  None     
+       4      8  00003263  DTA   00000000/00000000/00000000    91     8  BCD      
+             g_3263_1284_1264_8_0   Signed / Right  /rnd=0000     4     0  None     

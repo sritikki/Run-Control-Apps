@@ -1,0 +1,23 @@
+#Control Record
+#Not really much here
+#Used for financial management to define fiscal paramaters
+component_name: LogicalFile
+members:
+  name:
+  type: string
+# Another way to do this is to just have this class refer to the related components
+# And the underlying record
+# The record is the thing that has the data
+  #readExit:
+  # need to $Ref business
+  physicalFiles:
+  type: array
+  items :
+    existing_java_type : org.genevaers.PhysicalFile
+    type : object
+  # $ref to the underlying record
+#  {
+#    $ref: "file://components/metadata/PhysicalFileRecord.yaml"
+#  }
+
+# We need to figure out how to represent the VDP File record that is associated with this type

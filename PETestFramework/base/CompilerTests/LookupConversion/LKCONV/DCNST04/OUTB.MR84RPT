@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {CONVLKUP.ALNUM}
+ERROR: Step number 1 of the lookup path 'CONVLKUP' contains an invalid numeric constant '57R'. Check the value of the number in the lookup path definition

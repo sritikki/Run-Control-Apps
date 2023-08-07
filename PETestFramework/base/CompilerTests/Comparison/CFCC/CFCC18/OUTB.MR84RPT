@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if 34 = BATCHDATE()  THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:7: Date/Time format conflict comparing 34 (Const Number) with  (Date - CYMD)

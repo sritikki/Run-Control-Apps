@@ -1,0 +1,123 @@
+//JAVMR91Z JOB (ACCT),'RUN MR91 JAVA       ',
+//          NOTIFY=&SYSUID.,
+//          CLASS=A,
+//          MSGLEVEL=(1,1),
+//          MSGCLASS=H
+//      EXPORT SYMLIST=(RTC,MBR)
+//*
+//*    SET MYROOT TO WHERE INPUT XML FILE IS LOCATED.
+//*        MYROOT JUST USED FOR TESTING UNTIL WE GET THIS WORKING
+//*        AND THEN WE CAN GET THE WBXML INTO A PDS.
+//*    SET MYCLASSPATH to where Java code is located.
+//*        MBR TO MEMBER TO INCLUDE OR LIST OF MEMBERS SEPARATED
+//*            BY COMMA'S
+//*
+//      SET MYROOT='/u/hornjef/'
+//      SET CLSPTH1='git/GenevERS-Java-Frontend/RunControlGenerator'
+//      SET CLSPTH2='/build/unpacked/dist/RunControlGenerator/bin/'
+//      SET RTC=GVBDEMO.MR91
+//*     SET LIBRARY='AJV.V8R0M064.SIEALNKE'
+//*
+//FROM    JCLLIB  ORDER=(AJV.V8R0M064.PROCLIB)
+//*
+//JOBLIB   DD DSN=AJV.V8R0M064.SIEALNKE,
+//           DISP=SHR
+//*
+//*********************************************************************
+//*
+//*   DELETE OUTPUT FILES FROM PRIOR RUN
+//*
+//*********************************************************************
+//*
+//DELFILE  EXEC PGM=IDCAMS
+//*
+//SYSPRINT DD SYSOUT=*
+//*
+//SYSIN    DD *,SYMBOLS=(JCLONLY)
+ DELETE  GEBT.&RTC..VDP            PURGE
+ IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
+     SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
+ DELETE  GEBT.&RTC..XLT            PURGE
+ IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
+     SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
+ DELETE  GEBT.&RTC..JLT            PURGE
+ IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
+     SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
+//*
+//* DELETE  GEBT.&RTC..JLT            PURGE
+//* IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
+//*     SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
+//* DELETE  GEBT.RTC&RTC..MR91JAVA.VDP           PURGE
+//* DELETE  GEBT.RTC&RTC..MR91JAVA.XLT           PURGE
+//* DELETE  GEBT.RTC&RTC..MR91JAVA.JLT           PURGE
+//*********************************************************************
+//*   RUN MR91 JAVA WITH JVMLDM86
+//*********************************************************************
+//*
+//*
+//*******************************************************************
+//* Licensed Materials - Property of IBM
+//* 5655-DGH
+//* Copyright IBM Corp. 1997, 2015
+//* STATUS = HJVB800
+//*
+//* Batch job to run the Java VM
+//*
+//* Tailor the proc and job for your installation:
+//* 1.) Modify the Job card per your installation's requirements
+//* 2.) Modify the PROCLIB card to point to this PDS
+//* 3.) edit JAVA_HOME to point the location of the SDK
+//* 4.) edit APP_HOME to point the location of your app (if any)
+//* 5.) Modify the CLASSPATH as required to point to your Java code
+//* 6.) Modify JAVACLS and ARGS to launch desired Java class
+//*
+//*******************************************************************
+//JAVA EXEC PROC=JVMPRC86,
+// JAVACLS='org.genevaers.runcontrolgenerator.App',LOGLVL='+D'
+//* LOGLVL options (+E, +W, +N, +I, +D and +T)
+//STDENV   DD DSN=GEBT.GVBDEMO.STDENV1(MR91ENZ),
+//           DISP=SHR
+//MR91PARM DD *
+INPUT_TYPE=WBXML
+OUTPUT_RUN_CONTROL_FILES=Y
+LOG_LEVEL              = 1
+
+NUMBER_MODE            = STANDARD
+
+//*                                                                 %%%
+//DBVIEWS  DD *
+//*
+//DBFLDRS  DD *
+//*
+//RUNVIEWS DD *
+//*
+//*        <<< OUTPUT FILES >>>
+//*
+//VDP      DD DSN=GEBT.&RTC..VDP,
+//            DISP=(NEW,CATLG,DELETE),
+//            UNIT=SYSDA,
+//            SPACE=(TRK,(1000,1000),RLSE),
+//            DCB=(DSORG=PS,RECFM=VB,LRECL=32756,
+//            BLKSIZE=32760)
+//*
+//JLT      DD DSN=GEBT.&RTC..JLT,
+//            DISP=(NEW,CATLG,DELETE),
+//            UNIT=SYSDA,
+//            SPACE=(TRK,(1000,1000),RLSE),
+//            DCB=(DSORG=PS,RECFM=VB,LRECL=820)
+//*
+//XLT      DD DSN=GEBT.&RTC..XLT,
+//            DISP=(NEW,CATLG,DELETE),
+//            UNIT=SYSDA,
+//            SPACE=(TRK,(1000,1000),RLSE),
+//            DCB=(DSORG=PS,RECFM=VB,LRECL=820)
+//*
+//WBXMLI   DD PATH='&MYROOT./WBXMLI/',
+//            PATHDISP=(KEEP,KEEP),
+//            PATHOPTS=(OWRONLY),
+//            PATHMODE=(SIRUSR,SIRGRP)
+//*
+//MR91RPT  DD SYSOUT=*
+//MR91LOG  DD SYSOUT=*
+//*
+

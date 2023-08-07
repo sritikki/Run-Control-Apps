@@ -1,0 +1,19 @@
+INFO: Compiling extract-phase filter for data source file ID 1284, LR ID 1264
+SELECTIF({EVENT_JOURNAL_TO_LE_DESC.LEGAL_ENTITY_TITLE}="FRED" OR {EVENT_JOURNAL_TO_ACC_TITLES.ACCOUNT_TITLES} = "FRED")
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      0  00003263  JOIN  00001287/00001263/00002890     1     0  AlphaNum  "1534"                                              4     5
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      0  00003263  LKE   00001284/00001264/00063311     1     9  ZonedDec  00001284/00001264/00063311     1     9  ZonedDec 
+                                  Signed / Right  /rnd=0000     1     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       3      0  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4     5
+       4      0  00003263  CFLC  00001287/00001263/00063310    10    30  AlphaNum  EQ "FRED"                                           9     5
+                                  Signed /  Left  /rnd=0000     2     0  None     
+       5      0  00003263  JOIN  00001285/00001258/00002888     1     0  AlphaNum  "1532"                                              8    NV
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       6      0  00003263  LKE   00001284/00001264/00063313    15     3  ZonedDec  00001284/00001264/00063313     1     3  ZonedDec 
+                                  Signed / Right  /rnd=0000     3     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       7      0  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    8    NV
+       8      0  00003263  CFLC  00001285/00001258/00063304     4    30  AlphaNum  EQ "FRED"                                           9    NV
+                                  Signed /  Left  /rnd=0000     2     0  None     

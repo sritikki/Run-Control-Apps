@@ -1,0 +1,10 @@
+The string  FAILS ALL  no function match  
+The string  START FUNC begins with START  
+The string  A MIDDLE F contains MIDDLE    
+The string  NOW ENDING ends with ENDING   
+The string             is all spaces      
+The string  1234567890 is numeric         
+The string   NULL      is NULL            
+Packed      0000000001 no function match  
+Packed       NULL      is NULL            
+Packed      0123456789 no function match  

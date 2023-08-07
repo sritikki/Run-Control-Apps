@@ -1,0 +1,100 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Component Generator",
+            "request": "launch",
+            "mainClass": "ComponentGenerator.CommandLineHandler",
+            "projectName": "compgen",
+            "cwd": "${workspaceFolder}/ComponentGenerator"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestRunner",
+            "request": "launch",
+            "mainClass": "org.genevaers.mr91comparisons.TestRunner",
+            "projectName": "petestframework",
+            "cwd": "${workspaceFolder}/PETestFramework"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCA",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
+            "projectName": "runcontrolanalyser",
+            "cwd": "/Users/IanCunningham/RTC64bit/PerfEngCpp/DebugBin32/formatTesting"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCA LT Coverage(PlayPen)",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
+            "projectName": "runcontrolanalyser",
+            "cwd": "/Users/362415616/RunControlPlayPen"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestFramework Menu",
+            "request": "launch",
+            "mainClass": "org.genevaers.testframework.CommandLineHandler",
+            "projectName": "petestframework",
+            "cwd": "${workspaceFolder}/PETestFramework",
+            "args": "-menu"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestFramework All",
+            "request": "launch",
+            "mainClass": "org.genevaers.testframework.CommandLineHandler",
+            "projectName": "petestframework",
+            "cwd": "${workspaceFolder}/PETestFramework"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCACommandLineHandler",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
+            "args": "-menu",
+            "projectName": "runcontrolanalyser"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "classPaths": [
+                "$Auto",
+                "<extra class path>"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "Launch RCG",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolgenerator.App",
+            "projectName": "runcontrolgenerator",
+            "cwd": "${workspaceRoot}/PETestFramework/mr91Outputs/mr91Comparisons/tests/views/luex/JMR91"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCG from playpen",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolgenerator.App",
+            "projectName": "runcontrolgenerator",
+            "cwd": "/Users/362415616/RunControlPlayPen"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCG to RunControls",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolgenerator.App",
+            "projectName": "runcontrolgenerator",
+            "cwd": "../../jmr91Test",
+            "args": "-rc sourceRCs/oneCol/onec  -trg test"
+        }
+    ]
+}

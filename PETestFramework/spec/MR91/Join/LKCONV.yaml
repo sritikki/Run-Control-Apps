@@ -1,0 +1,113 @@
+---
+name: "LKCONV"
+title: "Test Lookup conversion types"
+description: ""
+category: "MR91/Join"
+cq: ""
+note: ""
+tests:
+- name: "LCON11"
+  header: "LCON11"
+  description: "Key convert ALNUM to FLOAT"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allLKTypes.xml"
+    replacements:
+    - replace: "SOURCETOTYPE"
+      with: "<FieldRef ID=\\\"63311\\\"/><DataType>FLOAT</DataType>"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "LCON12"
+  header: "LCON12"
+  description: "Key convert ALNUM to GNUM"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allLKTypes.xml"
+    replacements:
+    - replace: "SOURCETOTYPE"
+      with: "<FieldRef ID=\\\"63311\\\"/><DataType>GNUM</DataType>"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "DCNST02"
+  header: "DCNST02"
+  description: "Date constant error"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allLKTypes.xml"
+    replacements:
+    - replace: "SOURCETOTYPE"
+      with: "<Constant>baddate</Constant><DataType>ALNUM</DataType><DateFormat>CYMD</DateFormat>"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "DCNST04"
+  header: "DCNST04"
+  description: ""
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allLKTypes.xml"
+    replacements:
+    - replace: "SOURCETOTYPE"
+      with: "<Constant>57R</Constant><DataType>NUMER</DataType>"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "ZNCON02"
+  header: "ZNCON02"
+  description: "Key convert ZONED to ALPHA"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allLKTypes.xml"
+    replacements:
+    - replace: "SOURCETOTYPE"
+      with: "<FieldRef ID=\\\"63313\\\"/><DataType>ALPHA</DataType>"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "ZNCON11"
+  header: "ZNCON11"
+  description: "Key convert ZONED to FLOAT"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allLKTypes.xml"
+    replacements:
+    - replace: "SOURCETOTYPE"
+      with: "<FieldRef ID=\\\"63313\\\"/><DataType>FLOAT</DataType>"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "ZNCON12"
+  header: "ZNCON12"
+  description: "Key convert ZONED to GNUM"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allLKTypes.xml"
+    replacements:
+    - replace: "SOURCETOTYPE"
+      with: "<FieldRef ID=\\\"63313\\\"/><DataType>GNUM</DataType>"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"

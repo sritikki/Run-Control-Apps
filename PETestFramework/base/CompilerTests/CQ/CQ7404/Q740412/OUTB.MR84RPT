@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+WRITE(SOURCE=VIEW,DESTINATION=FILE={notfound})
+ERROR: line 1:37: The output file 'notfound' used in the DESTINATION parameter of the WRIT function is not defined

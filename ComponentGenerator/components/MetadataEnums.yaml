@@ -1,0 +1,166 @@
+#Each enum results in its own java file
+#And its own section in the assembler equates file
+#
+# Each enum entry has
+#   the Java enum name
+#   Assembler prefix - currently they are record based
+#   dbcodes - 5 char codes
+#   equated - names for assembler
+#   Java enum names (if not defined use the equate names)
+#   optionally a description
+enums:
+- name: ExitType
+  asm_prefix: EXITTYPE_
+  dbcodes: [INVALID, READ, WRITE, LKUP,   FORMT]
+  equates: [INVALID, READ, WRITE, LOOKUP, FORMAT]
+  description: Type of exit
+- name: ProgramType
+  asm_prefix: PROGTYPE_
+  dbcodes: [INVALID,LECOB,  COB2,  C,CPP,JAVA,ASMLR]
+  equates: [INVALID,LECOBOL,COBOL2,C,CPP,JAVA,ASM]
+  description: Exit program language
+- name: JustifyId
+  asm_prefix: JUSTIFY_ID_
+  dbcodes: [NONE,LEFT,CNTER, RIGHT]
+  equates: [NONE,LEFT,CENTER,RIGHT]
+  description: Justification - used in columns and fields
+- name: DbmsRowFmtOptId 
+  asm_prefix: DBMS_ROW_FORMAT_
+  dbcodes: [NONE, SQL, DB2]
+  equates: [NONE, SQL, DB2]
+  description: Database row format
+- name: DataType
+  asm_prefix: FORMAT_ID_
+  dbcodes: [INVALID,ALNUM     ,ALPHA,NUMER,PACKD ,PSORT,BINRY ,BSORT,BCD,MSKNM ,EDNUM ,FLOAT,GENEVANUMBER,CONSTNUM,CONSTSTRING,CONSTDATE]
+  equates: [INVALID,ALPHANUMERIC,ALPHA,ZONED,PACKED,PSORT,BINARY,BSORT,BCD,MASKED,EDITED,FLOAT,GENEVANUMBER,CONSTNUM,CONSTSTRING,CONSTDATE]
+  description: Datatype - used in fields and columns
+- name: FileType 
+  asm_prefix: FILE_TYPE_
+  dbcodes: [NONE, EXTRACT, DISK, TAPE, PIPE, TOKEN, DATAB,   REXIT]
+  equates: [NONE, EXTRACT, DISK, TAPE, PIPE, TOKEN, DATABASE,READEXIT]
+  description: File Type - used for Physical Files
+- name: FieldDelimiter 
+  asm_prefix: FIELD_DELIM_ID_
+  dbcodes: [INVALID, COMMA, TAB, PIPE, CTRLA, FIXED   , SLASH, BLASH,   COLON, SCOLN,   TILDE]
+  equates: [INVALID, COMMA, TAB, PIPE, CTRLA, FIXEDWIDTH, SLASH, BACKSLASH, COLON, SEMICOLON, TILDE]
+  description: Field Delimiter
+  component_field: fieldDelimiter
+- name: RecordDelimiter 
+  asm_prefix: FIELD_DELIM_ID_
+  dbcodes: [INVALID, CR, LF, CRLF, VARIN,        VAREX,        FIXED]
+  equates: [INVALID, CR, LF, CRLF, VARIABLE_INCLUSIVE, VARIABLE_EXCLUSIVE, FIXED]
+  description: Record Delimiter
+  component_field: recordDelimiter
+- name: TextDelimiter 
+  asm_prefix: TEXT_DELIM_ID_
+  dbcodes: [INVALID, SNGLQ,     DBLQT]
+  equates: [INVALID, SINGLEQUOTE, DOUBLEQUOTE]
+  description: Text Delimiter
+  component_field: textDelimiter
+- name: AccessMethod 
+  asm_prefix: ACCESS_METHOD_ID_
+  dbcodes: [INVALID,SEQIN,   VSAM,KSDS,IMS,IMSFP,DB2SQ,DB2VSAM,EXCP,SEQEXCL,ORACLE,SYBASE,SQLSERVER,INFINIBAND,XML]
+  equates: [INVALID,SEQUENTIAL,VSAM,KSDS,IMS,IMSFP,DB2SQ,DB2VSAM,EXCP,SEQEXCL,ORACLE,SYBASE,SQLSERVER,INFINIBAND,XML]
+  description: Data Access Method
+  component_field: accessMethod
+- name: FileRecfm 
+  asm_prefix: FILE_RECFM_
+  dbcodes: [INVALID, FB, VB,FBA,VBA]
+  equates: [INVALID, FB, VB,FBA,VBA]
+  description: File Record Format
+  component_field: recfm
+- name: SubtotalType
+  asm_prefix: SUBTOTAL_TYPE_ID_
+  dbcodes: [INVALID,NONE,SUM,MAX,MIN,FIRST,LAST,DCALC,   BCALC,  RCALC,    DMAX,   DMIN,   DFRST,    DLAST]
+  equates: [INVALID,NONE,SUM,MAX,MIN,FIRST,LAST,DETAILCALC,BREAKCALC,SUMMARYRECALC,DETAILMAX,DETAILMIN,DETAILFIRST,DETAILLAST]
+  description: Subtotal type used in hard copy reports
+- name: LrStatus
+  asm_prefix: LR_STATUS_ID_
+  dbcodes: [INACT,  ACTVE]
+  equates: [INACTIVE, ACTIVE]
+  description: Logical Record Status
+- name: ExtractArea
+  asm_prefix: EXTRACT_AREA_ID_
+  dbcodes: [INVALID,SORTK,  SORTT,     AREDT,   ARECT]
+  equates: [INVALID,SORTKEY,SORTKEYTITLE,AREADATA,AREACALC]
+  description: Extract Area Codes
+- name: ColumnSourceType
+  asm_prefix: COL_SOURCE_TYPE_
+  dbcodes: [NONE,CONST,   LKFLD, SRCFF,  FRMLA]
+  equates: [NONE,CONSTANT,LOOKUP,EVENTLR,LOGICTEXT]
+  description: Column Source Codes
+- name: ViewStatus
+  asm_prefix: VIEW_STATUS_
+  dbcodes: [INVALID,ACTVE, INACT]
+  equates: [INVALID,ACTIVE,INACTIVE]
+  description: View Status 
+  component_field: status
+- name: ViewType
+  asm_prefix: VIEW_TYPE_
+  dbcodes: [INVALID,SUMRY,  DETL,   DTMRG,     COPY,EXTR]
+  equates: [INVALID,SUMMARY,DETAIL, MERGESUMMARY,COPY,EXTRACT]
+  description: View Type 
+- name: OutputMedia
+  asm_prefix: OUTPUT_MEDIA_
+  dbcodes: [INVALID,HCOPY,   ONLINE,FILE,EXEIF,   EXCEL,L123,  DELIM,EXEIC] 
+  equates: [INVALID,HARDCOPY,ONLINE,FILE,EXECINFO,EXCEL,LOTUS123,CSV,  EXECINFOCSV] 
+  description: Output media - Only HCOPY, FILE and DELIM make sense now
+- name: SortOrder
+  asm_prefix: SORT_ORDER_
+  dbcodes: [INVALID,ASCND,  DESC] 
+  equates: [INVALID,ASCENDING,DESCENDING] 
+  description: Sort Order
+- name: SortBreakFooterOption
+  asm_prefix: SORT_BREAK_FOOTER_OPTION_
+  dbcodes: [INVALID,NOPRT,  PRINT]
+  equates: [INVALID,NOPRINT,PRINT]
+  description: Sort Break Footer Option - hard copy only?
+- name: SortBreakHeaderOption
+  asm_prefix: SORT_BREAK_HEADER_OPTION_
+  dbcodes: [INVALID,PSAME,   PNEW,   NOPRT]
+  equates: [INVALID,SAMEPAGE,NEWPAGE,NONE]
+  description: Sort Break Header Option - hard copy only?
+- name: SortKeyDispOpt
+  asm_prefix: SORT_KEY_DISP_OPT_ID_
+  dbcodes: [INVALID,CAT,ASDTA]
+  equates: [INVALID,CATEGORIZE,ASDATA]
+  description: Sort Key Display
+- name: PerformBreakLogic
+  asm_prefix: PERFORM_BREAK_LOGIC_
+  dbcodes: [INVALID,NOBRK,  BRK]
+  equates: [INVALID,NOBREAK,BREAK]
+  description: To break or not break... that is the question
+- name: LtRecordType
+  asm_prefix: LT_RECORD_TYPE_
+  dbcodes: [INVALID,HD,NV,F0,F1,F2,RE,WR,CC,NAME,NAMEVALUE,CALC,NAMEF1,NAMEF2,GENERATION]
+  equates: [INVALID,HD,NV,F0,F1,F2,RE,WR,CC,NAME,NAMEVALUE,CALC,NAMEF1,NAMEF2,GENERATION]
+  description: Logic Table Record ID values
+- name: LtCompareType
+  asm_prefix: LT_COMPARE_TYPE_
+  dbcodes: [INVALID,EQ,NE,GT,GE,LT,LE,LIKE,DAYSBETWEEN,DAYSBETWEEN_NEG,DAYSINMONTH,
+  CONTAINS,BEGINS,ENDS,MONTHSBETWEEN,MONTHSBETWEEN_NEG,YEARSBETWEEN,YEARSBETWEEN_NEG,RESERVED]
+  equates: [INVALID,EQ,NE,GT,GE,LT,LE,LIKE,DAYSBETWEEN,DAYSBETWEEN_NEG,DAYSINMONTH,
+  CONTAINS,BEGINS,ENDS,MONTHSBETWEEN,MONTHSBETWEEN_NEG,YEARSBETWEEN,YEARSBETWEEN_NEG,RESERVED]
+  description: Logic Table Camparison Values
+- name: DateCode
+  asm_prefix: DATE_CODE_
+  dbcodes: [NONE,YYMMDD,YY_MM_DD,CYMD,CCYY_MM_DD,DDMMYY,DD_MM_YY,DDMMCCYY,DD_MM_CCYY,YYDDD,YY_DDD,
+  CYDDD,CCYY_DDD,MMDD,MM_DD,DD_MM,M,DD,DDDDDDDD,HHMMSSTT,HH_MM_SS_TT,HHMMSS,HH_MM_SS,HHMM,HH_MM,
+  CCYYMMDDHHNNSS,SSSSSSSS,LOWERCASE,UPPERCASE,DBCS,CYM,CCYY,YY,SYBASEDATE,POSIXDATE,MMDDYY,MMDDCCYY,
+  MM_DD_CCYY,CCYY_DDD2,CCYY_MM2,CCYY_MM_DD2,CCYY_MM,POSIXDATE2,DD_MM2,DD_MM_CCYY2,DD_MM_YY2,MM_DD2,
+  MM_DD_CCYY2,YY_DDD2,YY_MM_DD2,MONTH_DD_CCYY,DD_MONTH_CCYY,DD_MON_CCYY,MONTH_CCYY,CCYYMMDDHHNNSSTT,
+  CCYYMMDDHHMMSSTTTTTT,DB2DATE]
+  equates: [NONE,YYMMDD,YY_MM_DD,CYMD,CCYY_MM_DD,DDMMYY,DD_MM_YY,DDMMCCYY,DD_MM_CCYY,YYDDD,YY_DDD,
+  CYDDD,CCYY_DDD,MMDD,MM_DD,DD_MM,M,DD,DDDDDDDD,HHMMSSTT,HH_MM_SS_TT,HHMMSS,HH_MM_SS,HHMM,HH_MM,
+  CCYYMMDDHHNNSS,SSSSSSSS,LOWERCASE,UPPERCASE,DBCS,CYM,CCYY,YY,SYBASEDATE,POSIXDATE,MMDDYY,MMDDCCYY,
+  MM_DD_CCYY,CCYY_DDD2,CCYY_MM2,CCYY_MM_DD2,CCYY_MM,POSIXDATE2,DD_MM2,DD_MM_CCYY2,DD_MM_YY2,MM_DD2,
+  MM_DD_CCYY2,YY_DDD2,YY_MM_DD2,MONTH_DD_CCYY,DD_MONTH_CCYY,DD_MON_CCYY,MONTH_CCYY,CCYYMMDDHHNNSSTT,
+  CCYYMMDDHHMMSSTTTTTT,DB2DATE]
+  description: Date Content Codes
+- name: ReportFunction
+  asm_prefix: STD_FUNC_
+  dbcodes: [INVALID,PDATE,PTIME,PGNUM,VWID,TEXT,CONAM,VWNAM,VWOWN,S01LB,S01VL,S01TT,S02LB,S02VL,S02TT,
+  S03LB,S03VL,S03TT,S04LB,S04VL,S04TT,S05LB,S05VL,S05TT,RDATE,FDATE]
+  equates: [INVALID,PDATE,PTIME,PGNUM,VWID,TEXT,CONAM,VWNAM,VWOWN,S01LB,S01VL,S01TT,S02LB,S02VL,S02TT,
+  S03LB,S03VL,S03TT,S04LB,S04VL,S04TT,S05LB,S05VL,S05TT,RDATE,FDATE]
+  description: Logic Table Record ID values

@@ -1,0 +1,28 @@
+---
+name: "JEFFS"
+title: "Jeff's JOIN issue"
+description: "Jeff's test xml file that caused all those join issues"
+category: "MR91/Join"
+cq: ""
+note: ""
+tests:
+- name: "JEFF1"
+  header: "jeff1"
+  description: "The original file"
+  source: "XML"
+  xmlfiles: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 5"
+    stopkey: "column 6"
+- name: "JEFF2"
+  header: "jeff2"
+  description: ""
+  source: "XML"
+  xmlfiles: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 5"
+    stopkey: "column 6"

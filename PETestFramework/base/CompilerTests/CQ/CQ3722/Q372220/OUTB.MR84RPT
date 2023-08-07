@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 11
+COLUMN = {MSKNM}
+ERROR: line 1:11: Data type conflict assigning to column 11 "Column Number 3" (Float) from MSKNM (MaskNum :: -Z,ZZ9.99)

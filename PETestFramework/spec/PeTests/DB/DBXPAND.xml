@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<?xml-stylesheet type="text/xsl" href="../../../xsl/PMSpec.xsl"?>
+<PMSpec>
+	<Name>DBXPAND</Name>
+	<Title>Expand a DB view</Title>
+	<Description>Assignment tests to a type by row</Description>
+	<Category>PeTests/DB</Category>
+	<CQ></CQ>
+	<Note></Note>
+	<Tests>
+		<Test>
+			<Name>XPAND</Name>
+			<Header>XPAND</Header>
+			<Description>Stuff for Dravo</Description>
+			<Source>XML</Source>
+			<XMLfiles>
+				<XMLfile>
+					<Name>DBExpand.xml</Name>
+					<Replacements>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+            <RefFiles>
+            </RefFiles>
+            <EventFiles>
+            </EventFiles>
+            <ExtractFiles>
+                <ExtractFile>
+					<DDName>EXTR015</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>500</PRIMARY>
+                    <SECONDARY>500</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8180</LRECL>
+                </ExtractFile>
+            </ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>F0002055</DDName>
+                    <DSN>GEBT.REGRO.PASS03.F15.MR88.F0002055</DSN>
+                    <BaseDSN>GEBT.PM418.PASS03.F15.MR88.F0002055</BaseDSN>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>100</PRIMARY>
+                    <SECONDARY>100</SECONDARY>
+                    <RECFM>FB</RECFM>
+                    <LRECL>1</LRECL>
+                    <WORKFILE>15</WORKFILE>
+                </FormatFile>
+            </FormatFiles>
+            <Result>
+                <Success>
+                </Success>
+            </Result>
+		</Test>
+	</Tests>
+</PMSpec>

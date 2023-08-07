@@ -1,0 +1,11 @@
+INFO: Compiling extract-phase cell logic for column 10
+COLUMN = 0 - {EDNUM}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1     10  00003263  DIMN  Declare g_3263_1284_1264_10_0  =  0
+       2     10  00003263  SETC  g_3263_1284_1264_10_0  =  "0"  
+       3     10  00003263  SUBE  00001284/00001264/00063320    26     5  EditNum  
+             g_3263_1284_1264_10_0   Signed / Right  /rnd=0000     5     2  None     
+       4     10  00003263  DTA   00000000/00000000/00000000    31    30  EditNum  
+             g_3263_1284_1264_10_0   Signed /  Left  /rnd=0000     2     0  None     

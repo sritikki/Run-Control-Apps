@@ -1,0 +1,70 @@
+---
+name: "MR91toPE"
+templates:
+#
+# JCL templates
+#
+  - name: "jcl/MR91L.ftl"
+    target: "${test}L"
+    type: "JCL"
+  - name: "jcl/MR91R.ftl"
+    target: "${test}R"
+    type: "JCL"
+  - name: "jcl/MR91E.ftl"
+    target: "${test}E"
+    type: "JCL"
+  - name: "jcl/MR91F.ftl"
+    target: "${test}F"
+    type: "JCL"
+# The two below are run if COVERAGE is set to Y - should this be managed by env vars?
+  - name: "jcl/MR91X.ftl"
+    target: "${test}X"
+    type: "COVERAGEJCL"
+  - name: "jcl/MR91J.ftl"
+    target: "${test}J"
+    type: "COVERAGEJCL"
+# Only generate the G JCL if we are comparing on the Mainframe -->
+  - name: "jcl/PMJCLG.ftl"
+    target: "${test}G"
+    type: "JCL"
+    condition: "ComparePhase"
+# Only generate the bind JCL if needed
+  - name: "jcl/DB210BIND.ftl"
+    target: "${test}N"
+    type: "JCL"
+    condition: "DB2Bind"
+#
+# Config templates
+#
+  - name: "cfg/mr91CFG.ftl"
+    target: "MR91PARM"
+    type: "Config"
+  - name: "cfg/PMConf_D95C.ftl"
+    target: "REGRR95C"
+    type: "Config"
+  - name: "cfg/PMConf_D95E.ftl"
+    target: "REGRR95E"
+    type: "Config"
+  - name: "cfg/PMConf_E95C.ftl"
+    target: "REGRE95C"
+    type: "Config"
+  - name: "cfg/PMConf_E95E.ftl"
+    target: "REGRE95E"
+    type: "Config"
+# Generate the config file only if the test needs a mergeparm
+  - name: "cfg/PMConf_E95M.ftl"
+    target: "REGRE95M"
+    type: "Config"
+    condition: "mergeparm"
+  - name: "cfg/PMConf_F88C.ftl"
+    target: "REGRF88C"
+    type: "Config"
+# The common config for LTPRINT if COVERAGE is set to Y -->
+#
+# These from environment variables...?
+#
+#Template type="COVERAGEConfig" target="LTPARM">cfg/ltprint.ftl</Template>
+# For VDPNL if GENERATEVDPFLOW is set to Y - get the VDP and UBER it-->
+#Template type="FlowConfig" target="VDPNPARM">cfg/vdpnl.ftl</Template>
+#
+

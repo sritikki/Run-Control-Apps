@@ -1,0 +1,69 @@
+---
+name: "CALCS"
+title: "Format Calculation Tests"
+description: "Generate the calculation stacks"
+category: "MR91/ErrorCases"
+cq: ""
+note: ""
+tests:
+- name: "CALC14"
+  header: "CALC14"
+  description: "Invalid column number"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "v8820.xml"
+    replacements:
+    - replace: "COLUMN = 4"
+      with: "COLUMN =  COL.9"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "!!! end"
+- name: "CALC15"
+  header: "CALC15"
+  description: "Open bracket"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "v8820.xml"
+    replacements:
+    - replace: "COLUMN = 4"
+      with: "IF  (COL.4 &gt;= 0 AND COL.4 &lt;= 20 THEN COLUMN =  COL.4  /  COL.5\
+        \ ELSE COLUMN = 0 ENDIF"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "!!! end"
+- name: "CALC20"
+  header: "CALC20"
+  description: "Invalid column error"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "v8820.xml"
+    replacements:
+    - replace: "COLUMN = 4"
+      with: "COLUMN =  COL.3 + 1"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "end of the line"
+- name: "CALC21"
+  header: "CALC21"
+  description: ""
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "v8820.xml"
+    replacements:
+    - replace: "ARECT"
+      with: "SORTK"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "end of the line"

@@ -1,0 +1,91 @@
+---
+name: "PIPFM"
+title: "Pipe File Format"
+description: "Check how pipes handle different output format types"
+category: "PeTests/Pipe"
+cq: ""
+note: ""
+tests:
+- name: "PIPFM01"
+  header: "FB"
+  description: "Check Pipe with FB format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "PIPE"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "FB"
+    lrecl: "38"
+    blksize: "76"
+- name: "PIPFM02"
+  header: "F"
+  description: "Check Pipe with F format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "PIPE"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "F"
+    lrecl: "38"
+- name: "PIPFM03"
+  header: "VB"
+  description: "Check Pipe with VB format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "PIPE"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "42"
+    blksize: "88"
+- name: "PIPFM04"
+  header: "V"
+  description: "Check Pipe with V format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "PIPE"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "V"
+    lrecl: "42"
+    blksize: "46"

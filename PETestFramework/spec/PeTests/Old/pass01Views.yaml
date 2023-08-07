@@ -1,0 +1,7 @@
+pass: Pass01
+comment: Regression test for extract only views
+views:
+  1816: TC_01_12_01_01_03_VIEW_TYPES_EXTRACT_ONLY
+  2029: TC_01_05_02_14_01_RECSEL_ENDS_WITH
+  5027: CQ4462_TEST_VIEW
+  5044: DATE_CONVERSION

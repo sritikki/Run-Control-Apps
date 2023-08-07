@@ -1,0 +1,3 @@
+INFO: Compiling format-phase calculation for column 5
+COLUMN =  COL.3 + 1
+ERROR: line 1:11: The column number 3 referenced cannot be used because that column does not have a numeric data type or it is a sort key

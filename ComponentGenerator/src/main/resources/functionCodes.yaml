@@ -1,0 +1,10 @@
+# Where to get the component and record definitions and where to write the generated classes
+package_name: org.genevaers.genevaio.ltfactory
+source_directory: functionCodes
+target_directory: ../GenevaIO/target/generated-sources
+pe_target_directory: ../../pe/PM4/MAC
+description: Generator for function codes
+codes: 
+-  name:   FunctionCodeDefinitions
+   source: functionCodeDefinitions.yaml
+   target: functionCodes

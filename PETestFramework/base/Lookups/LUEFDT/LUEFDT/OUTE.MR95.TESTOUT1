@@ -1,0 +1,22 @@
+0000000000000001                                                                                                                     100
+0000000000000001                                                                                                                     200
+0000000000000002AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     100
+0000000000000002AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     200
+0000000000000003AAA00003                                                                                                             300
+0000000000000004AAA00004                                                                                                             400
+0000000000000005AAA00005  NAME 5                         5 ADDRESS AFTER 20000720        5 ADDRESS ON 20000720                       500
+0000000000000018AAA00018                                                                                                             100
+0000000000000018AAA00018                                                                                                             200
+0000000000000019AAA00019  NAME 19 CURRENT                19 ADDRESS 20010102 TO 21000101 19 ADDRESS 20000101 TO 20010101            -200
+0000000000000019AAA00019  NAME 19 CURRENT                19 ADDRESS 20010102 TO 21000101 19 ADDRESS 20000101 TO 20010101            -200
+0000000000000020BBB00020  NAME B20                       20B CURRENT ADDRESS             20B CURRENT ADDRESS                         300
+0000000000000021AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     300
+0000000000000022AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     300
+0000000000000022AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     300
+0000000000000034AAA00018                                                                                                            1100
+0000000000000034AAA00018                                                                                                            1100
+0000000000000035CCC00035  NAME C35                       35C CURRENT ADDRESS             35C CURRENT ADDRESS                        1200
+0000000000000022AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     300
+0000000000000022AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     300
+0000000000000022AAA00002  NAME 2 FUTURE                  2 FUTURE ADDRESS                2 ADDRESS 0 TO 20200101                     300
+0000000000000036CCC00036  NAME C36                       36C CURRENT ADDRESS             36C CURRENT ADDRESS             123456789012345

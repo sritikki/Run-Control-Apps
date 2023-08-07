@@ -1,0 +1,14 @@
+record_name: VDPExtractTargetEntry
+record_id: 0
+record_length: 0
+component_name: none
+#This one is an internal record format and so does not have a type and length
+fields:
+- name: writeSource
+  type: string
+  maxlength: 2
+- name: destination
+  type: byte
+- name: pfId
+  type: integer
+    
