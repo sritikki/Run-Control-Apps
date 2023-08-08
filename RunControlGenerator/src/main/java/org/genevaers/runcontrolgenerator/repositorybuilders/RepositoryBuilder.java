@@ -30,7 +30,6 @@ import java.util.Iterator;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
-import com.ibm.db2.jcc.DB2Connection;
 import com.ibm.jzos.PdsDirectory;
 import com.ibm.jzos.ZFile;
 import com.ibm.jzos.ZFileConstants;
