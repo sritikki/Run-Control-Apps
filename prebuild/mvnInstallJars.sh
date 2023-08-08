@@ -17,4 +17,4 @@ mvn install:install-file -Dfile=$GERS_JARS/db2jcc4.jar -DgroupId=com.ibm -Dartif
 mvn install:install-file -Dfile=$GERS_JARS/db2jcc_license_cu.jar -DgroupId=com.ibm -DartifactId=db2jcc_license_cu -Dversion=4 -Dpackaging=jar
 mvn install:install-file -Dfile=$GERS_JARS/db2jcc_license_cisuz.jar -DgroupId=com.ibm -DartifactId=db2jcc_license_cisuz -Dversion=4 -Dpackaging=jar
 mvn install:install-file -Dfile=$GERS_JARS/isfjcall.jar -DgroupId=com.ibm.zos -DartifactId=sdsf -Dversion=2.4 -Dpackaging=jar
-mvn install:install-file -Dfile=/Java/J80/lib/ext/ibmjzos.jar -DgroupId=com.ibm -DartifactId=jzos -Dversion=2.4.8 -Dpackaging=jar
+mvn install:install-file -Dfile=$GERS_JARS/ibmjzos.jar -DgroupId=com.ibm -DartifactId=jzos -Dversion=2.4.8 -Dpackaging=jar

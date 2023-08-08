@@ -1,6 +1,7 @@
 <?xml version='1.0'?>
 <!--
-Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright
+IBM Corporation 2008
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,24 +17,26 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.genevaers</groupId>
-    <artifactId>apps</artifactId>
-    <relativePath>../</relativePath>
-    <version>1.0.2</version>
-  </parent>
-  <artifactId>utilities</artifactId>
-  <name>GenevaERS Utilities</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.genevaers</groupId>
+		<artifactId>apps</artifactId>
+		<relativePath>../</relativePath>
+		<version>1.0.2</version>
+	</parent>
+	<artifactId>utilities</artifactId>
+	<name>GenevaERS Utilities</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 
-  <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>com.googlecode.java-diff-utils</groupId>
 			<artifactId>diffutils</artifactId>
@@ -55,7 +58,6 @@ under the License.
 		<dependency>
 			<groupId>com.ibm</groupId>
 			<artifactId>jzos</artifactId>
-			<version>2.4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.flogger</groupId>
@@ -65,9 +67,9 @@ under the License.
 			<groupId>com.google.flogger</groupId>
 			<artifactId>flogger-system-backend</artifactId>
 		</dependency>
-</dependencies> 
-  <build>
-	<plugins>
-	</plugins>
-</build>
+	</dependencies>
+	<build>
+		<plugins>
+		</plugins>
+	</build>
 </project>

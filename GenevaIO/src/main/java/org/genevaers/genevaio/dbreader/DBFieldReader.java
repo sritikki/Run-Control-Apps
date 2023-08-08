@@ -27,7 +27,6 @@ import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
 
-import com.ibm.db2.jcc.am.g;
 
 public class DBFieldReader extends DBReaderBase{
 

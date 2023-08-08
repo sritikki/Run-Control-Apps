@@ -16,11 +16,11 @@
 
 # Get the Grammar repo if it is not there
 # Also use the presence of the grammar to manage the jars
-if [ ! -d "../GenevaERS-Grammar" ]; 
+if [ ! -d "../Grammar" ]; 
 then
     echo "Clone the grammar"
-    git clone git@github.ibm.com:SAFR/GenevaERS-Grammar.git ../GenevaERS-Grammar
-    cd ../GenevaERS-Grammar
+    git clone https://github.com/genevaers/Grammar.git ../Grammar
+    cd ../Grammar
     mvn install
     cd ../prebuild
     echo "Configure Build"
