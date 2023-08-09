@@ -1,5 +1,6 @@
-name: "All Formats Date Tests"
-templateSet: "MR91toPE.yaml"
-specs:
-  - "PeTests/DEMO/DEMO.yaml"
-  - "PeTests/DEMO/DEMO-All.yaml"
+specFileSets:
+  - name: "All Formats Date Tests"
+    templateSetName: "MR91toPE.yaml"
+    specs:
+      - "PeTests/DEMO/DEMO.yaml"
+      - "PeTests/DEMO/DEMO-All.yaml"

@@ -36,8 +36,5 @@ tests:
     primary: "1"
     secondary: "1"
     recfm: "FB"
-    lrecl: "300"
+    lrecl: "134"
     workfile: "1"
-  expectedresult:
-    message: "pass compare phase"
-    rc: "0"

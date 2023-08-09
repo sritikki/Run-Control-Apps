@@ -69,8 +69,12 @@ ${env["TEST_HLQ"]}.${test.dataSet}</#macro>
 //*
 //EXTRPARM DD DSN=<@qualifiedTest/>.PARM(REGRE95C),
 //            DISP=SHR
-<#if env.EXTRACT_TRACE="Y">
 //         DD *
+* Parms set by environment variables 
+<#if env.GERS_DB2_PLAN_SUFFIX??>
+DB2_SQL_PLAN_NAME=GVBMRSQ${env.GERS_DB2_PLAN_SUFFIX}
+</#if>
+<#if env.EXTRACT_TRACE="Y">
 TRACE=Y
 //EXTRTPRM DD *
 <#if env.VIEW?number gt 0>
