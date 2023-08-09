@@ -12,15 +12,69 @@ tests:
   source: "WBXML"
   xmlfiles:
   - name: "mergeAssAll.xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  reffiles:
+  - ddname: "LKUPALL"
+    filename: "ALLTYPE.LOOKUP"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "FMTOUT01"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
 - name: "MRGLESS"
   header: "Less Assignments"
   description: "Assignments cut down to test RUNVIEWS"
   source: "WBXML"
   xmlfiles:
   - name: "mergeAssAll.xml"
+    
+  runviews: "9721\n11045\n11046\n11068"
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  reffiles:
+  - ddname: "LKUPALL"
+    filename: "ALLTYPE.LOOKUP"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "FMTOUT01"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
 - name: "ALIGN"
   header: "ALIGN"
   description: "Align left, right, and centre"
   source: "WBXML"
   xmlfiles:
   - name: "AlignText[9832].xml"
+    
+  eventfiles:
+  - ddname: "ALIGN"
+    filename: "ALIGN.TEXT"
+  extractfiles:
+  - ddname: "F0009832"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
