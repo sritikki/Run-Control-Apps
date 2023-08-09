@@ -19,7 +19,7 @@
 if [ ! -d "../Grammar" ]; 
 then
     echo "Clone the grammar"
-    git clone https://github.com/genevaers/Grammar.git ../Grammar
+    git clone git@github.com:genevaers/Grammar.git ../Grammar
     cd ../Grammar
     mvn install
     cd ../prebuild
