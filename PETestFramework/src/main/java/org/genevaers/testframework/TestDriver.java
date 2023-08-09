@@ -235,6 +235,7 @@ public class TestDriver {
 		Path localTest = createLocalTestDirectory(testToRun);
 		Path outxmlPath = localTest.resolve("WBXMLI");
 		outxmlPath.toFile().mkdirs();
+		logger.atInfo().log("Make dir " + outxmlPath.toString());
 		Path xmlfile;
 		for (XMLFile xml : testToRun.getXmlfiles()) {
 			xmlfile = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName());

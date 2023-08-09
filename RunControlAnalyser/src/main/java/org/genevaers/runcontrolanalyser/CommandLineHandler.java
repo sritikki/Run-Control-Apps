@@ -96,6 +96,7 @@ public class CommandLineHandler {
 			flow.generateJltPrint(root, withCoverage);
 		} else {
 			flow.makeRunControlAnalyserDataStore(root);
+			root.resolve("rca").toFile().mkdirs();
 			flow.generateXltPrint(root, true);
 			flow.generateJltPrint(root, true);
 			flow.writeCoverageHTML(root);

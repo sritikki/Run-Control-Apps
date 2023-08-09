@@ -160,10 +160,14 @@ public class AnalyserDriver {
 
 	public void generateJltPrint(Path root, boolean withCoverage) {
 		XLTFileReader jltr = new XLTFileReader();
-		jltr.open(root.resolve("JLT").toString());
-		LogicTable jlt = jltr.makeLT();
-        LTLogger.logRecords(jlt);
-        LTLogger.writeRecordsTo(jlt, root.resolve("rca").resolve("jltrpt.txt"));
+		Path jltp = root.resolve("JLT");
+		if(jltp.toFile().exists()) {
+			jltr.open(root.resolve("JLT").toString());
+			
+			LogicTable jlt = jltr.makeLT();
+			LTLogger.logRecords(jlt);
+			LTLogger.writeRecordsTo(jlt, root.resolve("rca").resolve("jltrpt.txt"));
+		}
     }
 
 	public void writeCoverageHTML(Path root) {
