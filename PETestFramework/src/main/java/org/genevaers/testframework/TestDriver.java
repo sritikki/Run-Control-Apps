@@ -264,11 +264,50 @@ public class TestDriver {
 		//how to we check a pretend pass? Just return code?
 	}
 
-	private static void processLocalResult(GersTest testToRun) {
+	private static void processLocalResult(GersTest test) {
+		Path rootPath = Paths.get(TestEnvironment.get(LOCALROOT));
+		Path outPath = rootPath.resolve("out");
+		// Look to see VDP and XLT generated -> Gennerated/Pass
+		Path resultFolder = outPath.resolve(test.getFullName());
+		Path vdp = resultFolder.resolve("VDP");
+		Path xlt = resultFolder.resolve("XLT");
+		logger.atInfo().log("Check existenc in " + resultFolder.toString());
+		if (vdp.toFile().exists() && xlt.toFile().exists()) {
+			test.getResult().setMessage("generated");
+		} else {
+			test.getResult().setMessage("no outputs");
+		}
+
+		Map<String, Object> nodeMap = new HashMap<>();
+		nodeMap.put("specName", test.getSpecPath());
+		nodeMap.put("testName", test.getName());
+
+		try {
+			Template template = cfg.getTemplate("test/localResult.ftl");
+			Path resultFilePath;
+			Path resultPath = outPath.resolve(test.getFullName());
+			resultPath.toFile().mkdirs();
+			if (test.getResult().getMessage().startsWith("generated")) {
+				nodeMap.put("result", "SUCCESS");
+				logger.atInfo().log(Menu.GREEN + test.getResult().getMessage() + Menu.RESET);
+				resultFilePath = resultPath.resolve("pass.html");
+			} else {
+				nodeMap.put("result", "FAILCOMPARE");
+				logger.atSevere().log(Menu.RED + test.getResult().getMessage() + Menu.RESET);
+				resultFilePath = resultPath.resolve("fail.html");
+			}
+			nodeMap.put("outFiles", test.getFormatfiles());
+			Path cssPath = resultFilePath.relativize(outPath).resolve("w3.css");
+			nodeMap.put("cssPath", cssPath);
+			TemplateApplier.generateTestTemplatedOutput(template, nodeMap, resultFilePath);
+		} catch (IOException | TemplateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static Path createLocalTestDirectory(GersTest testToRun) {
-		Path localTest = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("target").resolve("localtests").resolve(testToRun.getFullName());
+		Path localTest = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("out").resolve(testToRun.getFullName());
 		localTest.toFile().mkdirs();
 		return localTest;
 	}

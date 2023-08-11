@@ -1,20 +1,55 @@
 package org.genevaers.runcontrolanalyser.ltcoverage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "HD"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "F0"),
+        @JsonSubTypes.Type(value = LTCoverageEntry1Arg.class, name = "F1"),
+        @JsonSubTypes.Type(value = LTCoverageEntry2Args.class, name = "F2"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "RE"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "WR"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "CC"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "NAME"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "NAMEVALUE"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "CALC"),
+        @JsonSubTypes.Type(value = LTCoverageEntry1Arg.class, name = "NAMEF1"),
+        @JsonSubTypes.Type(value = LTCoverageEntry2Args.class, name = "NAMEF2"),
+        @JsonSubTypes.Type(value = LtCoverageEntry.class, name = "GENERATION")
+})
+
+
 public class LtCoverageEntry {
 
+    private LtRecordType type;
     private String name;
     private int hits;
-    private LtRecordType type;
     private int expectedItems;
     private String description;   
     private String category;
 
     public static final int MAXTYPES = 17;
 
+
+    public LtRecordType getType() {
+        return type;
+    }
+
+    public void setType(LtRecordType type) {
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -32,13 +67,6 @@ public class LtCoverageEntry {
         this.hits = hits;
     }
 
-    public LtRecordType getType() {
-        return type;
-    }
-
-    public void setType(LtRecordType type) {
-        this.type = type;
-    }
 
     public int getExpectedItems() {
         return expectedItems;
@@ -67,7 +95,7 @@ public class LtCoverageEntry {
     public void hit(LTRecord ltr) {
         hits++;
     }
-
+    
     protected String getTypeName(boolean signed, DataType dt, int len) {
         String dts;
            String sign =  signed ? "S" : "";

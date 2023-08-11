@@ -179,12 +179,12 @@ public class LtCoverageHtmlWriter {
 
 	private static TrTag getMatrixRows(LTCoverageEntry2Args codeHits) {
 		return tr(
-					each(codeHits.getTypeMatrix().getTypeHitMatrix().entrySet(), es -> getMatrixRow(es))
+					each(codeHits.getTypeHitsMatrix().entrySet(), es -> getMatrixRow(es))
 				);
 	}
 
 	private static TrTag getMatrixHeader(LTCoverageEntry2Args codeHits) {
-		Set<String> header = codeHits.getTypeMatrix().getTypeHitMatrix().keySet();
+		Set<String> header = codeHits.getTypeHitsMatrix().keySet();
 		return tr(
 					getColumnHeader("AAType"),
 					each(header, h -> getColumnHeader(h))
@@ -195,17 +195,17 @@ public class LtCoverageHtmlWriter {
 		return th(h).withClass("info");
 	}
 
-	private static TrTag getMatrixRow(Entry<String, TypeHitMap> es) {
+	private static TrTag getMatrixRow(Entry<String, TypeHits> es) {
 		return tr(
 				td(es.getKey()).withClass("info"),
-				each(es.getValue().getTypeHits().entrySet(), r -> getTypesRow(r))
+				getTypesRow(es.getValue())
 			);
 	}
 
-	private static TdTag getTypesRow(Entry<String, Integer> typeHits) {
-		return td(Integer.toString(typeHits.getValue()))
-				.withCondClass(typeHits.getValue() == 0, NONE)
-				.withCondClass(typeHits.getValue() > 0, COVERED);
+	private static TdTag getTypesRow(TypeHits typeHits) {
+		return td(Integer.toString(typeHits.getHits()))
+				.withCondClass(typeHits.getHits() == 0, NONE)
+				.withCondClass(typeHits.getHits() > 0, COVERED);
 	}
 
 	private static DivTag getTypeHits(LTCoverageEntry1Arg codeHits) {
@@ -222,7 +222,7 @@ public class LtCoverageHtmlWriter {
 					tbody(
 							th("Type"),
 							th("Hits").withClass("info"),
-					        each(codeHits.getTypeHits().getTypeHits().entrySet(), i -> getTypeRow(i))
+					        each(codeHits.getTypeHits().entrySet(), i -> getTypeRow(i))
 					)).withClass("w3-table-all w3-small")
 				).withClass(POPUP)
 			).withId(codeHits.getName()).withStyle("display: none").withClass("w3-modal");
