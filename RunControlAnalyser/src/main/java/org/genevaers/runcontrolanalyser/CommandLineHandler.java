@@ -51,7 +51,6 @@ public class CommandLineHandler {
 
 	private static Path dataStore;
 
-	private static boolean withCoverage = false;
 
 	public static void main(String[] args) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, InterruptedException {
 		Options options = buildCommandLineOptions();
@@ -83,29 +82,25 @@ public class CommandLineHandler {
     	//locroot = locroot.replaceAll("^[Cc]:", "");
     	locroot = locroot.replace("\\", "/");
     	Path root = Paths.get(locroot);
-		if(line.hasOption("c")) {
-			withCoverage = true;
-		}
 		if(line.hasOption("menu")) {
 			flow.makeRunControlAnalyserDataStore(null);
 			RCAGenerationData.setFlow(flow);
 			RCAMenu.generate();
 		} else if(line.hasOption("x")) {
-			flow.generateXltPrint(root, withCoverage);
+			flow.generateXltPrint(root);
 		} else if(line.hasOption("j")) {
-			flow.generateJltPrint(root, withCoverage);
+			flow.generateJltPrint(root);
+		} else if(line.hasOption("c")) {
+			flow.aggregateLtCoverage();
 		} else {
 			flow.makeRunControlAnalyserDataStore(root);
 			root.resolve("rca").toFile().mkdirs();
-			flow.generateXltPrint(root, true);
-			flow.generateJltPrint(root, true);
-			flow.writeCoverageHTML(root);
+			flow.generateXltPrint(root);
+			flow.generateJltPrint(root);
+			flow.writeCoverageResults(root);
 			generateFlow();
 		}
 
-		if(withCoverage) {
-			flow.writeCoverageHTML(root);
-		}
 	}
 
 	private static void showHelpIfNeeded(Options options, boolean showHelp) {

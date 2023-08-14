@@ -26,12 +26,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import org.genevaers.utilities.TestEnvironment;
 
+import j2html.tags.DomContent;
 import j2html.tags.specialized.DivTag;
 import j2html.tags.specialized.TableTag;
 import j2html.tags.specialized.TdTag;
@@ -82,8 +84,8 @@ public class LtCoverageHtmlWriter {
 	public void setCSSDir(String cssDir){
 		SAFR_CSS = cssDir;
 	}
-	
-	public static void writeTo(Path output, Map<String, LtCoverageEntry> coverageMap) {
+
+	public static void writeTo(Path output, LTCoverageFile ltcov) {
 		FileWriter testHtml;
 		try {
 
@@ -101,14 +103,45 @@ public class LtCoverageHtmlWriter {
 									div(
 											div(
 													h1("Function Code Coverage").withClass("w3-teal"),
-													functionCodeTable(coverageMap)).withClass("w3-col l10 m12"),
+													getSources(ltcov.getSources(), output),
+													h2("Data").withClass("w3-green"),
+													functionCodeTable(ltcov.getFunctionCodes()).withClass("w3-col l10 m12"),
 											div().withClass("w3-col l2 m12")).withClass("w3-row")))
-							.renderFormatted());
+					).renderFormatted());
 			testHtml.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static DivTag getSources(List<Path> list, Path output) {
+		return div(
+				div(
+					header(
+							h2(
+							a("Sources (click to toggle)").withHref(getTypeHref("Sources"))
+							.withClass("w3-button")
+							)
+					).withClass("w3-green"),
+					div(
+							table(
+							tbody(
+									tr(th("Source")),
+									each(list, e -> getSourceRow(e, output)
+							)).withClass("w3-table-all w3-small")
+						)
+					).withId("Sources").withStyle("display: none"))
+		);
+	}
+
+
+	private static TrTag getSourceRow(Path e, Path output) {
+		String rp = output.getParent().relativize(e).toString();
+		return tr(
+				td(
+					a(rp.toString()).withHref(rp.toString().replace("yaml", "html"))
+				));
 	}
 
 	private static TableTag functionCodeTable(Map<String, LtCoverageEntry> coverageMap)
@@ -263,22 +296,17 @@ public class LtCoverageHtmlWriter {
 		if(codeHits.getExpectedItems() <= LtCoverageEntry.MAXTYPES) {
 			LTCoverageEntry1Arg f1 = (LTCoverageEntry1Arg)codeHits;
 			Iterator<Entry<String, Integer>> thi = f1.getTypeHitsIterator();
+			if(thi != null) {
 			while(thi.hasNext()) {
 				thi.next();
 				typeHits++;
 			}
+		} else {
+			int bang = 1;
+		}
 		}
 		return typeHits;
 	}
 
-	// public void accumulateTo(Path overallcoverage) {
-	// 	if(overallcoverage != null) {
-	// 		accumulationFileName = overallcoverage.toFile();
-	// 	}
-	// }
-
-	// public void close() {
-	// 	coverageFile.close();
-	// }
 
 }

@@ -9,6 +9,8 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class LTCoverageEntry2Args extends LtCoverageEntry{
 
     private Map<String, TypeHits> typeHitsMatrix = new TreeMap<>();
@@ -39,8 +41,23 @@ public class LTCoverageEntry2Args extends LtCoverageEntry{
         this.typeHitsMatrix = typeHitsMatrix;
     }
 
+    @JsonIgnore
     public Iterator<Entry<String, TypeHits>> getTypeMatrixIterator() {
         return typeHitsMatrix.entrySet().iterator();
     }
     
+    @Override
+    public void addDataFrom(LtCoverageEntry srclte) {
+        super.addDataFrom(srclte);
+        for( Entry<String, TypeHits> srch : ((LTCoverageEntry2Args)srclte).getTypeHitsMatrix().entrySet()) {
+            TypeHits ths = typeHitsMatrix.get(srch.getKey());
+            TypeHits srcths = srch.getValue();
+            if(ths != null) {
+                ths.addHits(srcths.getHits());
+            } else {
+                typeHitsMatrix.put(srch.getKey(), srcths);
+            }
+        }
+    }
+
 }

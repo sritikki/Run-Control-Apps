@@ -143,22 +143,21 @@ public class AnalyserDriver {
 		return dataStore.toFile().list();
 	}
 
-	public void generateXltPrint(Path root, boolean withCoverage) {
+	public void generateXltPrint(Path root) {
 		XLTFileReader xltr = new XLTFileReader();
-		xltr.open(root.resolve("XLT").toString());
+		Path xltp = root.resolve("XLT");
+		xltr.open(xltp.toString());
 		LogicTable xlt = xltr.makeLT();
         LTLogger.logRecords(xlt);
         LTLogger.writeRecordsTo(xlt, root.resolve("rca").resolve("xltrpt.txt"));
-		if(withCoverage) {
-			collectCoverageData(xlt);
-		}
+		collectCoverageDataFrom(xltp, xlt);
 	}
 
-    private void collectCoverageData(LogicTable xlt) {
-		ltCoverageAnalyser.addDataFrom(xlt);
+    private void collectCoverageDataFrom(Path xltp, LogicTable xlt) {
+		ltCoverageAnalyser.addDataFrom(xltp, xlt);
 	}
 
-	public void generateJltPrint(Path root, boolean withCoverage) {
+	public void generateJltPrint(Path root) {
 		XLTFileReader jltr = new XLTFileReader();
 		Path jltp = root.resolve("JLT");
 		if(jltp.toFile().exists()) {
@@ -167,12 +166,16 @@ public class AnalyserDriver {
 			LogicTable jlt = jltr.makeLT();
 			LTLogger.logRecords(jlt);
 			LTLogger.writeRecordsTo(jlt, root.resolve("rca").resolve("jltrpt.txt"));
+			collectCoverageDataFrom(jltp, jlt);
 		}
     }
 
-	public void writeCoverageHTML(Path root) {
-		ltCoverageAnalyser.writeCoverageHTML(root.resolve("rca").resolve("ltcov.html"));
-		ltCoverageAnalyser.writeCoverageYAML(root.resolve("rca").resolve("ltcov.yaml"));
+	public void writeCoverageResults(Path root) {
+		ltCoverageAnalyser.writeResults(root.resolve("rca"));
+	}
+
+	public void aggregateLtCoverage() {
+		ltCoverageAnalyser.aggregateCoverage();
 	}
 
 }

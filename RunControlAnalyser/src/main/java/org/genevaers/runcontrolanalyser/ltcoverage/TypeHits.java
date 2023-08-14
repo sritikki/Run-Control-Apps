@@ -18,6 +18,10 @@ public class TypeHits {
         hits++;
     }
 
+    public void addHits(int hs) {
+        hits += hs;
+    }
+
     //DataType does not distinguish between the different Bin lengths
 
     // public Iterator<Entry<String, Integer>> getTypeHitsIterator() {

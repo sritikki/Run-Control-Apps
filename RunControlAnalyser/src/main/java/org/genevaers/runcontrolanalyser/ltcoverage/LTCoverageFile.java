@@ -1,5 +1,6 @@
 package org.genevaers.runcontrolanalyser.ltcoverage;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,17 +11,21 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 
 public class LTCoverageFile {
     private String ltcoverage;
-    private String source;
+    private List<Path> sources = new ArrayList<>();
     private String generationDate;
 
     private Map<String, LtCoverageEntry> functionCodes = new TreeMap<>();
 
-    public String getSource() {
-        return source;
+    public List<Path> getSources() {
+        return sources;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setSource(List<Path> source) {
+        this.sources = source;
+    }
+
+    public void addSource(Path s) {
+        sources.add(s);
     }
 
     public String getGenerationDate() {
@@ -47,12 +52,27 @@ public class LTCoverageFile {
         this.functionCodes = functionCodes;
     }
 
-    public void aggregateFrom(LTCoverageFile ltc) {
+    public void loadFrom(LTCoverageFile ltc) {
         Map<String, LtCoverageEntry> fcs = ltc.getFunctionCodes();
         //Not really an aggregate yet.
         //But want to get the coverage map so we can write it
         for(Entry<String, LtCoverageEntry> fce : fcs.entrySet()) {
             functionCodes.computeIfAbsent(fce.getKey(), e -> fce.getValue());
+        }
+    }
+
+    public void aggregateFrom(LTCoverageFile ltc) {
+        Map<String, LtCoverageEntry> fcs = ltc.getFunctionCodes();
+        //Not really an aggregate yet.
+        //But want to get the coverage map so we can write it
+        for(Entry<String, LtCoverageEntry> fce : fcs.entrySet()) {
+            LtCoverageEntry targetlte = functionCodes.get(fce.getKey());
+            LtCoverageEntry srclte = fce.getValue();
+            if(targetlte != null) {
+                targetlte.addDataFrom(srclte);
+            } else {
+                int bang = 1;
+            }
         }
     }
 

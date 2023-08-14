@@ -11,6 +11,8 @@ import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.repository.components.enums.DataType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class LTCoverageEntry1Arg extends LtCoverageEntry{
 
     private Map<String, Integer> typeHits = new TreeMap<>();
@@ -24,13 +26,6 @@ public class LTCoverageEntry1Arg extends LtCoverageEntry{
         return typeHits;
     }
 
-    // public void setTypeHits(TypeHits typeHits) {
-    //     this.typeHits = typeHits;
-    // }
-
-    // public TypeHits getTypeHits() {
-    //     return typeHits;
-    // }
 
     @Override
     public void hit(LTRecord ltr) {
@@ -49,22 +44,32 @@ public class LTCoverageEntry1Arg extends LtCoverageEntry{
 
     private void hitType(String dts) {
         //Integers are immutable so we need to mess about
-        // Integer h = typeHits.get(dts);
-        // if(h == null) {
-        //     h = Integer.valueOf(1);
-        // } else {
-        //     h++;
-        // }
-        // typeHits.put(dts, h);
+        Integer h = typeHits.get(dts);
+        if(h == null) {
+            h = Integer.valueOf(1);
+        } else {
+            h++;
+        }
+        typeHits.put(dts, h);
     }
 
+    @JsonIgnore
     public Iterator<Entry<String, Integer>> getTypeHitsIterator() {
-        return null;
+        return typeHits.entrySet().iterator();
     }
 
-    // @Override
-    // public List<TypeHitMap> getTypeHits() {
-    //     return typeHits.getTypeHits().values();
-    // }
+    @Override
+    public void addDataFrom(LtCoverageEntry srclte) {
+        super.addDataFrom(srclte);
+        for( Entry<String, Integer> h : ((LTCoverageEntry1Arg)srclte).getTypeHits().entrySet()) {
+            Integer th = typeHits.get(h.getKey());
+            if(th != null) {
+                th += h.getValue();
+                typeHits.put(h.getKey(), th);
+            } else {
+                typeHits.put(h.getKey(), h.getValue());
+            }
+        }
+    }
     
 }

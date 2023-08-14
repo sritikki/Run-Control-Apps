@@ -28,7 +28,10 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static LTCoverageFile ltcov = new LTCoverageFile();
-    private static LtCoverageYamlWriter yamlWriter = new LtCoverageYamlWriter(); 
+    private static LtCoverageYamlWriter yamlWriter = new LtCoverageYamlWriter();
+    private static LTCoverageFile aggcov;
+    private static boolean aggFileInitRequired; 
+    private static List<Path> sources = new ArrayList<>();
 
     //Create a CoverageAnalyser that we can run from a root directory
     //It will then search for child ltcov yaml files and aggregate them
@@ -41,40 +44,12 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
 	public static void main(String[] args) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, InterruptedException {
 		GenevaLog.formatConsoleLogger(LTCoverageAnalyser.class.getName(), Level.FINE);
 
-		String locroot = System.getProperty("user.dir");
-    	//locroot = locroot.replaceAll("^[Cc]:", "");
-    	locroot = locroot.replace("\\", "/");
-    	Path root = Paths.get(locroot);
-
-        List<String> coverageFiles = new ArrayList<String>();
-        final AccumulatorPathVisitor visitor = AccumulatorPathVisitor.withLongCounters(
-            WildcardFileFilter.builder().setWildcards("pass.html").get(), FileFilterUtils.trueFileFilter());
-
-        ltcov = new LTCoverageFile();
-        ltcov.setSource("Aggregated Coverage");
-        // Walk dir tree
-        Files.walkFileTree(root, visitor);
-        logger.atInfo().log("Found %d passed tests", visitor.getPathCounters().getFileCounter().get());
-        for(Path p :visitor.getFileList()) {
-            Path testPath = p.getParent();
-            logger.atInfo().log(testPath.toString());     
-            addToCoverageFrom(testPath.resolve("rca").resolve("ltcov.yaml"));
-        }   
-        yamlWriter.writeYaml(root.resolve("aggregateCov.yaml"), ltcov.getFunctionCodes());
         GenevaLog.closeLogger(LTCoverageAnalyser.class.getName());
 	}
 
 
-    private static void addToCoverageFrom(Path p) {
-        LTCoverageFile ltc = LtCoverageYamlReader.readYaml(p);
-        addToAggregate(ltc);
-    }
-
-    private static void addToAggregate(LTCoverageFile ltc) {
-        ltcov.aggregateFrom(ltc);
-    }
-
-    public void addDataFrom(LogicTable lt) {
+    public void addDataFrom(Path xltp, LogicTable lt) {
+        sources.add(xltp);
         Iterator<LTRecord> lti = lt.getIterator();
         while(lti.hasNext()) {
             LTRecord ltr = lti.next();
@@ -134,12 +109,54 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
         ltcov.hit(ltr);
     }
 
-    public void writeCoverageHTML(Path output) {
-        LtCoverageHtmlWriter.writeTo(output, ltcov.getFunctionCodes());
+    public void aggregateCoverage() {
+		String locroot = System.getProperty("user.dir");
+    	//locroot = locroot.replaceAll("^[Cc]:", "");
+    	locroot = locroot.replace("\\", "/");
+    	Path root = Paths.get(locroot);
+
+        Path aggPath = root.resolve("aggregateCov.yaml");
+        aggcov = new LTCoverageFile();
+
+        final AccumulatorPathVisitor visitor = AccumulatorPathVisitor.withLongCounters(
+            WildcardFileFilter.builder().setWildcards("pass.html").get(), FileFilterUtils.trueFileFilter());
+
+        aggFileInitRequired = true;
+        if(aggPath.toFile().exists()) { 
+            aggPath.toFile().delete();
+        }
+        // Walk dir tree
+        try {
+            Files.walkFileTree(root, visitor);
+            logger.atInfo().log("Found %d passed tests", visitor.getPathCounters().getFileCounter().get());
+            for(Path p :visitor.getFileList()) {
+                aggregateLTFromPath(p);
+            }   
+            
+            LtCoverageYamlWriter.writeYaml(root.resolve("aggregateCov.yaml"), aggcov);
+            LtCoverageHtmlWriter.writeTo(root.resolve("aggregateCov.html"), aggcov);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-    public void writeCoverageYAML(Path output) {
-        LtCoverageYamlWriter.writeYaml(output, ltcov.getFunctionCodes());
-     }
+    private static void aggregateLTFromPath(Path p) {
+        Path testPath = p.getParent();
+        logger.atInfo().log(testPath.toString());  
+        Path ltcovPath = testPath.resolve("rca").resolve("ltcov.yaml");
+        aggcov.addSource(ltcovPath);
+        if(aggFileInitRequired) {
+            aggcov.loadFrom(LtCoverageYamlReader.readYaml(ltcovPath));
+            aggFileInitRequired = false;
+        }  else {
+            aggcov.aggregateFrom(LtCoverageYamlReader.readYaml(ltcovPath));
+        }
+    }
+
+    public void writeResults(Path root) {
+        LtCoverageYamlWriter.writeYaml(root.resolve("ltcov.yaml"), ltcov);
+        LtCoverageHtmlWriter.writeTo(root.resolve("ltcov.html"), ltcov);
+    }
 
 }

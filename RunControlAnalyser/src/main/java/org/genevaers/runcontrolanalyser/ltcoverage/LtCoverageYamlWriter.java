@@ -10,9 +10,9 @@ public class LtCoverageYamlWriter {
 
     private static ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());;
     
-    public static void writeYaml(Path output, Map<String, LtCoverageEntry> map) {
+    public static void writeYaml(Path output, LTCoverageFile ltcovFile) {
         try {
-            yamlMapper.writeValue(output.toFile(), map);
+            yamlMapper.writeValue(output.toFile(), ltcovFile);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

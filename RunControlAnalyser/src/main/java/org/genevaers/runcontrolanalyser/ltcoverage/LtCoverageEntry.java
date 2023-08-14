@@ -111,6 +111,10 @@ public class LtCoverageEntry {
         return dts;
     }
 
+    public void addDataFrom(LtCoverageEntry srclte) {
+        hits += srclte.getHits();
+    }
+
 
     // Derive class to hold the argType list
     // of matrix
