@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.logging.Level;
 
 import org.genevaers.genevaio.ltfile.LogicTable;
@@ -54,6 +55,7 @@ class RunCompilerLookupTest extends RunCompilerBase {
     @BeforeEach
     public void initEach(TestInfo info){
         Repository.clearAndInitialise();
+        Repository.setGenerationTime(Calendar.getInstance().getTime());
         RecordParser.clearAndInitialise();
         java.nio.file.Path target = Paths.get("target/test-logs/");
         target.toFile().mkdirs();
