@@ -150,7 +150,7 @@ public class CommandLineHandler {
             flow.setTargetDirectory("rca");
             flow.generateFlowDataFrom(".", 
              true,  //default to generate csv
-            false,
+            true,
             ""
             );
         } catch (Exception e) {

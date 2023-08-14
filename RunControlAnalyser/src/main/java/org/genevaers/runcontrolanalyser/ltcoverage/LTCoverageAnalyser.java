@@ -145,12 +145,14 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
         Path testPath = p.getParent();
         logger.atInfo().log(testPath.toString());  
         Path ltcovPath = testPath.resolve("rca").resolve("ltcov.yaml");
-        aggcov.addSource(ltcovPath);
-        if(aggFileInitRequired) {
-            aggcov.loadFrom(LtCoverageYamlReader.readYaml(ltcovPath));
-            aggFileInitRequired = false;
-        }  else {
-            aggcov.aggregateFrom(LtCoverageYamlReader.readYaml(ltcovPath));
+        if(ltcovPath.toFile().exists()) {
+            aggcov.addSource(ltcovPath);
+            if(aggFileInitRequired) {
+                aggcov.loadFrom(LtCoverageYamlReader.readYaml(ltcovPath));
+                aggFileInitRequired = false;
+            }  else {
+                aggcov.aggregateFrom(LtCoverageYamlReader.readYaml(ltcovPath));
+            }
         }
     }
 
