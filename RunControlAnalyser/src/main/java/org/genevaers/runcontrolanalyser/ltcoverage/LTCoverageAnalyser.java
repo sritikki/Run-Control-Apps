@@ -134,6 +134,7 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
             }   
             
             LtCoverageYamlWriter.writeYaml(root.resolve("aggregateCov.yaml"), aggcov);
+            LtCoverageHtmlWriter.init();
             LtCoverageHtmlWriter.writeTo(root.resolve("aggregateCov.html"), aggcov);
         } catch (IOException e) {
             // TODO Auto-generated catch block
