@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class LTCoverageEntry1Arg extends LtCoverageEntry{
 
     private Map<String, Integer> typeHits = new TreeMap<>();
-    //private TypeHits typeHits = new TypeHits();
 
     public void setTypeHits(Map<String, Integer> typeHits) {
         this.typeHits = typeHits;

@@ -153,11 +153,14 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
             }  else {
                 aggcov.aggregateFrom(LtCoverageYamlReader.readYaml(ltcovPath));
             }
+        } else {
+            logger.atWarning().log("Test passed but not LTCov");  
         }
     }
 
     public void writeResults(Path root) {
         LtCoverageYamlWriter.writeYaml(root.resolve("ltcov.yaml"), ltcov);
+        LtCoverageHtmlWriter.init();
         LtCoverageHtmlWriter.writeTo(root.resolve("ltcov.html"), ltcov);
     }
 

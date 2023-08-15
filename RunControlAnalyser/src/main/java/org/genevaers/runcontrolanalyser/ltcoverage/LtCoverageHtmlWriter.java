@@ -20,20 +20,14 @@ import static j2html.TagCreator.th;
 import static j2html.TagCreator.title;
 import static j2html.TagCreator.tr;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-
-import org.genevaers.utilities.TestEnvironment;
-
-import j2html.tags.DomContent;
 import j2html.tags.specialized.DivTag;
 import j2html.tags.specialized.TableTag;
 import j2html.tags.specialized.TdTag;
@@ -68,19 +62,29 @@ public class LtCoverageHtmlWriter {
 			"}";
 
 	private static String SAFR_CSS;
-	
-	public static void main(String[] args) {
-  
-		System.out.println("Coverage Report Generator");
-		File rootDir = Paths.get(TestEnvironment.get("LOCALROOT")).toFile();;
-		LtCoverageHtmlWriter generator = new LtCoverageHtmlWriter();
- 		//generator.writeCoverageHTML(rootDir, "LTCov");
+
+	private static List<String> typeNames = new ArrayList<>();
+
+	public static void init() {
+		typeNames.add("ALPHANUMERIC");
+		typeNames.add("BCD");
+		typeNames.add("BINARY1");
+		typeNames.add("BINARY2");
+		typeNames.add("BINARY4");
+		typeNames.add("BINARY8");
+		typeNames.add("BSORT");
+		typeNames.add("EDITED");
+		typeNames.add("MASKED");
+		typeNames.add("PACKED");
+		typeNames.add("PSORT");
+		typeNames.add("SBINARY1");
+		typeNames.add("SBINARY2");
+		typeNames.add("SBINARY4");
+		typeNames.add("SPACKED");
+		typeNames.add("SZONED");
+		typeNames.add("ZONED");
 	}
-
-	private File accumulationFileName=null;
-
-	//private CoverageFile coverageFile;
-
+	
 	public void setCSSDir(String cssDir){
 		SAFR_CSS = cssDir;
 	}
@@ -185,42 +189,61 @@ public class LtCoverageHtmlWriter {
 					);
 		}
 		else {
-			return td(a("Show Type Matrix").withHref(getTypeHref(codeHits.getName())),
-					  getTypesMatrix((LTCoverageEntry2Args)codeHits) //((LTCoverageEntry2Args)codeHits).getTypeMatrixIterator())
-					  );
+			return td(
+						a("Show Type Matrix").withHref(getTypeHref(codeHits.getName())),
+					  	getTypesMatrix((LTCoverageEntry2Args)codeHits)
+					);
 		}
 	}
 
 	private static DivTag getTypesMatrix(LTCoverageEntry2Args codeHits) {
-		return div(
+		return 	div(
 					div(
 						header(
 								h2(
-								a(codeHits.getName() + " Type Hits").withHref(getTypeHref(codeHits.getName()))
-								.withClass("w3-button")
+										a(codeHits.getName() + " Type Hits").withHref(getTypeHref(codeHits.getName()))
+												.withClass("w3-button")
 								)
 						).withClass("w3-green"),
-						
+
 						table(
-						tbody(
-								getMatrixHeader(codeHits),
-								getMatrixRows(codeHits)
-						)).withClass("w3-table-all w3-small")
+								tbody(
+										getMatrixHeader(),
+										each(typeNames, t -> getMatrixRows(t, codeHits))
+								).withClass("w3-table-all w3-small")
+						)
 					).withClass(POPUP).withStyle("width:1500px")
 				).withId(codeHits.getName()).withStyle("display: none").withClass("w3-modal");
 	}
 
-	private static TrTag getMatrixRows(LTCoverageEntry2Args codeHits) {
-		return tr(
-					each(codeHits.getTypeHitsMatrix().entrySet(), es -> getMatrixRow(es))
+	private static TrTag getMatrixRows(String rowType, LTCoverageEntry2Args codeHits) {
+		return 	tr(
+			td(rowType),
+			each(typeNames, t -> getMatrixRow(t, codeHits.getRowForType(rowType))));
+	}
+
+
+	private static TdTag getMatrixRow(String ntryType, Map<String, Integer> row) {
+		return td(
+					getTypeEntryFromRow(ntryType, row)
 				);
 	}
 
-	private static TrTag getMatrixHeader(LTCoverageEntry2Args codeHits) {
-		Set<String> header = codeHits.getTypeHitsMatrix().keySet();
+
+	private static String getTypeEntryFromRow(String rowType, Map<String, Integer> row) {
+		String num = "";
+		if(row != null) {
+			Integer hits = row.get(rowType);
+			if(hits != null)
+				num =  hits.toString();
+		}
+		return num;
+	}
+
+	private static TrTag getMatrixHeader() {
 		return tr(
-					getColumnHeader("AAType"),
-					each(header, h -> getColumnHeader(h))
+					getColumnHeader("Type"),
+					each(typeNames, h -> getColumnHeader(h))
 				);
 	}
 
@@ -228,39 +251,25 @@ public class LtCoverageHtmlWriter {
 		return th(h).withClass("info");
 	}
 
-	private static TrTag getMatrixRow(Entry<String, TypeHits> es) {
-		return tr(
-				td(es.getKey()).withClass("info"),
-				getTypesRow(es.getValue())
-			);
-	}
-
-	private static TdTag getTypesRow(TypeHits typeHits) {
-		return td(Integer.toString(typeHits.getHits()))
-				.withCondClass(typeHits.getHits() == 0, NONE)
-				.withCondClass(typeHits.getHits() > 0, COVERED);
-	}
-
 	private static DivTag getTypeHits(LTCoverageEntry1Arg codeHits) {
 		return div(
-				div(
-					header(
-							h2(
-							a(codeHits.getName() + " Type Hits").withHref(getTypeHref(codeHits.getName()))
-							.withClass("w3-button")
-							)
-					).withClass("w3-green"),
-					
-					table(
-					tbody(
-							th("Type"),
-							th("Hits").withClass("info"),
-					        each(codeHits.getTypeHits().entrySet(), i -> getTypeRow(i))
-					)).withClass("w3-table-all w3-small")
-				).withClass(POPUP)
-			).withId(codeHits.getName()).withStyle("display: none").withClass("w3-modal");
-	}
+					div(
+						header(
+								h2(
+										a(codeHits.getName() + " Type Hits").withHref(getTypeHref(codeHits.getName()))
+												.withClass("w3-button")))
+								.withClass("w3-green"),
 
+						table(
+								tbody(
+										th("Type"),
+										th("Hits").withClass("info"),
+										each(codeHits.getTypeHits().entrySet(), i -> getTypeRow(i)))
+										.withClass("w3-table-all w3-small")
+						)
+					).withClass(POPUP).withStyle("width:300px")
+				).withId(codeHits.getName()).withStyle("display: none").withClass("w3-modal");
+	}
 
 	private static String getTypeHref(String name) {
 		return "javascript:toggleDiv(\"" + name + "\")";
@@ -297,13 +306,11 @@ public class LtCoverageHtmlWriter {
 			LTCoverageEntry1Arg f1 = (LTCoverageEntry1Arg)codeHits;
 			Iterator<Entry<String, Integer>> thi = f1.getTypeHitsIterator();
 			if(thi != null) {
-			while(thi.hasNext()) {
-				thi.next();
-				typeHits++;
+				while(thi.hasNext()) {
+					thi.next();
+					typeHits++;
+				}
 			}
-		} else {
-			int bang = 1;
-		}
 		}
 		return typeHits;
 	}
