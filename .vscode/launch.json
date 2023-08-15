@@ -22,11 +22,12 @@
         },
         {
             "type": "java",
-            "name": "Launch RCA",
+            "name": "Launch RCA aggregate",
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
             "projectName": "runcontrolanalyser",
-            "cwd": "/Users/IanCunningham/RTC64bit/PerfEngCpp/DebugBin32/formatTesting"
+            "cwd": "${workspaceFolder}/PETestFramework/out",
+            "args": "-c"
         },
         {
             "type": "java",
