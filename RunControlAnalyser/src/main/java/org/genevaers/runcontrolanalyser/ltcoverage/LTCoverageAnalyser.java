@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +120,7 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
     	Path root = Paths.get(locroot);
 
         Path aggPath = root.resolve("aggregateCov.yaml");
-        aggcov = new LTCoverageFile();
+        makeAggregationCoverage();
 
         final AccumulatorPathVisitor visitor = AccumulatorPathVisitor.withLongCounters(
             WildcardFileFilter.builder().setWildcards("pass.html").get(), FileFilterUtils.trueFileFilter());
@@ -142,6 +146,14 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
         }
     }
 
+    private void makeAggregationCoverage() {
+        aggcov = new LTCoverageFile();
+        aggcov.setLtcoverage("Aggregation");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        Date dt = Calendar.getInstance().getTime();
+        aggcov.setGenerationDate(dateFormat.format(dt));
+    }
+
     private static void aggregateLTFromPath(Path p) {
         Path testPath = p.getParent();
         logger.atInfo().log(testPath.toString());  
@@ -163,6 +175,13 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
         LtCoverageYamlWriter.writeYaml(root.resolve("ltcov.yaml"), ltcov);
         LtCoverageHtmlWriter.init();
         LtCoverageHtmlWriter.writeTo(root.resolve("ltcov.html"), ltcov);
+    }
+
+    public void setName(Path fileName) {
+        ltcov.setLtcoverage(fileName.toString());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        Date dt = Calendar.getInstance().getTime();
+        ltcov.setGenerationDate(dateFormat.format(dt) );
     }
 
 }

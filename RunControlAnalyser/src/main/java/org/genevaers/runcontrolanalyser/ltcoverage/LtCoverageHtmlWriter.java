@@ -98,7 +98,7 @@ public class LtCoverageHtmlWriter {
 					html(
 							head(
 									meta().withContent("text/html; charset=UTF-8"),
-									title("Function Code Coverage"),
+									title(ltcov.getLtcoverage() + "Function Code Coverage"),
 									link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/w3css/4/w3.css"),
 									link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/lib/w3-colors-flat.css"),
 									link().withRel("stylesheet").withType("text/css").withHref("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
@@ -106,9 +106,9 @@ public class LtCoverageHtmlWriter {
 							body(
 									div(
 											div(
-													h1("Function Code Coverage").withClass("w3-teal"),
+													h1(ltcov.getLtcoverage() + " Function Code Coverage").withClass("w3-teal"),
 													getSources(ltcov.getSources(), output),
-													h2("Data").withClass("w3-green"),
+													h2("Data Generated " + ltcov.getGenerationDate()).withClass("w3-green"),
 													functionCodeTable(ltcov.getFunctionCodes()).withClass("w3-col l10 m12"),
 											div().withClass("w3-col l2 m12")).withClass("w3-row")))
 					).renderFormatted());
@@ -120,23 +120,27 @@ public class LtCoverageHtmlWriter {
 	}
 
 	private static DivTag getSources(List<Path> list, Path output) {
-		return div(
-				div(
-					header(
-							h2(
-							a("Sources (click to toggle)").withHref(getTypeHref("Sources"))
-							.withClass("w3-button")
-							)
-					).withClass("w3-green"),
+		if(list.size() > 0) {
+			return div(
 					div(
-							table(
-							tbody(
-									tr(th("Source")),
-									each(list, e -> getSourceRow(e, output)
-							)).withClass("w3-table-all w3-small")
-						)
-					).withId("Sources").withStyle("display: none"))
-		);
+						header(
+								h2(
+								a("Sources (click to toggle)").withHref(getTypeHref("Sources"))
+								.withClass("w3-button")
+								)
+						).withClass("w3-green"),
+						div(
+								table(
+								tbody(
+										tr(th("Source")),
+										each(list, e -> getSourceRow(e, output)
+								)).withClass("w3-table-all w3-small")
+							)
+						).withId("Sources").withStyle("display: none"))
+			);
+		} {
+			return div();
+		}
 	}
 
 

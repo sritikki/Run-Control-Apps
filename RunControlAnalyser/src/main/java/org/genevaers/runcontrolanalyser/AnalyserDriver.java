@@ -171,6 +171,7 @@ public class AnalyserDriver {
     }
 
 	public void writeCoverageResults(Path root) {
+		ltCoverageAnalyser.setName(root.getFileName());
 		ltCoverageAnalyser.writeResults(root.resolve("rca"));
 	}
 
