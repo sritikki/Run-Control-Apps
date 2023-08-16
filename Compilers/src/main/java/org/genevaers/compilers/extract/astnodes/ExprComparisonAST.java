@@ -24,7 +24,9 @@ import java.util.Objects;
 
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFECEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFEEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLCEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonEmitter;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -82,8 +84,12 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
     public ExprComparisonAST() {
         type = ASTFactory.Type.EXPRCOMP;
         //Use static classes here?
+        emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LRFIELD), new CFEEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.NUMATOM), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.RUNDATE), new CFECEmitter());
+
+        emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
 
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.STRINGATOM), new CFLCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.NUMATOM), new CFLCEmitter());

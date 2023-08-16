@@ -340,8 +340,13 @@ public class FlowGenerator {
 			}
 		}
 		if(e2) {
-			LogicTableF2 dtl = (LogicTableF2)xtr;
-			addFieldLink(dtl.getArg2().getFieldId(), dtl.getColumnId(), false);				
+			if(xtr.getRecordType() ==  LtRecordType.F1){
+				LogicTableF1 f1 = (LogicTableF1)xtr;
+				addFieldLink(f1.getArg().getFieldId(), f1.getSuffixSeqNbr(), false);
+			} else if(xtr.getRecordType() ==  LtRecordType.F2){
+				LogicTableF2 f2 = (LogicTableF2)xtr;
+				addFieldLink(f2.getArg1().getFieldId(), f2.getSuffixSeqNbr(), false);
+			}
 		}
 		if(l1) {
 			if(xtr.getRecordType() ==  LtRecordType.F1){

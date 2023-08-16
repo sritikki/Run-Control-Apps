@@ -446,7 +446,7 @@ public class ExtractAST2Dot {
         ViewColumnSourceAstNode vcsn = (ViewColumnSourceAstNode) node;
         ViewColumnSource vcs = vcsn.getViewColumnSource();
         if (filter) {
-            if (cols.length > 1) {
+            if (cols.length > 0) {
                 nodeEnabled = Arrays.stream(cols).anyMatch(Integer.toString(vcs.getColumnNumber())::equals);
             } else {
                 nodeEnabled = true;

@@ -78,13 +78,14 @@ public class LTLogger {
 	private static final String ARGVALUES = "%4d %3d %s (%s/%d,%d %s)";
 	private static final String LEAD2GOTOS = "%-112s %s";
 	private static final String GOTOS = "%4d %4d";
-	private static final String AGOTO = "%-112s %4d";
+	private static final String AGOTO = "%-119s %4d";
 	private static final String OLDJOIN = " %d -> \"%s\" %d/%d"; // 3296 -> "1" 10203/10245
 	private static final String JOIN = " %d -> \"%s\""; // 3296 -> "1" C++ gets it wrong so use this
 	private static final String LUSM = "                                                         %5d %5d"; // 3296 ->
 																											// "1"
 																											// 10203/10245
 	private static final String ECCOMP = "%s%s  %s   %s";
+	private static final String EECOMP = "%s %s  %s %s %s";
 	private static final String DECLARATION = "%s Declare %s  = 0";
 	private static final String ASSIGNMENT = "%s %s  ->  %s";
 	private static final String CONSTASSIGNMENT = "%s %-47s  ->  %s";
@@ -163,6 +164,10 @@ public class LTLogger {
 				LogicTableF1 cf = (LogicTableF1) ltr;
 				return(String.format(ECCOMP, leadin, getFullArg(cf.getArg()), cf.getCompareType(),
 						" \"" + getArgValue(cf) + "\"", cf.getGotoRow1()));
+			case "CFEE":
+				LogicTableF2 cfee = (LogicTableF2) ltr;
+				return(String.format(EECOMP, leadin, getFullArg(cfee.getArg1()), cfee.getCompareType(),
+						getFullArg(cfee.getArg1()), getGotos(ltr)));
 			case "DIMN":
 			case "DIM4":
 				LogicTableName ln = (LogicTableName) ltr;

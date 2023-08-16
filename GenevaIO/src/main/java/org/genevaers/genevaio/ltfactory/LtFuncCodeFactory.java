@@ -164,9 +164,16 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFCE(String v, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFCE(String v, LRField f, String op) {
+        LogicTableF1 cfce = new LogicTableF1();
+        cfce.setRecordType(LtRecordType.F1);
+        cfce.setFunctionCode("CFCE");
+        LogicTableArg arg = getArgFromField(f);
+        cfce.setArg(arg);
+        arg.setValue(v);
+        arg.setValueLength(v.length());
+        cfce.setCompareType(getCompareType(op));
+        return cfce;
     }
 
     @Override
@@ -207,9 +214,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFEE(LRField f, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFEE(LRField f1, LRField f2, String op) {
+        LogicTableF2 dte = makeF2FromFieldAndField(f1, f2);
+        dte.setFunctionCode("CFEE");
+        return dte;
     }
 
     @Override
@@ -1517,6 +1525,19 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setJustifyId(key.getJustification());
         arg.setValueLength(0);
         arg.setPadding2("");  //This seems a little silly
+    }
+
+    private LogicTableF2 makeF2FromFieldAndField(LRField f1, LRField f2) {
+         LogicTableF2 ltf2 = new LogicTableF2();
+        // want a function to get a populated arg from the field
+        LogicTableArg arg1 = getArgFromField(f1);
+        ltf2.setRecordType(LtRecordType.F2);
+        ltf2.setArg1(arg1);
+        
+        LogicTableArg arg2 = getArgFromField(f2);
+        ltf2.setArg2(arg2);
+        ltf2.setCompareType(LtCompareType.EQ);
+        return ltf2;
     }
 
 
