@@ -84,6 +84,7 @@ public class LTLogger {
 	private static final String LUSM = "                                                         %5d %5d"; // 3296 ->
 																											// "1"
 																											// 10203/10245
+	private static final String CECOMP = "%s%-49s %s %s %s";
 	private static final String ECCOMP = "%s%s  %s   %s";
 	private static final String EECOMP = "%s %s  %s %s %s";
 	private static final String DECLARATION = "%s Declare %s  = 0";
@@ -160,6 +161,11 @@ public class LTLogger {
 			case "GOTO":
 				LogicTableF0 agoto = (LogicTableF0) ltr;
 				return(String.format(AGOTO, leadin, agoto.getGotoRow1()));
+			case "CFCE": {
+				LogicTableF1 cf = (LogicTableF1) ltr;
+				return(String.format(CECOMP, leadin, " \"" + getArgValue(cf) + "\"", cf.getCompareType(),
+						getFullArg(cf.getArg()) , getGotos(ltr)));
+			}
 			case "CFEC":
 				LogicTableF1 cf = (LogicTableF1) ltr;
 				return(String.format(ECCOMP, leadin, getFullArg(cf.getArg()), cf.getCompareType(),
