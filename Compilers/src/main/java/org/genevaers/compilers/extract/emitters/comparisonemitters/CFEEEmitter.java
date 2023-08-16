@@ -30,6 +30,7 @@ public class CFEEEmitter extends ComparisonEmitter{
     @Override
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        ltFact.setLogFileId(getLtEmitter().getFileId());
         LogicTableF2 cfee = (LogicTableF2) ltFact.getCFEE(((FieldReferenceAST) lhs).getRef(), ((FieldReferenceAST)rhs).getRef(), op);
         return cfee;
     }
