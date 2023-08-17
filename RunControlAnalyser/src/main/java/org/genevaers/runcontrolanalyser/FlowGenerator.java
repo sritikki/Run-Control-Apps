@@ -362,10 +362,17 @@ public class FlowGenerator {
 			}
 		}
 		if(l2) {
-			LogicTableF2 f2 = (LogicTableF2)xtr;
-			int  parentLRid = Repository.getFields().get(f2.getArg1().getFieldId()).getComponentId();
-			addParentREFRLR(parentLRid);
-			addRefFieldLink(f2.getArg1().getFieldId(), f2.getColumnId(), xtr.getFunctionCode().startsWith("SK"));				
+			if(xtr.getRecordType() ==  LtRecordType.F1){
+				LogicTableF1 f1 = (LogicTableF1)xtr;
+				int  parentLRid = Repository.getFields().get(f1.getArg().getFieldId()).getLrID();
+				addParentREFRLR(parentLRid);
+				addRefFieldLink(f1.getArg().getFieldId(), f1.getColumnId(), xtr.getFunctionCode().startsWith("SK"));				
+			} else if(xtr.getRecordType() ==  LtRecordType.F2){
+				LogicTableF2 f2 = (LogicTableF2)xtr;
+				int  parentLRid = Repository.getFields().get(f2.getArg1().getFieldId()).getComponentId();
+				addParentREFRLR(parentLRid);
+				addRefFieldLink(f2.getArg1().getFieldId(), f2.getColumnId(), xtr.getFunctionCode().startsWith("SK"));				
+			}
 		}
 	}
 

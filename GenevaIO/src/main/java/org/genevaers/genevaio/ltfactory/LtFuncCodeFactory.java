@@ -177,9 +177,16 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFCL(String v, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFCL(String v, LRField f, String op) {
+        LogicTableF1 cfcl = new LogicTableF1();
+        cfcl.setRecordType(LtRecordType.F1);
+        cfcl.setFunctionCode("CFCL");
+        LogicTableArg arg = getArgFromField(f);
+        cfcl.setArg(arg);
+        arg.setValue(v);
+        arg.setValueLength(v.length());
+        cfcl.setCompareType(getCompareType(op));
+        return cfcl;
     }
 
     @Override
@@ -222,9 +229,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFEL(LRField f, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFEL(LRField f1, LRField f2, String op) {
+        LogicTableF2 cfel = makeF2FromFieldAndField(f1, f2);
+        cfel.setFunctionCode("CFEL");
+        cfel.setCompareType(getCompareType(op));
+        return cfel;
     }
 
     @Override

@@ -161,7 +161,8 @@ public class LTLogger {
 			case "GOTO":
 				LogicTableF0 agoto = (LogicTableF0) ltr;
 				return(String.format(AGOTO, leadin, agoto.getGotoRow1()));
-			case "CFCE": {
+			case "CFCE": 
+			case "CFCL": {
 				LogicTableF1 cf = (LogicTableF1) ltr;
 				return(String.format(CECOMP, leadin, " \"" + getArgValue(cf) + "\"", cf.getCompareType(),
 						getFullArg(cf.getArg()) , getGotos(ltr)));
@@ -172,6 +173,7 @@ public class LTLogger {
 				return(String.format(ECCOMP, leadin, getFullArg(cf.getArg()), cf.getCompareType(),
 						" \"" + getArgValue(cf) + "\"", getGotos(ltr)));
 			case "CFEE":
+			case "CFEL":
 			case "CFLE":
 				LogicTableF2 cfee = (LogicTableF2) ltr;
 				return(String.format(EECOMP, leadin, getFullArg(cfee.getArg1()), cfee.getCompareType(),
