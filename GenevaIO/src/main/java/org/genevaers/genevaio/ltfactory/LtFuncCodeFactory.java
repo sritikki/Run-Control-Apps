@@ -215,9 +215,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFEE(LRField f1, LRField f2, String op) {
-        LogicTableF2 dte = makeF2FromFieldAndField(f1, f2);
-        dte.setFunctionCode("CFEE");
-        return dte;
+        LogicTableF2 cfee = makeF2FromFieldAndField(f1, f2);
+        cfee.setFunctionCode("CFEE");
+        cfee.setCompareType(getCompareType(op));
+        return cfee;
     }
 
     @Override
@@ -258,9 +259,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFLE(LRField f, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFLE(LRField f1, LRField f2, String op) {
+        LogicTableF2 cfle = makeF2FromFieldAndField(f1, f2);
+        cfle.setFunctionCode("CFLE");
+        cfle.setCompareType(getCompareType(op));
+        return cfle;
     }
 
     @Override
@@ -1495,6 +1498,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
             return LtCompareType.GE;
             case ">":
             return LtCompareType.GT;
+            case "<>":
+            return LtCompareType.NE;
             default:
             return LtCompareType.INVALID;
         }

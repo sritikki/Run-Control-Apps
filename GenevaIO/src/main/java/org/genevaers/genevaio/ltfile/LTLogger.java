@@ -76,7 +76,7 @@ public class LTLogger {
 
 	private static final String ARGLFLR = "%7d %7d %7d ";
 	private static final String ARGVALUES = "%4d %3d %s (%s/%d,%d %s)";
-	private static final String LEAD2GOTOS = "%-112s %s";
+	private static final String LEAD2GOTOS = "%-119s %s";
 	private static final String GOTOS = "%4d %4d";
 	private static final String AGOTO = "%-119s %4d";
 	private static final String OLDJOIN = " %d -> \"%s\" %d/%d"; // 3296 -> "1" 10203/10245
@@ -85,7 +85,7 @@ public class LTLogger {
 																											// "1"
 																											// 10203/10245
 	private static final String CECOMP = "%s%-49s %s %s %s";
-	private static final String ECCOMP = "%s%s  %s   %s";
+	private static final String ECCOMP = "%s%s   %s  %-46s %s";
 	private static final String EECOMP = "%s %s  %s %s %s";
 	private static final String DECLARATION = "%s Declare %s  = 0";
 	private static final String ASSIGNMENT = "%s %s  ->  %s";
@@ -167,13 +167,15 @@ public class LTLogger {
 						getFullArg(cf.getArg()) , getGotos(ltr)));
 			}
 			case "CFEC":
+			case "CFLC":
 				LogicTableF1 cf = (LogicTableF1) ltr;
 				return(String.format(ECCOMP, leadin, getFullArg(cf.getArg()), cf.getCompareType(),
-						" \"" + getArgValue(cf) + "\"", cf.getGotoRow1()));
+						" \"" + getArgValue(cf) + "\"", getGotos(ltr)));
 			case "CFEE":
+			case "CFLE":
 				LogicTableF2 cfee = (LogicTableF2) ltr;
 				return(String.format(EECOMP, leadin, getFullArg(cfee.getArg1()), cfee.getCompareType(),
-						getFullArg(cfee.getArg1()), getGotos(ltr)));
+						getFullArg(cfee.getArg2()), getGotos(ltr)));
 			case "DIMN":
 			case "DIM4":
 				LogicTableName ln = (LogicTableName) ltr;
