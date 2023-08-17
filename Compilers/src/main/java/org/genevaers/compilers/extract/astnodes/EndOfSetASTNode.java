@@ -2,7 +2,6 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.genevaio.ltfile.LogicTableF0;
-import org.genevaers.genevaio.ltfile.LogicTableWR;
 import org.genevaers.repository.components.enums.LtRecordType;
 
 /*
@@ -24,7 +23,6 @@ import org.genevaers.repository.components.enums.LtRecordType;
 
 
 import org.genevaers.repository.components.ViewSource;
-import org.genevaers.repository.components.enums.LtRecordType;
 
 public class EndOfSetASTNode extends ExtractBaseAST implements EmittableASTNode{
 

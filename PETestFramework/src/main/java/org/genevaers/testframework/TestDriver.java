@@ -249,10 +249,19 @@ public class TestDriver {
 		//cd to or run jmr91 from test dir 
 		CommandRunner cr = new CommandRunner();
 		try {
-			cr.run("jmr91.bat", localTest.toFile());
+			String mr91String;
+			String rcaString;
+			if(TestEnvironment.get("OSNAME").startsWith("Win")) {
+				mr91String = "jmr91.bat";
+				rcaString = "gersrca.bat";
+			} else {
+				mr91String = "jmr91";
+				rcaString = "gersrca";
+			}
+			cr.run(mr91String, localTest.toFile());
 			logger.atInfo().log(cr.getCmdOutput().toString());
 			cr.clear();
-			cr.run("gersrca.bat", localTest.toFile());
+			cr.run(rcaString, localTest.toFile());
 			logger.atInfo().log(cr.getCmdOutput().toString());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

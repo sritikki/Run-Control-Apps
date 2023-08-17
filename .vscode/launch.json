@@ -35,7 +35,7 @@
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
             "projectName": "runcontrolanalyser",
-            "cwd": "/Users/362415616/RunControlPlayPen"
+            "cwd": "${workspaceFolder}/../../RunControlPlayPen"
         },
         {
             "type": "java",
@@ -86,7 +86,7 @@
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolgenerator.App",
             "projectName": "runcontrolgenerator",
-            "cwd": "/Users/362415616/RunControlPlayPen"
+            "cwd": "${workspaceFolder}/../../RunControlPlayPen"
         },
         {
             "type": "java",
