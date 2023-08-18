@@ -237,9 +237,15 @@ public class TestDriver {
 		outxmlPath.toFile().mkdirs();
 		logger.atInfo().log("Make dir " + outxmlPath.toString());
 		Path xmlfile;
+		List<Substitution> substs = new ArrayList<Substitution>();
 		for (XMLFile xml : testToRun.getXmlfiles()) {
 			xmlfile = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName());
-			Files.copy(xmlfile, outxmlPath.resolve(xmlfile.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+
+			for (Replacement r : xml.getReplacements()) {
+				substs.add(new Substitution(r.getReplace(), r.getWith()));
+			}
+			FileProcessor.sed(xmlfile.toFile(), outxmlPath.resolve(xmlfile.getFileName()).toFile(), substs);
+			substs.clear();
 		}
 		Path configFolder = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("Config").resolve(testToRun.getFullName());
 		Files.copy(configFolder.resolve("MR91PARM"), localTest.resolve("MR91PARM.cfg"), StandardCopyOption.REPLACE_EXISTING);
