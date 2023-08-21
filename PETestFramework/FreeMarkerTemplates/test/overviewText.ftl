@@ -1,9 +1,9 @@
 <#-- 	<#macro RTC testResult>boo<#if testResult.RTC[0]??> (${testResult.RTC[0]})</#if></#macro> -->
 GenevaERS Test Results
 
-PM Build: ${env["PMHLQ"]}
+PM Build: ${env["GERS_ENV_HLQ"]}
 	Date: ${.now}
-	High Level Qualifier: ${env["TEST_HLQ"]}
+	High Level Qualifier: ${env["GERS_TEST_HLQ"]}
 	
 Categories
 ----------

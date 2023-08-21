@@ -31,7 +31,7 @@ public class ${spec.name} extends FMTest {
         <@ftp.connect />
         
 <#assign testDirectory = "${spec.category}/${spec.name}/${test.name}">        
-<#assign qualifiedTest = "${env['TEST_HLQ']}.${test.dataSet}">
+<#assign qualifiedTest = "${env['GERS_TEST_HLQ']}.${test.dataSet}">
 <#assign xmlFolder = "${env['LOCALROOT']}/xmlout/${testDirectory}">
         <@wbxml.generate test xmlFolder/>
 

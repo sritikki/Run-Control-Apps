@@ -65,7 +65,7 @@ public class TestDataGenerator  {
 
     // private boolean testNamesNotTooLong() {
     //     boolean lenOkay = true;
-    //         String qualifiedTest = envVars.get("TEST_HLQ");  //}.${spec.name}.${test.name}">
+    //         String qualifiedTest = envVars.get("GERS_TEST_HLQ");  //}.${spec.name}.${test.name}">
     //         for (GersTest t : spec.getTests()) {
     //             String fullName = qualifiedTest + "." + spec.getName() + "." + t.getName(); 
     //             if(spec.getName().length() > 8) {

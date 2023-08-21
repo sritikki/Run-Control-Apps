@@ -36,7 +36,7 @@ public class TestEnvironment {
     	locroot = locroot.replace("\\", "/");
 
 		getEnvVarOrDefault("LOCALROOT", locroot); 			
-		getEnvVarOrDefault("SPECFILELIST", "fmspeclist.xml"); 			
+		getEnvVarOrDefault("GERS_TEST_SPEC_FILE_LIST", "fmspeclist.xml"); 			
 		getEnvVarOrDefault("RUNTESTS", "N"); 			
 		getEnvVarOrDefault("CLEARLOCAL", "N"); 			
 		getEnvVarOrDefault("CLEARJUNIT", "Y"); 			
@@ -49,14 +49,14 @@ public class TestEnvironment {
 		String pmhlq;
 		if(buildToTest.isEmpty()) {
 			if(dataSet.isEmpty()) {
-				pmhlq = getEnvVarOrDefault("PMHLQ", "");		
+				pmhlq = getEnvVarOrDefault("GERS_ENV_HLQ", "");		
 			} else {
 				pmhlq = dataSet;
-				environmentVariables.put("PMHLQ", pmhlq);
+				environmentVariables.put("GERS_ENV_HLQ", pmhlq);
 			}
 		} else {
 			pmhlq = buildToTest;
-			environmentVariables.put("PMHLQ", pmhlq);			
+			environmentVariables.put("GERS_ENV_HLQ", pmhlq);			
 		}
 		if(getEnvVarOrDefault("PMLOAD", "").isEmpty()) {
 			environmentVariables.put("PMLOAD", pmhlq + ".GVBLOAD");
@@ -65,12 +65,12 @@ public class TestEnvironment {
 			environmentVariables.put("OVERRIDE", pmhlq + ".GVBLOAD");
 		}
 		getEnvVarOrDefault("VDPXSD", pmhlq + ".GVBXSD(GVBSVDP)");
-		getEnvVarOrDefault("TEST_HLQ", ""); 
-		getEnvVarOrDefault("DBSUB", "DM11");
-		getEnvVarOrDefault("DBSDSNL", "DSN.V11R1M0.SDSNLOAD"); 
-		getEnvVarOrDefault("DBSDSNE", "DSN.V11R1M0.SDSNEXIT");
-		getEnvVarOrDefault("DBRUNLD", "DSN111.RUNLIB.LOAD");
-		getEnvVarOrDefault("DBTIADP", "DSNTIA11");
+		getEnvVarOrDefault("GERS_TEST_HLQ", ""); 
+		getEnvVarOrDefault(" GERS_DB2_SUBSYSTEM", "DM11");
+		getEnvVarOrDefault("GERS_DB2_LOAD_LIB", "DSN.V11R1M0.SDSNLOAD"); 
+		getEnvVarOrDefault("GERS_DB2_EXIT_LIB", "DSN.V11R1M0.SDSNEXIT");
+		getEnvVarOrDefault("GERS_DB2_RUN_LIB", "DSN111.RUNLIB.LOAD");
+		getEnvVarOrDefault("  GERS_DB2_UTILITY", "DSNTIA11");
 		getEnvVarOrDefault("RUNOS", "ZOS"); 
 		getEnvVarOrDefault("TSO_SERVER", "sp13.svl.ibm.com");
 		getEnvVarOrDefault("OUTDIR", "out"); 

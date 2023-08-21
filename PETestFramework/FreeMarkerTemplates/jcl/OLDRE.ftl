@@ -7,8 +7,8 @@
 //*
 //JOBLIB   DD DISP=SHR,DSN=${env["OVERRIDE"]}
 //         DD DISP=SHR,DSN=${env["PMLOAD"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNL"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNE"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_LOAD_LIB"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_EXIT_LIB"]}
 <#include "../common/generation.ftl"/>
 //**********************************************************************
 //* PSTEP700 - DELETE THE FILE(S) CREATED IN NEXT STEP
@@ -22,7 +22,7 @@
 //SYSIN    DD *
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 <#list test.extractfiles as ext>
 <#if ext.workfile??>
  DELETE  <@qualifiedTest/>.OUTE.MR95.EXTR${ext.workfile?left_pad(3,"0")} PURGE
@@ -123,7 +123,7 @@ THRUCOL=${env.THRUCOL}
 //            DISP=SHR
 <#elseif evt.ddname??>
 //* Input from test input set
-//${evt.ddname} DD DSN=${env["TEST_HLQ"]}.INPUT.${evt.filename},
+//${evt.ddname} DD DSN=${env["GERS_TEST_HLQ"]}.INPUT.${evt.filename},
 //            DISP=SHR
 </#if>
 </#list>

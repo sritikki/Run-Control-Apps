@@ -93,9 +93,9 @@ public class MainMenu extends Menu{
     }
 
     private void showCommonSettings(StringBuilder menuStr) {
-        Menu.addMenuSummaryItem(menuStr, "Current SPECFILELIST",System.getenv("SPECFILELIST"),"");
-        Menu.addMenuSummaryItem(menuStr, "Current TEST_HLQ:", System.getenv("TEST_HLQ"), "");
-        Menu.addMenuSummaryItem(menuStr, "Current PMHLQ:", System.getenv("PMHLQ"), "");
+        Menu.addMenuSummaryItem(menuStr, "Current GERS_TEST_SPEC_FILE_LIST",System.getenv("GERS_TEST_SPEC_FILE_LIST"),"");
+        Menu.addMenuSummaryItem(menuStr, "Current GERS_TEST_HLQ:", System.getenv("GERS_TEST_HLQ"), "");
+        Menu.addMenuSummaryItem(menuStr, "Current GERS_ENV_HLQ:", System.getenv("GERS_ENV_HLQ"), "");
         for(MenuItem mi : menuItems) {
             if(mi instanceof MenuSetting) {
                 Menu.addMenuSummaryItem(menuStr, mi.getPrompt(), ((MenuSetting)mi).getValue(), mi.getComment());

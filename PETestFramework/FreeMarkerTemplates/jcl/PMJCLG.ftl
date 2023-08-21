@@ -1,6 +1,6 @@
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 <#assign extFiles = test.extractfiles?size>
 <#assign fmtFiles = test.formatfiles?size>
 <#if fmtFiles gt 0>

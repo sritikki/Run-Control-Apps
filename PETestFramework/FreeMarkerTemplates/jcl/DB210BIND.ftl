@@ -6,9 +6,9 @@
 //*
 //JOBLIB   DD DISP=SHR,DSN=${env["OVERRIDE"]}
 //         DD DISP=SHR,DSN=${env["PMLOAD"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNL"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNE"]}
-//         DD DISP=SHR,DSN=${env["DBRUNLD"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_LOAD_LIB"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_EXIT_LIB"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_RUN_LIB"]}
 //         DD DISP=SHR,DSN=CEE.SCEERUN
 //         DD DISP=SHR,DSN=CEE.SCEERUN2
 //         DD DISP=SHR,DSN=CBC.SCLBDLL
@@ -19,7 +19,7 @@
 //*   INSTBLD - INSTALL A BUILD OF THE PERFORMANCE ENGINE
 //*             INTO AN ENVIRONMENT
 //*
-//*   NOTE: SETUP FOR ${env["TEST_HLQ"]}
+//*   NOTE: SETUP FOR ${env["GERS_TEST_HLQ"]}
 //*
 //*   copied from CC 26 Aug 2016
 //*********************************************************************
@@ -29,15 +29,15 @@
 //*
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 //FREEPLAN EXEC PGM=IKJEFT01
 //*
-//STEPLIB  DD DISP=SHR,DSN=${env["DBSDSNL"]}
+//STEPLIB  DD DISP=SHR,DSN=${env["GERS_DB2_LOAD_LIB"]}
 //*
 //SYSTSPRT DD SYSOUT=*
 //*
 //SYSTSIN  DD *
- DSN SYSTEM(${env["DBSUB"]})
+ DSN SYSTEM(${env[" GERS_DB2_SUBSYSTEM"]})
   FREE PLAN(GVBMRDV)
   FREE PLAN(GVBMRCT)
   FREE PLAN(GVBMRSQ)
@@ -62,23 +62,23 @@ ${env["TEST_HLQ"]}.${test.dataSet}</#macro>
 //*
 //BINDPLAN EXEC PGM=IKJEFT1A
 //*
-//STEPLIB  DD DISP=SHR,DSN=${env["DBSDSNL"]}
+//STEPLIB  DD DISP=SHR,DSN=${env["GERS_DB2_LOAD_LIB"]}
 //*
-//DBRMLIB  DD DSN=${env["PMHLQ"]}.GVBDBRM,
+//DBRMLIB  DD DSN=${env["GERS_ENV_HLQ"]}.GVBDBRM,
 //            DISP=SHR
 //*
 //SYSTSPRT DD SYSOUT=*
 //*
 //SYSTSIN  DD *
- DSN SYSTEM(${env["DBSUB"]})
+ DSN SYSTEM(${env[" GERS_DB2_SUBSYSTEM"]})
   BIND PLAN(GVBMRDV) MEM(GVBMRDV) ACT(REP) ISOLATION(CS) -
-  LIB('${env["PMHLQ"]}.GVBDBRM') QUALIFIER(SDATRT01) -
+  LIB('${env["GERS_ENV_HLQ"]}.GVBDBRM') QUALIFIER(SDATRT01) -
   OWNER(SDATRT01)
   BIND PLAN(GVBMRCT) MEM(GVBMRCT) ACT(REP) ISOLATION(CS) -
-  LIB('${env["PMHLQ"]}.GVBDBRM') QUALIFIER(SDATRT01) -
+  LIB('${env["GERS_ENV_HLQ"]}.GVBDBRM') QUALIFIER(SDATRT01) -
   OWNER(SDATRT01)
   BIND PLAN(GVBMRSQ) MEM(GVBMRSQ) ACT(REP) ISOLATION(CS) -
-  LIB('${env["PMHLQ"]}.GVBDBRM') QUALIFIER(SDATRT01) -
+  LIB('${env["GERS_ENV_HLQ"]}.GVBDBRM') QUALIFIER(SDATRT01) -
   OWNER(SDATRT01)
 //*
 //*********************************************************************
@@ -95,16 +95,16 @@ ${env["TEST_HLQ"]}.${test.dataSet}</#macro>
 //*
 //GRNTPLAN EXEC PGM=IKJEFT1A,DYNAMNBR=20
 //*
-//STEPLIB  DD DISP=SHR,DSN=${env["DBSDSNE"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNL"]}
+//STEPLIB  DD DISP=SHR,DSN=${env["GERS_DB2_EXIT_LIB"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_LOAD_LIB"]}
 //*
 //SYSTSPRT DD SYSOUT=*
 //SYSPRINT DD SYSOUT=*
 //*
 //SYSTSIN  DD *
-  DSN SYSTEM(${env["DBSUB"]}) RETRY(0) TEST(0)
-  RUN PROGRAM(DSNTIAD) PLAN(${env["DBTIADP"]}) -
-  LIB('${env["DBRUNLD"]}')
+  DSN SYSTEM(${env[" GERS_DB2_SUBSYSTEM"]}) RETRY(0) TEST(0)
+  RUN PROGRAM(DSNTIAD) PLAN(${env["  GERS_DB2_UTILITY"]}) -
+  LIB('${env["GERS_DB2_RUN_LIB"]}')
 /*
 //SYSIN    DD  *
  SET CURRENT SQLID='SDATRT01';

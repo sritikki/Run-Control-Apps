@@ -31,7 +31,7 @@ tests:
   xmlfiles:
   - name: "date_formats[1483].xml"
   #List of input data sets - for the moment called event files
-  #the filename is relative to the TEST_HLQ.INPUT
+  #the filename is relative to the GERS_TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
   eventfiles:
   - ddname: "SRCEGEN" #needs to match what is in the PF DDName

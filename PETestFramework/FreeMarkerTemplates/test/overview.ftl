@@ -59,7 +59,7 @@
 			<div class="w3-col s12">
 				<div class="w3-card-4" id="RunDetails" style="display: block;">
 					<header class="w3-container w3-green">
-						<h2>PM Build: ${env["PMHLQ"]}</h2>
+						<h2>PM Build: ${env["GERS_ENV_HLQ"]}</h2>
 					</header>
 					<div class="w3-container">
 						<h4>Date: ${.now}</h4>
@@ -85,7 +85,7 @@
 						</h4>
 					</div>
 					<footer class="w3-container w3-green">
-						<h3>High Level Qualifier: ${env["TEST_HLQ"]}</h3>
+						<h3>High Level Qualifier: ${env["GERS_TEST_HLQ"]}</h3>
 					</footer>
 			</div>
 	<#-- Show/Hide toggle Divs for each category -->

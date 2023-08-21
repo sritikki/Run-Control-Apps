@@ -21,7 +21,7 @@
 //*
 //SYSIN     DD *
 <#macro qualifiedTest>
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
  DELETE  <@qualifiedTest/>.MR91.JLT PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */

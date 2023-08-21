@@ -24,7 +24,7 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 public class TestEnvironment {
-	private static final String PMHLQ2 = "PMHLQ";
+	private static final String GERS_ENV_HLQ2 = "GERS_ENV_HLQ";
 	private static final String OVERRIDE = "OVERRIDE";
 	private static final String GVBLOAD = ".GVBLOAD";
 
@@ -44,7 +44,7 @@ public class TestEnvironment {
 		locroot = locroot.replace("\\", "/");
 
 		getEnvVarOrDefault("LOCALROOT", locroot);
-		getEnvVarOrDefault("SPECFILELIST", "fmspeclist.yaml");
+		getEnvVarOrDefault("GERS_TEST_SPEC_FILE_LIST", "fmspeclist.yaml");
 		getEnvVarOrDefault("RUNTESTS", "N");
 		getEnvVarOrDefault("CLEARLOCAL", "N");
 		getEnvVarOrDefault("CLEARJUNIT", "Y");
@@ -56,14 +56,14 @@ public class TestEnvironment {
 		String pmhlq;
 		if (buildToTest.isEmpty()) {
 			if (dataSet.isEmpty()) {
-				pmhlq = getEnvVarOrDefault(PMHLQ2, "");
+				pmhlq = getEnvVarOrDefault(GERS_ENV_HLQ2, "");
 			} else {
 				pmhlq = dataSet;
-				environmentVariables.put(PMHLQ2, pmhlq);
+				environmentVariables.put(GERS_ENV_HLQ2, pmhlq);
 			}
 		} else {
 			pmhlq = buildToTest;
-			environmentVariables.put(PMHLQ2, pmhlq);
+			environmentVariables.put(GERS_ENV_HLQ2, pmhlq);
 		}
 		if (getEnvVarOrDefault("PMLOAD", "").isEmpty()) {
 			environmentVariables.put("PMLOAD", pmhlq + GVBLOAD);
@@ -74,12 +74,12 @@ public class TestEnvironment {
 			environmentVariables.put(OVERRIDE, getEnvVarOrDefault(OVERRIDE, "") + GVBLOAD);
 		}
 		getEnvVarOrDefault("VDPXSD", pmhlq + ".GVBXSD(GVBSVDP)");
-		getEnvVarOrDefault("TEST_HLQ", "");
-		getEnvVarOrDefault("DBSUB", "DM12");
-		getEnvVarOrDefault("DBSDSNL", "DSN.V12R1M0.SDSNLOAD");
-		getEnvVarOrDefault("DBSDSNE", "DSN.V12R1M0.SDSNEXIT");
-		getEnvVarOrDefault("DBRUNLD", "DSN121.RUNLIB.LOAD");
-		getEnvVarOrDefault("DBTIADP", "DSNTIA12");
+		getEnvVarOrDefault("GERS_TEST_HLQ", "");
+		getEnvVarOrDefault(" GERS_DB2_SUBSYSTEM", "DM12");
+		getEnvVarOrDefault("GERS_DB2_LOAD_LIB", "DSN.V12R1M0.SDSNLOAD");
+		getEnvVarOrDefault("GERS_DB2_EXIT_LIB", "DSN.V12R1M0.SDSNEXIT");
+		getEnvVarOrDefault("GERS_DB2_RUN_LIB", "DSN121.RUNLIB.LOAD");
+		getEnvVarOrDefault("  GERS_DB2_UTILITY", "DSNTIA12");
 		getEnvVarOrDefault("RUNOS", "ZOS");
 		getEnvVarOrDefault("TSO_SERVER", "sp13.svl.ibm.com");
 		getEnvVarOrDefault("OUTDIR", "out");

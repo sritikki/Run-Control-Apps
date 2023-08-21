@@ -10,7 +10,7 @@
 <#include "../common/generation.ftl"/>
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 <#assign extFiles = test.extractfiles?size>
 <#assign fmtFiles = test.formatfiles?size>
 <#if fmtFiles gt 0>
@@ -63,7 +63,7 @@ ${env["TEST_HLQ"]}.${test.dataSet}</#macro>
 </#list>
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 //*********************************************************************
 //* PSTEP205 - SUMMARIZE AND FORMAT VIEWS
 //*

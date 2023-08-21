@@ -30,7 +30,7 @@ tests:
   xmlfiles:
   - name: "Demo/Demo_Open_Source[38].xml"
   #List of input data sets - for the moment called event files
-  #the filename is relative to the TEST_HLQ.INPUT
+  #the filename is relative to the GERS_TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
   eventfiles:
   - ddname: "ORDIT001" #needs to match what is in the PF DDName

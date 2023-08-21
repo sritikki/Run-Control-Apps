@@ -7,14 +7,14 @@
 
 <#macro clearDatasets spec test>
         // clear out existing datasets
-        String destQual = "//" + "${env["TEST_HLQ"]}.${test.dataSet}";
+        String destQual = "//" + "${env["GERS_TEST_HLQ"]}.${test.dataSet}";
         session.deleteDatasetsUnder(destQual);
 </#macro>
 
 <#macro transferXMLs spec test>
         // transfer the XML files to the mainframe PDS
         session.setDCB("track", "100", "100", "VB", "1000");
-        session.putPDS(xmlDir, "//" + "${env["TEST_HLQ"]}.${test.dataSet}" + ".MR91.XMLS");
+        session.putPDS(xmlDir, "//" + "${env["GERS_TEST_HLQ"]}.${test.dataSet}" + ".MR91.XMLS");
 </#macro>
 
 <#macro transferConfigAndJCL testDirectory qualifiedTest>

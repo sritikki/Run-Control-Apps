@@ -10,7 +10,7 @@
 <#include "../common/generation.ftl"/>
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 //*                                                                      
 //*********************************************************************  
 //*                                                                      

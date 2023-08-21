@@ -6,8 +6,8 @@
 //*
 //JOBLIB   DD DISP=SHR,DSN=${env["OVERRIDE"]}
 //         DD DISP=SHR,DSN=${env["PMLOAD"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNL"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNE"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_LOAD_LIB"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_EXIT_LIB"]}
 <#include "../common/generation.ftl"/>
 //*********************************************************************
 //*   DELETE DATA SETS
@@ -20,7 +20,7 @@
 //SYSIN     DD *
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
  DELETE  <@qualifiedTest/>.MR91.JLT PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */

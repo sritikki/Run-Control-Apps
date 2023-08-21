@@ -17,4 +17,4 @@ OUTPUT_RUN_CONTROL_FILES=Y
 TRACE=Y       
 
 #All environment vars...
-HLQ=${env["TEST_HLQ"]}
+HLQ=${env["GERS_TEST_HLQ"]}

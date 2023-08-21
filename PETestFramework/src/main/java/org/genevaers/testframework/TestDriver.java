@@ -96,7 +96,7 @@ public class TestDriver {
 	}
 
 	private static void putEventFiles() throws Exception {
-		String testHLQ = TestEnvironment.get("TEST_HLQ");
+		String testHLQ = TestEnvironment.get("GERS_TEST_HLQ");
 		if(testHLQ.equalsIgnoreCase("LOCAL")) {
         	logger.atInfo().log("Local testing");
 		} else {
@@ -142,19 +142,19 @@ public class TestDriver {
 
 	private static boolean envVariablesAreValid() {
 		boolean valid = true;
-		if (TestEnvironment.get("TEST_HLQ").isEmpty()) {
-			logger.atSevere().log("TEST_HLQ is empty. We need an HLQ");
+		if (TestEnvironment.get("GERS_TEST_HLQ").isEmpty()) {
+			logger.atSevere().log("GERS_TEST_HLQ is empty. We need an HLQ");
 			valid = false;
 		}
-		if (TestEnvironment.get("PMHLQ").isEmpty()) {
-			logger.atSevere().log("PMHLQ is empty. We need an HLQ");
+		if (TestEnvironment.get("GERS_ENV_HLQ").isEmpty()) {
+			logger.atSevere().log("GERS_ENV_HLQ is empty. We need an HLQ");
 			valid = false;
 		}
 		return valid;
 	}
 
 	private static void checkExistsAndProcessSpeclist() throws Exception {
-		String specFileListName = TestEnvironment.get("SPECFILELIST");
+		String specFileListName = TestEnvironment.get("GERS_TEST_SPEC_FILE_LIST");
 		if (specFileListName != null) {
 			File specFileList = new File(TestEnvironment.get(LOCALROOT) + File.separator + specFileListName);
 			if (!specFileList.exists()) {
@@ -194,7 +194,7 @@ public class TestDriver {
 	public static void runTest(GersTest testToRun) throws IOException {
         logger.atInfo().log("Running test '%s'", testToRun.getName());
 
-		String testHLQ = TestEnvironment.get("TEST_HLQ");
+		String testHLQ = TestEnvironment.get("GERS_TEST_HLQ");
 		String testDataset = testHLQ + "." + testToRun.getDataSet();
 		TestDataGenerator.applyTemplatesToTest(testToRun);
 		if ( testHLQ.equalsIgnoreCase("LOCAL"))  {
@@ -566,7 +566,7 @@ public class TestDriver {
 			found = true; //No output files to get
 		} else {
 			String outFile = null;
-			String datasetBase = "//'" + TestEnvironment.get("TEST_HLQ") + "." + testToRun.getDataSet() + ".";
+			String datasetBase = "//'" + TestEnvironment.get("GERS_TEST_HLQ") + "." + testToRun.getDataSet() + ".";
 			String dataset;
 			if (testToRun.getFormatfiles().size() > 0) {
 				for (OutputFile f : testToRun.getFormatfiles()) {

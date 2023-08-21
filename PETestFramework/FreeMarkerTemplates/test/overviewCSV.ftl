@@ -4,9 +4,9 @@
 <#assign aTime = aDateTime?time>
 GenevaERS Test Results
 
-PM Build: ${env["PMHLQ"]}	
+PM Build: ${env["GERS_ENV_HLQ"]}	
 Date: ${aDate?iso_utc} ${aTime?iso_utc}
-High Level Qualifier: ${env["TEST_HLQ"]}
+High Level Qualifier: ${env["GERS_TEST_HLQ"]}
 	
 Category,Test Spec,Test,Result
 <#list categories as cat>

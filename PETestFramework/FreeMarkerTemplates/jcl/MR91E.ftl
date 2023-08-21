@@ -7,8 +7,8 @@
 //*
 //JOBLIB   DD DISP=SHR,DSN=${env["OVERRIDE"]}
 //         DD DISP=SHR,DSN=${env["PMLOAD"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNL"]}
-//         DD DISP=SHR,DSN=${env["DBSDSNE"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_LOAD_LIB"]}
+//         DD DISP=SHR,DSN=${env["GERS_DB2_EXIT_LIB"]}
 <#if test.exitload??>
 //         DD DISP=SHR,DSN=${test.exitload}
 </#if>
@@ -25,7 +25,7 @@
 //SYSIN    DD *
 <#macro qualifiedTest>
 <#-- To avoid the line break at the end I butted up the closing tag -->
-${env["TEST_HLQ"]}.${test.dataSet}</#macro>
+${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 <#list test.extractfiles as ext>
 <#if ext.dsn??>
  DELETE  ${ext.dsn} PURGE
@@ -145,7 +145,7 @@ THRUCOL=${env.THRUCOL}
 //            DISP=SHR
 <#elseif evt.ddname??>
 //* Input from test input set
-//${evt.ddname} DD DSN=${env["TEST_HLQ"]}.INPUT.${evt.filename},
+//${evt.ddname} DD DSN=${env["GERS_TEST_HLQ"]}.INPUT.${evt.filename},
 //            DISP=SHR
 </#if>
 </#list>

@@ -20,10 +20,10 @@
 		<h1>Test Framework Message Coverage</h1>
         <div>
             <h2>
-                PM Build: ${env["PMHLQ"]}
+                PM Build: ${env["GERS_ENV_HLQ"]}
             </h2>
             <h2>
-                High Level Qualifier: ${env["TEST_HLQ"]}
+                High Level Qualifier: ${env["GERS_TEST_HLQ"]}
             </h2>
             <h2>
                 Date: ${.now}
