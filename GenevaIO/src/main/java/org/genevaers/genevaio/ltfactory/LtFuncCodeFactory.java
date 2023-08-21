@@ -140,8 +140,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFAL(String accum, LRField f, String op) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 cfal = makeNameF1FromAccumAndField(accum, f);
+        cfal.setFunctionCode("CFAL");
+        cfal.setCompareType(getCompareType(op));
+        return cfal;
     }
 
     @Override
