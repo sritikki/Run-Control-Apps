@@ -126,29 +126,32 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAC");
         cfac.setValue(rhs);
         cfac.setTableName(accum);
+        cfac.setCompareType(getCompareType(op));
         return cfac; 
     }
 
     @Override
-    public LTFileObject getCFAE(String accum, LRField f) {
+    public LTFileObject getCFAE(String accum, LRField f, String op) {
+        LogicTableNameF1 cfae = makeNameF1FromAccumAndField(accum, f);
+        cfae.setFunctionCode("CFAE");
+        cfae.setCompareType(getCompareType(op));
+        return cfae;
+    }
+
+    @Override
+    public LTFileObject getCFAL(String accum, LRField f, String op) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public LTFileObject getCFAL(String accum, LRField f) {
+    public LTFileObject getCFAP(String accum, LRField f, String op) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public LTFileObject getCFAP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public LTFileObject getCFAX(String accum, LRField f) {
+    public LTFileObject getCFAX(String accum, LRField f, String op) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -204,7 +207,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFEA(String accum, LRField f) {
+    public LTFileObject getCFEA(String accum, LRField f, String op) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -251,7 +254,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFLA(String accum, LRField f) {
+    public LTFileObject getCFLA(String accum, LRField f, String op) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -296,7 +299,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFPA(String accum, LRField f) {
+    public LTFileObject getCFPA(String accum, LRField f, String op) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -332,7 +335,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFXA(String accum, LRField f) {
+    public LTFileObject getCFXA(String accum, LRField f, String op) {
         // TODO Auto-generated method stub
         return null;
     }

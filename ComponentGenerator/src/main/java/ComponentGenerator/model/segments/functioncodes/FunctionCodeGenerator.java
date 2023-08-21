@@ -182,9 +182,11 @@ public class FunctionCodeGenerator  extends GeneratorBase {
         // What about an ADDX the X is a column ref
         String func = c.getFunctionCode().substring(0,2);
         if(func.equals("DT") || func.equals("CT") || func.equals("SK")) {        
-            return getFunctionName(c) + "(String accum, ViewColumn vc)"; // {" + getBody() + "    }" ;
+            return getFunctionName(c) + "(String accum, ViewColumn vc)";
+        } else if(func.equals("CF")) {        
+            return getFunctionName(c) + "(String accum, LRField f, String op)";
         } else {
-            return getFunctionName(c) + "(String accum, LRField f)"; // {" + getBody() + "    }" ;
+            return getFunctionName(c) + "(String accum, LRField f)";
         }
     }
 
