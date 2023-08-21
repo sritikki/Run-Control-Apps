@@ -13,8 +13,14 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-mvn install:install-file -Dfile=$GERS_JARS/db2jcc4.jar -DgroupId=com.ibm -DartifactId=db2jcc4 -Dversion=4 -Dpackaging=jar
-mvn install:install-file -Dfile=$GERS_JARS/db2jcc_license_cu.jar -DgroupId=com.ibm -DartifactId=db2jcc_license_cu -Dversion=4 -Dpackaging=jar
-mvn install:install-file -Dfile=$GERS_JARS/db2jcc_license_cisuz.jar -DgroupId=com.ibm -DartifactId=db2jcc_license_cisuz -Dversion=4 -Dpackaging=jar
-mvn install:install-file -Dfile=$GERS_JARS/isfjcall.jar -DgroupId=com.ibm.zos -DartifactId=sdsf -Dversion=2.4 -Dpackaging=jar
-mvn install:install-file -Dfile=$GERS_JARS/ibmjzos.jar -DgroupId=com.ibm -DartifactId=jzos -Dversion=2.4.8 -Dpackaging=jar
+if [ ! -f "~.m2\repository\com\ibm\jzos\2.4.8\ibmjzos.jar" ]; 
+then
+    echo "installing jars in repository"
+    mvn install:install-file -Dfile=$GERS_JARS/db2jcc4.jar -DgroupId=com.ibm -DartifactId=db2jcc4 -Dversion=4 -Dpackaging=jar
+    mvn install:install-file -Dfile=$GERS_JARS/db2jcc_license_cu.jar -DgroupId=com.ibm -DartifactId=db2jcc_license_cu -Dversion=4 -Dpackaging=jar
+    mvn install:install-file -Dfile=$GERS_JARS/db2jcc_license_cisuz.jar -DgroupId=com.ibm -DartifactId=db2jcc_license_cisuz -Dversion=4 -Dpackaging=jar
+    mvn install:install-file -Dfile=$GERS_JARS/isfjcall.jar -DgroupId=com.ibm.zos -DartifactId=sdsf -Dversion=2.4 -Dpackaging=jar
+    mvn install:install-file -Dfile=$GERS_JARS/ibmjzos.jar -DgroupId=com.ibm -DartifactId=jzos -Dversion=2.4.8 -Dpackaging=jar
+else
+    echo "Jars in maven repository"
+fi
