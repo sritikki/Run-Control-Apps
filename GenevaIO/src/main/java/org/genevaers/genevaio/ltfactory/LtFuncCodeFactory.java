@@ -148,8 +148,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFAP(String accum, LRField f, String op) {
-        // TODO Auto-generated method stub
-        return null;
+       LogicTableNameF1 cfap = makeNameF1FromAccumAndField(accum, f);
+        cfap.setFunctionCode("CFAP");
+        cfap.setCompareType(getCompareType(op));
+        return cfap;
     }
 
     @Override
