@@ -24,6 +24,7 @@ import java.util.Objects;
 
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFACEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCLEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFECEmitter;
@@ -104,6 +105,8 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
 
         
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.LRFIELD), new CFLEEmitter());
+
+        emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.NUMATOM), new CFACEmitter());
     }
 
     @Override
@@ -116,7 +119,6 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         applyComparisonRules(op, lhsin, rhsin);
         if(ltfo != null) {
             ltEmitter.addToLogicTable((LTRecord)ltfo);
-            emitChildNodes();
 
             goto1 = ltEmitter.getNumberOfRecords();
             ((LTRecord)ltfo).setGotoRow1(goto2);

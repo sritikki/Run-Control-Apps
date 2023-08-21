@@ -116,15 +116,17 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFAA(String accum, String rhsAccum) {
+    public LTFileObject getCFAA(String accum, String rhsAccum, String op) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public LTFileObject getCFAC(String accum, String rhsAccum) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFAC(String accum, String rhs, String op) {
+        LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAC");
+        cfac.setValue(rhs);
+        cfac.setTableName(accum);
+        return cfac; 
     }
 
     @Override
@@ -152,7 +154,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFCA(String accum, String rhsAccum) {
+    public LTFileObject getCFCA(String accum, String rhsAccum, String op) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -1514,13 +1516,13 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         }
     }
 
-    private LogicTableNameValue makeNameValueFromAccum(String rhsAccum, String fc) {
+    private LogicTableNameValue makeNameValueFromAccum(String accum, String fc) {
         LogicTableNameValue arithfn = new LogicTableNameValue();
         arithfn.setRecordType(LtRecordType.NAMEVALUE);
         arithfn.setFunctionCode(fc);
         arithfn.setTableName(accumName);
-        arithfn.setValue(rhsAccum);
-        arithfn.setValueLength(rhsAccum.length()); //More to think of here for Cookies
+        arithfn.setValue(accum);
+        arithfn.setValueLength(accum.length()); //More to think of here for Cookies
         arithfn.setCompareType(LtCompareType.EQ);
         return arithfn;
     }

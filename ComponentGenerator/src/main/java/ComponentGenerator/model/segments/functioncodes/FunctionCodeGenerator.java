@@ -189,7 +189,15 @@ public class FunctionCodeGenerator  extends GeneratorBase {
     }
 
     private String processNameValue(FunctionCodeDefinition c) {
-        return getFunctionName(c) + "(String accum, String rhsAccum)"; //{" + getBody() + "    }" ;
+        String fcname = getFunctionName(c);
+        String nvfc; 
+        if(c.getFunctionCode().startsWith("CF")) {
+            nvfc = fcname + "(String accum, String rhs, String op)";
+        } else {
+            nvfc = fcname + "(String accum, String rhs)";
+        }
+
+        return  nvfc;
     }
 
     private String getFunctionName(FunctionCodeDefinition c) {
