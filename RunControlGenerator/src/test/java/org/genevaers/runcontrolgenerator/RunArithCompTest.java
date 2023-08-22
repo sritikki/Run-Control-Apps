@@ -116,5 +116,11 @@ class RunArithCompTest extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
 
+    @Test void testCFAX() {
+        LogicTable xlt = runFromXMLOverrideLogic(10689, TestHelper.CFAX_TEST, "");
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "CFAX" };
+        int expectedGotos[][] = {{8,9,11},{10,12,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(5, expected, expectedGotos, xlt);
+    }
 
 }

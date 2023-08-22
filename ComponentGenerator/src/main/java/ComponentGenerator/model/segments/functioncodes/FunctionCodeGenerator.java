@@ -180,11 +180,22 @@ public class FunctionCodeGenerator  extends GeneratorBase {
     private String processNameF1(FunctionCodeDefinition c) {
         //The second arg may be a field or view column
         // What about an ADDX the X is a column ref
-        String func = c.getFunctionCode().substring(0,2);
+        String fc = c.getFunctionCode();
+        String func = fc.substring(0,2);
         if(func.equals("DT") || func.equals("CT") || func.equals("SK")) {        
             return getFunctionName(c) + "(String accum, ViewColumn vc)";
-        } else if(func.equals("CF")) {        
-            return getFunctionName(c) + "(String accum, LRField f, String op)";
+        } else if(fc.startsWith("CFA")) {
+            if(fc.charAt(3) == 'X') {
+                return getFunctionName(c) + "(String accum, ViewColumn vc, String op)";
+            } else {        
+                return getFunctionName(c) + "(String accum, LRField f, String op)";
+            }
+        } else if(fc.startsWith("CF")) {
+            if(fc.charAt(2) == 'X') {
+                return getFunctionName(c) + "(String accum, ViewColumn vc, String op)";
+            } else {        
+                return getFunctionName(c) + "(String accum, LRField f, String op)";
+            }
         } else {
             return getFunctionName(c) + "(String accum, LRField f)";
         }

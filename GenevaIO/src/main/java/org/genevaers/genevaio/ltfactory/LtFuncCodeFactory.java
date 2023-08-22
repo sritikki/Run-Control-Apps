@@ -148,16 +148,18 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFAP(String accum, LRField f, String op) {
-       LogicTableNameF1 cfap = makeNameF1FromAccumAndField(accum, f);
+        LogicTableNameF1 cfap = makeNameF1FromAccumAndField(accum, f);
         cfap.setFunctionCode("CFAP");
         cfap.setCompareType(getCompareType(op));
         return cfap;
     }
 
     @Override
-    public LTFileObject getCFAX(String accum, LRField f, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFAX(String accum, ViewColumn vc, String op) {
+        LogicTableNameF1 cfax = getNameF1FromAccumAndColumn(accum, vc);
+        cfax.setFunctionCode("CFAX");
+        cfax.setCompareType(getCompareType(op));
+        return cfax;
     }
 
     @Override
@@ -339,7 +341,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFXA(String accum, LRField f, String op) {
+    public LTFileObject getCFXA(String accum, ViewColumn vc, String op) {
         // TODO Auto-generated method stub
         return null;
     }
