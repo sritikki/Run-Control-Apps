@@ -5,7 +5,6 @@ description: "New Pass3 suite"
 category: "PeTests/Format"
 cq: ""
 note: ""
-haspassviews: true
 tests:
 - name: "NEWP3"
   header: "Pass 3"
@@ -15,7 +14,6 @@ tests:
   rundate: "20090914"
   fiscaldateoverride: "1:20080303"
   timeout: "120"
-  passviews: "pass03Views.yaml"
   xmlfiles:
   - name: "PASS03_for_OpenSource[1000010].xml"
   reffiles:
