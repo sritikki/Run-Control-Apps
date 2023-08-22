@@ -123,4 +123,11 @@ class RunArithCompTest extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(5, expected, expectedGotos, xlt);
     }
 
+    @Test void testCFAA() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF {Binary1} + 1 > {Binary4} - 1  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "DIMN", "SETE", "SUBC", "CFAA" };
+        int expectedGotos[][] = {{10,11,13},{12,14,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
 }
