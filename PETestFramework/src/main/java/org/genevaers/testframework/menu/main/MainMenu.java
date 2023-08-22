@@ -93,7 +93,7 @@ public class MainMenu extends Menu{
     }
 
     private void showCommonSettings(StringBuilder menuStr) {
-        Menu.addMenuSummaryItem(menuStr, "Current GERS_TEST_SPEC_FILE_LIST",System.getenv("GERS_TEST_SPEC_FILE_LIST"),"");
+        Menu.addMenuSummaryItem(menuStr, "Current GERS_TEST_SPEC_LIST",System.getenv("GERS_TEST_SPEC_LIST"),"");
         Menu.addMenuSummaryItem(menuStr, "Current GERS_TEST_HLQ:", System.getenv("GERS_TEST_HLQ"), "");
         Menu.addMenuSummaryItem(menuStr, "Current GERS_ENV_HLQ:", System.getenv("GERS_ENV_HLQ"), "");
         for(MenuItem mi : menuItems) {

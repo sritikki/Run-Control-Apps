@@ -154,7 +154,7 @@ public class TestDriver {
 	}
 
 	private static void checkExistsAndProcessSpeclist() throws Exception {
-		String specFileListName = TestEnvironment.get("GERS_TEST_SPEC_FILE_LIST");
+		String specFileListName = TestEnvironment.get("GERS_TEST_SPEC_LIST");
 		if (specFileListName != null) {
 			File specFileList = new File(TestEnvironment.get(LOCALROOT) + File.separator + specFileListName);
 			if (!specFileList.exists()) {

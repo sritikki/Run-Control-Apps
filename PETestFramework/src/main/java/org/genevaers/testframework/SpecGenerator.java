@@ -59,7 +59,7 @@ public class SpecGenerator {
     private static final String RESET = "\u001b[0m";
     private static final String CLEARSCREAN = "\u001b[27m";
 
-    private static final String DEVGERS_TEST_SPEC_FILE_LIST = "devspecfilelist.yaml";
+    private static final String DEVGERS_TEST_SPEC_LIST = "devspecfilelist.yaml";
 
     private ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     private YAMLReader yr;
@@ -87,7 +87,7 @@ public class SpecGenerator {
     @SuppressWarnings("resource")
     private void showMenu() {
         StringBuilder menu = new StringBuilder();
-        menu.append(YELLOW+"Current SpecFileList: "+RESET + fmEnv.get("GERS_TEST_SPEC_FILE_LIST")+"\n");
+        menu.append(YELLOW+"Current SpecFileList: "+RESET + fmEnv.get("GERS_TEST_SPEC_LIST")+"\n");
         menu.append(YELLOW+"Current spec        : ");
         if(spec!=null) {
             menu.append(CYAN+spec.getCategory()+"/"+spec.getName()+RESET+"\n\n");
@@ -207,7 +207,7 @@ public class SpecGenerator {
 
     private void saveSpecList() {
         try {
-             mapper.writeValue(new File(DEVGERS_TEST_SPEC_FILE_LIST), specFiles);
+             mapper.writeValue(new File(DEVGERS_TEST_SPEC_LIST), specFiles);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -217,7 +217,7 @@ public class SpecGenerator {
     private void getDevSpecFileList() {
         yr = new YAMLReader();
         try {
-            specFiles = yr.readSpecFileList(new File(DEVGERS_TEST_SPEC_FILE_LIST));
+            specFiles = yr.readSpecFileList(new File(DEVGERS_TEST_SPEC_LIST));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

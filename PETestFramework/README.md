@@ -31,7 +31,7 @@ There are three environment variables that need to be set before running the tes
 Again you should probably add these to your ~/.profile
 
 ```
-export GERS_TEST_SPEC_FILE_LIST= the YAML file for the specs eg fmspeclist.yaml
+export GERS_TEST_SPEC_LIST= the YAML file for the specs eg fmspeclist.yaml
 export GERS_TEST_HLQ= Your Test dataset HLQ eg GEBT.GTEST
 export GERS_ENV_HLQ= the build HLQ eg GEBT.LATEST
 ```
