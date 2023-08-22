@@ -143,6 +143,16 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         }
     }
 
+    @Override public ExtractBaseAST visitExprBoolAtom(GenevaERSParser.ExprBoolAtomContext ctx) {
+        //Account for term in parenthesis
+        if(ctx.getChildCount() > 1) {
+            //assuming 3 for the moment
+            return visit(ctx.children.get(01));
+        } else {
+            return this.visitChildren(ctx);
+        }
+     }
+
 	@Override public ExtractBaseAST visitArithExpr(GenevaERSParser.ArithExprContext ctx) {
         //There may be one or many child nodes here now
         //The nodes are of type arithExprFactor - a Factor may have one or many arithExprTerms
