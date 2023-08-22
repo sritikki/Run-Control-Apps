@@ -30,6 +30,7 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.CFAEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFALEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFAPEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFAXEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCLEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFECEmitter;
@@ -93,6 +94,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
     public ExprComparisonAST() {
         type = ASTFactory.Type.EXPRCOMP;
         //Use static classes here?
+        emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.CALCULATION), new CFCAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());

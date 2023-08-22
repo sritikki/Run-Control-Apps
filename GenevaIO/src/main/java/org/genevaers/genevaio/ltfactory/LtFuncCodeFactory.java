@@ -166,9 +166,12 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFCA(String accum, String rhsAccum, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFCA(String accum, String val, String op) {
+        LogicTableNameValue cfca = makeNameValueFromAccum(accum, "CFCA");
+        cfca.setValue(val);
+        cfca.setTableName(accum);
+        cfca.setCompareType(getCompareType(op));
+        return cfca; 
     }
 
     @Override

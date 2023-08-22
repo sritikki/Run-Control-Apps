@@ -130,4 +130,47 @@ class RunArithCompTest extends RunCompilerBase {
         int expectedGotos[][] = {{10,11,13},{12,14,0}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
+
+    @Test void testCFCA() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF 72 > {Binary1} + 1  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "CFCA" };
+        int expectedGotos[][] = {{7,8,10},{9,11,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableNameValue cfac = (LogicTableNameValue) xlt.getFromPosition(7);
+        assertEquals("72", cfac.getValue());
+    }
+
+    @Test void testCFEA() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF {Binary1} > {Binary2}  + 1  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "CFEA" };
+        int expectedGotos[][] = {{7,8,10},{9,11,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFLA() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF {AllTypeLookup.ZONED} > {Binary1} + 1   THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "JOIN", "LKE", "LUSM", "CFLA" };
+        int expectedGotos[][] = {{7,10,13},{9,10,13},{10,11,13}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFPA() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF PRIOR({Binary2}) > {Binary1} + 1 THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "CFPA" };
+        int expectedGotos[][] = {{7,8,10},{9,11,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFXA() {
+        LogicTable xlt = runFromXMLOverrideLogic(10689, TestHelper.CFAX_TEST, "");
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "CFXA" };
+        int expectedGotos[][] = {{8,9,11},{10,12,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(5, expected, expectedGotos, xlt);
+    }
+
+
 }
