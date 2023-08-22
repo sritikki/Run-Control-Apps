@@ -103,7 +103,10 @@ public class RecordParserData {
 				Iterator<LookupPathKey> lkski = lkstep.getKeyIterator();
 				while (lkski.hasNext()) {
 					LookupPathKey lksk = lkski.next();
-					int destassocid = assocs.getAssocID(lksk.getKeyNumber());
+					int destassocid = 0;
+					if(assocs != null) {
+						destassocid = assocs.getAssocID(lksk.getKeyNumber());
+					}
 					if (destassocid != 0) {
 						LRLF trglrlf = lrlfs.get(destassocid);
 						lksk.setTargetLrId(trglrlf.lrid);
