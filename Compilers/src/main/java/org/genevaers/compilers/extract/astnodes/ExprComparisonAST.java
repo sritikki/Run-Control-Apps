@@ -40,6 +40,8 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.CFEAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFECEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFEEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFELEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFEPEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFEXEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLCEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLEEmitter;
@@ -124,6 +126,8 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.RUNDATE), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LRFIELD), new CFEEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LOOKUPFIELDREF), new CFELEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.PRIORLRFIELD), new CFEPEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.COLUMNREF), new CFEXEmitter());
 
         //LHS Lookup
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.CALCULATION), new CFLAEmitter());

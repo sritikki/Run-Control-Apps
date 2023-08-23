@@ -277,15 +277,19 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFEP(LRField f, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFEP(LRField f1, LRField f2, String op) {
+        LogicTableF2 cfep = makeF2FromFieldAndField(f1, f2);
+        cfep.setFunctionCode("CFEP");
+        cfep.setCompareType(getCompareType(op));
+        return cfep;
     }
 
     @Override
     public LTFileObject getCFEX(LRField f, ViewColumn c2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 cfex = makeF2FromFieldAndColumn(f, c2);
+        cfex.setFunctionCode("CFEX");
+        cfex.setCompareType(getCompareType(op));
+        return cfex;
     }
 
     @Override
