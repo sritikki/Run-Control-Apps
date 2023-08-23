@@ -1,9 +1,13 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
-import org.genevaers.repository.components.LRField;
+import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.ExtractArea;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -22,37 +26,15 @@ import org.genevaers.repository.components.ViewColumn;
  * under the License.
  */
 
-public class ColumnRefAST extends ColumnAST implements CalculationSource{
+public class ColumnRefAST extends FormattedASTNode implements CalculationSource, Assignable {
+
+    private ViewColumn vc;
 
     public ColumnRefAST() {
         type = ASTFactory.Type.COLUMNREF;
     }
 
      @Override
-    public void emit() {
-        //Nothing to do... maybe we should be using an interface?
-        currentViewColumn = vc;
-    }
-
-    @Override
-    public LTFileObject getAccumLtEntry(String accumulatorName) {
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
-        return fcf.getDTA(accumulatorName, vc);
-    }
-
-    @Override
-    public LTFileObject getFieldLtEntry(LRField field) {
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
-        return fcf.getDTE(field, vc);
-    }
-
-    @Override
-    public LTFileObject getConstLtEntry(String value) {
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
-        return fcf.getDTC(value, vc);
-    }
-
-    @Override
     public LTFileObject emitSetFunctionCode() {
         return null;
     }
@@ -75,6 +57,37 @@ public class ColumnRefAST extends ColumnAST implements CalculationSource{
     @Override
     public LTFileObject emitDivFunctionCode() {
         return null;
+    }
+
+    @Override
+    public LTFileObject getAssignmentEntry(ColumnAST lhs, ExtractBaseAST rhs) {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getCTX(vc, currentViewColumn));
+        } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getDTX(vc, currentViewColumn));
+        } else {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getSKX(vc, currentViewColumn));
+        }
+        return null;
+    }
+
+    public void setViewColumn(ViewColumn c) {
+        vc = c;
+    }
+
+    public ViewColumn getViewColumn() {
+        return vc;
+    }
+
+    @Override
+    public DataType getDataType() {
+        return vc.getDataType();
+    }
+
+    @Override
+    public DateCode getDateCode() {
+        return vc.getDateCode();
     }
 
 }

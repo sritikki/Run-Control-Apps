@@ -550,8 +550,13 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCTX(ViewColumn c, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 ctx = new LogicTableF2();
+        ctx.setArg1(getColumnArg(c));
+        ctx.setArg2(getColumnArg(v));
+        ctx.setFunctionCode("CTX");
+        ctx.setRecordType(LtRecordType.F2);
+        ctx.setCompareType(LtCompareType.EQ);
+        return ctx;    
     }
 
     @Override
@@ -711,8 +716,13 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getDTX(ViewColumn c, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 dtx = new LogicTableF2();
+        dtx.setArg1(getColumnArg(c));
+        dtx.setArg2(getColumnArg(v));
+        dtx.setFunctionCode("DTX");
+        dtx.setRecordType(LtRecordType.F2);
+        dtx.setCompareType(LtCompareType.EQ);
+        return dtx;    
     }
 
     @Override
@@ -1357,8 +1367,13 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSKX(ViewColumn c, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 skx = new LogicTableF2();
+        skx.setArg1(getColumnArg(c));
+        skx.setArg2(getColumnArg(v));
+        skx.setFunctionCode("SKX");
+        skx.setRecordType(LtRecordType.F2);
+        skx.setCompareType(LtCompareType.EQ);
+        return skx;    
     }
 
     @Override
