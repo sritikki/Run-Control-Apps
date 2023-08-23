@@ -44,7 +44,7 @@ public class TestEnvironment {
 		locroot = locroot.replace("\\", "/");
 
 		getEnvVarOrDefault("LOCALROOT", locroot);
-		getEnvVarOrDefault("GERS_TEST_SPEC_LIST", "fmspeclist.yaml");
+		getEnvVarOrDefault("GERS_TEST_SPEC_LIST", "Basespeclist.yaml");
 		getEnvVarOrDefault("RUNTESTS", "N");
 		getEnvVarOrDefault("CLEARLOCAL", "N");
 		getEnvVarOrDefault("CLEARJUNIT", "Y");
