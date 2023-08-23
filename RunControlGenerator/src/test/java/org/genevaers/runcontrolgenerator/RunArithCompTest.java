@@ -172,5 +172,30 @@ class RunArithCompTest extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(5, expected, expectedGotos, xlt);
     }
 
+    // CFCC only realy makes sense for RUNDAY 
+    // Otherwise the result is know at compile time
+    @Test void testCFCC() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF 2025 > RUNYEAR()   THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFCC" };
+        int expectedGotos[][] = {{4,5,7}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFCP() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF 2025 > PRIOR({Binary2}) THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFCP" };
+        int expectedGotos[][] = {{4,5,7}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFCX() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF 2025 > Col.1 THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFCX" };
+        int expectedGotos[][] = {{4,5,7}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
 
 }

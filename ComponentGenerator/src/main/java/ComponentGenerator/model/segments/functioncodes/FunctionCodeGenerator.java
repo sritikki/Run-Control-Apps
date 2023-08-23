@@ -89,12 +89,19 @@ public class FunctionCodeGenerator  extends GeneratorBase {
                 case "F1":
                 entries.add(processF1(c));
                 break;
+                case "CC":
+                entries.add(processCC(c));
+                break;
                 default:
                 entries.add(getFunctionName(c) + "()"); //{" + getBody() + "    }");
                 break;
             }
         }
         return entries;
+    }
+
+    private String processCC(FunctionCodeDefinition c) {
+        return getFunctionName(c) + "(String c1, String c2, String op);";
     }
 
     private String processF1(FunctionCodeDefinition c) {

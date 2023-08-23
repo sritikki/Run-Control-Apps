@@ -24,6 +24,7 @@ import java.util.Map;
 import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableCC;
 import org.genevaers.genevaio.ltfile.LogicTableF0;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
@@ -175,9 +176,16 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFCC() {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFCC(String c1, String c2, String op) {
+        LogicTableCC cfcc = new LogicTableCC();
+        cfcc.setRecordType(LtRecordType.CC);
+        cfcc.setFunctionCode("CFCC");
+        cfcc.setValue1(c1);
+        cfcc.setValue1Length(c1.length());
+        cfcc.setValue2(c2);
+        cfcc.setValue2Length(c2.length());
+        cfcc.setCompareType(getCompareType(op));
+        return cfcc;
     }
 
     @Override
@@ -207,15 +215,28 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFCP(String v, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFCP(String v, LRField f, String op) {
+        LogicTableF1 cfcp = new LogicTableF1();
+        cfcp.setRecordType(LtRecordType.F1);
+        cfcp.setFunctionCode("CFCP");
+        LogicTableArg arg = getArgFromField(f);
+        cfcp.setArg(arg);
+        arg.setValue(v);
+        arg.setValueLength(v.length());
+        cfcp.setCompareType(getCompareType(op));
+        return cfcp;
     }
 
     @Override
-    public LTFileObject getCFCX(String v, ViewColumn c2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFCX(String v, ViewColumn vc, String op) {
+        LogicTableF1 cfcx = new LogicTableF1();
+        cfcx.setRecordType(LtRecordType.F1);
+        cfcx.setArg(getColumnArg(vc));
+        cfcx.setFunctionCode("CFCX");
+        cfcx.getArg().setValue(v);
+        cfcx.getArg().setValueLength(v.length());
+        cfcx.setCompareType(getCompareType(op));
+        return cfcx;
     }
 
     @Override
