@@ -124,6 +124,17 @@ class RunCompilerBase {
         return comp.getExtractLogicTable();
     }
 
+    protected LogicTable runFromXMLOverrideColNLogic(int viewNum, String fileName, int c, String logic) {
+        TestHelper.setupWithView(fileName);
+        readConfigAndBuildRepo();
+        if (logic.length() > 0)
+            TestHelper.setColumnNLogic(viewNum, logic, c);
+        rcc.setDotFilter(Integer.toString(viewNum), "", "N");
+        rcc.setJltDotFilter("", "", "");
+        CompileAndGenerateDots();
+        return comp.getExtractLogicTable();
+    }
+
     protected LogicTable runFromXMLOverrideFilter(int viewNum, String fileName, String logic) {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();

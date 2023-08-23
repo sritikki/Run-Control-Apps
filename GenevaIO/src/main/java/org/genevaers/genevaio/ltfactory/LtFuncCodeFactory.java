@@ -407,34 +407,50 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFXC(ViewColumn c, String v2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFXC(ViewColumn c, String v, String op) {
+        LogicTableF1 cfxc = new LogicTableF1();
+        cfxc.setRecordType(LtRecordType.F1);
+        cfxc.setArg(getColumnArg(c));
+        cfxc.setFunctionCode("CFXC");
+        cfxc.getArg().setValue(v);
+        cfxc.getArg().setValueLength(v.length());
+        cfxc.setCompareType(getCompareType(op));
+        return cfxc;
     }
 
     @Override
-    public LTFileObject getCFXE(ViewColumn c, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFXE(ViewColumn c, LRField f, String op) {
+        LogicTableF2 cfxe = makeF2FromFieldAndColumn(f, c);
+        cfxe.setFunctionCode("CFXE");
+        cfxe.setCompareType(getCompareType(op));
+        return cfxe;
     }
 
     @Override
-    public LTFileObject getCFXL(ViewColumn c, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFXL(ViewColumn c, LRField f, String op) {
+       LogicTableF2 cfxl = makeF2FromFieldAndColumn(f, c);
+        cfxl.setFunctionCode("CFXL");
+        cfxl.setCompareType(getCompareType(op));
+        return cfxl;
     }
 
     @Override
-    public LTFileObject getCFXP(ViewColumn c, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFXP(ViewColumn c, LRField f, String op) {
+        LogicTableF2 cfxp = makeF2FromFieldAndColumn(f, c);
+        cfxp.setFunctionCode("CFXP");
+        cfxp.setCompareType(getCompareType(op));
+        return cfxp;
     }
 
     @Override
     public LTFileObject getCFXX(ViewColumn c, ViewColumn c2, String op) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        LogicTableF2 cfxx = new LogicTableF2();
+        cfxx.setArg1(getColumnArg(c));
+        cfxx.setArg2(getColumnArg(c2));
+        cfxx.setFunctionCode("CFXX");
+        cfxx.setRecordType(LtRecordType.F2);
+        cfxx.setCompareType(getCompareType(op));
+        return cfxx;    }
 
     @Override
     public LTFileObject getCNE(LRField f) {

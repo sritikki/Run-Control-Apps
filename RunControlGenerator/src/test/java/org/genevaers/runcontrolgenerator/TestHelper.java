@@ -357,6 +357,12 @@ public class TestHelper {
 		vc.findFromSourcesByNumber((short)1).setLogicText(logic);
 	}
 
+	public static void setColumnNLogic(int viewNum, String logic, int c) {
+		ViewColumn vc = Repository.getViews().get(viewNum).getColumnNumber(c);
+		vc.findFromSourcesByNumber((short)1).setLogicText(logic);
+	}
+
+
     public static void setOutputLogic(int viewNum, String logic) {
 		ViewSource vs = Repository.getViews().get(viewNum).getViewSource((short)1);
 		vs.setExtractOutputLogic(logic);

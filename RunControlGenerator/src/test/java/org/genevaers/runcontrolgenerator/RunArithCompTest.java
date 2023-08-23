@@ -278,4 +278,45 @@ class RunArithCompTest extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
 
+    @Test void testCFXC() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF Col.1 > 2025   THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFXC" };
+        int expectedGotos[][] = {{4,5,7}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFXE() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF Col.1 > {Binary1}   THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFXE" };
+        int expectedGotos[][] = {{4,5,7}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFXL() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF Col.1 > {AllTypeLookup.Binary1}   THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFXL" };
+        int expectedGotos[][] = {{7,8,10}};
+        TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFXP() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF Col.1 > PRIOR({Binary1})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFXP" };
+        int expectedGotos[][] = {{4,5,7}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    //Note there is no col.2 - so this will fail once we get there
+    @Test void testCFXX() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12051, TestHelper.CFXA_TEST, 2,
+        "IF Col.1 > Col.2  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFXX" };
+        int expectedGotos[][] = {{5,6,8}};
+        TestLTAssertions.assertFunctionCodesAndGotos(5, expected, expectedGotos, xlt);
+    }
+
 }
