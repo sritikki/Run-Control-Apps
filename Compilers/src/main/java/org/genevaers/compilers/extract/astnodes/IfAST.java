@@ -38,7 +38,7 @@ public class IfAST extends ExtractBaseAST implements EmittableASTNode {
 
     @Override
     public void emit() {
-        //An if node will hve 2 possibly 3 children
+        //An if node will have 2 possibly 3 children
         EmittableASTNode predicate = (EmittableASTNode) children.get(0);
         predicate.emit();
         thenStart = ltEmitter.getNumberOfRecords();

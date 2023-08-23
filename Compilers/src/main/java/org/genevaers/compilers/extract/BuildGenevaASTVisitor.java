@@ -37,6 +37,7 @@ import org.genevaers.compilers.extract.astnodes.ErrorAST;
 import org.genevaers.compilers.extract.astnodes.ExprComparisonAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
+import org.genevaers.compilers.extract.astnodes.FunctionAST;
 import org.genevaers.compilers.extract.astnodes.IfAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
@@ -130,6 +131,20 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             return visitChildren(ctx); 
         }
     }
+
+
+    public ExtractBaseAST visitIsFunctions(GenevaERSParser.IsFunctionsContext ctx) {
+        FunctionAST fast = new FunctionAST();
+        fast.setFunction(ctx.getChild(0).toString());
+        fast.addChildIfNotNull(visit(ctx.getChild(2)));
+
+        return fast;
+     }
+  
+     public ExtractBaseAST visitADataSource(GenevaERSParser.ADataSourceContext ctx) {
+        return this.visitChildren(ctx);
+     }
+  
 
 	@Override public ExtractBaseAST visitExprBoolAnd(GenevaERSParser.ExprBoolAndContext ctx) { 
         if(ctx.getChildCount() == 3) { //Must be an actual AND node
