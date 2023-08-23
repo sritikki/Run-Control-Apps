@@ -214,4 +214,12 @@ class RunArithCompTest extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
 
+    @Test void testCFLL() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF {AllTypeLookup.ZONED} > {AllTypeLookup.Binary1}  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFLL" };
+        int expectedGotos[][] = {{10,11,13}};
+        TestLTAssertions.assertFunctionCodesAndGotos(10, expected, expectedGotos, xlt);
+    }
+
 }
