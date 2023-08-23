@@ -23,9 +23,9 @@ then
     cd ../Grammar
     mvn install
     cd ../prebuild
-    echo "Configure Build"
-    ./mvnInstallJars.sh
 else
     echo "Grammar repo in place"
 fi
+echo "Configure Build"
+./mvnInstallJars.sh
 echo "Build"
