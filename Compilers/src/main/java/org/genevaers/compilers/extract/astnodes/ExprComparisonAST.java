@@ -49,6 +49,11 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLLEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLPEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLXEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFPAEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFPCEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFPEEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFPLEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFPPEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFPXEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonEmitter;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -145,6 +150,12 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
 
         //LHS PRIOR
         emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.CALCULATION), new CFPAEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.NUMATOM), new CFPCEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.RUNDATE), new CFPCEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.LRFIELD), new CFPEEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.LOOKUPFIELDREF), new CFPLEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.PRIORLRFIELD), new CFPPEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.COLUMNREF), new CFPXEmitter());
 
         //LHS ColumnRef
         emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.CALCULATION), new CFXAEmitter());

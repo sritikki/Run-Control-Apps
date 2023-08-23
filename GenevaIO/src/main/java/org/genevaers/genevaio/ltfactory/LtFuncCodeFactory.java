@@ -355,32 +355,47 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFPC(LRField f, String v2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cfec = new LogicTableF1();
+        cfec.setRecordType(LtRecordType.F1);
+        cfec.setFunctionCode("CFPC");
+        LogicTableArg arg = getArgFromField(f);
+        cfec.setArg(arg);
+        arg.setValue(v2);
+        arg.setValueLength(v2.length());
+        cfec.setCompareType(getCompareType(op));
+        return cfec;
     }
 
     @Override
-    public LTFileObject getCFPE(LRField f, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFPE(LRField f1, LRField f2, String op) {
+        LogicTableF2 cfpe = makeF2FromFieldAndField(f1, f2);
+        cfpe.setFunctionCode("CFPE");
+        cfpe.setCompareType(getCompareType(op));
+        return cfpe;
     }
 
     @Override
-    public LTFileObject getCFPL(LRField f, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFPL(LRField f1, LRField f2, String op) {
+        LogicTableF2 cfpl = makeF2FromFieldAndField(f1, f2);
+        cfpl.setFunctionCode("CFPL");
+        cfpl.setCompareType(getCompareType(op));
+        return cfpl;
     }
 
     @Override
-    public LTFileObject getCFPP(LRField f, LRField f2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCFPP(LRField f1, LRField f2, String op) {
+        LogicTableF2 cfpp = makeF2FromFieldAndField(f1, f2);
+        cfpp.setFunctionCode("CFPP");
+        cfpp.setCompareType(getCompareType(op));
+        return cfpp;
     }
 
     @Override
     public LTFileObject getCFPX(LRField f, ViewColumn c2, String op) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 cfpx = makeF2FromFieldAndColumn(f, c2);
+        cfpx.setFunctionCode("CFPX");
+        cfpx.setCompareType(getCompareType(op));
+        return cfpx;
     }
 
     @Override
