@@ -33,11 +33,15 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.CFAXEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFCLEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFEAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFECEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFEEEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFELEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLCEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFLEEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFPAEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXAEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonEmitter;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
@@ -100,18 +104,20 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
 
+        emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.CALCULATION), new CFEAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.NUMATOM), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.RUNDATE), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LRFIELD), new CFEEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LOOKUPFIELDREF), new CFELEmitter());
 
+        emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.CALCULATION), new CFLAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.STRINGATOM), new CFLCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.NUMATOM), new CFLCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.DATEFUNC), new CFLCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.RUNDATE), new CFLCEmitter());
-
-        
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.LRFIELD), new CFLEEmitter());
+
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.CALCULATION), new CFPAEmitter());
 
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.CALCULATION), new CFAAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.NUMATOM), new CFACEmitter());
@@ -119,6 +125,9 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.LOOKUPFIELDREF), new CFALEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.PRIORLRFIELD), new CFAPEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.COLUMNREF), new CFAXEmitter());
+
+        emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.CALCULATION), new CFXAEmitter());
+
     }
 
     @Override

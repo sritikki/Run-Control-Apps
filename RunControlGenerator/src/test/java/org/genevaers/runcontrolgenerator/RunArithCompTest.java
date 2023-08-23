@@ -166,7 +166,7 @@ class RunArithCompTest extends RunCompilerBase {
     }
 
     @Test void testCFXA() {
-        LogicTable xlt = runFromXMLOverrideLogic(10689, TestHelper.CFAX_TEST, "");
+        LogicTable xlt = runFromXMLOverrideLogic(10689, TestHelper.CFXA_TEST, "");
         String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "CFXA" };
         int expectedGotos[][] = {{8,9,11},{10,12,0}};
         TestLTAssertions.assertFunctionCodesAndGotos(5, expected, expectedGotos, xlt);
