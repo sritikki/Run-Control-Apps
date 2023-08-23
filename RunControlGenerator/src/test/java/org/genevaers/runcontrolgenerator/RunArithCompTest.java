@@ -222,4 +222,20 @@ class RunArithCompTest extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(10, expected, expectedGotos, xlt);
     }
 
+    @Test void testCFLP() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF {AllTypeLookup.ZONED} > PRIOR({Binary2})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFLP" };
+        int expectedGotos[][] = {{7,8,10}};
+        TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
+    }
+
+    @Test void testCFLX() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF {AllTypeLookup.ZONED} > Col.1 THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CFLX" };
+        int expectedGotos[][] = {{7,8,10}};
+        TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
+    }
+
 }
