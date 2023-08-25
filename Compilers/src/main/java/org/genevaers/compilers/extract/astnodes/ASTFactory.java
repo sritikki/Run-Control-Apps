@@ -74,7 +74,14 @@ public class ASTFactory {
         RECORD_COUNT("Record Count"),
         SORTTITLE("Sort Title"),
         EOS("End of Set"), 
-        PRIORLRFIELD("Prior Field") ;
+        PRIORLRFIELD("Prior Field"), 
+        ISNULL("Is Null"),
+        ISSPACES("Is Spaces"),
+        ISNUMERIC("Is Numeric"), 
+        ISNOTSPACES("Is Not Spaces"),
+        ISNOTNULL("Is Not Null"),
+        ISNOTNUMERIC("Is Not Numeric")
+         ;
 
         private String name;
         private Type(String n) {
@@ -183,6 +190,18 @@ public class ASTFactory {
                 return new PriorFieldReferenceAST();
             case COLUMNREF:
                 return new ColumnRefAST();
+            case ISNULL:
+                return new IsNullAST();
+            case ISNUMERIC:
+                return new IsNumericAST();
+            case ISSPACES:
+                return new IsSpacesAST();
+            case ISNOTNULL:
+                return new IsNotNullAST();
+            case ISNOTNUMERIC:
+                return new IsNotNumericAST();
+            case ISNOTSPACES:
+                return new IsNotSpacesAST();
             default:
                 return null;
         }

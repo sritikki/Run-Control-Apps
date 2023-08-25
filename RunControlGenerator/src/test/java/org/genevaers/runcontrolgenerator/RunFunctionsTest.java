@@ -63,10 +63,48 @@ class RunFunctionsTest extends RunCompilerBase {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
         "IF ISSPACES({Binary1})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
         String[] expected = new String[]{ "CSE" };
-        int expectedGotos[][] = {{7,8,10},{9,11,0}};
+        int expectedGotos[][] = {{4,5,7},{6,8,0}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        LogicTableNameValue cfac = (LogicTableNameValue) xlt.getFromPosition(7);
-        assertEquals("0", cfac.getValue());
+    }
+
+   @Test void testIsNotSpaces() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF ISNOTSPACES({Binary1})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CSE" };
+        int expectedGotos[][] = {{4,7,5},{6,8,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testIsNull() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF ISNULL({Binary1})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CXE" };
+        int expectedGotos[][] = {{4,5,7},{6,8,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testIsNotNull() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF ISNOTNULL({Binary1})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CXE" };
+        int expectedGotos[][] = {{4,7,5},{6,8,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testIsNumeric() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF ISNUMERIC({Binary1})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CNE" };
+        int expectedGotos[][] = {{4,5,7},{6,8,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+    }
+
+    @Test void testIsNotNumeric() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
+        "IF ISNOTNUMERIC({Binary1})  THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
+        String[] expected = new String[]{ "CNE" };
+        int expectedGotos[][] = {{4,7,5},{6,8,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
 
 

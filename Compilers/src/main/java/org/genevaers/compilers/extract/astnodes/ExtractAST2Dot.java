@@ -195,6 +195,14 @@ public class ExtractAST2Dot {
                 case BOOLAND:
                     dotFrameworkNode(node);
                     break;
+                case ISNULL:
+                case ISNUMERIC:
+                case ISSPACES:
+                case ISNOTNULL:
+                case ISNOTNUMERIC:
+                case ISNOTSPACES:
+                    doFunctionNode(node);
+                    break;
                 case CAST:
                     dotCast(node);
                     break;
@@ -244,6 +252,15 @@ public class ExtractAST2Dot {
             }
         }
         return idString;
+    }
+
+    private static void doFunctionNode(ExtractBaseAST node) {
+        //ColumnRefAST col = (ColumnRefAST) node;
+        label = node.getType().toString(); // + col.getViewColumn().getColumnNumber();
+        colour = COMPARISON;
+        idString = "func_" +  + nodeNum;
+        dataflow = true;
+        reverseArrow = true;
     }
 
     private static void dotColumnRefNode(ExtractBaseAST node) {

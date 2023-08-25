@@ -74,10 +74,10 @@ public abstract class LtFunctionCodeCache {
         addFunctionCode("CTL", LtRecordType.F2, "Write a lookup field value to a CT column", "Assignment");
         addFunctionCode("CTP", LtRecordType.F2, "Write a prior event field value to a CT column", "Assignment");
         addFunctionCode("CTX", LtRecordType.F2, "Write a prior event field value to a CT column", "Assignment");
-        addFunctionCode("CXE", LtRecordType.F1, "IsNulls function applied to an event field", "Comparison");
-        addFunctionCode("CXL", LtRecordType.F1, "IsNulls function applied to a lookup field", "Comparison");
-        addFunctionCode("CXP", LtRecordType.F1, "IsNulls function applied to a prior field", "Comparison");
-        addFunctionCode("CXX", LtRecordType.F1, "IsNulls function applied to a column reference", "Comparison");
+        addFunctionCode("CXE", LtRecordType.F1, "isNull function applied to an event field", "Comparison");
+        addFunctionCode("CXL", LtRecordType.F1, "isNull function applied to a lookup field", "Comparison");
+        addFunctionCode("CXP", LtRecordType.F1, "isNull function applied to a prior field", "Comparison");
+        addFunctionCode("CXX", LtRecordType.F1, "isNull function applied to a column reference", "Comparison");
         addFunctionCode("DIM1", LtRecordType.NAME, "Declare a local variable(1 byte)", "Directive");
         addFunctionCode("DIM2", LtRecordType.NAME, "Declare a local variable(2 byte)", "Directive");
         addFunctionCode("DIM4", LtRecordType.NAME, "Declare a local variable(4 byte)", "Directive");

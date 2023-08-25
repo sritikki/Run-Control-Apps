@@ -454,8 +454,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCNE(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cne = getF1FromField(f);
+        cne.setFunctionCode("CNE");
+        cne.setCompareType(LtCompareType.EQ);
+        return cne;
     }
 
     @Override
@@ -478,26 +480,34 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCSE(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cse = getF1FromField(f);
+        cse.setFunctionCode("CSE");
+        cse.setCompareType(LtCompareType.EQ);
+        return cse;
     }
 
     @Override
     public LTFileObject getCSL(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 csl = getF1FromField(f);
+        csl.setFunctionCode("CSL");
+        csl.setCompareType(LtCompareType.EQ);
+        return csl;
     }
 
     @Override
     public LTFileObject getCSP(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 csp = getF1FromField(f);
+        csp.setFunctionCode("CSP");
+        csp.setCompareType(LtCompareType.EQ);
+        return csp;
     }
 
     @Override
     public LTFileObject getCSX(ViewColumn c) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 csx = getF1FromFColumn(c);
+        csx.setFunctionCode("CSX");
+        csx.setCompareType(LtCompareType.EQ);
+        return csx;
     }
 
     @Override
@@ -561,8 +571,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCXE(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cxe = getF1FromField(f);
+        cxe.setFunctionCode("CXE");
+        cxe.setCompareType(LtCompareType.EQ);
+        return cxe;
     }
 
     @Override
@@ -1656,6 +1668,18 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         return ltf2;
     }
 
+    private LogicTableF1 getF1FromField(LRField f) {
+        LogicTableF1 f1 = new LogicTableF1();
+        f1.setRecordType(LtRecordType.F1);
+        f1.setArg(getArgFromField(f));
+        return f1;
+    }
 
+    private LogicTableF1 getF1FromFColumn(ViewColumn vc) {
+        LogicTableF1 f1 = new LogicTableF1();
+        f1.setRecordType(LtRecordType.F1);
+        f1.setArg(getColumnArg(vc));
+        return f1;
+    }
 
 }

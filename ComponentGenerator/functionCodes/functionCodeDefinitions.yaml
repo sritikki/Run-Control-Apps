@@ -236,19 +236,19 @@ codes:
   - function_code: CXE 
     lt_record_type: F1
     category: Comparison
-    description: IsNulls function applied to an event field
+    description: isNull function applied to an event field
   - function_code: CXL 
     lt_record_type: F1
     category: Comparison
-    description: IsNulls function applied to a lookup field
+    description: isNull function applied to a lookup field
   - function_code: CXP 
     lt_record_type: F1
     category: Comparison
-    description: IsNulls function applied to a prior field
+    description: isNull function applied to a prior field
   - function_code: CXX 
     lt_record_type: F1
     category: Comparison
-    description: IsNulls function applied to a column reference
+    description: isNull function applied to a column reference
     
   - function_code: DIM1
     lt_record_type: NAME

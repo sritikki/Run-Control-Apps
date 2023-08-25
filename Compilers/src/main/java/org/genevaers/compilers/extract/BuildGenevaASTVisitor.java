@@ -37,7 +37,6 @@ import org.genevaers.compilers.extract.astnodes.ErrorAST;
 import org.genevaers.compilers.extract.astnodes.ExprComparisonAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
-import org.genevaers.compilers.extract.astnodes.FunctionAST;
 import org.genevaers.compilers.extract.astnodes.IfAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
@@ -134,14 +133,42 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
 
     public ExtractBaseAST visitIsFunctions(GenevaERSParser.IsFunctionsContext ctx) {
-        FunctionAST fast = new FunctionAST();
-        fast.setFunction(ctx.getChild(0).toString());
-        fast.addChildIfNotNull(visit(ctx.getChild(2)));
+        ExtractBaseAST fast = getIsFunctionsNode(ctx.getChild(0).toString()); // = ASTFactory.getNodeOfType(ASTFactory.Type.ISNULL)
+        if( fast != null) 
+            fast.addChildIfNotNull(visit(ctx.getChild(2)));
 
         return fast;
      }
   
-     public ExtractBaseAST visitADataSource(GenevaERSParser.ADataSourceContext ctx) {
+    private ExtractBaseAST getIsFunctionsNode(String funcType) {
+        ExtractBaseAST fast = null;
+        switch (funcType) {
+            case "ISSPACES":
+                fast = ASTFactory.getNodeOfType(ASTFactory.Type.ISSPACES);
+                break;
+            case "ISNOTSPACES":
+                fast = ASTFactory.getNodeOfType(ASTFactory.Type.ISNOTSPACES);
+                break;
+            case "ISNUMERIC":
+                fast = ASTFactory.getNodeOfType(ASTFactory.Type.ISNUMERIC);
+                break;
+            case "ISNOTNUMERIC":
+                fast = ASTFactory.getNodeOfType(ASTFactory.Type.ISNOTNUMERIC);
+                break;
+            case "ISNULL":
+                fast = ASTFactory.getNodeOfType(ASTFactory.Type.ISNULL);
+                break;
+            case "ISNOTNULL":
+                fast = ASTFactory.getNodeOfType(ASTFactory.Type.ISNOTNULL);
+                break;
+            default:
+            logger.atSevere().log("Unknown function type %s", funcType);
+                break;
+        }
+        return fast;
+    }
+
+    public ExtractBaseAST visitADataSource(GenevaERSParser.ADataSourceContext ctx) {
         return this.visitChildren(ctx);
      }
   
