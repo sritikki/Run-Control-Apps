@@ -3,6 +3,7 @@ package org.genevaers.compilers.extract.emitters.comparisonemitters;
 import org.genevaers.compilers.extract.astnodes.ColumnRefAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.GenevaERSValue;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -30,7 +31,7 @@ public class CFXCEmitter extends ComparisonEmitter{
 
     @Override
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
-        LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF1 cfxc = (LogicTableF1) ltFact.getCFXC(((ColumnRefAST) lhs).getViewColumn(), ((GenevaERSValue)rhs).getValueString(), op);
         return cfxc;
     }

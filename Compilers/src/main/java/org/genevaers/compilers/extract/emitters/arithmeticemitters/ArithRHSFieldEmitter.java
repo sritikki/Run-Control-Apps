@@ -22,6 +22,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.compilers.extract.astnodes.NumericAccumulator;
 import org.genevaers.compilers.extract.emitters.arithmeticemitters.ArithDataTypeChecker.ArithResult;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
@@ -38,7 +39,7 @@ public class ArithRHSFieldEmitter extends ArithEmitter  {
         LRField field = ((FieldReferenceAST)type).getRef();
         if(res != ArithResult.ARITH_ERROR) {
             //Make the SET or SETP
-            LtFuncCodeFactory fcf = new LtFuncCodeFactory();
+            LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
             //need to set the additional entries of suffix etc...
             //These are done as part of the general add to logic table if none 0
             //Should they always be done there?

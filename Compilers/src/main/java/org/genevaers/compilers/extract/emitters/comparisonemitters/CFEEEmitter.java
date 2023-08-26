@@ -21,6 +21,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
 
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
@@ -29,7 +30,7 @@ public class CFEEEmitter extends ComparisonEmitter{
 
     @Override
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
-        LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         ltFact.setLogFileId(getLtEmitter().getFileId());
         LogicTableF2 cfee = (LogicTableF2) ltFact.getCFEE(((FieldReferenceAST) lhs).getRef(), ((FieldReferenceAST)rhs).getRef(), op);
         return cfee;

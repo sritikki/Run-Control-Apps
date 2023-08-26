@@ -23,6 +23,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.compilers.extract.astnodes.GenevaERSValue;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
@@ -32,7 +33,7 @@ public class CFCPEmitter extends ComparisonEmitter{
 
     @Override
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
-        LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF1 cfce = (LogicTableF1) ltFact.getCFCP(((GenevaERSValue)lhs).getValueString(), ((FieldReferenceAST) rhs).getRef(), op);
         LogicTableArg arg = cfce.getArg();
         EmitterArgHelper.setArgVal(lhs, arg);

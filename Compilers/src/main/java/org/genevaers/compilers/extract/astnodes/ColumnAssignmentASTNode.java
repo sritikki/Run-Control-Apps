@@ -27,6 +27,7 @@ import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentEmi
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentEmitterFactory;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.DataTypeChecker;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.DataTypeChecker.DTResult;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
@@ -120,7 +121,7 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
     private LTFileObject emitDTC(ColumnAST col, String val) {
         ViewColumn vc = col.getViewColumn();
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF1 ccol;
         if(vc.getExtractArea() == ExtractArea.SORTKEY) {
             ccol = ((LogicTableF1)fcf.getSKC(val, vc));

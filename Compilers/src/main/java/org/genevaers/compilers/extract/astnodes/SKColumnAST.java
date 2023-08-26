@@ -1,5 +1,6 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.repository.components.LRField;
@@ -43,19 +44,19 @@ public class SKColumnAST extends ColumnAST {
 
     @Override
     public LTFileObject getAccumLtEntry(String accumulatorName) {
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         return fcf.getSKA(accumulatorName, vc);
     }
 
     @Override
     public LTFileObject getFieldLtEntry(LRField field) {
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         return fcf.getSKE(field, vc);
     }
 
     @Override
     public LTFileObject getConstLtEntry(String value) {
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         return fcf.getSKC(value, vc);
     }
     
