@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.logging.Level;
 
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
@@ -57,6 +58,7 @@ class RunCompilerLookupTest extends RunCompilerBase {
         Repository.clearAndInitialise();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         RecordParser.clearAndInitialise();
+        LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
         java.nio.file.Path target = Paths.get("target/test-logs/");
         target.toFile().mkdirs();
         GenevaLog.initLogger(RunCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);

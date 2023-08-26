@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.extract.astnodes.ErrorAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTable;
@@ -68,8 +69,10 @@ class RunCompilerTest extends RunCompilerBase {
     public void initEach(TestInfo info){
         Repository.clearAndInitialise();
         ExtractBaseAST.setCurrentColumnNumber((short)0);
+        ExtractBaseAST.setCurrentAccumNumber(0);
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         RecordParser.clearAndInitialise();
+        LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
         java.nio.file.Path target = Paths.get("target/test-logs/");
         target.toFile().mkdirs();
         GenevaLog.initLogger(RunCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);

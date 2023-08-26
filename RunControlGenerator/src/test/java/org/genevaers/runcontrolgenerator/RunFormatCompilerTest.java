@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.format.FormatAST2Dot;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.calculationstack.CalcStack;
@@ -49,6 +50,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         Repository.clearAndInitialise();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         RecordParser.clearAndInitialise();
+        LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
         java.nio.file.Path target = Paths.get("target/test-logs/");
         target.toFile().mkdirs();
         GenevaLog.initLogger(RunFormatCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);
