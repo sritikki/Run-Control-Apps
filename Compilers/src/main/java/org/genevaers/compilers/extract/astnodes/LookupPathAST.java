@@ -29,6 +29,7 @@ import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
@@ -104,9 +105,10 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg.setFieldContentId(DateCode.CYMD);
         arg.setFieldLength((short)4);
         arg.setFieldFormat(DataType.BINARY);
+        arg.setJustifyId(JustifyId.NONE);
         EmitterArgHelper.setArgValueFrom(arg, 0);
         arg.setValueLength(-1);  //TODO make enum for the cookie values
-
+        lkd.setArg(arg);
         lkd.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkd);
     }
