@@ -44,7 +44,7 @@ public abstract class ExtractBaseAST extends ASTBase{
     protected int endOfLogic = 0;
 
     protected boolean isNot = false;
-    protected int currentAccumNumber = 0;
+    protected static int currentAccumNumber = 0;
     protected static short currentColumnNumber = 0;
     protected Set<String> accumNames = new HashSet<>();
     protected static ViewSource currentViewSource;
@@ -110,8 +110,8 @@ public abstract class ExtractBaseAST extends ASTBase{
         ExtractBaseAST.currentColumnNumber = currentColumnNumber;
     }
 
-    public void setCurrentAccumNumber(int currentAccumNumber) {
-        this.currentAccumNumber = currentAccumNumber;
+    public static void setCurrentAccumNumber(int currentAccumNumber) {
+        ExtractBaseAST.currentAccumNumber = currentAccumNumber;
     }
 
     public ASTFactory.Type getType() {

@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.emitters.comparisonemitters;
 
 import org.genevaers.compilers.extract.astnodes.CalculationAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -33,7 +34,7 @@ public class CFAAEmitter extends ComparisonEmitter{
         lhscalcNode.emit();
         CalculationAST rhscalcNode = ((CalculationAST) rhs);
         rhscalcNode.emit();
-        LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableNameValue cfac = (LogicTableNameValue) ltFact.getCFAA(lhscalcNode.getAccName(), lhscalcNode.getAccName(), op);
         return cfac;
     }

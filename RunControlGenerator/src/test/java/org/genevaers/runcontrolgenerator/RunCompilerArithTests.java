@@ -65,6 +65,7 @@ class RunCompilerArithTests extends RunCompilerBase {
     public void initEach(TestInfo info){
         Repository.clearAndInitialise();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
+        LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
         RecordParser.clearAndInitialise();
         java.nio.file.Path target = Paths.get("target/test-logs/");
         target.toFile().mkdirs();

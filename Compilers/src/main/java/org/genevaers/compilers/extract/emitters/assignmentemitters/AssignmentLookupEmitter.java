@@ -21,6 +21,7 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
@@ -44,7 +45,7 @@ public class AssignmentLookupEmitter extends AssignmentEmitter{
 
     private LogicTableF2 emitDTL(ExtractBaseAST lhs, LookupFieldRefAST lkf) {
         ViewColumn vc = ((ColumnAST)lhs).getViewColumn();
-        LtFuncCodeFactory fcf = new LtFuncCodeFactory();
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF2 ltEntry = null;
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);
         LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());

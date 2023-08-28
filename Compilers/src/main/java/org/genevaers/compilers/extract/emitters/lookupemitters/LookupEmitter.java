@@ -252,7 +252,7 @@ public class LookupEmitter extends CodeEmitter {
     }
 
     private LogicTableF1  addLKLR(LookupPath lookup, boolean skt) {
-        LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         //we need to know if this is an skt case or not
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lookup, skt);
         LogicTableF1 lklr = (LogicTableF1) ltFact.getLKLR(jv.getUniqueKey());
@@ -270,7 +270,7 @@ public class LookupEmitter extends CodeEmitter {
     }
 
     private LogicTableF1 addJOIN(LookupPath lookup, boolean skt) {
-        LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         //TODO pr.set column ID is set as a place holder to old Join ID
         //remember JoinIDs are all juggled BEFORE the extract is emitted
 

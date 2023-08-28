@@ -3,6 +3,7 @@ package org.genevaers.compilers.extract.emitters.comparisonemitters;
 import org.genevaers.compilers.extract.astnodes.CalculationAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -37,7 +38,7 @@ public class CFLAEmitter extends ComparisonEmitter{
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
         CalculationAST calcNode = ((CalculationAST) rhs);
         calcNode.emit();
-        LtFuncCodeFactory ltFact = new LtFuncCodeFactory();
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
         
 

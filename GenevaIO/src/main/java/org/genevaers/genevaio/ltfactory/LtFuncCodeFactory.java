@@ -45,7 +45,7 @@ import com.google.common.flogger.FluentLogger;
 public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    Map<String, Integer> accumMap = new HashMap<>();
+    private static Map<String, Integer> accumMap = new HashMap<>();
 
     private String accumName;
     private int logFileId;
@@ -72,6 +72,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         accumMap.put(accumBase, accNum);
         accumName = String.format("g_%d_%d_%d_%d_%d", viewSource.getViewId(), viewSource.getSourceLFID(), viewSource.getSourceLRID(), vc, accNum);
         return accumName;
+    }
+
+    public void clearAccumulatorMap() {
+        accumMap.clear();
     }
 
     @Override
