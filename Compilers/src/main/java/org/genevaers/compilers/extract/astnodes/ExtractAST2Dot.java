@@ -47,6 +47,7 @@ public class ExtractAST2Dot {
     private static final String DATASOURCE = "deepskyblue";
     private static final String COMPARISON = "lightgreen";
     private static final String ASSIGNMENT = "violet";
+    private static final String CAST = "red";
     private static final String STRINGCONST = "springgreen";
     private static final String NUMCONST = "springgreen";
     private static final String DATECONST = "springgreen";
@@ -57,6 +58,7 @@ public class ExtractAST2Dot {
     private static final String PRIOR_CLR = "pink";
     // Node Function Shapes
     private static final String EMITABLE = "octagon";
+    private static final String CASTFUNC = "septagon";
     private static final String FRAMEWORK = "rect";
     private static final String EOS_END = "circle";
     private static FileWriter fw;
@@ -319,14 +321,14 @@ public class ExtractAST2Dot {
     private static void dotCast(ExtractBaseAST node) {
         idString = "UN_" + nodeNum++;
         label = node.getType().toString();
-        colour = FRAME;
-        shape = FRAMEWORK;
+        colour = CAST;
+        shape = CASTFUNC;
         reverseArrow = true;
     }
 
     private static void dotDatatype(ExtractBaseAST node) {
         DataTypeAST dt = (DataTypeAST) node;
-        label = dt.getDatatype();
+        label = dt.getDatatype().toString();
         idString = "UN_" + nodeNum++;
         colour = DATASOURCE;
         reverseArrow = true;

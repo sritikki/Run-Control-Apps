@@ -111,7 +111,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
     private LTFileObject ltfo;
     private ExtractBaseAST lhs;
     private ExtractBaseAST rhs;
-    private String lhsCastTo;
+    private DataType lhsCastTo;
 
     public ExprComparisonAST() {
         type = ASTFactory.Type.EXPRCOMP;
@@ -136,6 +136,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         //LHS Field
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.CALCULATION), new CFEAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.NUMATOM), new CFECEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.STRINGATOM), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.RUNDATE), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LRFIELD), new CFEEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LOOKUPFIELDREF), new CFELEmitter());
@@ -258,14 +259,8 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         //if both sides have compatiible date codes strip date codes
         //if sides hava ALNUM and NUM flip ALNUM to Zoned
         if( lhsCastTo != null) {
-            switch(lhsCastTo) {
-                case "<ZONED>":
-                if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
-                    ((LogicTableF1)ltfo).getArg().setFieldFormat(DataType.ZONED);
-                }
-                break;
-                default:
-                break;
+            if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
+                ((LogicTableF1)ltfo).getArg().setFieldFormat(lhsCastTo);
             }
         }
     }

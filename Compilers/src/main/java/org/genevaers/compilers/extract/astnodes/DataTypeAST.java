@@ -1,6 +1,7 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.genevaers.repository.components.enums.DataType;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -32,8 +33,8 @@ public class DataTypeAST extends ExtractBaseAST {
         this.datatype = datatype;
     }
 
-    public String getDatatype() {
-        return datatype;
+    public DataType getDatatype() {
+        return DataType.fromValue(datatype);
     }    
 
 }

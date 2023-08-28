@@ -73,7 +73,10 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         Iterator<ASTBase> ci = children.iterator();
         ExtractBaseAST rhs = (ExtractBaseAST) ci.next();
         ColumnAST col = (ColumnAST)ci.next();
-        //if(col.getType() == ASTFactory.Type.DT_COLUMN) {
+
+        if(rhs instanceof CastAST) {
+            rhs = ((CastAST)rhs).decast();
+        }
             ltEmitter.setSuffixSeqNbr((short)col.getViewColumn().getColumnNumber());
             if(rhs instanceof EmittableASTNode)
                  ((EmittableASTNode)rhs).emit();

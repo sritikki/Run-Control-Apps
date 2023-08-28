@@ -310,7 +310,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         //Next iteration resolve this to the correct type
         CastAST cn = (CastAST) ASTFactory.getNodeOfType(ASTFactory.Type.CAST);
         DataTypeAST dtn = (DataTypeAST) ASTFactory.getNodeOfType(ASTFactory.Type.DATATYPE);
-        dtn.setDatatype(ctx.getChild(0).getText());
+        String datattype = ctx.getChild(0).getText();
+        datattype = datattype.substring(1, datattype.length()-1);
+        dtn.setDatatype(datattype);
         cn.addChildIfNotNull(dtn);
         //second is the datasource... just walk it
         cn.addChildIfNotNull(visit(ctx.getChild(1)));
@@ -351,7 +353,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         IfAST ifNode = (IfAST) ASTFactory.getNodeOfType(ASTFactory.Type.IFNODE);
         ifNode.addChildIfNotNull(visit(ctx.children.get(0))); //The predicate
         ifNode.addChildIfNotNull(visit(ctx.children.get(2))); //The if block
-        if(ctx.getChildCount() > 3) { //Must be an ELSE block
+        if(ctx.getChildCount() > 4) { //Must be an ELSE block
             //Add and ELSE Node.... just for clarity?
             ifNode.addChildIfNotNull(visit(ctx.children.get(4))); //The else block
         }

@@ -109,10 +109,6 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         }
     }
 
-    public void overrideDataType(DataType overFormat) {
-        overrideDataType(overFormat);;        
-    }
-
     public void setDateTimeFormat(DateCode overContent) {
         overrideDateCode(overContent);
     }

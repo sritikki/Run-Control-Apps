@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.genevaers.compilers.base.ASTBase;
+import org.genevaers.repository.components.enums.DataType;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -26,9 +27,10 @@ public class CastAST extends ExtractBaseAST {
     public CastAST() {
         type = ASTFactory.Type.CAST;
     }
-
-    public ASTBase decast() {
-        return children.get(1);
+    public FormattedASTNode decast() {
+        FormattedASTNode formattedChild = (FormattedASTNode) children.get(1);
+        formattedChild.overrideDataType(((DataTypeAST)children.get(0)).getDatatype());
+        return formattedChild;
     }
 
 }
