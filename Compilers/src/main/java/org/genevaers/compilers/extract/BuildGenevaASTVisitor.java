@@ -403,10 +403,13 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
 	@Override public ExtractBaseAST visitExprStringAtom(GenevaERSParser.ExprStringAtomContext ctx) { 
-        StringAtomAST str = (StringAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGATOM);
-        str.setValue(ctx.getText());
-        return str;
-    }
+        if(ctx.getChildCount() > 1) {
+            //Must be bracketed
+            return visit(ctx.getChild(1)); 
+        } else {
+            return visit(ctx.getChild(0)); 
+        }
+     }
 
 	@Override public ExtractBaseAST visitNumAtom(GenevaERSParser.NumAtomContext ctx) { 
         NumAtomAST num = (NumAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.NUMATOM);
@@ -527,6 +530,22 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             return str;
         }
     }
+
+  
+    @Override 
+    public ExtractBaseAST visitStringComp(GenevaERSParser.StringCompContext ctx) {
+        //A String comparison is just the same as an arithmetic comparison
+        //But the operators are restricted
+        ExprComparisonAST ec = (ExprComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.EXPRCOMP);
+        if(ctx.getChildCount() == 3) {
+            ec.addChildIfNotNull(visit(ctx.children.get(0)));
+            //want the operation type from the middle child
+            ec.setComparisonOperator(ctx.children.get(1).getText());
+            ec.addChildIfNotNull(visit(ctx.children.get(2)));
+        }
+        return ec; 
+     }
+  
 
     @Override public ExtractBaseAST visitString(GenevaERSParser.StringContext ctx) { 
         StringAtomAST str = (StringAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGATOM);

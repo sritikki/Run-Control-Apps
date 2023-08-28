@@ -1627,6 +1627,12 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
             return LtCompareType.GT;
             case "<>":
             return LtCompareType.NE;
+            case "BEGINS_WITH":
+            return LtCompareType.BEGINS;
+            case "CONTAINS":
+            return LtCompareType.CONTAINS;
+            case "ENDS_WITH":
+            return LtCompareType.ENDS;
             default:
             return LtCompareType.INVALID;
         }
