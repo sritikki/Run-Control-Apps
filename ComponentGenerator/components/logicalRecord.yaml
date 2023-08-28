@@ -24,6 +24,7 @@ members:
   type: map
   key: Name
   key_type: String
+  sorted: true
   values: org.genevaers.repository.components.LRField
   values_type: LRField
 - name: indexBySeq

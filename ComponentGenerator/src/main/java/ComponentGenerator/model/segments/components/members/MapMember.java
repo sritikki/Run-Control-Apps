@@ -71,7 +71,11 @@ public class MapMember extends Member {
     @Override
     public String getFieldEntry() {
         if(sorted)
-            return "    private TreeMap<" + keyType + ", " + valuesType + "> " + name + " = new java.util.TreeMap<>(String.CASE_INSENSITIVE_ORDER);";
+            if(keyType.equals("String")) {
+                return "    private TreeMap<" + keyType + ", " + valuesType + "> " + name + " = new java.util.TreeMap<>(String.CASE_INSENSITIVE_ORDER);";
+            } else {
+                return "    private TreeMap<" + keyType + ", " + valuesType + "> " + name + " = new java.util.TreeMap<>();";
+            }
         else
             return "    private HashMap<" + keyType + ", " + valuesType + "> " + name + " = new java.util.HashMap<>();";
     }
