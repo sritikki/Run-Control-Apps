@@ -150,6 +150,39 @@ public class RecordParserData {
 		}
 	}
 
+	private static PhysicalFile clonePfFrom(PhysicalFile pf) {
+		PhysicalFile newPf = new PhysicalFile();
+		newPf.setAccessMethod(pf.getAccessMethod());
+		newPf.setComponentId(pf.getComponentId());
+		newPf.setDataSetName(pf.getDataSetName());
+		newPf.setDatabase(pf.getDatabase());
+		newPf.setDatabaseConnection(pf.getDatabaseConnection());
+		newPf.setDatabaseRowFormat(pf.getDatabaseRowFormat());
+		newPf.setDatabaseTable(pf.getDatabaseTable());
+		newPf.setExtractDDName(pf.getExtractDDName());
+		newPf.setFieldDelimiter(pf.getFieldDelimiter());
+		newPf.setFileType(pf.getFileType());
+		newPf.setIncludeNulls(pf.isIncludeNulls());
+		newPf.setInputDDName(pf.getInputDDName());
+		newPf.setLogicalFileId(pf.getLogicalFileId());
+		newPf.setLogicalFilename(pf.getLogicalFilename());
+		newPf.setLrecl(pf.getLrecl());
+		newPf.setMaximumLength(pf.getMaximumLength());;
+		newPf.setMinimumLength(pf.getMinimumLength());
+		newPf.setName(pf.getName());
+		newPf.setOutputDDName(pf.getOutputDDName());
+		newPf.setReadExit(pf.getReadExit());
+		newPf.setReadExitID(pf.getReadExitID());
+		newPf.setReadExitIDParm(pf.getReadExitIDParm());
+		newPf.setRecfm(pf.getRecfm());
+		newPf.setRecordDelimiter(pf.getRecordDelimiter());
+		newPf.setRequired(pf.isRequired());
+		newPf.setSqlText(pf.getSqlText());
+		newPf.setTextDelimiter(pf.getTextDelimiter());
+		newPf.setMaxColumnID(pf.getMaxColumnID());
+		return newPf;
+	}
+
 	public static void clearAndInitialise() {
 		vs2lrlf = new HashMap<>();
 		vs2lfpf = new HashMap<>();

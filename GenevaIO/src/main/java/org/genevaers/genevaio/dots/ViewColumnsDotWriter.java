@@ -37,7 +37,9 @@ public class ViewColumnsDotWriter extends DotWriter {
 		vsDotString = new StringBuilder();
 		declareSubgraph(view, viewSource);
 
-		if (view.getViewSource(viewSource).getExtractFilter() != null) {
+		if(view.getViewDefinition().getName().contains("REH")) {
+			logger.atFine().log("Handle REH differently");
+		} else if (view.getViewSource(viewSource).getExtractFilter() != null) {
 			appendExtractFiler(view, viewSource);
 		}
 
