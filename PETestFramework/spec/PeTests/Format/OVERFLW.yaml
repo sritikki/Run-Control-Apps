@@ -2,7 +2,7 @@
 name: "OVERFLW"
 title: "Overflow Tests"
 description: "Do we catch the overflow"
-category: "PeTests/OLD"
+category: "PeTests/Format"
 cq: ""
 note: ""
 tests:
@@ -14,9 +14,9 @@ tests:
   - name: "CALCU_USING_CALC_NUM_OVERFLOW[4953].xml"
   eventfiles:
   - ddname: "SALESIGN"
-    dsn: "GEBT.REGRI.SALES.CO.ALL.SIGN"
+    filename: "SALES.CO.ALL.SIGN"
   - ddname: "SALESPCK"
-    dsn: "GEBT.REGRI.SALES.CO.ALL.SIGN.PACKED"
+    filename: "SALES.CO.ALL.SIGN.PACKED"
   extractfiles:
   - ddname: "EXTR020"
     space: "TRK"
