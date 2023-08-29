@@ -22,4 +22,7 @@ specFileSets:
       - "PeTests/FormatReports/ReportHeaderTest.yaml"
       - "PeTests/FormatReports/NEWP2.yaml"
       - "PeTests/Format/NEWP3.yaml"
+  - name: "Error cases"
+    templateSetName: "MR91toPEError.yaml"
+    specs:
       - "PeTests/Format/OVERFLW.yaml"
