@@ -103,6 +103,7 @@ public class LFAstNode extends ExtractBaseAST implements EmittableASTNode{
             PhysicalFile pf = lf.getPhysicalFile(parts[1]);
             PFAstNode pfn = (PFAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.PF);
             pfn.resolve(pf, parts[1]);
+            pf.setRequired(true);
             addChildIfNotNull(pfn);
         } else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
