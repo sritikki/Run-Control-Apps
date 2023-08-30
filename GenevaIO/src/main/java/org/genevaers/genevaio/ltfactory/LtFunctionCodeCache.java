@@ -70,10 +70,10 @@ public abstract class LtFunctionCodeCache {
         addFunctionCode("CSX", LtRecordType.F1, "IsSpaces function applied to a lookup field", "Comparison");
         addFunctionCode("CTA", LtRecordType.NAMEF1, "Write an accumulator value to a CT column", "Assignment");
         addFunctionCode("CTC", LtRecordType.F1, "Write a constant value to a CT column", "Assignment");
-        addFunctionCode("CTE", LtRecordType.F2, "Write an event field value to a CT column", "Assignment");
-        addFunctionCode("CTL", LtRecordType.F2, "Write a lookup field value to a CT column", "Assignment");
-        addFunctionCode("CTP", LtRecordType.F2, "Write a prior event field value to a CT column", "Assignment");
-        addFunctionCode("CTX", LtRecordType.F2, "Write a prior event field value to a CT column", "Assignment");
+        addFunctionCode("CTE", LtRecordType.F1, "Write an event field value to a CT column", "Assignment");
+        addFunctionCode("CTL", LtRecordType.F1, "Write a lookup field value to a CT column", "Assignment");
+        addFunctionCode("CTP", LtRecordType.F1, "Write a prior event field value to a CT column", "Assignment");
+        addFunctionCode("CTX", LtRecordType.F1, "Write a prior event field value to a CT column", "Assignment");
         addFunctionCode("CXE", LtRecordType.F1, "isNull function applied to an event field", "Comparison");
         addFunctionCode("CXL", LtRecordType.F1, "isNull function applied to a lookup field", "Comparison");
         addFunctionCode("CXP", LtRecordType.F1, "isNull function applied to a prior field", "Comparison");

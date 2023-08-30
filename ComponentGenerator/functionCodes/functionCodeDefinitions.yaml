@@ -217,19 +217,19 @@ codes:
     category: Assignment
     description:  Write a constant value to a CT column
   - function_code: CTE 
-    lt_record_type: F2
+    lt_record_type: F1
     category: Assignment
     description:  Write an event field value to a CT column
   - function_code: CTL 
-    lt_record_type: F2
+    lt_record_type: F1
     category: Assignment
     description:  Write a lookup field value to a CT column
   - function_code: CTP 
-    lt_record_type: F2
+    lt_record_type: F1
     category: Assignment
     description:  Write a prior event field value to a CT column
   - function_code: CTX 
-    lt_record_type: F2
+    lt_record_type: F1
     category: Assignment
     description:  Write a prior event field value to a CT column
     
