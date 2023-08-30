@@ -22,6 +22,7 @@ import java.util.List;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory;
+import org.genevaers.compilers.extract.astnodes.BetweenFunc;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.astnodes.BooleanAndAST;
 import org.genevaers.compilers.extract.astnodes.BooleanOrAST;
@@ -598,6 +599,13 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         return rd; 
     }
   
+    public ExtractBaseAST visitBetweenFunc(GenevaERSParser.BetweenFuncContext ctx) {
+        BetweenFunc btw = (BetweenFunc)ASTFactory.getNodeOfType(ASTFactory.Type.BETWEENFUNC);
+        btw.setFunction(ctx.getChild(0).getText());
+        btw.addChildIfNotNull(visit(ctx.getChild(2)));
+        btw.addChildIfNotNull(visit(ctx.getChild(4)));
+        return btw;
+     }
 
     public void setViewColumnSource(ViewColumnSource viewColumnSource) {
         this.viewColumnSource = viewColumnSource;
@@ -609,5 +617,6 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     public void setViewSource(ViewSource viewSource) {
         this.viewSource = viewSource;
     }
+
     
 }

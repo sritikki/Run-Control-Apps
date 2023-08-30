@@ -107,7 +107,7 @@ enums:
   description: Output media - Only HCOPY, FILE and DELIM make sense now
 - name: SortOrder
   asm_prefix: SORT_ORDER_
-  dbcodes: [INVALID,ASCND,  DESC] 
+  dbcodes: [INVALID,ASCND,  DSCND] 
   equates: [INVALID,ASCENDING,DESCENDING] 
   description: Sort Order
 - name: SortBreakFooterOption
