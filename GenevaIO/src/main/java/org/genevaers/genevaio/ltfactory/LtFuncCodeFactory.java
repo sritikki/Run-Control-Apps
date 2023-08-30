@@ -30,6 +30,7 @@ import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.ltfile.LogicTableName;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
+import org.genevaers.genevaio.ltfile.LogicTableNameF2;
 import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
 import org.genevaers.repository.components.LRField;
@@ -767,8 +768,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getFNCC(String accum, LogicTableArg arg1, LogicTableArg arg2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF2 fncc = new LogicTableNameF2();
+        fncc.setRecordType(LtRecordType.NAMEF2);
+        fncc.setFunctionCode("FNCC");
+        return fncc;
     }
 
     @Override

@@ -1,5 +1,8 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
+import org.genevaers.genevaio.ltfile.LTFileObject;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -18,7 +21,7 @@ package org.genevaers.compilers.extract.astnodes;
  */
 
 
-public class BetweenFunc extends ExtractBaseAST implements GenevaERSValue{
+public class BetweenFunc extends ExtractBaseAST implements GenevaERSValue, Assignable{
 
     private String value;
     private String function;
@@ -49,6 +52,15 @@ public class BetweenFunc extends ExtractBaseAST implements GenevaERSValue{
 
     public String getFunction() {
         return function;
+    }
+
+    @Override
+    public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
+        // make a FNxx function code dependent upon the child nodes
+        // Ah the FN writes to an accumulator?
+        // So it should be treated like an accumulator? More like a CalculationAST?
+        LTFileObject fncc = LtFactoryHolder.getLtFunctionCodeFactory().getFNCC(function, null, null);
+        return fncc;
     }
 
 }
