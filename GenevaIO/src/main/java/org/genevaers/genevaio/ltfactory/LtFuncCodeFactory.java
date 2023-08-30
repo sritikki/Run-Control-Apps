@@ -466,20 +466,26 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCNL(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cne = getF1FromField(f);
+        cne.setFunctionCode("CNL");
+        cne.setCompareType(LtCompareType.EQ);
+        return cne;
     }
 
     @Override
     public LTFileObject getCNP(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cnp = getF1FromField(f);
+        cnp.setFunctionCode("CNP");
+        cnp.setCompareType(LtCompareType.EQ);
+        return cnp;
     }
 
     @Override
     public LTFileObject getCNX(ViewColumn c) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cnx = getF1FromFColumn(c);
+        cnx.setFunctionCode("CNX");
+        cnx.setCompareType(LtCompareType.EQ);
+        return cnx;
     }
 
     @Override
