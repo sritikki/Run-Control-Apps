@@ -32,6 +32,7 @@ public class ASTFactory {
         NUMATOM("Number"), 
         STRINGATOM("String"), 
         SELECTIF("SelectIf"), 
+        SKIPIF("SkipIf"), 
         LRFIELD("LR Field"), 
         ERRORS("Errors"), 
         COLUMN("Column"), 
@@ -63,6 +64,7 @@ public class ASTFactory {
         DATATYPE("Datatype"),
         CAST("Cast"),
         RUNDATE("Rundate"),
+        FISCALDATE("FiscalDate"),
         UNARYINT("Int"),
         EXTRACTOUTPUT("Extract Ouptut"),
         CALCULATION("Calculation"),
@@ -120,6 +122,8 @@ public class ASTFactory {
                 return new ErrorAST();
             case SELECTIF:
                 return new SelectIfAST();
+            case SKIPIF:
+                return new SkipIfAST();
             case EXPRCOMP:
                 return new ExprComparisonAST();
             case EXTRFILTER:
@@ -164,6 +168,8 @@ public class ASTFactory {
                 return new DataTypeAST();
             case RUNDATE:
                 return new RundateAST();
+            case FISCALDATE:
+                return new FiscaldateAST();
             case UNARYINT:
                 return new UnaryInt();
             case EXTRACTOUTPUT:
