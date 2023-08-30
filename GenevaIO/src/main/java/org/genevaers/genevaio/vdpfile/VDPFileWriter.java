@@ -579,6 +579,8 @@ public class VDPFileWriter {
 			short seqNum = 1;
 			while (pfi.hasNext()) {
 				PhysicalFile pf = pfi.next();
+				pf.setLogicalFileId(lf.getID());
+				pf.setLogicalFilename(lf.getName());
 				VDPPhysicalFile vdppf = new VDPPhysicalFile();
 				if(pf.isRequired()) {
 					vdppf.fillFromComponent(pf);
