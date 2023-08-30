@@ -29,13 +29,14 @@ import org.genevaers.repository.components.enums.DataType;
 public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Assignable, CalculationSource{
 
     private int value;
+    private String numStr;
 
     public NumAtomAST() {
         type = ASTFactory.Type.NUMATOM;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setValue(String numString) {
+        numStr = numString;
     }
 
     public int getValue() {
@@ -44,7 +45,7 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
 
     @Override
     public String getValueString() {
-        return String.valueOf(value);
+        return numStr;
     }
 
     @Override
