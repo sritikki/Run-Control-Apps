@@ -71,6 +71,8 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         // Therefore the target of DT
         // Our first child will give the source of the DT
 
+        if(children.size() == 2) {
+
         Iterator<ASTBase> ci = children.iterator();
         ExtractBaseAST rhs = (ExtractBaseAST) ci.next();
         ColumnAST col = (ColumnAST)ci.next();
@@ -107,6 +109,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         //    logger.atSevere().log("Should never get here");
         //}
         col.emit(); //In case there is a sort title emit
+        } else {
+            int workToDo = 1;
+        }
     }
 
     private void emitLookupDefault(ColumnAST col) {

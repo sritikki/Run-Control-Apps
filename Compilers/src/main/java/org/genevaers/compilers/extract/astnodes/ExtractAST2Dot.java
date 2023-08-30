@@ -455,7 +455,7 @@ public class ExtractAST2Dot {
 
     private static void dotNumAtomNode(ExtractBaseAST node) {
         NumAtomAST numNode = (NumAtomAST) node;
-        label = numNode.getType().toString() + " (" + numNode.getValue() + ")";
+        label = numNode.getType().toString() + " (" + numNode.getValueString() + ")";
         colour = NUMCONST;
         idString = "Num_" + nodeNum++;
         reverseArrow = true;

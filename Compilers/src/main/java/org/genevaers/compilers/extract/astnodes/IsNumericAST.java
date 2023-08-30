@@ -58,12 +58,16 @@ public class IsNumericAST extends ExtractBaseAST implements  EmittableASTNode{
 
     protected void emitCNX(ExtractBaseAST col) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCNX(((ColumnAST)col).getViewColumn()));
+        ltfo = fcf.getCNX(((ColumnAST)col).getViewColumn());
+        addToLogicTableAndInitialiseGotos(ltfo);
     }
 
     protected void emitCNL(ExtractBaseAST lkp) {
+        LookupFieldRefAST lkf = (LookupFieldRefAST) lkp;
+        lkf.getLkEmitter().emitJoin(lkf, false);
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCNL(((LookupFieldRefAST)lkp).getRef()));
+        ltfo = fcf.getCNL(((LookupFieldRefAST)lkp).getRef());
+        addToLogicTableAndInitialiseGotos(ltfo);
     }
 
     protected void emitCNE(ExtractBaseAST field) {

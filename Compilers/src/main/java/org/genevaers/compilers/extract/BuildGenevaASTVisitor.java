@@ -37,6 +37,7 @@ import org.genevaers.compilers.extract.astnodes.ErrorAST;
 import org.genevaers.compilers.extract.astnodes.ExprComparisonAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
+import org.genevaers.compilers.extract.astnodes.FiscaldateAST;
 import org.genevaers.compilers.extract.astnodes.IfAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
@@ -44,6 +45,7 @@ import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RundateAST;
 import org.genevaers.compilers.extract.astnodes.SelectIfAST;
 import org.genevaers.compilers.extract.astnodes.SetterAST;
+import org.genevaers.compilers.extract.astnodes.SkipIfAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
 import org.genevaers.compilers.extract.astnodes.SymbolEntry;
@@ -94,6 +96,12 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     
     @Override public ExtractBaseAST visitSelectIf(GenevaERSParser.SelectIfContext ctx) { 
         SelectIfAST sfn = (SelectIfAST)ASTFactory.getNodeOfType(ASTFactory.Type.SELECTIF);
+        sfn.addChildIfNotNull(visit(ctx.getChild(2)));
+        return sfn; 
+    }
+
+    @Override public ExtractBaseAST visitSkipIf(GenevaERSParser.SkipIfContext ctx) { 
+        SkipIfAST sfn = (SkipIfAST)ASTFactory.getNodeOfType(ASTFactory.Type.SKIPIF);
         sfn.addChildIfNotNull(visit(ctx.getChild(2)));
         return sfn; 
     }
@@ -413,7 +421,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
 	@Override public ExtractBaseAST visitNumAtom(GenevaERSParser.NumAtomContext ctx) { 
         NumAtomAST num = (NumAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.NUMATOM);
-        num.setValue(Integer.parseInt(ctx.getText()));
+        num.setValue(ctx.getText());
         return num;
     }
 
@@ -581,7 +589,15 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         return colRef; 
     }
 
-
+    @Override public ExtractBaseAST visitFiscalDate(GenevaERSParser.FiscalDateContext ctx) {
+        FiscaldateAST rd = (FiscaldateAST) ASTFactory.getNodeOfType(ASTFactory.Type.FISCALDATE);
+        rd.setValue(ctx.getChild(0).getText());
+        if(ctx.getChildCount() > 3){
+            rd.addChildIfNotNull(visit(ctx.getChild(2)));
+        }
+        return rd; 
+    }
+  
 
     public void setViewColumnSource(ViewColumnSource viewColumnSource) {
         this.viewColumnSource = viewColumnSource;

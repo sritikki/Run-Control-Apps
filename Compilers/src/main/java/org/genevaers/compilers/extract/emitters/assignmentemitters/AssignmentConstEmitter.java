@@ -32,7 +32,7 @@ public class AssignmentConstEmitter extends AssignmentEmitter{
     public LTFileObject makeLTEntry(ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LTFileObject ltEntry = null;
         if(rhs.getType() == ASTFactory.Type.NUMATOM) {
-            ltEntry = ((ColumnAST)lhs).getConstLtEntry(String.valueOf(((NumAtomAST)rhs).getValue()));
+            ltEntry = ((ColumnAST)lhs).getConstLtEntry(((NumAtomAST)rhs).getValueString());
         } else {
             ltEntry = ((ColumnAST)lhs).getConstLtEntry(((StringAtomAST)rhs).getValue());
         }

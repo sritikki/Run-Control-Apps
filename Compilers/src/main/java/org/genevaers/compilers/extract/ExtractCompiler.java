@@ -77,15 +77,19 @@ public class ExtractCompiler {
             ((ErrorAST)astTree).setErrors(errorListener.getErrors());
             ASTBase.addToErrorCount(errorListener.getErrors().size());
         }
-        ErrorAST errs = (ErrorAST) ((ExtractBaseAST) astTree).getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        if(errs != null) {
-            logger.atSevere().log("Errors detected");
-            Iterator<String> ei = errs.getErrors().iterator();
-            while(ei.hasNext()) {
-                //Want to add these to an Error AST Node
-                logger.atSevere().log(ei.next());
+        if(astTree != null) {
+            ErrorAST errs = (ErrorAST) ((ExtractBaseAST) astTree).getFirstNodeOfType(ASTFactory.Type.ERRORS);
+            if(errs != null) {
+                logger.atSevere().log("Errors detected");
+                Iterator<String> ei = errs.getErrors().iterator();
+                while(ei.hasNext()) {
+                    //Want to add these to an Error AST Node
+                    logger.atSevere().log(ei.next());
+                }
+                ASTBase.addToErrorCount(errs.getErrors().size());
             }
-            ASTBase.addToErrorCount(errs.getErrors().size());
+        } else {
+            logger.atInfo().log("Null AST Tree generated");
         }
         return astTree;
     }

@@ -20,6 +20,7 @@ package org.genevaers.compilers.extract.emitters.helpers;
 
 import org.genevaers.compilers.extract.astnodes.DateFunc;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.compilers.extract.astnodes.FiscaldateAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RundateAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
@@ -98,9 +99,11 @@ public class EmitterArgHelper {
 
     public static void setArgVal(ExtractBaseAST rhs, LogicTableArg arg) {
         if(rhs.getType() == Type.NUMATOM) {
-            setArgValueFrom(arg, ((NumAtomAST)rhs).getValue());
+            setArgValueFrom(arg, ((NumAtomAST)rhs).getValueString());
         } else if(rhs.getType() == Type.DATEFUNC) {
             setArgValueFrom(arg, ((DateFunc)rhs).getValue());
+        } else if(rhs.getType() == Type.FISCALDATE) {
+            setArgValueFrom(arg, ((FiscaldateAST)rhs).getValue());
         } else if(rhs.getType() == Type.RUNDATE) {
             setArgValueFrom(arg, (RundateAST)rhs);
         } else {
@@ -113,7 +116,7 @@ public class EmitterArgHelper {
         // We should not be doing this
         // Add a GersValue interface to those node that supply a value
         if(rhs.getType() == Type.NUMATOM) {
-            return String.valueOf(((NumAtomAST)rhs).getValue());
+            return ((NumAtomAST)rhs).getValueString();
         } else if(rhs.getType() == Type.DATEFUNC) {
             return ((DateFunc)rhs).getValue();
         } else if(rhs.getType() == Type.RUNDATE) {

@@ -126,8 +126,10 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         //LHS Const
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.CALCULATION), new CFCAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.RUNDATE), new CFCCEmitter());  //CFCC
+        emitters.put(new ComparisonKey(ASTFactory.Type.RUNDATE, ASTFactory.Type.STRINGATOM), new CFCCEmitter());  //CFCC
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.RUNDATE, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.PRIORLRFIELD), new CFCPEmitter());
@@ -138,6 +140,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.NUMATOM), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.STRINGATOM), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.RUNDATE), new CFECEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.FISCALDATE), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LRFIELD), new CFEEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LOOKUPFIELDREF), new CFELEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.PRIORLRFIELD), new CFEPEmitter());
@@ -176,18 +179,25 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
 
     @Override
     public void emit() {
+        if(children.size() < 2) {
+            int bang = 1;
+        }
         ExtractBaseAST lhsin = (ExtractBaseAST) children.get(0);
         ExtractBaseAST rhsin = (ExtractBaseAST) children.get(1);
         ComparisonEmitter emitter = getComparisonEmitter(lhsin, rhsin); 
-        emitter.setLtEmitter(ltEmitter);
-        ltfo = emitter.getLTEntry(op, lhs, rhs);
-        applyComparisonRules(op, lhsin, rhsin);
-        if(ltfo != null) {
-            ltEmitter.addToLogicTable((LTRecord)ltfo);
+        if(emitter != null) {
+            emitter.setLtEmitter(ltEmitter);
+            ltfo = emitter.getLTEntry(op, lhs, rhs);
+            applyComparisonRules(op, lhsin, rhsin);
+            if(ltfo != null) {
+                ltEmitter.addToLogicTable((LTRecord)ltfo);
 
-            goto1 = ltEmitter.getNumberOfRecords();
-            ((LTRecord)ltfo).setGotoRow1(goto2);
-            ((LTRecord)ltfo).setGotoRow2( goto2 );
+                goto1 = ltEmitter.getNumberOfRecords();
+                ((LTRecord)ltfo).setGotoRow1(goto2);
+                ((LTRecord)ltfo).setGotoRow2( goto2 );
+            }
+        } else {
+            int workToDo = 1;
         }
     }
 

@@ -54,7 +54,7 @@ public class ArithRHSConstEmitter extends ArithEmitter  {
                 default:
                 break;
             }
-            arithfn.setValue(Integer.toString(num.getValue()));
+            arithfn.setValue(num.getValueString());
         }
         if(res != ArithResult.ARITH_OK) {
             //we have a message to report
