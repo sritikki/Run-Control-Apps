@@ -80,31 +80,24 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         if(rhs instanceof CastAST) {
             rhs = ((CastAST)rhs).decast();
         }
-            ltEmitter.setSuffixSeqNbr((short)col.getViewColumn().getColumnNumber());
-            if(rhs instanceof EmittableASTNode)
-                 ((EmittableASTNode)rhs).emit();
+        ltEmitter.setSuffixSeqNbr((short)col.getViewColumn().getColumnNumber());
+        if(rhs instanceof EmittableASTNode)
+                ((EmittableASTNode)rhs).emit();
 
-            // This is where we need the rules checking and data type adjustment
-            
-            
-            // The rhs will have its own emmitter since it will be assignable
-            // If not ... boom
-            DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(col, rhs);
-            DTResult res = dc.verifyOperands(col, rhs);
-            if(res ==DTResult.ASSIGN_OK) {
-            // ae.setLtEmitter(ltEmitter);
-            // CodeEmitter.setRepo();
-            // LTFileObject lto = ae.getLTEntry(col, rhs);
-                LTFileObject lto = ((Assignable)rhs).getAssignmentEntry(col, (ExtractBaseAST)rhs);
-
-
-            // It should be able to add its own entries?
-
-                ltEmitter.addToLogicTable((LTRecord)lto);
-            }
-            // if(ae.isLookup()) {
-            //     emitLookupDefault(col);
-            // }
+        // This is where we need the rules checking and data type adjustment
+        
+        
+        // The rhs will have its own emmitter since it will be assignable
+        // If not ... boom
+        DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(col, rhs);
+        DTResult res = dc.verifyOperands(col, rhs);
+        if(res ==DTResult.ASSIGN_OK) {
+            LTFileObject lto = ((Assignable)rhs).getAssignmentEntry(col, (ExtractBaseAST)rhs);
+            ltEmitter.addToLogicTable((LTRecord)lto);
+        }
+        // if(ae.isLookup()) {
+        //     emitLookupDefault(col);
+        // }
         //} else {
         //    logger.atSevere().log("Should never get here");
         //}

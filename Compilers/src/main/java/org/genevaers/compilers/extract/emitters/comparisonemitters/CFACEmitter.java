@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract.emitters.comparisonemitters;
 
+import org.genevaers.compilers.extract.astnodes.ASTFactory;
+import org.genevaers.compilers.extract.astnodes.BetweenFunc;
 import org.genevaers.compilers.extract.astnodes.CalculationAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
@@ -31,10 +33,17 @@ public class CFACEmitter extends ComparisonEmitter{
 
     @Override
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
-        CalculationAST calcNode = ((CalculationAST) lhs);
-        calcNode.emit();
+        LogicTableNameValue cfac = null;
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableNameValue cfac = (LogicTableNameValue) ltFact.getCFAC(calcNode.getAccName(), ((GenevaERSValue)rhs).getValueString(), op);
+        if(lhs.getType() == ASTFactory.Type.CALCULATION) {
+            CalculationAST calcNode = ((CalculationAST) lhs);
+            calcNode.emit();
+            cfac = (LogicTableNameValue) ltFact.getCFAC(calcNode.getAccName(), ((GenevaERSValue)rhs).getValueString(), op);
+        } else if (lhs.getType() == ASTFactory.Type.BETWEENFUNC) {
+            BetweenFunc btwnNode = ((BetweenFunc) lhs);
+            btwnNode.emit();
+            cfac = (LogicTableNameValue) ltFact.getCFAC(btwnNode.getAccName(), ((GenevaERSValue)rhs).getValueString(), op);
+        }
         return cfac;
     }
 

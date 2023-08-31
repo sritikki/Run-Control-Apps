@@ -1,7 +1,11 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -21,8 +25,10 @@ import org.genevaers.genevaio.ltfile.LTFileObject;
  */
 
 
-public class BetweenFunc extends ExtractBaseAST implements GenevaERSValue, Assignable{
+public class BetweenFunc extends FormattedASTNode implements Assignable, CalculationSource, EmittableASTNode {
 
+    private String accName;
+    private int accumulatorNumber;
     private String value;
     private String function;
 
@@ -38,11 +44,6 @@ public class BetweenFunc extends ExtractBaseAST implements GenevaERSValue, Assig
         //map from the string to the magic code
         //Also there may be a child node here...
         //Keep as a node or just parse the ()?
-        return value;
-    }
-
-    @Override
-    public String getValueString() {
         return value;
     }
 
@@ -63,4 +64,62 @@ public class BetweenFunc extends ExtractBaseAST implements GenevaERSValue, Assig
         return fncc;
     }
 
+    @Override
+    public void emit() {
+         if(accName == null) {
+            generateAccumulatorName();
+            ltEmitter.addToLogicTable((LTRecord)LtFactoryHolder.getLtFunctionCodeFactory().getDIMN());
+        }
+        emitChildNodes();
+    }
+
+    @Override
+    public LTFileObject emitSetFunctionCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'emitSetFunctionCode'");
+    }
+
+    @Override
+    public LTFileObject emitAddFunctionCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'emitAddFunctionCode'");
+    }
+
+    @Override
+    public LTFileObject emitSubFunctionCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'emitSubFunctionCode'");
+    }
+
+    @Override
+    public LTFileObject emitMulFunctionCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'emitMulFunctionCode'");
+    }
+
+    @Override
+    public LTFileObject emitDivFunctionCode() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'emitDivFunctionCode'");
+    }
+
+    public String getAccName() {
+        return accName;
+    }
+
+    //Make common in a base?
+    private void generateAccumulatorName() {
+        if(accName == null)
+            accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(currentViewSource, currentViewColumn.getColumnNumber());
+    }
+
+    @Override
+    public DataType getDataType() {
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.GENEVANUMBER;
+    }
+
+    @Override
+    public DateCode getDateCode() {
+        return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
+    }
 }

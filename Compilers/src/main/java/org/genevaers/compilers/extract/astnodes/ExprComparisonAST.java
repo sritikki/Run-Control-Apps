@@ -122,6 +122,12 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.LOOKUPFIELDREF), new CFALEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.PRIORLRFIELD), new CFAPEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.CALCULATION, ASTFactory.Type.COLUMNREF), new CFAXEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.BETWEENFUNC, ASTFactory.Type.CALCULATION), new CFAAEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.BETWEENFUNC, ASTFactory.Type.NUMATOM), new CFACEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.BETWEENFUNC, ASTFactory.Type.LRFIELD), new CFAEEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.BETWEENFUNC, ASTFactory.Type.LOOKUPFIELDREF), new CFALEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.BETWEENFUNC, ASTFactory.Type.PRIORLRFIELD), new CFAPEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.BETWEENFUNC, ASTFactory.Type.COLUMNREF), new CFAXEmitter());
 
         //LHS Const
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.CALCULATION), new CFCAEmitter());

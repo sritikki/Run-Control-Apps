@@ -590,8 +590,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCXL(LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 cxl = getF1FromField(f);
+        cxl.setFunctionCode("CXL");
+        cxl.setCompareType(LtCompareType.EQ);
+        return cxl;
     }
 
     @Override

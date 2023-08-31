@@ -1,5 +1,13 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
+import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.ExtractArea;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -18,7 +26,7 @@ package org.genevaers.compilers.extract.astnodes;
  */
 
 
-public class RundateAST extends ExtractBaseAST implements GenevaERSValue{
+public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assignable{
 
     private String value;
 
@@ -40,6 +48,61 @@ public class RundateAST extends ExtractBaseAST implements GenevaERSValue{
     @Override
     public String getValueString() {
         return value;
+    }
+
+    @Override
+    public DataType getDataType() {
+        //Note the Cookie thing comes into play here
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.ALPHANUMERIC;
+    }
+
+    private DateCode rawDateCode() {
+        //or is it the 
+        switch (value) {
+        case "RUNDAY":
+            return DateCode.CYMD;
+        case "RUNMONTH":
+            return DateCode.CYM;
+        case "RUNYEAR":
+            return DateCode.CCYY;
+        default:
+            return DateCode.NONE;
+        }
+    }
+/*
+
+uint16_t
+RunDateASTNode::getLength() const
+{
+    switch (getType()) {
+    case SAFRLexerTokenTypes::RUNDAY:
+        return 8;
+    case SAFRLexerTokenTypes::RUNMONTH:
+        return 6;
+    case SAFRLexerTokenTypes::RUNYEAR:
+        return 4;
+    }
+    return 0;
+}
+ */
+
+    @Override
+    public DateCode getDateCode() {
+        //Depends on value
+        return (overriddenDateCode != null) ? overriddenDateCode : rawDateCode();
+    }
+
+    @Override
+    public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(String.valueOf(value), currentViewColumn));
+        } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(String.valueOf(value), currentViewColumn));
+        } else {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(String.valueOf(value), currentViewColumn));
+        }
+        return null;
     }
 
 }
