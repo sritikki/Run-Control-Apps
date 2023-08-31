@@ -43,6 +43,7 @@ import org.genevaers.compilers.extract.astnodes.IfAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
+import org.genevaers.compilers.extract.astnodes.RepeatAST;
 import org.genevaers.compilers.extract.astnodes.RundateAST;
 import org.genevaers.compilers.extract.astnodes.SelectIfAST;
 import org.genevaers.compilers.extract.astnodes.SetterAST;
@@ -598,7 +599,14 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         }
         return rd; 
     }
-  
+
+    @Override public ExtractBaseAST visitRepeat(GenevaERSParser.RepeatContext ctx) {
+        RepeatAST rep = (RepeatAST) ASTFactory.getNodeOfType(ASTFactory.Type.REPEAT);
+        rep.addChildIfNotNull(visit(ctx.getChild(2)));
+        rep.setValue(ctx.getChild(4).getText());
+        return rep;
+     }
+      
     public ExtractBaseAST visitBetweenFunc(GenevaERSParser.BetweenFuncContext ctx) {
         BetweenFunc btw = (BetweenFunc)ASTFactory.getNodeOfType(ASTFactory.Type.BETWEENFUNC);
         btw.setFunction(ctx.getChild(0).getText());

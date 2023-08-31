@@ -83,7 +83,8 @@ public class ASTFactory {
         ISNOTSPACES("Is Not Spaces"),
         ISNOTNULL("Is Not Null"),
         ISNOTNUMERIC("Is Not Numeric"), 
-        BETWEENFUNC("Between")
+        BETWEENFUNC("Between"), 
+        REPEAT("Repeat")
          ;
 
         private String name;
@@ -211,6 +212,8 @@ public class ASTFactory {
                 return new IsNotSpacesAST();
             case BETWEENFUNC:
                 return new BetweenFunc();
+            case REPEAT:
+                return new RepeatAST();
             default:
                 return null;
         }
