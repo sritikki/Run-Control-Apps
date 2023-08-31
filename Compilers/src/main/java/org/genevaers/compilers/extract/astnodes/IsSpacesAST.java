@@ -62,7 +62,12 @@ public class IsSpacesAST extends ExtractBaseAST implements  EmittableASTNode{
 
     protected void emitCSL(ExtractBaseAST lkp) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCSL(((LookupFieldRefAST)lkp).getRef()));
+        LookupFieldRefAST lkf = (LookupFieldRefAST) lkp;
+
+        lkf.getLkEmitter().emitJoin(lkf, false);
+        
+        ltfo = fcf.getCSL(lkf.getRef());
+        addToLogicTableAndInitialiseGotos(ltfo);
     }
 
     protected void emitCSE(ExtractBaseAST field) {
