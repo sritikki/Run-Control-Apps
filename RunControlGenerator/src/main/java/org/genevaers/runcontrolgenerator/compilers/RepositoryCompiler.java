@@ -121,14 +121,16 @@ public class RepositoryCompiler {
 				int bang = 0;
 			}
 			if(v.isFormat()) {
+				boolean addedToFormatRequired = true;
 				currentFormatView = (FormatView)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.FORMATVIEW);
 				currentFormatView.addView(v);
 				if(v.getFormatFilterLogic() != null && v.getFormatFilterLogic().length() > 0) {
 					formatRoot.addChildIfNotNull(currentFormatView);
 					compileFormatFilter(v);
+					addedToFormatRequired = false;
 				}
 				Repository.getFormatViews().add(v, v.getID(), v.getName());
-				addColumnCalculations(v);
+				addColumnCalculations(v, addedToFormatRequired);
 			}
 		}
 		writeFormatAstIfEnabled();
@@ -140,8 +142,7 @@ public class RepositoryCompiler {
 		}
 	}
 
-	private void addColumnCalculations(ViewNode v) {
-		boolean addedToFormatRequired = true;
+	private void addColumnCalculations(ViewNode v, boolean addedToFormatRequired) {
 		Iterator<ViewColumn> vci = v.getColumnIterator();
 		while(vci.hasNext()) {
 			ViewColumn vc = vci.next();
