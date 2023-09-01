@@ -135,7 +135,7 @@ public abstract class LtFunctionCodeCache {
         addFunctionCode("KSLK", LtRecordType.F1, "Description to be completed", "Lookup");
         addFunctionCode("LKC", LtRecordType.F1, "Add a constant value to the lookup key", "Lookup");
         addFunctionCode("LKDC", LtRecordType.F1, "Description to be completed", "Lookup");
-        addFunctionCode("LKDE", LtRecordType.F1, "Description to be completed", "Lookup");
+        addFunctionCode("LKDE", LtRecordType.F2, "Description to be completed", "Lookup");
         addFunctionCode("LKDL", LtRecordType.F1, "Description to be completed", "Lookup");
         addFunctionCode("LKDX", LtRecordType.F1, "Description to be completed", "Lookup");
         addFunctionCode("LKE", LtRecordType.F2, "Add an event field value to the lookup key", "Lookup");
