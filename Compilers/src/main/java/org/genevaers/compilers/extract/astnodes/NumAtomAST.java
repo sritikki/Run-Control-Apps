@@ -50,18 +50,18 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
 
     @Override
     public void setNegative() {
-        value = -value;
+        numStr = "-" + numStr;
     }
 
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(String.valueOf(value), currentViewColumn));
+            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(numStr, currentViewColumn));
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(String.valueOf(value), currentViewColumn));
+            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(numStr, currentViewColumn));
         } else {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(String.valueOf(value), currentViewColumn));
+            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(numStr, currentViewColumn));
         }
         return null;
     }
