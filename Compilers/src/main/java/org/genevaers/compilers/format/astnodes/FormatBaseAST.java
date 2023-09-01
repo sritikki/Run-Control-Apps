@@ -45,7 +45,11 @@ public abstract class FormatBaseAST extends ASTBase{
         while(fi.hasNext()) {
             FormatBaseAST f = (FormatBaseAST) fi.next();
             cse = f.emit(invert);
-            currentOffset += cse.length();
+            if(cse != null) {
+                currentOffset += cse.length();
+            } else {
+                int wtf = 1;
+            }
         }
         return cse;
     }

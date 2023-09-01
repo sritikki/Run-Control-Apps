@@ -141,6 +141,16 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
         }
     }
 
+    @Override public FormatBaseAST visitExprBoolAtom(GenevaFormatParser.ExprBoolAtomContext ctx) {
+        if(ctx.getChildCount() == 3) {
+            return visit(ctx.getChild(1));
+        } else {
+            return visitChildren(ctx); 
+        }
+     }
+  
+  
+
     @Override public FormatBaseAST visitExprBoolUnary(GenevaFormatParser.ExprBoolUnaryContext ctx) { 
         //If there are two children may be a NOT
         //So probably need an node here to manage

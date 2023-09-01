@@ -28,6 +28,7 @@ import org.genevaers.compilers.format.astnodes.ColRef;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
 import org.genevaers.compilers.format.astnodes.FormatErrorAST;
+import org.genevaers.compilers.format.astnodes.FormatView;
 import org.genevaers.compilers.format.astnodes.NumConst;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewNode;
@@ -142,6 +143,9 @@ public class FormatAST2Dot {
                 case FORMATFILTERROOT:
                     dotFormatFilter(node);
                     break;
+                case FORMATVIEW:
+                    doFormatView(node);
+                    break;
                 case SELECTIF:
                 case SKIPIF:
                     doFilterType(node);
@@ -182,6 +186,12 @@ public class FormatAST2Dot {
     //     colour = DATECONST;
     //     reverseArrow = true;
     // }
+
+    private static void doFormatView(FormatBaseAST node) {
+        idString = "UN_" + nodeNum++;
+        label = node.getType().toString() + ((FormatView)node).getView().getID();
+        colour = COMPARISON;
+    }
 
     private static void doFilterType(FormatBaseAST node) {
         idString = "UN_" + nodeNum++;

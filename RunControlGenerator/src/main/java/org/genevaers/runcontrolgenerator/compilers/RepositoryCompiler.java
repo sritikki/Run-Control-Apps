@@ -42,6 +42,7 @@ import org.genevaers.compilers.extract.astnodes.ViewColumnSourceAstNode;
 import org.genevaers.compilers.extract.astnodes.ViewSourceAstNode;
 import org.genevaers.compilers.extract.emitters.CodeEmitter;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
+import org.genevaers.compilers.format.FormatAST2Dot;
 import org.genevaers.compilers.format.FormatCompiler;
 import org.genevaers.compilers.format.astnodes.ColumnCalculation;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory;
@@ -116,20 +117,31 @@ public class RepositoryCompiler {
 		Iterator<ViewNode> vi = Repository.getViews().getIterator();
 		while(vi.hasNext()){
 			ViewNode v = vi.next();
+			if(v.getViewDefinition().getComponentId() == 4954) {
+				int bang = 0;
+			}
 			if(v.isFormat()) {
+				currentFormatView = (FormatView)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.FORMATVIEW);
+				currentFormatView.addView(v);
 				if(v.getFormatFilterLogic() != null && v.getFormatFilterLogic().length() > 0) {
-					currentFormatView = (FormatView)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.FORMATVIEW);
-					currentFormatView.addView(v);
 					formatRoot.addChildIfNotNull(currentFormatView);
 					compileFormatFilter(v);
 				}
 				Repository.getFormatViews().add(v, v.getID(), v.getName());
+				addColumnCalculations(v);
 			}
-			addColumnCalculations(v);
+		}
+		writeFormatAstIfEnabled();
+	}
+
+	private void writeFormatAstIfEnabled() {
+		if(rcc.isFormatDotEnabled()) {
+        	FormatAST2Dot.write(formatRoot, Paths.get("target/Format.dot"));
 		}
 	}
 
 	private void addColumnCalculations(ViewNode v) {
+		boolean addedToFormatRequired = true;
 		Iterator<ViewColumn> vci = v.getColumnIterator();
 		while(vci.hasNext()) {
 			ViewColumn vc = vci.next();
@@ -137,6 +149,10 @@ public class RepositoryCompiler {
 				ColumnCalculation cc = (ColumnCalculation)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.COLCALC);
 				cc.addViewColumn(vc);
 				currentFormatView.addChildIfNotNull(cc);
+				if(addedToFormatRequired) {
+					formatRoot.addChildIfNotNull(currentFormatView);
+					addedToFormatRequired = false;
+				}
 				FormatCompiler fc = new FormatCompiler();
 				try {
 					cc.addChildIfNotNull(fc.processLogic(vc.getColumnCalculation(), false));
@@ -145,6 +161,7 @@ public class RepositoryCompiler {
 					e.printStackTrace();
 				}
 			}
+			
 		}
 	}
 

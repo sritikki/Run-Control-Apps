@@ -190,6 +190,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfcc.setValue2(c2);
         cfcc.setValue2Length(c2.length());
         cfcc.setCompareType(getCompareType(op));
+        cfcc.setFieldContentCode(DateCode.NONE);
         return cfcc;
     }
 
@@ -773,6 +774,9 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableNameF2 fncc = new LogicTableNameF2();
         fncc.setRecordType(LtRecordType.NAMEF2);
         fncc.setFunctionCode("FNCC");
+        fncc.setCompareType(LtCompareType.EQ);
+        fncc.setArg1(arg1);
+        fncc.setArg2(arg2);
         return fncc;
     }
 

@@ -89,6 +89,7 @@ public class RunControlConfigration {
     public static final String XLT_FILE = "XLT";
     public static final String JLT_FILE = "JLT";
     public static final String VDP_FILE = "VDP";
+    private static final String DOT_FORMAT = "DOT_FORMAT";
 
     // Configuration is just a map of parm names to values
     // Make it a TreeMap so it is sorted
@@ -122,6 +123,7 @@ public class RunControlConfigration {
         parmToValue.put(COLUMN_DOTS, new ConfigEntry("", true));
         parmToValue.put(PF_DOTS, new ConfigEntry("N", true));
         parmToValue.put(EMIT_ENABLED, new ConfigEntry("Y", true));
+        parmToValue.put(DOT_FORMAT, new ConfigEntry("N", true));
 
         parmToValue.put(XLT_FILE, new ConfigEntry("XLT", true));
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
@@ -330,6 +332,10 @@ public class RunControlConfigration {
         } else {
             return "";
         }
+    }
+
+    public boolean isFormatDotEnabled() {
+        return parmToValue.get(DOT_FORMAT).getValue().equalsIgnoreCase("Y");
     }
 
 }
