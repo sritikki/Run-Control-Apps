@@ -21,6 +21,10 @@ package org.genevaers.genevaio.ltfile;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.JustifyId;
+
 public class ArgHelper {
     
     private static final int LTDateRunDay                = 0xffffffff;
@@ -68,5 +72,22 @@ public class ArgHelper {
         String val = new String(in);
         arg.setValue(val);
     }
+
+    public static LogicTableArg makeDefaultArg() {
+        LogicTableArg arg = new LogicTableArg();
+        arg.setDecimalCount((short)0);
+        arg.setFieldContentId(DateCode.NONE);
+        arg.setFieldFormat(DataType.INVALID);
+        arg.setLrId(0);
+        arg.setFieldId(0);
+        arg.setStartPosition((short)0);
+        arg.setFieldLength((short)0);
+        arg.setJustifyId(JustifyId.NONE);
+        arg.setSignedInd(false);
+        arg.setValueLength((short)0);
+        arg.setPadding2("");
+        return arg;
+    }
+
 
 }

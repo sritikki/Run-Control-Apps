@@ -1,9 +1,12 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
+import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 
@@ -60,7 +63,15 @@ public class BetweenFunc extends FormattedASTNode implements Assignable, Calcula
         // make a FNxx function code dependent upon the child nodes
         // Ah the FN writes to an accumulator?
         // So it should be treated like an accumulator? More like a CalculationAST?
-        LTFileObject fncc = LtFactoryHolder.getLtFunctionCodeFactory().getFNCC(function, null, null);
+
+        //Need to deal with different types here...
+        StringAtomAST c1 = (StringAtomAST) children.get(0);
+        StringAtomAST c2 = (StringAtomAST) children.get(1);
+        LogicTableArg arg1 = ArgHelper.makeDefaultArg();
+        ArgHelper.setArgValueFrom(arg1, c1.getValue());
+        LogicTableArg arg2 = ArgHelper.makeDefaultArg();
+        ArgHelper.setArgValueFrom(arg2, c2.getValue());
+        LTFileObject fncc = LtFactoryHolder.getLtFunctionCodeFactory().getFNCC(function, arg1, arg2);
         return fncc;
     }
 
