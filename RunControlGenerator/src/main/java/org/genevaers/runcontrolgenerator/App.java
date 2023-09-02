@@ -31,7 +31,9 @@ public class App {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public static void main(String[] args) {
-        System.out.println("No5 is Alive");
+		System.out.printf("GenevaERS RunControlGenerator version %s\n", "tbd");
+		System.out.printf("Java Vendor %s", System.getProperty("java.vendor"));
+		System.out.printf("Java Version %s", System.getProperty("java.version"));
         if(args.length == 2) {
             if(args[0].equals("rc")) {
                 //use name as prefix
@@ -44,8 +46,7 @@ public class App {
     } 
 
     public static void run(String parmFile, String reportFile, String logFile, String vdpFile, String xltFile, String jltFile) {
-        initLogger(logFile);
-		GenevaLog.logNow("App Start ");
+//        initLogger(logFile);
         RunControlGenerator rcg = new RunControlGenerator();
         ParmReader pr = new ParmReader();
         RunControlConfigration rcc = new RunControlConfigration();
@@ -60,6 +61,8 @@ public class App {
         try {
             pr.populateConfigFrom(rcc.getParmFileName());
             if(rcc.isValid()) {
+                GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, rcc.getLogLevel());
+		        GenevaLog.logNow("App Start ");
                 rcg.runFromConfig(rcc);
             } else {
                 logger.atSevere().log("Invalid configuration processing stopped");
@@ -71,7 +74,7 @@ public class App {
         GenevaLog.closeLogger(RunControlGenerator.class.getName());
     }
 
-	private static void initLogger(String logFile) {
-        GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, Level.FINE);
-	}
+	// private static void initLogger(String logFile) {
+    //     GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, Level.FINE);
+	// }
 }

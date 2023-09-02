@@ -28,6 +28,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -62,7 +63,7 @@ public class GenevaLog
 				fh = new FileHandler(filename);
 			}
             topLogger.setLevel(minLevel);
-			fh.setLevel(Level.FINE);
+			fh.setLevel(minLevel);
 			fh.setFormatter(new Formatter() {
 				public String format(LogRecord record) {
 					return record.getLevel() + " : " + record.getMessage() + "\n";

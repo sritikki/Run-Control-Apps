@@ -23,6 +23,7 @@ import java.nio.file.Path;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -76,6 +77,7 @@ public class RunControlConfigration {
     private static final String ZOSPARMFILE = "ZOSPARMFILE";
     private static final String REPORT_FILE = "MR91RPT";
     private static final String LOG_FILE = "MR91LOG";
+    public static final String LOG_LEVEL = "FINE";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";
@@ -128,6 +130,8 @@ public class RunControlConfigration {
         parmToValue.put(XLT_FILE, new ConfigEntry("XLT", true));
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
         parmToValue.put(VDP_FILE, new ConfigEntry("VDP", true));
+
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("LOG_LEVEL", true));
 
     }
 
@@ -199,6 +203,14 @@ public class RunControlConfigration {
 
 	public String getParmFileName() {
 		return parmToValue.get(PARMFILE).getValue();
+	}
+
+	public Level getLogLevel() {
+		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("FINE")){
+            return Level.FINE;
+        } else {
+            return Level.INFO;
+        }
 	}
 
 	public String getZosParmFileName() {
