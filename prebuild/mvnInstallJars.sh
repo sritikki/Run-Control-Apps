@@ -13,7 +13,8 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-if [ ! -f "~.m2\repository\com\ibm\jzos\2.4.8\ibmjzos.jar" ]; 
+mvn dependency:get -Dartifact=com.ibm:jzos:2.4.8 > /dev/null 2>&1
+if [ $? != 0 ]; 
 then
     echo "installing jars in repository"
     mvn install:install-file -Dfile=$GERS_JARS/db2jcc4.jar -DgroupId=com.ibm -DartifactId=db2jcc4 -Dversion=4 -Dpackaging=jar
