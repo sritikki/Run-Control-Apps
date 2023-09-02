@@ -32,8 +32,8 @@ public class App {
 
     public static void main(String[] args) {
 		System.out.printf("GenevaERS RunControlGenerator version %s\n", "tbd");
-		System.out.printf("Java Vendor %s", System.getProperty("java.vendor"));
-		System.out.printf("Java Version %s", System.getProperty("java.version"));
+		System.out.printf("Java Vendor %s\n", System.getProperty("java.vendor"));
+		System.out.printf("Java Version %s\n", System.getProperty("java.version"));
         if(args.length == 2) {
             if(args[0].equals("rc")) {
                 //use name as prefix

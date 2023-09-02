@@ -77,7 +77,7 @@ public class RunControlConfigration {
     private static final String ZOSPARMFILE = "ZOSPARMFILE";
     private static final String REPORT_FILE = "MR91RPT";
     private static final String LOG_FILE = "MR91LOG";
-    public static final String LOG_LEVEL = "FINE";
+    public static final String LOG_LEVEL = "LOG_LEVEL";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";
@@ -121,6 +121,7 @@ public class RunControlConfigration {
         parmToValue.put(WB_XML_FILES_SOURCE, new ConfigEntry(WB_XML_FILES_SOURCE, true));
 
         parmToValue.put(DOT_XLT, new ConfigEntry("N", true));
+        parmToValue.put(DOT_JLT, new ConfigEntry("N", true));
         parmToValue.put(VIEW_DOTS, new ConfigEntry("", true));
         parmToValue.put(COLUMN_DOTS, new ConfigEntry("", true));
         parmToValue.put(PF_DOTS, new ConfigEntry("N", true));
@@ -131,7 +132,7 @@ public class RunControlConfigration {
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
         parmToValue.put(VDP_FILE, new ConfigEntry("VDP", true));
 
-        parmToValue.put(LOG_LEVEL, new ConfigEntry("LOG_LEVEL", true));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
 
     }
 
