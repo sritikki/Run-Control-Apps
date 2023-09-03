@@ -259,6 +259,7 @@ public class VDPFileWriter {
 
 	private void writeViewSource(ViewSource vs) {
 		VDPViewSource vvs = new VDPViewSource();
+        logger.atFine().log("Write View Source %d", vs.getSequenceNumber());
 		vvs.fillFromComponent(vs);
 		vvs.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -268,6 +269,7 @@ public class VDPFileWriter {
 
 	private void writeOutputLogic(ViewSource vs) {
 		if (vs.getExtractOutputLogic() != null) {
+            logger.atFine().log("Output Logic\n%s", vs.getExtractOutputLogic());
 			String eol = vs.getExtractOutputLogic();
 			VDPExtractOutputLogic veol = new VDPExtractOutputLogic();
 
@@ -289,6 +291,7 @@ public class VDPFileWriter {
 		if (vs.getExtractFilter() != null && vs.getExtractFilter().length() > 0) {
 			String ef = vs.getExtractFilter();
 			VDPExtractFilter vef = new VDPExtractFilter();
+            logger.atFine().log("Extract Filter\n%s", ef);
 
 			vef.setRecordType(VDPRecord.VDP_EXTRACT_FILTER);
 			vef.setViewId(vs.getViewId());
@@ -313,6 +316,7 @@ public class VDPFileWriter {
 
 	private void writeViewSortKey(ViewSortKey vsk) {
 		VDPViewSortKey vvsk = new VDPViewSortKey();
+        logger.atFine().log("Write sort key %d", vsk.getSequenceNumber());
 		vvsk.fillFromComponent(vsk);
 		vvsk.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -327,6 +331,7 @@ public class VDPFileWriter {
 
 	private void writeViewColumn(ViewColumn col) {
 		VDPViewColumn vvc = new VDPViewColumn();
+        logger.atFine().log("Write View %d column %d", col.getViewId(), col.getColumnNumber());
 		vvc.fillFromComponent(col);
 		vvc.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -337,7 +342,7 @@ public class VDPFileWriter {
 		String ccl = col.getColumnCalculation();
 		if (ccl != null && ccl.length() > 0) {
 			VDPColumnCalculationLogic vccl = new VDPColumnCalculationLogic();
-
+            logger.atFine().log("Write View %d column calculation\n%s", col.getViewId(), ccl);
 			vccl.setRecordType(VDPRecord.VDP_COLUMN_CALCULATION);
 			vccl.setViewId(col.getViewId());
 			vccl.setSequenceNbr((short) 1); // If there is more than 8K we ar in trouble
@@ -402,6 +407,7 @@ public class VDPFileWriter {
 
 	private void writeViewColumnSource(int colNumber, ViewColumnSource vcs) {
 		VDPViewColumnSource vvcs = new VDPViewColumnSource();
+        logger.atFine().log("Write column %d source", colNumber);
 		vvcs.fillFromComponent(vcs);
 		vvcs.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -411,6 +417,7 @@ public class VDPFileWriter {
 	private void writeColumnLogic(int colNumber, ViewColumnSource vcs) {
 		String cl = vcs.getLogicText();
 		VDPColumnLogic vcl = new VDPColumnLogic();
+        logger.atFine().log("Logic %s", cl);
 
 		vcl.setRecordType(VDPRecord.VDP_COLUMN_LOGIC);
 		vcl.setViewId(vcs.getViewId());
@@ -428,6 +435,7 @@ public class VDPFileWriter {
 
 	private void writeExtractTargetSet(VDPExtractTargetSet extractTargets) {
 		if (extractTargets != null) {
+            logger.atFine().log("Write View %d Extract Targets\n", extractTargets.getViewId());
 			extractTargets.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.setLengthFromPosition(); //Need this for the variable length records
 			VDPWriter.writeAndClearTheRecord();
