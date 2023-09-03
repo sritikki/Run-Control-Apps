@@ -77,7 +77,7 @@ public class RunControlConfigration {
     private static final String ZOSPARMFILE = "ZOSPARMFILE";
     private static final String REPORT_FILE = "MR91RPT";
     private static final String LOG_FILE = "MR91LOG";
-    public static final String LOG_LEVEL = "FINE";
+    public static final String LOG_LEVEL = "LOG_LEVEL";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";

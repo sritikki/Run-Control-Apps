@@ -64,7 +64,7 @@ public class SinglePassOptimiser {
 	}
 
 	private void generateLogicGroups() {
-        logger.atInfo().log("");
+        logger.atInfo().log("Generate Logic Groups");
 		//copy so we can manipulat the map
 		//Not sure if this is needed
 		pf2VS = pf2ViewSources;
@@ -182,11 +182,11 @@ public class SinglePassOptimiser {
 		StringBuilder sb = new StringBuilder();
 		while(vsi.hasNext()) {
 			ViewSource vs = vsi.next();
-			sb.append("vs " + vs.getViewId() + " " + vs.getSourceLFID() + "\nPFs ");
+			sb.append("vs view:" + vs.getViewId() + " lf:" + vs.getSourceLFID() + "\nPFs ");
 			buildPF2View(vs, sb);
 			sb.append("\n");
 		}
-		logger.atInfo().log("\n%s", sb.toString());
+		logger.atFine().log("View Source\n%s", sb.toString());
 		dumpPf2ViewSources();
 	}
 
@@ -194,11 +194,11 @@ public class SinglePassOptimiser {
 		StringBuilder sb = new StringBuilder();
 		Stream<Entry<Integer, Set<ViewSource>>> p2vStream = pf2ViewSources.entrySet().stream();
 		p2vStream.forEachOrdered(p2v -> buildPf2ViewsTable(p2v, sb));
-		logger.atInfo().log("\n%s", sb.toString());
+		logger.atFine().log("Pf to View Sources\n%s", sb.toString());
 	}
 
 	private void buildPf2ViewsTable(Entry<Integer, Set<ViewSource>> p2v, StringBuilder sb) {
-		sb.append("\nPF " + p2v.getKey() + " Read by view sources\n");
+		sb.append("PF " + p2v.getKey() + " Read by view sources\n");
 		Iterator<ViewSource> vsi = p2v.getValue().iterator();
 		while(vsi.hasNext()) {
 			ViewSource vs = vsi.next();
