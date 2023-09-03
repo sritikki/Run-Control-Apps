@@ -136,6 +136,9 @@ public class VDPFileWriter {
 		short s = 1;
 		while(rhi.hasNext()) {
 			VDPHeader vh = new VDPHeader();
+			if(vh.getTitleLength() == 0) {
+				vh.setTitleText("");
+			}
 			vh.fillFromComponent(rhi.next());
 			vh.setViewId(view.getID());
 			vh.setSequenceNbr(s++);
@@ -174,6 +177,7 @@ public class VDPFileWriter {
 			if(view.getOutputFile().getOutputDDName().isEmpty()) {
 				makeViewFormatRecord(view);
 			}
+		    logger.atFine().log("Write View %d Output File", view.getID());
 			ff.fillFromComponent(view.getOutputFile());
 			ff.setViewId(view.getID());
 
@@ -201,7 +205,7 @@ public class VDPFileWriter {
 		String ffl = view.getFormatFilterLogic();
 		if (ffl != null && ffl.length() > 0) {
 			VDPFormatFilterLogic vffl = new VDPFormatFilterLogic();
-
+            logger.atFine().log("Write View %d Format Filter\n%s", view.getID(), ffl);
 			vffl.setRecordType(VDPRecord.VDP_FORMAT_FILTER_LOGIC);
 			vffl.setViewId(view.getID());
 			vffl.setSequenceNbr((short) 1);
@@ -220,6 +224,7 @@ public class VDPFileWriter {
 		CalcStack ffcs = view.getFormatFilterCalcStack();
 		if (ffcs != null) {
 			VDPFormatFilterStack vffs = new VDPFormatFilterStack();
+            logger.atFine().log("Write View %d Format Filter CalcStack\n", view.getID());
 
 			vffs.setRecordType(VDPRecord.VDP_FORMAT_FILTER_STACK);
 			vffs.setViewId(view.getID());
@@ -254,6 +259,7 @@ public class VDPFileWriter {
 
 	private void writeViewSource(ViewSource vs) {
 		VDPViewSource vvs = new VDPViewSource();
+        logger.atFine().log("Write View Source %d", vs.getSequenceNumber());
 		vvs.fillFromComponent(vs);
 		vvs.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -263,6 +269,7 @@ public class VDPFileWriter {
 
 	private void writeOutputLogic(ViewSource vs) {
 		if (vs.getExtractOutputLogic() != null) {
+            logger.atFine().log("Output Logic\n%s", vs.getExtractOutputLogic());
 			String eol = vs.getExtractOutputLogic();
 			VDPExtractOutputLogic veol = new VDPExtractOutputLogic();
 
@@ -284,6 +291,7 @@ public class VDPFileWriter {
 		if (vs.getExtractFilter() != null && vs.getExtractFilter().length() > 0) {
 			String ef = vs.getExtractFilter();
 			VDPExtractFilter vef = new VDPExtractFilter();
+            logger.atFine().log("Extract Filter\n%s", ef);
 
 			vef.setRecordType(VDPRecord.VDP_EXTRACT_FILTER);
 			vef.setViewId(vs.getViewId());
@@ -308,6 +316,7 @@ public class VDPFileWriter {
 
 	private void writeViewSortKey(ViewSortKey vsk) {
 		VDPViewSortKey vvsk = new VDPViewSortKey();
+        logger.atFine().log("Write sort key %d", vsk.getSequenceNumber());
 		vvsk.fillFromComponent(vsk);
 		vvsk.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -322,6 +331,7 @@ public class VDPFileWriter {
 
 	private void writeViewColumn(ViewColumn col) {
 		VDPViewColumn vvc = new VDPViewColumn();
+        logger.atFine().log("Write View %d column %d", col.getViewId(), col.getColumnNumber());
 		vvc.fillFromComponent(col);
 		vvc.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -332,7 +342,7 @@ public class VDPFileWriter {
 		String ccl = col.getColumnCalculation();
 		if (ccl != null && ccl.length() > 0) {
 			VDPColumnCalculationLogic vccl = new VDPColumnCalculationLogic();
-
+            logger.atFine().log("Write View %d column calculation\n%s", col.getViewId(), ccl);
 			vccl.setRecordType(VDPRecord.VDP_COLUMN_CALCULATION);
 			vccl.setViewId(col.getViewId());
 			vccl.setSequenceNbr((short) 1); // If there is more than 8K we ar in trouble
@@ -397,6 +407,7 @@ public class VDPFileWriter {
 
 	private void writeViewColumnSource(int colNumber, ViewColumnSource vcs) {
 		VDPViewColumnSource vvcs = new VDPViewColumnSource();
+        logger.atFine().log("Write column %d source", colNumber);
 		vvcs.fillFromComponent(vcs);
 		vvcs.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
@@ -406,6 +417,7 @@ public class VDPFileWriter {
 	private void writeColumnLogic(int colNumber, ViewColumnSource vcs) {
 		String cl = vcs.getLogicText();
 		VDPColumnLogic vcl = new VDPColumnLogic();
+        logger.atFine().log("Logic %s", cl);
 
 		vcl.setRecordType(VDPRecord.VDP_COLUMN_LOGIC);
 		vcl.setViewId(vcs.getViewId());
@@ -423,6 +435,7 @@ public class VDPFileWriter {
 
 	private void writeExtractTargetSet(VDPExtractTargetSet extractTargets) {
 		if (extractTargets != null) {
+            logger.atFine().log("Write View %d Extract Targets\n", extractTargets.getViewId());
 			extractTargets.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.setLengthFromPosition(); //Need this for the variable length records
 			VDPWriter.writeAndClearTheRecord();
@@ -431,6 +444,7 @@ public class VDPFileWriter {
 
 		private void writeViewDefinition(ViewDefinition viewDefinition) {
 		VDPViewDefinition vvd = new VDPViewDefinition();
+		logger.atFine().log("Write View %d Definition", viewDefinition.getComponentId());
 		vvd.fillFromComponent(viewDefinition);
 		vvd.setOutputPageSizeMax((short)66);
 		vvd.setOutputLineSizeMax((short)250);
@@ -441,6 +455,7 @@ public class VDPFileWriter {
 
 	private void writeExtractRecordFile() {
 		if (vdpMgmtRecs.getExtractRecordFile() != null) {
+		    logger.atFine().log("Write Extract Record File");
 			vdpMgmtRecs.fillExtractFileNumbersFrom(Repository.getExtractFileNubers());
 			vdpMgmtRecs.getExtractRecordFile().fillTheWriteBuffer(VDPWriter);
 			VDPWriter.setLengthFromPosition();
@@ -451,6 +466,7 @@ public class VDPFileWriter {
 	private void writeExtractOutputFile() {
 		VDPExtractFile eof = vdpMgmtRecs.getExtractOutputFile();
 		if(eof != null) {
+		    logger.atFine().log("Write Extract Output File");
 			eof.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
 		}
@@ -476,6 +492,7 @@ public class VDPFileWriter {
 		} else if (vdpMgmtRecs.getLookupPathTargetSet() != null) {
 			vdpMgmtRecs.getLookupPathTargetSet().fillTheWriteBuffer(VDPWriter);
 		}
+		logger.atFine().log("Write Lookup Target Set");
 		VDPWriter.setLengthFromPosition(); //Need this for the variable length records
 		VDPWriter.writeAndClearTheRecord();
 	}
@@ -483,6 +500,7 @@ public class VDPFileWriter {
 	private void writeLookupGenMap() {
 		if (vdpMgmtRecs.getLookupPathGenerationMap() != null) {
 			vdpMgmtRecs.getLookupPathGenerationMap().fillTheWriteBuffer(VDPWriter);
+			logger.atFine().log("Write Lookup Gen Map");
 			VDPWriter.setLengthFromPosition(); //Need this for the variable length records
 			VDPWriter.writeAndClearTheRecord();
 		}
@@ -500,6 +518,7 @@ public class VDPFileWriter {
 					VDPLookupPathKey vlpk = new VDPLookupPathKey();
 					LookupPathKey lpk = lpki.next();
 					lpk.setJoinName(lp.getName());
+			        logger.atFine().log("Write Lookup Key:%d %d %d", lpk.getComponentId(), lpk.getStepNumber(), lpk.getKeyNumber());
 					vlpk.fillFromComponent(lpk);
 					vlpk.fillTheWriteBuffer(VDPWriter);
 					VDPWriter.writeAndClearTheRecord();
@@ -512,7 +531,9 @@ public class VDPFileWriter {
 		Iterator<LRIndex> lrii = Repository.getIndexes().getIterator();
 		while (lrii.hasNext()) {
 			VDPLRIndex vi = new VDPLRIndex();
-			vi.fillFromComponent(lrii.next());
+			LRIndex lri = lrii.next();
+			logger.atFine().log("Write Index:%d %d %s", lri.getComponentId(), lri.getLrId(), lri.getName());
+			vi.fillFromComponent(lri);
 			vi.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
 		}
@@ -522,7 +543,9 @@ public class VDPFileWriter {
 		Iterator<LRField> lrfi = Repository.getFields().getIterator();
 		while (lrfi.hasNext()) {
 			VDPLRField vlrf = new VDPLRField();
-			vlrf.fillFromComponent(lrfi.next());
+			LRField lrf = lrfi.next();
+			logger.atFine().log("Write Field:%d %d %s", lrf.getComponentId(), lrf.getLrID(), lrf.getName());
+			vlrf.fillFromComponent(lrf);
 			vlrf.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
 		}
@@ -532,6 +555,8 @@ public class VDPFileWriter {
 		Iterator<LogicalRecord> lri = Repository.getLogicalRecords().getIterator();
 		while (lri.hasNext()) {
 			VDPLogicalRecord vlr = new VDPLogicalRecord();
+			LogicalRecord lr = lri.next();
+			logger.atFine().log("Write LR:%d %s", lr.getComponentId(), lr.getName());
 			vlr.fillFromComponent(lri.next());
 			vlr.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
@@ -539,6 +564,7 @@ public class VDPFileWriter {
 	}
 
 	private void writeGenerationRecord() {
+		logger.atFine().log("Write Generation");
 		VDPGenerationRecord gen = vdpMgmtRecs.getViewGeneration();
 		gen.setAsciiInd(true);
 		gen.setVersionInfo((short)13);
@@ -548,6 +574,7 @@ public class VDPFileWriter {
 	}
 
 	private void writeFormatViewsRecord() {
+		logger.atFine().log("Write Format Views");
 		//Need to create a default empty record
 		//VDP always has one in C++
 		if (vdpMgmtRecs.getFormatViews() == null) {
@@ -561,8 +588,10 @@ public class VDPFileWriter {
 	private void writeControlRecords() {
 		Iterator<ControlRecord> cri = Repository.getControlRecords().getIterator();
 		while (cri.hasNext()) {
+			ControlRecord crc = (ControlRecord)cri.next();
 			VDPControlRecord cr = new VDPControlRecord();
-			cr.fillFromComponent((ControlRecord)cri.next());
+			logger.atFine().log("Write CR:%d", crc.getComponentId());
+			cr.fillFromComponent(crc);
 			cr.setEffectiveDate("00000000");
 			cr.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
@@ -583,12 +612,13 @@ public class VDPFileWriter {
 				pf.setLogicalFilename(lf.getName());
 				VDPPhysicalFile vdppf = new VDPPhysicalFile();
 				if(pf.isRequired()) {
+			        logger.atFine().log("Write PF:%d", pf.getComponentId());
 					vdppf.fillFromComponent(pf);
 					vdppf.setSequenceNbr(seqNum++);
 					vdppf.fillTheWriteBuffer(VDPWriter);
 					VDPWriter.writeAndClearTheRecord();
 				} else {
-					logger.atInfo().log("PF %s %d not required", pf.getName(), pf.getComponentId());
+					logger.atFine().log("PF %s %d not required", pf.getName(), pf.getComponentId());
 				}
 			}
 		}
@@ -597,8 +627,10 @@ public class VDPFileWriter {
 	private void writeExitRecords() {
 		Iterator<UserExit> exi = Repository.getUserExits().getIterator();
 		while (exi.hasNext()) {
+			UserExit ex = exi.next();
+			logger.atFine().log("Write Exit:%d", ex.getComponentId());
 			VDPExit ue = new VDPExit();
-			ue.fillFromComponent(exi.next());
+			ue.fillFromComponent(ex);
 			ue.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
 		}

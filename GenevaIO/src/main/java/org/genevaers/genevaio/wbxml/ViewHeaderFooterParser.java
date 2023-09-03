@@ -120,7 +120,11 @@ public class ViewHeaderFooterParser extends RecordParser {
 		rh.setColumn((short) col);
 		rh.setRow((short) row);
 		rh.setTitleLength((short) length);
-		rh.setText(itemText);
+		if(itemText == null) {
+			rh.setText("");
+		} else {
+			rh.setText(itemText);
+		}
 		Repository.getViews().get(viewid).addReportHeader(rh);
 	}
 }
