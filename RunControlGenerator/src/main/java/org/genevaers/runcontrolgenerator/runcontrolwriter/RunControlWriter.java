@@ -35,7 +35,10 @@ import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
 
+import com.google.common.flogger.FluentLogger;
+
 public class RunControlWriter {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private LogicTable extractLogicTable;
     private LogicTable joinLogicTable;
     private RunControlConfigration rcc;
@@ -51,9 +54,13 @@ public class RunControlWriter {
         LTWriter jltw = new LTWriter();
         try {
             if(joinLogicTable.getNumberOfRecords() > 5) {
+                logger.atInfo().log("Write Join Logic Table");
                 jltw.write(joinLogicTable, Paths.get(rcc.getJLTFileName()));
                 jltw.close();
+            } else {
+                logger.atInfo().log("No Join Logic Table required");
             }
+            logger.atInfo().log("Write Extract Logic Table");
             xltw.write(extractLogicTable, Paths.get(rcc.getXLTFileName()));
             xltw.close();
         } catch (IOException e) {

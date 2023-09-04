@@ -80,13 +80,12 @@ public class RunControlGenerator {
 
 
 	private void writeRunControlFiles(RunControlConfigration rcc) {
-		GenevaLog.logNow("writeRunControlFiles In");
 		if(status != Status.ERROR) {
 			RunControlWriter rcw = new RunControlWriter(rcc);
-			GenevaLog.writeHeader("Join Logic Table");
-			LTLogger.logRecords(extractLogicTable);
-			GenevaLog.writeHeader("Extract Logic Table");
-			LTLogger.logRecords(extractLogicTable);
+			logger.atFine().log("Join Logic Table");
+			logger.atFine().log(LTLogger.logRecords(joinLogicTable));
+			logger.atFine().log("Extract Logic Table");
+			logger.atFine().log(LTLogger.logRecords(extractLogicTable));
 			rcw.setExtractLogicTable(extractLogicTable);
 			rcw.setJoinLogicTable(joinLogicTable);
 			status = rcw.run();
@@ -114,7 +113,6 @@ public class RunControlGenerator {
 	}
 
 	private void singlePassOptimise(RunControlConfigration rcc) {
-		GenevaLog.logNow("singlePassOptimise");
 		if(status != Status.ERROR) {
 			SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
 			status = spo.run();
