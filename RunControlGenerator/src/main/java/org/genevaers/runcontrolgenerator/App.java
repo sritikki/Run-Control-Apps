@@ -62,7 +62,6 @@ public class App {
             pr.populateConfigFrom(rcc.getParmFileName());
             if(rcc.isValid()) {
                 GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, rcc.getLogLevel());
-		        GenevaLog.logNow("App Start ");
                 rcg.runFromConfig(rcc);
             } else {
                 logger.atSevere().log("Invalid configuration processing stopped");
@@ -70,7 +69,6 @@ public class App {
         } catch (IOException e) {
             logger.atSevere().log("Unable to read PARM file");
         }
-		GenevaLog.logNow("App Done ");
         GenevaLog.closeLogger(RunControlGenerator.class.getName());
     }
 
