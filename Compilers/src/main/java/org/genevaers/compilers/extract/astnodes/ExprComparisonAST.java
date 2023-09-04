@@ -136,6 +136,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.RUNDATE, ASTFactory.Type.LRFIELD), new CFCEEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.DATEFUNC, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.PRIORLRFIELD), new CFCPEmitter());
@@ -146,6 +147,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.NUMATOM), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.STRINGATOM), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.RUNDATE), new CFECEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.DATEFUNC), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.FISCALDATE), new CFECEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LRFIELD), new CFEEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.LOOKUPFIELDREF), new CFELEmitter());
