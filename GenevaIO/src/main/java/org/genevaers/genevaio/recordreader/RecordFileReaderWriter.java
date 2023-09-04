@@ -58,14 +58,14 @@ public class RecordFileReaderWriter {
 	public RecordFileReaderWriter() {
 		//want the spaces buffer to be the correct character
 		String os = System.getProperty("os.name");
-		logger.atInfo().log("Operating System %s", os);
+		logger.atFine().log("Operating System %s", os);
 		if(os.startsWith("z")) {
-			logger.atInfo().log("Using ZosRecordWriter");
+			logger.atFine().log("Using ZosRecordWriter");
 			rw = new ZosRecordWriter();
 			writeEBCDIC = true;
 			RecordWriter.setSpacesEBCDIC();
 		} else {
-			logger.atInfo().log("Using BinRecordWriter");
+			logger.atFine().log("Using BinRecordWriter");
 			rw = new BinRecordWriter();
 		}
 		VDPFileObject.setSpaces(RecordWriter.getSpaces());

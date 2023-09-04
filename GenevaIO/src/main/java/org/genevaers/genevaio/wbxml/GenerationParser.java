@@ -18,7 +18,7 @@ public class GenerationParser extends RecordParser {
     public void parseRecord(XMLStreamReader reader) {
         switch (reader.getName().getLocalPart()) {
             default:
-                logger.atInfo().log(reader.getName().getLocalPart());
+//                logger.atInfo().log(reader.getName().getLocalPart());
                 break;
         }
 

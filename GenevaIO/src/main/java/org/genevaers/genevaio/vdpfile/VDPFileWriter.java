@@ -114,6 +114,8 @@ public class VDPFileWriter {
 	}
 
 	private void writeView(ViewNode view) {
+	    logger.atInfo().log("------------------");
+	    logger.atInfo().log("Write View %d", view.getID());
 		writeViewDefinition(view.getViewDefinition());
 		ViewManagementData vmd = vdpMgmtRecs.getViewManagmentData(view.getViewDefinition().getComponentId());
 		// if(vmd.getFormatFile() == null) {
@@ -141,6 +143,7 @@ public class VDPFileWriter {
 			}
 			vh.fillFromComponent(rhi.next());
 			vh.setViewId(view.getID());
+		    logger.atFine().log("Write View %d Format Header %s", view.getID(), s);
 			vh.setSequenceNbr(s++);
 			vh.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
@@ -154,6 +157,7 @@ public class VDPFileWriter {
 			VDPFooter vh = new VDPFooter();
 			vh.fillFromComponent(rhi.next());
 			vh.setViewId(view.getID());
+		    logger.atFine().log("Write View %d Format Header %s", view.getID(), s);
 			vh.setSequenceNbr(s++);
 			vh.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
@@ -380,6 +384,7 @@ public class VDPFileWriter {
 		colCalcStack.fill(vccs.getStack());
 		vccs.setRecLen((short) (60 + colCalcStack.getStackLength()));
 		vccs.setStackLength(colCalcStack.getStackLength());
+        logger.atFine().log("Write column %d calc stack length %s", col.getViewId(), colCalcStack.getStackLength());
 
 		vccs.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.setLengthFromPosition(); //Need this for the variable length records
@@ -557,7 +562,7 @@ public class VDPFileWriter {
 			VDPLogicalRecord vlr = new VDPLogicalRecord();
 			LogicalRecord lr = lri.next();
 			logger.atFine().log("Write LR:%d %s", lr.getComponentId(), lr.getName());
-			vlr.fillFromComponent(lri.next());
+			vlr.fillFromComponent(lr);
 			vlr.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();
 		}
