@@ -115,7 +115,7 @@ public class LookupHTMLWriter {
 				td(Integer.toString(lkup.getNumberOfSteps())),
 				td(getDetails(lkup)),
 				td(lkup.getSourceLR()),
-				td(lkup.getTargetLR().getName()),
+				td(lkup.getTargetLRName()),
 				td(lkup.getTargetLF()),
 				td("0"),
 				td("0")

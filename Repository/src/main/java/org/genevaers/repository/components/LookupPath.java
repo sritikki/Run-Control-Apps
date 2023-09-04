@@ -72,12 +72,21 @@ public class LookupPath extends ComponentNode {
 	}
 
 	public String getSourceLR() {
-		return Repository.getLogicalRecords().get(steps.get(0).getSourceLR()).getName();
+		LogicalRecord srcLR = Repository.getLogicalRecords().get(steps.get(0).getSourceLR());
+		if(srcLR != null) {
+			return srcLR.getName();
+		} else {
+			return "Unknown";
+		}
 	}
 
-	// TODO Should not be depending on data above
 	public String getTargetLRName() {
-		return Repository.getLogicalRecords().get(targetLRid).getName();
+		LogicalRecord trgLR = Repository.getLogicalRecords().get(targetLRid);
+		if(trgLR != null) {
+			return trgLR.getName();
+		} else {
+			return "Unknown";
+		}
 	}
 	public LogicalRecord getTargetLR() {
 		return Repository.getLogicalRecords().get(getTargetLRID());

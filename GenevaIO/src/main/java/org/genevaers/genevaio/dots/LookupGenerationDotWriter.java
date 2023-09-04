@@ -165,9 +165,12 @@ public class LookupGenerationDotWriter {
 	}
 
 	private void addFieldLink(int src, int trg) throws IOException {
-		String link = SRCLR_PORT+ srcLR.getComponentId() + ":LRF_" + src + "_R -> SRCLR_" + currentRedID +":LRF_" + trg +"_L\n";
-		links.add(link);
-		
+		if(srcLR != null)  {
+			String link = SRCLR_PORT+ srcLR.getComponentId() + ":LRF_" + src + "_R -> SRCLR_" + currentRedID +":LRF_" + trg +"_L\n";
+			links.add(link);
+		} else {
+			logger.atWarning().log("Null srcLR");
+		}
 	}
 
 	private void addTargetLRToRDF() throws IOException {
@@ -198,9 +201,13 @@ public class LookupGenerationDotWriter {
 	private void addSourceLRToRDF(int sourceLRID, REDDotFile rdf) throws IOException {
 		LogicalRecordDotWriter lrdfw = new LogicalRecordDotWriter();
 		srcLR = Repository.getLogicalRecords().get(sourceLRID);
-		String cluster = SRCLR_PORT + srcLR.getComponentId();
-		String lrDot = lrdfw.getDotStringFromLR(cluster, srcLR, true) ;
-		rdf.write(lrDot);
+		if(srcLR != null) {
+			String cluster = SRCLR_PORT + srcLR.getComponentId();
+			String lrDot = lrdfw.getDotStringFromLR(cluster, srcLR, true) ;
+			rdf.write(lrDot);
+		} else {
+			logger.atWarning().log("addSourceLRToRDF srcLR Null");
+		}
 	}
 
 	private REDDotFile makeREDDotFile(Path cwd) throws IOException {
