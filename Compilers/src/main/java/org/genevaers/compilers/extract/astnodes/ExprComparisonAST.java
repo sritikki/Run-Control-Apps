@@ -140,7 +140,9 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.PRIORLRFIELD), new CFCPEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.PRIORLRFIELD), new CFCPEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.COLUMNREF), new CFCXEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.COLUMNREF), new CFCXEmitter());
 
         //LHS Field
         emitters.put(new ComparisonKey(ASTFactory.Type.LRFIELD, ASTFactory.Type.CALCULATION), new CFEAEmitter());
@@ -168,6 +170,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         //LHS PRIOR
         emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.CALCULATION), new CFPAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.NUMATOM), new CFPCEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.STRINGATOM), new CFPCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.RUNDATE), new CFPCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.LRFIELD), new CFPEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.PRIORLRFIELD, ASTFactory.Type.LOOKUPFIELDREF), new CFPLEmitter());
@@ -177,6 +180,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         //LHS ColumnRef
         emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.CALCULATION), new CFXAEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.NUMATOM), new CFXCEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.STRINGATOM), new CFXCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.RUNDATE), new CFXCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.LRFIELD), new CFXEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.COLUMNREF, ASTFactory.Type.LOOKUPFIELDREF), new CFXLEmitter());

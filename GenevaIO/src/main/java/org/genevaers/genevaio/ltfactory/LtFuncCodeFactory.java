@@ -1238,9 +1238,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSFEE(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFEE(LRField f1, LRField f2) {
+        LogicTableF2 cfee = makeF2FromFieldAndField(f1, f2);
+        cfee.setFunctionCode("CFEE");
+        cfee.setCompareType(LtCompareType.CONTAINS);
+        return cfee;
     }
 
     @Override
