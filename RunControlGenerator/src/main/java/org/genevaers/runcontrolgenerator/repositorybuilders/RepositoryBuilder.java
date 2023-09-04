@@ -59,7 +59,6 @@ public class RepositoryBuilder {
 
 	// Could flip this around and have types of RepoBuilder
 	public Status run() {
-		GenevaLog.logNow("RepositoryBuilder");
 		retval = Status.OK;
 		GenevaLog.writeHeader("Build the internal repository");
 		if (rcc.getInputType().equals(InputType.WBXML.toString())) {
@@ -101,7 +100,7 @@ public class RepositoryBuilder {
 		// We need to know if we are reading a PDS or not
 		// or DDname input
 		String os = System.getProperty("os.name");
-		logger.atInfo().log("Operating System %s", os);
+		logger.atFine().log("Operating System %s", os);
 		if (os.startsWith("z")) {
 			readFromDataSet();
 		} else {
