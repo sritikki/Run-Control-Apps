@@ -133,6 +133,9 @@ public class TestReporter {
 		try {
 			Template template = cfg.getTemplate("test/overview.ftl");
 			Map<String, Object> nodeMap = new HashMap<>();
+			if(outPath.resolve("aggregateCov.html").toFile().exists()) {
+				nodeMap.put("covAvailable", "Yes");
+			}
 			nodeMap.put("env", fmEnv.getEnvironmentVariables());
 			nodeMap.put(CSS_PATH, W3_CSSPATH);
 			nodeMap.put("categories", categories.values());
