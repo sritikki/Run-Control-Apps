@@ -263,6 +263,7 @@ public class RepositoryCompiler {
 			ViewSourceWrapper vsw = vsi.next();
 			ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
 			ViewSource vs = vsw.getViewSource(); 
+			logger.atInfo().log("Compile view %d source %d", vs.getViewId(), vs.getSequenceNumber());
 			vsnode.setViewSource(vs);
 			lfNode.addChildIfNotNull(vsnode);
 			if(vsnode.hasExtractFilterText()) {
@@ -320,7 +321,7 @@ public class RepositoryCompiler {
 	}
 
 	private void compileColumn(ViewColumnSourceAstNode vcsn) {
-		logger.atInfo().log("Compiling column %d", vcsn.getViewColumnSource().getColumnNumber());
+		logger.atFine().log("Compiling column %d", vcsn.getViewColumnSource().getColumnNumber());
 		ExtractColumnCompiler ecc = new ExtractColumnCompiler();
 		try {
 			ASTBase tree = ecc.processLogic(vcsn);

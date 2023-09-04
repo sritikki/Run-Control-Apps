@@ -64,7 +64,7 @@ public class SinglePassOptimiser {
 	}
 
 	private void generateLogicGroups() {
-        logger.atInfo().log("Generate Logic Groups");
+        logger.atFine().log("Generate Logic Groups");
 		//copy so we can manipulat the map
 		//Not sure if this is needed
 		pf2VS = pf2ViewSources;
@@ -72,7 +72,7 @@ public class SinglePassOptimiser {
 			Iterator<Entry<Integer, Set<ViewSource>>> p2vsi = pf2VS.entrySet().iterator();
 			Entry<Integer, Set<ViewSource>> pf2VSEntry = p2vsi.next();
 			Set<ViewSource> viewSources = pf2VSEntry.getValue();
-			logger.atInfo().log("Look for View Source set to match for PF %s", pf2VSEntry.getKey());
+			logger.atFine().log("Look for View Source set to match for PF %s", pf2VSEntry.getKey());
 
 			Set<Integer> pfIDset = removePfSetsReadByViewSourcs(viewSources);
 			LogicGroup logicGroup = findLogicGroupsWithMatchingPFIDSet(viewSources);
@@ -89,7 +89,7 @@ public class SinglePassOptimiser {
 				logicGroup.setLfID(0);
 				logicGroup.setPfIds(pfIDset);
 				logicGroup.addViewSources(viewSources);
-				logger.atInfo().log("Made new Logic Group");
+				logger.atFine().log("Made new Logic Group");
 				logicGroups.add(logicGroup);
 			}
 		}
@@ -100,7 +100,7 @@ public class SinglePassOptimiser {
 		//For each Logic Group is there a matching LF?
 		//That is with a matching set of PFs
 		//If not make a new LF
-		logger.atInfo().log("Match LFs to Logic Groups");
+		logger.atFine().log("Match LFs to Logic Groups");
 		Iterator<LogicGroup> lgi = logicGroups.iterator();
 		int lgNum = 1;
 		while(lgi.hasNext()) {
@@ -118,7 +118,7 @@ public class SinglePassOptimiser {
 					noMatch = false;
 					lg.setLfID(lfid);
 					lg.setLf(lf);
-					logger.atInfo().log("Found matching PF set for Logic Group %d via LF %d", lgNum, lfid);
+					logger.atFine().log("Found matching PF set for Logic Group %d via LF %d", lgNum, lfid);
 				}
 			}
 			if(noMatch) {
@@ -133,7 +133,7 @@ public class SinglePassOptimiser {
 		LogicalFile lf = new LogicalFile();
 		lf.setID(Repository.getMaxFileID().getAsInt()+1);
 		lf.setName("Auto Generated for LG ");
-		logger.atInfo().log("Create a new LF for Logic Group. LF ID %d", lf.getID());
+		logger.atFine().log("Create a new LF for Logic Group. LF ID %d", lf.getID());
 
 		lg.setLfID(lf.getID());
 		lg.setLf(lf);
@@ -160,7 +160,7 @@ public class SinglePassOptimiser {
 			Entry<Integer, Set<ViewSource>> pfVsSet = pfsi.next();
 			Set<ViewSource> vsources = pfVsSet.getValue();
 			if(vsources == viewSources) {
-				logger.atInfo().log("Found View Source set match for PF %s", pfVsSet.getKey());
+				logger.atFine().log("Found View Source set match for PF %s", pfVsSet.getKey());
 				pfIDSet.add(pfVsSet.getKey());
 			}
 		}
@@ -168,7 +168,7 @@ public class SinglePassOptimiser {
 		while(pfidsi.hasNext()) {
 			Integer pfToRemove = pfidsi.next();
 			pf2VS.remove(pfToRemove);
-			logger.atInfo().log("Removed PF %d from main set", pfToRemove);
+			logger.atFine().log("Removed PF %d from main set", pfToRemove);
 		}
 		return pfIDSet;
 	}

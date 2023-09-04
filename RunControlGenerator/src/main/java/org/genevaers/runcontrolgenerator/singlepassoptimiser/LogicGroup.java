@@ -97,13 +97,13 @@ public class LogicGroup implements Comparable<LogicGroup> {
 
     public void logData() {
         StringBuilder sb =  new StringBuilder();
-        sb.append("\n----------------------------------");
-        sb.append("\nFor LF " + lfID + "\nWhich has PFs ");
+        sb.append("----------------------------------");
+        sb.append("\nLF " + lfID + "\nHas PFs ");
         lf.getPFs().stream().forEach(pf -> sb.append(pf.getComponentId() + " "));
         lf.getPFs().stream().forEach(pf -> pf.setRequired(true));
-        sb.append("\nPFs cross check ");
-        pfIds.stream().forEach(pf -> sb.append(pf + " "));
-        sb.append("\nView Sources\n");
+        // sb.append("\nPFs cross check ");
+        // pfIds.stream().forEach(pf -> sb.append(pf + " "));
+        sb.append("\nRead by View Sources\n");
 
         sortViewSources();
         //summary form
