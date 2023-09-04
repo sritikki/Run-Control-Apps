@@ -173,6 +173,9 @@ public class FlowDotFile {
 				ViewManagementData vmd = vmrs.getViewManagmentData(view.getViewDefinition().getComponentId());
 				VDPFormatFile fof = vmd.getFormatFile();
 				if(fof != null) {
+					if(fof.getLfName().isEmpty()) {
+						fof.setLfName(fof.getDdnameOutput());
+					}
 					System.out.println("Format view to " + fof.getLfName());
 					LogicalFileDotNode lfn = new LogicalFileDotNode(fof.getLfName(), view.getID());
 					lfs.put(view.getID(), lfn);
