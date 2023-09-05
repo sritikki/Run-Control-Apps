@@ -50,6 +50,7 @@ import org.genevaers.compilers.extract.astnodes.SetterAST;
 import org.genevaers.compilers.extract.astnodes.SkipIfAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
+import org.genevaers.compilers.extract.astnodes.StringComparisonAST;
 import org.genevaers.compilers.extract.astnodes.SymbolEntry;
 import org.genevaers.compilers.extract.astnodes.SymbolList;
 import org.genevaers.compilers.extract.astnodes.UnaryInt;
@@ -546,14 +547,36 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     public ExtractBaseAST visitStringComp(GenevaERSParser.StringCompContext ctx) {
         //A String comparison is just the same as an arithmetic comparison
         //But the operators are restricted
-        ExprComparisonAST ec = (ExprComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.EXPRCOMP);
+        //And the operands must not be numeric
+        ExtractBaseAST retval = null;
         if(ctx.getChildCount() == 3) {
-            ec.addChildIfNotNull(visit(ctx.children.get(0)));
-            //want the operation type from the middle child
-            ec.setComparisonOperator(ctx.children.get(1).getText());
-            ec.addChildIfNotNull(visit(ctx.children.get(2)));
+            ExtractBaseAST lhs = visit(ctx.children.get(0));
+            String op = ctx.children.get(1).getText();
+            ExtractBaseAST rhs = visit(ctx.children.get(2));
+            if(StringDataTypeChecker.allows(lhs, rhs, op)) {
+                if(op.equalsIgnoreCase("CONTAINS")) {
+                    StringComparisonAST strcmp = (StringComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCOMP);
+                    strcmp.addChildIfNotNull(lhs);
+                    strcmp.setComparisonOperator(op);
+                    strcmp.addChildIfNotNull(rhs);
+                    return strcmp; 
+                } else {
+                    ExprComparisonAST exprcmp = (ExprComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.EXPRCOMP);
+                    exprcmp.addChildIfNotNull(lhs);
+                    exprcmp.setComparisonOperator(op);
+                    exprcmp.addChildIfNotNull(rhs);
+                    return exprcmp; 
+                }
+            } else {
+                StringComparisonAST strcmp = (StringComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCOMP);
+                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+                err.addError("Incompatable data types");
+                strcmp.addChildIfNotNull(err);
+                return strcmp; 
+            }
         }
-        return ec; 
+        //should be an error node 
+        return retval;
      }
   
 
