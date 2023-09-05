@@ -1686,7 +1686,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         dte.setColumnId(vc.getComponentId());
         dte.setSuffixSeqNbr((short)vc.getColumnNumber());
 
-        dte.setArg1(arg2);
+        dte.setArg2(arg2);
         
         dte.setCompareType(LtCompareType.EQ);
         return dte;
