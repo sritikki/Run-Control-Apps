@@ -34,26 +34,26 @@ tests:
   #you can use an absoulte DSN as well
   eventfiles:
   - ddname: "ORDIT001" #needs to match what is in the PF DDName
-    dsn: "GILLIAN.GVBDEMO.ORDITM01"
+    filename: "GVBDEMO.ORDITM01"
   - ddname: "ORDIT002" #needs to match what is in the PF DDName
-    dsn: "GILLIAN.GVBDEMO.ORDITM02"
+    filename: "GVBDEMO.ORDITM02"
   - ddname: "ORDIT003" #needs to match what is in the PF DDName
-    dsn: "GILLIAN.GVBDEMO.ORDITM03"
+    filename: "GVBDEMO.ORDITM03"
   #List of reference files - just like event files
   # omit if no reference phase required
   reffiles:
   - ddname: "ORDER001"
-    dsn: "GILLIAN.GVBDEMO.ORDER"
+    filename: "GVBDEMO.ORDER"
   - ddname: "PRODDESC"
-    dsn: "GILLIAN.GVBDEMO.PRODDESC"
+    filename: "GVBDEMO.PRODDESC"
   - ddname: "STORE001"
-    dsn: "GILLIAN.GVBDEMO.STOREADR"
+    filename: "GVBDEMO.STOREADR"
   - ddname: "CUSTOMER"
-    dsn: "GILLIAN.GVBDEMO.CUSTOMER"
+    filename: "GVBDEMO.CUSTOMER"
   - ddname: "CUSTADDR"
-    dsn: "GILLIAN.GVBDEMO.CUSTADDR"
+    filename: "GVBDEMO.CUSTADDR"
   - ddname: "CUSTNAME"
-    dsn: "GILLIAN.GVBDEMO.CUSTNAME"
+    filename: "GVBDEMO.CUSTNAME"
   #Extract output 
   # The ddname needs to match the PF defined in the view
   # for an extract only view

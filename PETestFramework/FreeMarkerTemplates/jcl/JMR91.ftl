@@ -63,7 +63,15 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 # Variables must be exported to be seen by the launcher.
 
 . /etc/profile
-. /u/icunnin/jmr91profile
+export A2E=-ofrom=ISO8859-1,to=IBM-1047              
+export JAVA_HOME=/Java/J11.0_64                      
+export IBM_JAVA_OPTIONS="-Dfile.encoding=ISO8859-1"  
+
+export APPGIT=${env["GERS_GIT_REPO_DIR"]}/Run-Control-Apps
+export APPTRG=RunControlGenerator             
+export BASE=$APPGIT/$APPTRG                   
+export APP_HOME=$BASE/target/repo             
+export CLASSPATH=$APP_HOME:"$JAVA_HOME"/lib 
 
 LIBPATH=/lib:/usr/lib:"$JAVA_HOME"/bin
 LIBPATH="$LIBPATH":"$JAVA_HOME"/lib
