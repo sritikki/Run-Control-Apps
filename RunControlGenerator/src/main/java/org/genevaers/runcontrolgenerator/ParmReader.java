@@ -45,7 +45,7 @@ public class ParmReader {
 	}
 
 	public void populateConfigFrom(String parmName) throws IOException {
-		if (parmName.isEmpty() && System.getProperty("os.name").startsWith("z")) {
+		if (System.getProperty("os.name").startsWith("z")) {
 			readDDParm();
 		} else {
 			readSuppliedParm(parmName);	
