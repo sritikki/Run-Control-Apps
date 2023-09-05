@@ -40,7 +40,7 @@ public class FileMover {
 	private static final String INPUTS = "mr91Inputs";
 
     public static void main(String[] args) {
-        Path rootPath = Paths.get(TestEnvironment.get(LOCALROOT));
+        Path rootPath = Paths.get(MR91CompTestEnvironment.get(LOCALROOT));
         Path inputsPath = rootPath.resolve(INPUTS);
         Path filesDir = inputsPath.resolve("mr91Comparisons/env153/views");
         Path files = filesDir.resolve("xmlnames.txt"); 

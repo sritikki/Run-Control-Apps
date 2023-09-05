@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-public class TestEnvironment {
+public class GersEnvironment {
 	private static final String GERS_ENV_HLQ2 = "GERS_ENV_HLQ";
 	private static final String OVERRIDE = "OVERRIDE";
 	private static final String GVBLOAD = ".GVBLOAD";
@@ -32,7 +32,7 @@ public class TestEnvironment {
 
 	private static Map<String, String> environmentVariables = new HashMap<>();
 
-	private TestEnvironment() {
+	private GersEnvironment() {
 		initialiseFromTheEnvironment();
 	}
 
@@ -75,11 +75,12 @@ public class TestEnvironment {
 		}
 		getEnvVarOrDefault("VDPXSD", pmhlq + ".GVBXSD(GVBSVDP)");
 		getEnvVarOrDefault("GERS_TEST_HLQ", "");
-		getEnvVarOrDefault(" GERS_DB2_SUBSYSTEM", "DM12");
+		getEnvVarOrDefault("GERS_DB2_SUBSYSTEM", "DM12");
 		getEnvVarOrDefault("GERS_DB2_LOAD_LIB", "DSN.V12R1M0.SDSNLOAD");
 		getEnvVarOrDefault("GERS_DB2_EXIT_LIB", "DSN.V12R1M0.SDSNEXIT");
 		getEnvVarOrDefault("GERS_DB2_RUN_LIB", "DSN121.RUNLIB.LOAD");
-		getEnvVarOrDefault("  GERS_DB2_UTILITY", "DSNTIA12");
+		getEnvVarOrDefault("GERS_DB2_UTILITY", "DSNTIA12");
+		getEnvVarOrDefault("GERS_GIT_REPO_DIR", "");
 		getEnvVarOrDefault("RUNOS", "ZOS");
 		getEnvVarOrDefault("TSO_SERVER", "sp13.svl.ibm.com");
 		getEnvVarOrDefault("OUTDIR", "out");

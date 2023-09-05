@@ -96,7 +96,7 @@ public class Tester {
 	}
 
     
-	private TestEnvironment testEnv;
+	private MR91CompTestEnvironment testEnv;
 	private Configuration fmcfg;
 	private Path resultsPath;
 
@@ -122,7 +122,7 @@ public class Tester {
 	public boolean processMR91Inputs() {
 	    initLogger();
 		try {
-			TestEnvironment.initialiseFromTheEnvironment();
+			MR91CompTestEnvironment.initialiseFromTheEnvironment();
 			initFreeMarkerConfiguration();
 			initialisePaths();
 			readAndProcessTheInputs();
@@ -141,7 +141,7 @@ public class Tester {
 	}
 
 	private void initialisePaths() {
-		rootPath = Paths.get(TestEnvironment.get(LOCALROOT));
+		rootPath = Paths.get(MR91CompTestEnvironment.get(LOCALROOT));
 		inputsPath = rootPath.resolve(INPUTS);
 		resultsPath = rootPath.resolve(RESULTS_PATH);
 	}

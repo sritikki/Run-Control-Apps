@@ -44,7 +44,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.genevaers.testframework.functioncodecoverage.FunctionCodeHit.HITS_STATE;
-import org.genevaers.utilities.TestEnvironment;
+import org.genevaers.utilities.GersEnvironment;
 
 import j2html.tags.ContainerTag;
 import j2html.tags.specialized.ThTag;
@@ -78,7 +78,7 @@ public class CoverageReportGenerator {
 	public static void main(String[] args) {
   
 		System.out.println("Coverage Report Generator");
-		File rootDir = Paths.get(TestEnvironment.get("LOCALROOT")).toFile();;
+		File rootDir = Paths.get(GersEnvironment.get("LOCALROOT")).toFile();;
 		CoverageReportGenerator generator = new CoverageReportGenerator();
  		generator.writeCoverageHTML(rootDir, "LTCov");
 	}

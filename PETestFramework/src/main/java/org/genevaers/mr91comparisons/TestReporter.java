@@ -88,7 +88,7 @@ public class TestReporter {
     private boolean success = true;
     
 	private Path rootPath;
-	private TestEnvironment environmentVariables;
+	private MR91CompTestEnvironment environmentVariables;
 	Path wbxmlPath;
 	private Configuration fmcfg;
 	private Path testOutPath;
@@ -304,22 +304,22 @@ public class TestReporter {
 
 
 	private Path getMR91Target() {
-		if(TestEnvironment.get(COMPARISON_TARGET) == null) {
+		if(MR91CompTestEnvironment.get(COMPARISON_TARGET) == null) {
 			logger.atSevere().log("No comparison target in environment variable MR91CMPTRG");
 			return null;
 		} else {
-			targetType = TestEnvironment.get(COMPARISON_TARGET);
+			targetType = MR91CompTestEnvironment.get(COMPARISON_TARGET);
 			return testOutPath.resolve(targetType);
 		}
 	}
 
 	private Path getMR91Source() {
-		if(TestEnvironment.get(COMPARISON_SOURCE) == null) {
+		if(MR91CompTestEnvironment.get(COMPARISON_SOURCE) == null) {
 			logger.atSevere().log("No comparison source in environment variable MR91CMPSRC");
 			return null;
 		} else {
 			
-			sourceType = TestEnvironment.get(COMPARISON_SOURCE);
+			sourceType = MR91CompTestEnvironment.get(COMPARISON_SOURCE);
 			return testOutPath.resolve(sourceType);
 		}
 	}

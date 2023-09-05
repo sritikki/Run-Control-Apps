@@ -23,11 +23,11 @@ import java.util.Map;
 
 // From a command line generate the params.xsl file
 
-public class TestEnvironment {
+public class MR91CompTestEnvironment {
 
 	private static Map<String, String> environmentVariables = new HashMap<String, String>();
 	
-	private  TestEnvironment() {
+	private  MR91CompTestEnvironment() {
 	}
 
 	public static void initialiseFromTheEnvironment() {

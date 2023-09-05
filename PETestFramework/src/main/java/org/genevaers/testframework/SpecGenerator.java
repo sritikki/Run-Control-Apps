@@ -29,7 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.genevaers.testframework.yamlreader.Spec;
 import org.genevaers.testframework.yamlreader.SpecFiles;
 import org.genevaers.testframework.yamlreader.YAMLReader;
-import org.genevaers.utilities.TestEnvironment;
+import org.genevaers.utilities.GersEnvironment;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,7 +67,7 @@ public class SpecGenerator {
     private SpecFiles specFiles;
     private Spec spec;
     private boolean notdone=true;
-    private TestEnvironment fmEnv;
+    private GersEnvironment fmEnv;
 
     public static void main(String[] args) {
         System.out.println(GREEN + "Spec Generator\n" + RESET);

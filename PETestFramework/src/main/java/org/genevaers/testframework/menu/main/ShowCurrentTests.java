@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import org.fusesource.jansi.Ansi;
 import org.genevaers.testframework.TestReporter;
-import org.genevaers.utilities.TestEnvironment;
+import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.menu.Menu;
 import org.genevaers.utilities.menu.MenuItem;
 
@@ -46,7 +46,7 @@ public class ShowCurrentTests extends MenuItem {
         }
         try {
             BufferedReader in = new BufferedReader(
-                    new FileReader(TestEnvironment.get("LOCALROOT") + "/out/fmoverview.txt"));
+                    new FileReader(GersEnvironment.get("LOCALROOT") + "/out/fmoverview.txt"));
             String line = null;
             while ((line = in.readLine()) != null) {
                 System.out.println(line);

@@ -33,7 +33,7 @@ import org.genevaers.testframework.functioncodecoverage.CoverageReportGenerator;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.testframework.yamlreader.Spec;
 import org.genevaers.testframework.yamlreader.YAMLReader;
-import org.genevaers.utilities.TestEnvironment;
+import org.genevaers.utilities.GersEnvironment;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -66,7 +66,7 @@ public class TestReporter {
 	private Path specPath;
 	private boolean vdpFlowEnabled;
 	private Configuration cfg;
-	private TestEnvironment fmEnv;
+	private GersEnvironment fmEnv;
 
 	private boolean allTestsPassed = true;
 
@@ -111,7 +111,7 @@ public class TestReporter {
 		boolean success = true;
 		logger.atInfo().log("Generating Test Result Overview");
 
-		rootPath = Paths.get(TestEnvironment.get("LOCALROOT"));
+		rootPath = Paths.get(GersEnvironment.get("LOCALROOT"));
 		outPath = getOutDir(rootPath);
 		specPath = rootPath.resolve("spec");
 		initFreeMarkerConfiguration();

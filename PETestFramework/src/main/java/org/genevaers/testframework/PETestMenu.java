@@ -18,13 +18,8 @@ package org.genevaers.testframework;
  */
 
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.fusesource.jansi.AnsiConsole;
 import org.genevaers.testframework.menu.main.MainMenu;
-import org.genevaers.testframework.sdsf.TestJobs;
-import org.genevaers.utilities.TestEnvironment;
+import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.menu.Menu;
 import org.genevaers.utilities.menu.MenuDriver;
 
@@ -44,7 +39,7 @@ public class PETestMenu {
         // We do still want a command line interface that runs all tests though
 
         MainMenu mainMenu = new MainMenu();
-        Menu.setHeader("Test Framework: running on " + TestEnvironment.get("OSNAME") + "\nVersion: "
+        Menu.setHeader("Test Framework: running on " + GersEnvironment.get("OSNAME") + "\nVersion: "
                 + "Get the version from somewhere");
         menuDriver.addMenu("Main", mainMenu);
         menuDriver.setCurrentMenuByName("Main");

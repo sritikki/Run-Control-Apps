@@ -29,7 +29,7 @@ import org.genevaers.testframework.yamlreader.XMLFile;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FileProcessor;
 import org.genevaers.utilities.Substitution;
-import org.genevaers.utilities.TestEnvironment;
+import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.menu.Menu;
 import org.w3c.dom.NodeList;
 
@@ -63,8 +63,8 @@ public class TestDriver {
 	private Map<String, String> envVars;
 
 	TestDriver() {
-		TestEnvironment.initialiseFromTheEnvironment();
-		envVars = TestEnvironment.getEnvironmentVariables();
+		GersEnvironment.initialiseFromTheEnvironment();
+		envVars = GersEnvironment.getEnvironmentVariables();
 	}
 
 
@@ -92,11 +92,11 @@ public class TestDriver {
 		}
 
 		// if we ran tests run overview no matter what
-		return TestEnvironment.get("RUNTESTS").compareToIgnoreCase("Y") == 0;
+		return GersEnvironment.get("RUNTESTS").compareToIgnoreCase("Y") == 0;
 	}
 
 	private static void putEventFiles() throws Exception {
-		String testHLQ = TestEnvironment.get("GERS_TEST_HLQ");
+		String testHLQ = GersEnvironment.get("GERS_TEST_HLQ");
 		if(testHLQ.equalsIgnoreCase("LOCAL")) {
         	logger.atInfo().log("Local testing");
 		} else {
@@ -111,7 +111,7 @@ public class TestDriver {
 	}
 
 	private static void setupTestPaths() {
-		Path root = Paths.get(TestEnvironment.get(LOCALROOT));
+		Path root = Paths.get(GersEnvironment.get(LOCALROOT));
 		testPaths.setRoot(root);
 		testPaths.setSpecDirPath(root.resolve("spec"));
 		testPaths.setJclPath(root.resolve("jcl"));
@@ -123,7 +123,7 @@ public class TestDriver {
 
 	private void clearGeneratedJunit() {
 		try {
-			FileProcessor.deleteRecursive(new File(TestEnvironment.get(LOCALROOT) + File.separator + TEST_SRC));
+			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + TEST_SRC));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -131,10 +131,10 @@ public class TestDriver {
 
 	private void clearNonJunitGeneratedFiles() {
 		try {
-			FileProcessor.deleteRecursive(new File(TestEnvironment.get(LOCALROOT) + File.separator + "tmp"));
-			FileProcessor.deleteRecursive(new File(TestEnvironment.get(LOCALROOT) + File.separator + "jcl"));
-			FileProcessor.deleteRecursive(new File(TestEnvironment.get(LOCALROOT) + File.separator + "cfg"));
-			FileProcessor.deleteRecursive(new File(TestEnvironment.get(LOCALROOT) + File.separator + "out"));
+			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + "tmp"));
+			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + "jcl"));
+			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + "cfg"));
+			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + "out"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,11 +142,11 @@ public class TestDriver {
 
 	private static boolean envVariablesAreValid() {
 		boolean valid = true;
-		if (TestEnvironment.get("GERS_TEST_HLQ").isEmpty()) {
+		if (GersEnvironment.get("GERS_TEST_HLQ").isEmpty()) {
 			logger.atSevere().log("GERS_TEST_HLQ is empty. We need an HLQ");
 			valid = false;
 		}
-		if (TestEnvironment.get("GERS_ENV_HLQ").isEmpty()) {
+		if (GersEnvironment.get("GERS_ENV_HLQ").isEmpty()) {
 			logger.atSevere().log("GERS_ENV_HLQ is empty. We need an HLQ");
 			valid = false;
 		}
@@ -154,9 +154,9 @@ public class TestDriver {
 	}
 
 	private static void checkExistsAndProcessSpeclist() throws Exception {
-		String specFileListName = TestEnvironment.get("GERS_TEST_SPEC_LIST");
+		String specFileListName = GersEnvironment.get("GERS_TEST_SPEC_LIST");
 		if (specFileListName != null) {
-			File specFileList = new File(TestEnvironment.get(LOCALROOT) + File.separator + specFileListName);
+			File specFileList = new File(GersEnvironment.get(LOCALROOT) + File.separator + specFileListName);
 			if (!specFileList.exists()) {
 				logger.atSevere().log("Specfile list doesn't exist " + specFileList);
 			} else {
@@ -171,7 +171,7 @@ public class TestDriver {
 
 	private static void initFreeMarkerConfiguration() throws IOException {
 		cfg = new Configuration(Configuration.VERSION_2_3_30);
-		cfg.setDirectoryForTemplateLoading(new File(TestEnvironment.get(LOCALROOT) + "/FreeMarkerTemplates"));
+		cfg.setDirectoryForTemplateLoading(new File(GersEnvironment.get(LOCALROOT) + "/FreeMarkerTemplates"));
 		cfg.setDefaultEncoding("UTF-8");
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		TestDataGenerator.setFreemarkerConfig(cfg);
@@ -194,13 +194,13 @@ public class TestDriver {
 	public static void runTest(GersTest testToRun) throws IOException {
         logger.atInfo().log("Running test '%s'", testToRun.getName());
 
-		String testHLQ = TestEnvironment.get("GERS_TEST_HLQ");
+		String testHLQ = GersEnvironment.get("GERS_TEST_HLQ");
 		String testDataset = testHLQ + "." + testToRun.getDataSet();
 		TestDataGenerator.applyTemplatesToTest(testToRun);
 		if ( testHLQ.equalsIgnoreCase("LOCAL"))  {
 			runLocalTest(testToRun);
 			return;
-		} else if(TestEnvironment.get("OSNAME").startsWith("Win")) {
+		} else if(GersEnvironment.get("OSNAME").startsWith("Win")) {
 			System.out.println("delete existing test datasets " + testDataset);
 			System.out.println("Run " + testToRun.getFullName());
 			return;
@@ -212,7 +212,7 @@ public class TestDriver {
 		copyXMLFilesToPDS(xmlDir, testDataset + ".MR91.XMLS");
 
 		copyTheConfigFilesToPDS(testToRun, testDataset + ".PARM");
-		testJCLDirectory = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("jcl").resolve(testToRun.getFullName());
+		testJCLDirectory = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("jcl").resolve(testToRun.getFullName());
 		copyTheJCLToPDS(testToRun, testDataset + ".JCL");
 
 		purgeOldJobs(testToRun);
@@ -239,7 +239,7 @@ public class TestDriver {
 		Path xmlfile;
 		List<Substitution> substs = new ArrayList<Substitution>();
 		for (XMLFile xml : testToRun.getXmlfiles()) {
-			xmlfile = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName());
+			xmlfile = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName());
 
 			for (Replacement r : xml.getReplacements()) {
 				substs.add(new Substitution(r.getReplace(), r.getWith()));
@@ -247,7 +247,7 @@ public class TestDriver {
 			FileProcessor.sed(xmlfile.toFile(), outxmlPath.resolve(xmlfile.getFileName()).toFile(), substs);
 			substs.clear();
 		}
-		Path configFolder = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("Config").resolve(testToRun.getFullName());
+		Path configFolder = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("Config").resolve(testToRun.getFullName());
 		Files.copy(configFolder.resolve("MR91PARM"), localTest.resolve("MR91PARM.cfg"), StandardCopyOption.REPLACE_EXISTING);
 		//copy config
 		//Create WBXMLI
@@ -257,7 +257,7 @@ public class TestDriver {
 		try {
 			String mr91String;
 			String rcaString;
-			if(TestEnvironment.get("OSNAME").startsWith("Win")) {
+			if(GersEnvironment.get("OSNAME").startsWith("Win")) {
 				mr91String = "jmr91.bat";
 				rcaString = "gersrca.bat";
 			} else {
@@ -280,7 +280,7 @@ public class TestDriver {
 	}
 
 	private static void processLocalResult(GersTest test) {
-		Path rootPath = Paths.get(TestEnvironment.get(LOCALROOT));
+		Path rootPath = Paths.get(GersEnvironment.get(LOCALROOT));
 		Path outPath = rootPath.resolve("out");
 		// Look to see VDP and XLT generated -> Gennerated/Pass
 		Path resultFolder = outPath.resolve(test.getFullName());
@@ -322,7 +322,7 @@ public class TestDriver {
 	}
 
 	private static Path createLocalTestDirectory(GersTest testToRun) {
-		Path localTest = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("out").resolve(testToRun.getFullName());
+		Path localTest = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("out").resolve(testToRun.getFullName());
 		localTest.toFile().mkdirs();
 		return localTest;
 	}
@@ -409,7 +409,7 @@ public class TestDriver {
 	private static void copyTheJCLToPDS(GersTest testToRun, String pds) {
 		logger.atInfo().log("Copy the JCL files to %s", pds);
 		deletePdsIfExists(pds);
-		if (TestEnvironment.get("OSNAME").startsWith("z")) {
+		if (GersEnvironment.get("OSNAME").startsWith("z")) {
 			for (File f : testJCLDirectory.toFile().listFiles()) {
 				ZosHelper.convertA2EAndCopyFile2Dataset(f, "//'" + pds + "(" + f.getName() + ")'", "fb", "80");
 			}
@@ -419,8 +419,8 @@ public class TestDriver {
 	private static void copyTheConfigFilesToPDS(GersTest testToRun, String pds) {
 		logger.atInfo().log("Copy the config files to %s", pds);
 		deletePdsIfExists(pds);
-		if (TestEnvironment.get("OSNAME").startsWith("z")) {
-			Path configFolder = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("Config").resolve(testToRun.getFullName());
+		if (GersEnvironment.get("OSNAME").startsWith("z")) {
+			Path configFolder = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("Config").resolve(testToRun.getFullName());
 			for (File f : configFolder.toFile().listFiles()) {
 				ZosHelper.convertA2EAndCopyFile2Dataset(f, "//'" + pds + "(" + f.getName() + ")'", "fb", "80");
 			}
@@ -430,7 +430,7 @@ public class TestDriver {
 	private static void copyXMLFilesToPDS(Path xmlDir, String pds) {
 		logger.atInfo().log("Copy the XML to %s", pds);
 		deletePdsIfExists(pds);
-		if (TestEnvironment.get("OSNAME").startsWith("z")) {
+		if (GersEnvironment.get("OSNAME").startsWith("z")) {
 			for (File f : xmlDir.toFile().listFiles()) {
 				ZosHelper.convertA2EAndCopyFile2Dataset(f, "//'" + pds + "(" + f.getName() + ")'", "vb", "1000");
 			}
@@ -450,14 +450,14 @@ public class TestDriver {
 	}
 
 	private static Path buildTheXMLFiles(GersTest testToRun) throws IOException {
-		Path xmlFolder = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("xmlout").resolve(testToRun.getFullName());
+		Path xmlFolder = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("xmlout").resolve(testToRun.getFullName());
 		xmlFolder.toFile().mkdirs();
 
 		List<File> filesIn = new ArrayList<File>();
 		int xmlNum = 1;
 		List<Substitution> substs = new ArrayList<Substitution>();
 		for (XMLFile xml : testToRun.getXmlfiles()) {
-			File xmlfile = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName()).toFile();
+			File xmlfile = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName()).toFile();
 			filesIn.add(xmlfile);
 			File outxmlfile = xmlFolder.resolve("XML" + xmlNum++).toFile();
 			substs.add(new Substitution("?>", " encoding=\"IBM-1047\"?>", 1, 1));
@@ -490,7 +490,7 @@ public class TestDriver {
 
 	private static void submitJobsAndWaitForCompletion(GersTest testToRun) throws IOException {
 		Path firstJob = testJCLDirectory.resolve(testToRun.getName() + (testToRun.getDb2bind().equals("Y") ? "N" : "L"));
-		if (TestEnvironment.get("OSNAME").startsWith("Win")) {
+		if (GersEnvironment.get("OSNAME").startsWith("Win")) {
 			System.out.println("Submit " + firstJob.toString());
 		} else {
 			submitJobs(firstJob);
@@ -566,7 +566,7 @@ public class TestDriver {
 			found = true; //No output files to get
 		} else {
 			String outFile = null;
-			String datasetBase = "//'" + TestEnvironment.get("GERS_TEST_HLQ") + "." + testToRun.getDataSet() + ".";
+			String datasetBase = "//'" + GersEnvironment.get("GERS_TEST_HLQ") + "." + testToRun.getDataSet() + ".";
 			String dataset;
 			if (testToRun.getFormatfiles().size() > 0) {
 				for (OutputFile f : testToRun.getFormatfiles()) {
@@ -604,7 +604,7 @@ public class TestDriver {
 
 	private static void getOutputFile(String dataset, OutputFile f, String fileName, GersTest testToRun) {
 		Path outFile = getOutFilePathForTest(fileName, testToRun);
-		if (TestEnvironment.get("OSNAME").startsWith("Win")) {
+		if (GersEnvironment.get("OSNAME").startsWith("Win")) {
 			System.out.println("Get output file from " + dataset + " to " + outFile.toFile().toString() + " :" + f.getRecfm() + "," + f.getLrecl());
 		} else {
 			if(ZosHelper.convertE2AAndCopyDataset2File(dataset, outFile.toFile(), f.getRecfm(), f.getLrecl()) == false) {
@@ -618,7 +618,7 @@ public class TestDriver {
 
 	private static Path getOutFilePathForTest(String fileName, GersTest testToRun) {
 		Path testDirectory = Paths.get(testToRun.getFullName());
-		Path outFolder = Paths.get(TestEnvironment.get("LOCALROOT")).resolve("out").resolve(testDirectory);
+		Path outFolder = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("out").resolve(testDirectory);
 		outFolder.toFile().mkdirs();
 		Path outFile = outFolder.resolve(fileName);
 		return outFile;
@@ -644,7 +644,7 @@ public class TestDriver {
 	}
 
 	protected static void processResult(GersTest test) {
-		Path rootPath = Paths.get(TestEnvironment.get(LOCALROOT));
+		Path rootPath = Paths.get(GersEnvironment.get(LOCALROOT));
 		Path outPath = rootPath.resolve("out");
 		Path baseFolder = rootPath.resolve("base").resolve(test.getFullName());
 		//Get actual result

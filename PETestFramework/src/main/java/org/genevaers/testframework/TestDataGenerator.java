@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.genevaers.mr91comparisons.TestEnvironment;
 import org.genevaers.testframework.yamlreader.GersTest;
 import org.genevaers.testframework.yamlreader.TemplateSetEntry;
+import org.genevaers.utilities.GersEnvironment;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -181,10 +181,10 @@ public class TestDataGenerator  {
     }
 
     private static Map<String, Object> buildTemplateModel(GersTest t) {
-        TestEnvironment.initialiseFromTheEnvironment();
+        GersEnvironment.initialiseFromTheEnvironment();
         Map<String, Object> nodeMap = new HashMap<>();
         nodeMap.put("test", t);
-        nodeMap.put("env", TestEnvironment.getEnvironmentVariables());
+        nodeMap.put("env", GersEnvironment.getEnvironmentVariables());
         return nodeMap;
     }
 
