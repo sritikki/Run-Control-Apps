@@ -426,7 +426,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFXE(ViewColumn c, LRField f, String op) {
-        LogicTableF2 cfxe = makeF2FromFieldAndColumn(f, c);
+        LogicTableF2 cfxe = makeF2FromColumnAndField(c, f);
         cfxe.setFunctionCode("CFXE");
         cfxe.setCompareType(getCompareType(op));
         return cfxe;
@@ -434,7 +434,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFXL(ViewColumn c, LRField f, String op) {
-       LogicTableF2 cfxl = makeF2FromFieldAndColumn(f, c);
+       LogicTableF2 cfxl = makeF2FromColumnAndField(c, f);
         cfxl.setFunctionCode("CFXL");
         cfxl.setCompareType(getCompareType(op));
         return cfxl;
@@ -442,7 +442,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFXP(ViewColumn c, LRField f, String op) {
-        LogicTableF2 cfxp = makeF2FromFieldAndColumn(f, c);
+        LogicTableF2 cfxp = makeF2FromColumnAndField(c, f);
         cfxp.setFunctionCode("CFXP");
         cfxp.setCompareType(getCompareType(op));
         return cfxp;
@@ -456,7 +456,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfxx.setFunctionCode("CFXX");
         cfxx.setRecordType(LtRecordType.F2);
         cfxx.setCompareType(getCompareType(op));
-        return cfxx;    }
+        return cfxx;    
+    }
 
     @Override
     public LTFileObject getCNE(LRField f) {
@@ -1208,41 +1209,75 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSFCE(String v, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFCE(String v, LRField f) {
+        LogicTableF1 sfce = new LogicTableF1();
+        sfce.setRecordType(LtRecordType.F1);
+        sfce.setFunctionCode("SFCE");
+        LogicTableArg arg = getArgFromField(f);
+        sfce.setArg(arg);
+        arg.setValue(v);
+        arg.setValueLength(v.length());
+        sfce.setCompareType(LtCompareType.CONTAINS);
+        return sfce;
     }
 
     @Override
-    public LTFileObject getSFCL(String v, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFCL(String v, LRField f) {
+        LogicTableF1 sfcl = new LogicTableF1();
+        sfcl.setRecordType(LtRecordType.F1);
+        sfcl.setFunctionCode("SFCL");
+        LogicTableArg arg = getArgFromField(f);
+        sfcl.setArg(arg);
+        arg.setValue(v);
+        arg.setValueLength(v.length());
+        sfcl.setCompareType(LtCompareType.CONTAINS);
+        return sfcl;
     }
 
     @Override
-    public LTFileObject getSFCP(String v, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFCP(String v, LRField f) {
+        LogicTableF1 sfcp = new LogicTableF1();
+        sfcp.setRecordType(LtRecordType.F1);
+        sfcp.setFunctionCode("SFCP");
+        LogicTableArg arg = getArgFromField(f);
+        sfcp.setArg(arg);
+        arg.setValue(v);
+        arg.setValueLength(v.length());
+        sfcp.setCompareType(LtCompareType.CONTAINS);
+        return sfcp;
     }
 
     @Override
     public LTFileObject getSFCX(String v, ViewColumn c2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 sfcx = new LogicTableF1();
+        sfcx.setRecordType(LtRecordType.F1);
+        sfcx.setArg(getColumnArg(c2));
+        sfcx.setFunctionCode("SFCX");
+        sfcx.getArg().setValue(v);
+        sfcx.getArg().setValueLength(v.length());
+        sfcx.setCompareType(LtCompareType.CONTAINS);
+        return sfcx;
     }
 
     @Override
     public LTFileObject getSFEC(LRField f, String v2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 sfec = new LogicTableF1();
+        sfec.setRecordType(LtRecordType.F1);
+        sfec.setFunctionCode("SFEC");
+        LogicTableArg arg = getArgFromField(f);
+        sfec.setArg(arg);
+        arg.setValue(v2);
+        arg.setValueLength(v2.length());
+        sfec.setCompareType(LtCompareType.CONTAINS);
+        return sfec;
     }
 
     @Override
     public LTFileObject getSFEE(LRField f1, LRField f2) {
-        LogicTableF2 cfee = makeF2FromFieldAndField(f1, f2);
-        cfee.setFunctionCode("CFEE");
-        cfee.setCompareType(LtCompareType.CONTAINS);
-        return cfee;
+        LogicTableF2 sfee = makeF2FromFieldAndField(f1, f2);
+        sfee.setFunctionCode("SFEE");
+        sfee.setCompareType(LtCompareType.CONTAINS);
+        return sfee;
     }
 
     @Override
@@ -1252,15 +1287,19 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSFEP(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFEP(LRField f1, LRField f2) {
+        LogicTableF2 sfep = makeF2FromFieldAndField(f1, f2);
+        sfep.setFunctionCode("SFEP");
+        sfep.setCompareType(LtCompareType.CONTAINS);
+        return sfep;
     }
 
     @Override
     public LTFileObject getSFEX(LRField f, ViewColumn c2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 sfex = makeF2FromFieldAndColumn(f, c2);
+        sfex.setFunctionCode("SFEX");
+        sfex.setCompareType(LtCompareType.CONTAINS);
+        return sfex;
     }
 
     @Override
@@ -1276,81 +1315,119 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSFLL(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFLL(LRField f1, LRField f2) {
+        LogicTableF2 sfll = makeF2FromFieldAndField(f1, f2);
+        sfll.setFunctionCode("SFLL");
+        sfll.setCompareType(LtCompareType.CONTAINS);
+        return sfll;
     }
 
     @Override
-    public LTFileObject getSFLP(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFLP(LRField f1, LRField f2) {
+        LogicTableF2 sfll = makeF2FromFieldAndField(f1, f2);
+        sfll.setFunctionCode("SFLP");
+        sfll.setCompareType(LtCompareType.CONTAINS);
+        return sfll;
     }
 
     @Override
     public LTFileObject getSFLX(LRField f, ViewColumn c2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 sflx = makeF2FromFieldAndColumn(f, c2);
+        sflx.setFunctionCode("SFLX");
+        sflx.setCompareType(LtCompareType.CONTAINS);
+        return sflx;
     }
 
     @Override
     public LTFileObject getSFPC(LRField f, String v2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 sfpc = new LogicTableF1();
+        sfpc.setRecordType(LtRecordType.F1);
+        sfpc.setFunctionCode("SFPC");
+        LogicTableArg arg = getArgFromField(f);
+        sfpc.setArg(arg);
+        arg.setValue(v2);
+        arg.setValueLength(v2.length());
+        sfpc.setCompareType(LtCompareType.CONTAINS);
+        return sfpc;
     }
 
     @Override
-    public LTFileObject getSFPE(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFPE(LRField f1, LRField f2) {
+        LogicTableF2 sfpe = makeF2FromFieldAndField(f1, f2);
+        sfpe.setFunctionCode("SFPE");
+        sfpe.setCompareType(LtCompareType.CONTAINS);
+        return sfpe;
     }
 
     @Override
-    public LTFileObject getSFPL(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFPL(LRField f1, LRField f2) {
+        LogicTableF2 sfpl = makeF2FromFieldAndField(f1, f2);
+        sfpl.setFunctionCode("SFPL");
+        sfpl.setCompareType(LtCompareType.CONTAINS);
+        return sfpl;
     }
 
     @Override
-    public LTFileObject getSFPP(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFPP(LRField f1, LRField f2) {
+        LogicTableF2 sfpp = makeF2FromFieldAndField(f1, f2);
+        sfpp.setFunctionCode("SFPP");
+        sfpp.setCompareType(LtCompareType.CONTAINS);
+        return sfpp;
     }
 
     @Override
-    public LTFileObject getSFPX(LRField f, ViewColumn c2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFPX(LRField f, ViewColumn c) {
+        LogicTableF2 sfpx = makeF2FromFieldAndColumn(f, c);
+        sfpx.setFunctionCode("SFPX");
+        sfpx.setCompareType(LtCompareType.CONTAINS);
+        return sfpx;
     }
 
     @Override
-    public LTFileObject getSFXC(ViewColumn c, String v2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFXC(ViewColumn c, String v) {
+        LogicTableF1 sfxc = new LogicTableF1();
+        sfxc.setRecordType(LtRecordType.F1);
+        sfxc.setArg(getColumnArg(c));
+        sfxc.setFunctionCode("SFXC");
+        sfxc.getArg().setValue(v);
+        sfxc.getArg().setValueLength(v.length());
+        sfxc.setCompareType(LtCompareType.CONTAINS);
+        return sfxc;
     }
 
     @Override
-    public LTFileObject getSFXE(ViewColumn c, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFXE(ViewColumn c, LRField f) {
+        LogicTableF2 sfxe = makeF2FromColumnAndField(c, f);
+        sfxe.setFunctionCode("SFXE");
+        sfxe.setCompareType(LtCompareType.CONTAINS);
+        return sfxe;
     }
 
     @Override
-    public LTFileObject getSFXL(ViewColumn c, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFXL(ViewColumn c, LRField f) {
+        LogicTableF2 sfxl = makeF2FromColumnAndField(c, f);
+        sfxl.setFunctionCode("SFXL");
+        sfxl.setCompareType(LtCompareType.CONTAINS);
+        return sfxl;
     }
 
     @Override
-    public LTFileObject getSFXP(ViewColumn c, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSFXP(ViewColumn c, LRField f) {
+        LogicTableF2 sfxp = makeF2FromColumnAndField(c, f);
+        sfxp.setFunctionCode("SFXP");
+        sfxp.setCompareType(LtCompareType.CONTAINS);
+        return sfxp;
     }
 
     @Override
     public LTFileObject getSFXX(ViewColumn c, ViewColumn c2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF2 sfxx = new LogicTableF2();
+        sfxx.setArg1(getColumnArg(c));
+        sfxx.setArg2(getColumnArg(c2));
+        sfxx.setFunctionCode("SFXX");
+        sfxx.setRecordType(LtRecordType.F2);
+        sfxx.setCompareType(LtCompareType.CONTAINS);
+        return sfxx;    
     }
 
     @Override
@@ -1596,6 +1673,25 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         dte.setCompareType(LtCompareType.EQ);
         return dte;
     }
+
+    private LogicTableF2 makeF2FromColumnAndField(ViewColumn vc, LRField f) {
+        LogicTableF2 dte = new LogicTableF2();
+        // want a function to get a populated arg from the field
+        dte.setArg1(getColumnArg(vc));
+        LogicTableArg arg2 = getArgFromField(f);
+        dte.setRecordType(LtRecordType.F2);
+        //TODO this can rise as a common function
+        //These may be at adder level
+        dte.setViewId(vc.getViewId());
+        dte.setColumnId(vc.getComponentId());
+        dte.setSuffixSeqNbr((short)vc.getColumnNumber());
+
+        dte.setArg1(arg2);
+        
+        dte.setCompareType(LtCompareType.EQ);
+        return dte;
+    }
+
 
     private LogicTableNameF1 getNameF1FromAccumAndColumn(String accum, ViewColumn vc) {
         LogicTableNameF1 nf1 = new LogicTableNameF1();

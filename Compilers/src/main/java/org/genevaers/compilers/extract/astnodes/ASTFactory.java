@@ -41,6 +41,7 @@ public class ASTFactory {
         DT_COLUMN("DT Column"), 
         SK_COLUMN("SK Column"), 
         EXPRCOMP("Expr Comparison"),
+        STRINGCOMP("String Comparison"),
         EXTRFILTER("Extract Filter"), 
         ERSROOT("Geneva ERS Root"), 
         IFNODE("If"), 
@@ -128,6 +129,8 @@ public class ASTFactory {
                 return new SkipIfAST();
             case EXPRCOMP:
                 return new ExprComparisonAST();
+            case STRINGCOMP:
+                return new StringComparisonAST();
             case EXTRFILTER:
                 return new ExtractFilterAST();
             case IFNODE:

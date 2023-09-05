@@ -71,7 +71,7 @@ under the License.
             <VIEWCOLUMNID>402977</VIEWCOLUMNID>
             <VIEWID>12044</VIEWID>
             <COLUMNNUMBER>1</COLUMNNUMBER>
-            <FLDFMTCD>MSKNM</FLDFMTCD>
+            <FLDFMTCD>ALNUM</FLDFMTCD>
             <SIGNEDIND>0</SIGNEDIND>
             <STARTPOSITION>1</STARTPOSITION>
             <MAXLEN>8</MAXLEN>
