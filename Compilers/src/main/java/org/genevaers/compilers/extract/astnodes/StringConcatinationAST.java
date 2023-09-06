@@ -158,6 +158,12 @@ public class StringConcatinationAST extends FormattedASTNode implements Emittabl
                     arg2.setFieldLength(arg1.getFieldLength());
                     currentPos += arg1.getFieldLength();
                     break;
+                case F1:
+                    LogicTableArg arg = ((LogicTableF1)ltfo).getArg();
+                    arg.setStartPosition(currentPos);
+                    arg.setFieldLength((short)arg.getValueLength());
+                    currentPos += arg.getValueLength();
+                    break;
                 default:
                     System.out.println("Not handling type" + ltfo.getRecordType());
                 break;

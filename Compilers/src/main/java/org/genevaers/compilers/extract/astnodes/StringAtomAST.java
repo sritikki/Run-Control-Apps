@@ -58,7 +58,6 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         } else {
             ltr = (LTRecord)fcf.getSKC(value, currentViewColumn);
         }
-        ltEmitter.addToLogicTable(ltr);
         return (LTFileObject) ltr;
     }
 
