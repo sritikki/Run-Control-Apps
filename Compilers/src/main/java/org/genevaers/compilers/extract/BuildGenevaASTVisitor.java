@@ -51,6 +51,7 @@ import org.genevaers.compilers.extract.astnodes.SkipIfAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
 import org.genevaers.compilers.extract.astnodes.StringComparisonAST;
+import org.genevaers.compilers.extract.astnodes.StringConcatinationAST;
 import org.genevaers.compilers.extract.astnodes.SymbolEntry;
 import org.genevaers.compilers.extract.astnodes.SymbolList;
 import org.genevaers.compilers.extract.astnodes.UnaryInt;
@@ -577,7 +578,27 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         }
         //should be an error node 
         return retval;
+    }
+
+    @Override public ExtractBaseAST  visitExprConcatString(GenevaERSParser.ExprConcatStringContext ctx) {
+        //The terms will be on the odd child nodes
+        StringConcatinationAST strconcat = (StringConcatinationAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCONCAT);
+        int c=0; 
+        while(c<ctx.getChildCount()) {
+            ParseTree n = ctx.children.get(c);
+            ExtractBaseAST concatNode = visit(n);
+            if(StringDataTypeChecker.allowConcatNode(concatNode)) {
+                strconcat.addChildIfNotNull(concatNode);
+            } else {
+                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+                err.addError("Incompatable data type for " + n.getText());
+                strconcat.addChildIfNotNull(err);
+            }
+            c+=2;
+        }
+        return strconcat;
      }
+  
   
 
     @Override public ExtractBaseAST visitString(GenevaERSParser.StringContext ctx) { 

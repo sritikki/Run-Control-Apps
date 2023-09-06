@@ -23,6 +23,10 @@ public class StringDataTypeChecker {
         return allowed;
     }
 
+    public static boolean allowConcatNode(ExtractBaseAST node) {
+        return getDataType(node) != DataType.ALPHANUMERIC ? false : true;
+    }
+
     private static DataType getDataType(ExtractBaseAST node) {
         DataType dtype = DataType.INVALID;
         switch(node.getType()) {

@@ -162,6 +162,9 @@ public class ExtractAST2Dot {
                 case STRINGATOM:
                     dotStringAtomNode(node);
                     break;
+                case STRINGCONCAT:
+                    doStringConcat(node);
+                    break;
                 case COLUMNASSIGNMENT:
                     dotColumnAssignmentNode(node);
                     break;
@@ -449,6 +452,14 @@ public class ExtractAST2Dot {
         String escValue = strNode.getValue().replace("\"", "'");
         label = strNode.getType().toString() + " (" + escValue + ")";
         colour = NUMCONST;
+        idString = "Str_" + nodeNum++;
+        reverseArrow = true;
+    }
+
+    private static void doStringConcat(ExtractBaseAST node) {
+        StringConcatinationAST strNode = (StringConcatinationAST) node;
+        colour = STRINGCONST;
+        label = strNode.getType().toString();
         idString = "Str_" + nodeNum++;
         reverseArrow = true;
     }
