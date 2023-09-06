@@ -33,7 +33,7 @@ public class LFPFAssocRecordParser extends RecordParser {
 	private int assocId;
 
 	@Override
-    public void parseRecord(XMLStreamReader reader) throws XMLStreamException {
+	public void parseRecord(XMLStreamReader reader) throws XMLStreamException {
 		String part = reader.getName().getLocalPart();
 		int n = reader.next();
 		if (n == XMLEvent.CHARACTERS) {
@@ -42,22 +42,24 @@ public class LFPFAssocRecordParser extends RecordParser {
 				case "LFPFASSOCID":
 					assocId = Integer.parseInt(text);
 					break;
-					case "PHYFILEID":
+				case "PHYFILEID":
 					pfid = Integer.parseInt(text);
 					break;
-					case "PARTSEQNBR":
+				case "PARTSEQNBR":
 					seqNum = text;
 					break;
 				case "LOGFILEID":
 					LFPF lfpf = new LFPF();
 					lfpf.lfid = Integer.parseInt(text);
 					lfpf.pfid = pfid;
-					lfpf.seq = Integer.parseInt(text);
+					lfpf.seq = Integer.parseInt(seqNum);
 					String keyName = text + "_" + seqNum;
-					RecordParserData.lfpfs.put(keyName, lfpf);
+					RecordParserData.lfpfsByAssocSeq.put(keyName, lfpf);
+					RecordParserData.lfpfs.put(assocId, lfpf);
 					break;
 				default:
 					break;
 			}
-		}}
+		}
+	}
 }

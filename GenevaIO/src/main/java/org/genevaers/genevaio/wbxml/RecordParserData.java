@@ -59,7 +59,8 @@ public class RecordParserData {
 	public static Map<Integer, LRIndex> effdateEnds = new HashMap<>();
 
 	public static Map<Integer, LRLF> lrlfs = new HashMap<>();
-	public static Map<String, LFPF> lfpfs = new TreeMap<>(Collections.reverseOrder());
+	public static Map<String, LFPF> lfpfsByAssocSeq = new TreeMap<>(Collections.reverseOrder());
+	public static Map<Integer, LFPF> lfpfs = new HashMap<>();
 
 	public RecordParserData() {
 	}
