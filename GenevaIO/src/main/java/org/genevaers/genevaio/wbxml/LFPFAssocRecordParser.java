@@ -28,7 +28,7 @@ import javax.xml.stream.events.XMLEvent;
 public class LFPFAssocRecordParser extends RecordParser {
 
 	private int pfid;
-	private int seqNum;
+	private String seqNum;
 
 	private int assocId;
 
@@ -46,14 +46,15 @@ public class LFPFAssocRecordParser extends RecordParser {
 					pfid = Integer.parseInt(text);
 					break;
 					case "PARTSEQNBR":
-					seqNum = Integer.parseInt(text);
+					seqNum = text;
 					break;
 				case "LOGFILEID":
 					LFPF lfpf = new LFPF();
 					lfpf.lfid = Integer.parseInt(text);
 					lfpf.pfid = pfid;
-					lfpf.seq = seqNum;
-					RecordParserData.lfpfs.put(assocId, lfpf);
+					lfpf.seq = Integer.parseInt(text);
+					String keyName = text + "_" + seqNum;
+					RecordParserData.lfpfs.put(keyName, lfpf);
 					break;
 				default:
 					break;
