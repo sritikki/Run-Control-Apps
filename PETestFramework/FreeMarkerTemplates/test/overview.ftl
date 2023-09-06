@@ -64,9 +64,9 @@
 					<div class="w3-container">
 						<h4>Date: ${.now}</h4>
 						<h4>
-							<#if env["GENERATE_COVERAGE"] == "Y">
+							<#if covAvailable == "Yes">
 							Overall Function Code Coverage Available:
-							<a href="coverageCov.html">
+							<a href="aggregateCov.html">
 								here
 							</a>
 							<#else>
