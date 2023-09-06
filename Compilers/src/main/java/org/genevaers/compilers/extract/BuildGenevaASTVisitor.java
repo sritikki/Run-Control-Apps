@@ -581,22 +581,26 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
     @Override public ExtractBaseAST  visitExprConcatString(GenevaERSParser.ExprConcatStringContext ctx) {
-        //The terms will be on the odd child nodes
-        StringConcatinationAST strconcat = (StringConcatinationAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCONCAT);
-        int c=0; 
-        while(c<ctx.getChildCount()) {
-            ParseTree n = ctx.children.get(c);
-            ExtractBaseAST concatNode = visit(n);
-            if(StringDataTypeChecker.allowConcatNode(concatNode)) {
-                strconcat.addChildIfNotNull(concatNode);
-            } else {
-                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-                err.addError("Incompatable data type for " + n.getText());
-                strconcat.addChildIfNotNull(err);
+        if(ctx.getChildCount() > 1) {
+            //The terms will be on the odd child nodes
+            StringConcatinationAST strconcat = (StringConcatinationAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCONCAT);
+            int c=0; 
+            while(c<ctx.getChildCount()) {
+                ParseTree n = ctx.children.get(c);
+                ExtractBaseAST concatNode = visit(n);
+                if(StringDataTypeChecker.allowConcatNode(concatNode)) {
+                    strconcat.addChildIfNotNull(concatNode);
+                } else {
+                    ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+                    err.addError("Incompatable data type for " + n.getText());
+                    strconcat.addChildIfNotNull(err);
+                }
+                c+=2;
             }
-            c+=2;
+            return strconcat;
+        } else {
+            return visitChildren(ctx); 
         }
-        return strconcat;
      }
   
   
