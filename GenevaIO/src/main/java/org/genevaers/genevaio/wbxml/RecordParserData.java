@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.wbxml;
 
+import java.util.Collections;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -20,6 +22,7 @@ package org.genevaers.genevaio.wbxml;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -56,7 +59,7 @@ public class RecordParserData {
 	public static Map<Integer, LRIndex> effdateEnds = new HashMap<>();
 
 	public static Map<Integer, LRLF> lrlfs = new HashMap<>();
-	public static Map<Integer, LFPF> lfpfs = new HashMap<>();
+	public static Map<String, LFPF> lfpfs = new TreeMap<>(Collections.reverseOrder());
 
 	public RecordParserData() {
 	}
