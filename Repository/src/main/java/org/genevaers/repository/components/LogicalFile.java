@@ -70,7 +70,7 @@ public class LogicalFile extends ComponentNode {
 	}
 
 	public Iterator<PhysicalFile> getPFIterator() {
-		return pfs.iterator();
+		return pfsByName.values().iterator();
 	}
 
 	public void setName(String name) {
