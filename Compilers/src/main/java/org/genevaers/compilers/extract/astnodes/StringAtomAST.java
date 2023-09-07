@@ -50,14 +50,15 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LTRecord ltr;
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(value, currentViewColumn));
+            ltr = (LTRecord)fcf.getCTC(value, currentViewColumn);
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(value, currentViewColumn));
+            ltr = (LTRecord)fcf.getDTC(value, currentViewColumn);
         } else {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(value, currentViewColumn));
+            ltr = (LTRecord)fcf.getSKC(value, currentViewColumn);
         }
-        return null;
+        return (LTFileObject) ltr;
     }
 
     @Override

@@ -85,7 +85,8 @@ public class ASTFactory {
         ISNOTNULL("Is Not Null"),
         ISNOTNUMERIC("Is Not Numeric"), 
         BETWEENFUNC("Between"), 
-        REPEAT("Repeat")
+        REPEAT("Repeat"), 
+        STRINGCONCAT("Concatination")
          ;
 
         private String name;
@@ -119,6 +120,8 @@ public class ASTFactory {
                 return new NumAtomAST();
             case STRINGATOM:
                 return new StringAtomAST();
+            case STRINGCONCAT:
+                return new StringConcatinationAST();
             case LRFIELD:
                 return new FieldReferenceAST();
             case ERRORS:
