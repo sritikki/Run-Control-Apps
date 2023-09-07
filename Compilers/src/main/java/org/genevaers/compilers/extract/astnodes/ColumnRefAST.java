@@ -26,7 +26,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
  * under the License.
  */
 
-public class ColumnRefAST extends FormattedASTNode implements CalculationSource, Assignable {
+public class ColumnRefAST extends FormattedASTNode implements CalculationSource, Assignable, Concatable {
 
     private ViewColumn vc;
 
@@ -88,6 +88,11 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
     @Override
     public DateCode getDateCode() {
         return vc.getDateCode();
+    }
+
+    @Override
+    public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
+        return ((ColumnRefAST)rhs).getViewColumn().getFieldLength();
     }
 
 }

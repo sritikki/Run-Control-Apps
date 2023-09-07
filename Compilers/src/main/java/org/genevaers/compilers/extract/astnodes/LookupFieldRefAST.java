@@ -34,7 +34,7 @@ import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
 
-public class LookupFieldRefAST extends LookupPathAST implements Assignable, CalculationSource{
+public class LookupFieldRefAST extends LookupPathAST implements Assignable, CalculationSource, Concatable{
 
     private LRField ref;
 
@@ -212,5 +212,14 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         if(arg2.getFieldFormat() == DataType.ALPHANUMERIC && arg.getFieldFormat() != DataType.ALPHANUMERIC) {
             arg2.setFieldFormat(DataType.ZONED);
         }
+    }
+
+
+    @Override
+    public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
+        getAssignmentEntry(col, rhs);
+        //now we need to fixup the col start and length
+        //for both the assigned entry and the default
+        return ((LookupFieldRefAST)rhs).getRef().getLength();
     }
 }
