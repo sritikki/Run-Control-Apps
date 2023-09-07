@@ -76,7 +76,7 @@ class RunStringConcatinationTest extends RunCompilerBase {
     }
 
     @Test void testConcatAssignment() {
-        LogicTable xlt = runFromXMLOverrideLogic(11556, TestHelper.CONCAT, 
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = {Two} & {Three} & {Five}");
         String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
         int expectedGotos[][] = {{}};

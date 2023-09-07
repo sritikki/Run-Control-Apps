@@ -148,27 +148,32 @@ public class StringConcatinationAST extends FormattedASTNode implements Emittabl
         Iterator<ASTBase> ci = children.iterator();
         short currentPos = col.getViewColumn().getStartPosition();
         while(ci.hasNext()) {
-            Assignable c = (Assignable) ci.next();
-            LTRecord ltfo = (LTRecord) c.getAssignmentEntry(col, (ExtractBaseAST)c);
-            switch(ltfo.getRecordType()) {
-                case F2:
-                    LogicTableArg arg1 = ((LogicTableF2)ltfo).getArg1();
-                    LogicTableArg arg2 = ((LogicTableF2)ltfo).getArg2();
-                    arg2.setStartPosition(currentPos);
-                    arg2.setFieldLength(arg1.getFieldLength());
-                    currentPos += arg1.getFieldLength();
-                    break;
-                case F1:
-                    LogicTableArg arg = ((LogicTableF1)ltfo).getArg();
-                    arg.setStartPosition(currentPos);
-                    arg.setFieldLength((short)arg.getValueLength());
-                    currentPos += arg.getValueLength();
-                    break;
-                default:
-                    System.out.println("Not handling type" + ltfo.getRecordType());
-                break;
-            }
-            ltEmitter.addToLogicTable(ltfo);
+            Concatable c = (Concatable) ci.next();
+            //We need to do different things depending on the source type
+            //so have a specifc function implemented in the type
+            //getConcatination entry - return length so we can increase the current pos
+            // make them implement concatable 
+            currentPos += c.getConcatinationEntry(col, (ExtractBaseAST)c, currentPos);
+            // LTRecord ltfo = (LTRecord) c.get(col, (ExtractBaseAST)c);
+            // switch(ltfo.getRecordType()) {
+            //     case F2:
+            //         LogicTableArg arg1 = ((LogicTableF2)ltfo).getArg1();
+            //         LogicTableArg arg2 = ((LogicTableF2)ltfo).getArg2();
+            //         arg2.setStartPosition(currentPos);
+            //         arg2.setFieldLength(arg1.getFieldLength());
+            //         currentPos += arg1.getFieldLength();
+            //         break;
+            //     case F1:
+            //         LogicTableArg arg = ((LogicTableF1)ltfo).getArg();
+            //         arg.setStartPosition(currentPos);
+            //         arg.setFieldLength((short)arg.getValueLength());
+            //         currentPos += arg.getValueLength();
+            //         break;
+            //     default:
+            //         System.out.println("Not handling type" + ltfo.getRecordType());
+            //     break;
+            // }
+            // ltEmitter.addToLogicTable(ltfo);
         }
 
         return null;

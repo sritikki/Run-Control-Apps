@@ -4,6 +4,8 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
@@ -26,7 +28,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
  */
 
 
-public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, Assignable{
+public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, Assignable, Concatable {
 
     private String value;
 
@@ -69,6 +71,15 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
     @Override
     public DateCode getDateCode() {
         return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
+    }
+
+    @Override
+    public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
+        LogicTableF1 f1 = (LogicTableF1) getAssignmentEntry(col, rhs);
+        LogicTableArg arg = f1.getArg();
+        arg.setStartPosition(start);
+        arg.setFieldLength((short)arg.getValueLength());
+        return (short) arg.getValueLength();
     }
 
 }
