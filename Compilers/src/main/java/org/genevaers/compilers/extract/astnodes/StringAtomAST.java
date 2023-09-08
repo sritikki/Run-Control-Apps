@@ -79,6 +79,7 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         LogicTableArg arg = f1.getArg();
         arg.setStartPosition(start);
         arg.setFieldLength((short)arg.getValueLength());
+        ltEmitter.addToLogicTable(f1);
         return (short) arg.getValueLength();
     }
 
