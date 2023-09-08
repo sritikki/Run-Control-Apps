@@ -105,9 +105,26 @@ tests:
   # for an extract only view
   # For a format phase it will be EXTR00n where n is defined in the view
   extractfiles:
-  - ddname: "OUTPUT01" 
-    space: "TRK"
+  - space: "TRK"
     primary: "500"
     secondary: "100"
     recfm: "VB"
     lrecl: "8192"
+  - space: "TRK"
+    primary: "500"
+    secondary: "100"
+    recfm: "VB"
+    lrecl: "8192"
+  - space: "TRK"
+    primary: "500"
+    secondary: "100"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "DAGSTATO"
+    space: "TRK"
+    primary: "100"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "250"
+    workfile: "3"
