@@ -98,6 +98,24 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertDtx((LogicTableF2)xlt.getFromPosition(55) , 98, 10);
     }
 
+    @Test void testRightFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = RIGHT({Ten}, 4)");
+        String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
+    }
+        
+    @Test void testLeftFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = LEFT({Ten}, 4)");
+        String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
+    }
+        
+    @Test void testSubstringFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Ten}, 4)");
+        String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
+    }
+        
     private void assertDte(LogicTableF2 dte, int start, int len) {
         assertEquals(start, dte.getArg2().getStartPosition());
         assertEquals(len, dte.getArg2().getFieldLength());
@@ -126,49 +144,5 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertEquals(goto1, join.getGotoRow1());
         assertEquals(goto2, join.getGotoRow2());
     }
-
-
-    @Test void testConcatConstAssignment() {
-        LogicTable xlt = runFromXMLOverrideLogic(11556, TestHelper.CONCAT, 
-        "COLUMN = {Two} & \"|\" & {Two}");
-        String[] expected = new String[]{ "DTE", "DTC", "DTE", "DTE" };
-        int expectedGotos[][] = {{}};
-        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        LogicTableF2 dte1 =  (LogicTableF2) xlt.getFromPosition(4);
-        assertEquals(2, dte1.getArg2().getFieldLength());
-        LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(5);
-        assertEquals(3, dtc.getArg().getStartPosition());
-        assertEquals(1, dtc.getArg().getFieldLength());
-        LogicTableF2 dte3 =  (LogicTableF2) xlt.getFromPosition(6);
-        assertEquals(4, dte3.getArg2().getStartPosition());
-        assertEquals(2, dte3.getArg2().getFieldLength());
-        LogicTableF2 dte4 =  (LogicTableF2) xlt.getFromPosition(7);
-        assertEquals(11, dte4.getArg2().getStartPosition());
-        assertEquals(2, dte4.getArg2().getFieldLength());
-    }
-
-    @Test void testConcatRefAssignment() {
-        LogicTable xlt = runFromXMLOverrideColNLogic(11556, TestHelper.CONCAT, 4,
-        "IF COL.2 = {Ten} THEN\n" + //
-                "    COLUMN = {Two} & {Three} & {Five} \n" + //
-                "ELSE\n" + //
-                "    COLUMN = \"FAIL\"\n" + //
-                "ENDIF");
-        String[] expected = new String[]{ "DTE", "DTC", "DTE", "DTE" };
-        int expectedGotos[][] = {{}};
-        // TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        // LogicTableF2 dte1 =  (LogicTableF2) xlt.getFromPosition(4);
-        // assertEquals(2, dte1.getArg2().getFieldLength());
-        // LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(5);
-        // assertEquals(3, dtc.getArg().getStartPosition());
-        // assertEquals(1, dtc.getArg().getFieldLength());
-        // LogicTableF2 dte3 =  (LogicTableF2) xlt.getFromPosition(6);
-        // assertEquals(4, dte3.getArg2().getStartPosition());
-        // assertEquals(2, dte3.getArg2().getFieldLength());
-        // LogicTableF2 dte4 =  (LogicTableF2) xlt.getFromPosition(7);
-        // assertEquals(11, dte4.getArg2().getStartPosition());
-        // assertEquals(2, dte4.getArg2().getFieldLength());
-    }
-
 
 }

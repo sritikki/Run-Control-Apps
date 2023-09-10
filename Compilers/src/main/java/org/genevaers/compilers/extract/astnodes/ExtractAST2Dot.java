@@ -165,6 +165,11 @@ public class ExtractAST2Dot {
                 case STRINGCONCAT:
                     doStringConcat(node);
                     break;
+                case LEFT:
+                case SUBSTR:
+                case RIGHT:
+                    doStringFunction(node);
+                    break;
                 case COLUMNASSIGNMENT:
                     dotColumnAssignmentNode(node);
                     break;
@@ -457,9 +462,17 @@ public class ExtractAST2Dot {
     }
 
     private static void doStringConcat(ExtractBaseAST node) {
-        StringConcatinationAST strNode = (StringConcatinationAST) node;
+        FormattedASTNode strNode = (FormattedASTNode) node;
         colour = STRINGCONST;
         label = strNode.getType().toString();
+        idString = "Str_" + nodeNum++;
+        reverseArrow = true;
+    }
+
+    private static void doStringFunction(ExtractBaseAST node) {
+        StringFunctionASTNode strNode = (StringFunctionASTNode) node;
+        colour = STRINGCONST;
+        label = strNode.getType().toString() + "(" + strNode.getLength() + ")";
         idString = "Str_" + nodeNum++;
         reverseArrow = true;
     }
