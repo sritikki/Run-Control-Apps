@@ -1,11 +1,8 @@
 package org.genevaers.compilers.extract.astnodes;
 
-import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.genevaio.ltfile.LTFileObject;
-import org.genevaers.repository.components.enums.DataType;
-import org.genevaers.repository.components.enums.DateCode;
 
-public class RightASTNode extends StringFunctionASTNode implements EmittableASTNode, Assignable{
+public class RightASTNode extends StringFunctionASTNode implements Assignable{
 
 
     public RightASTNode() {
@@ -14,25 +11,11 @@ public class RightASTNode extends StringFunctionASTNode implements EmittableASTN
 
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAssignmentEntry'");
-    }
-
-    @Override
-    public DataType getDataType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDataType'");
-    }
-
-    @Override
-    public DateCode getDateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDateCode'");
-    }
-
-    @Override
-    public void emit() {
-        //Need to generate a function code base on child?
+       if(getNumberOfChildren() == 1) {
+            Concatable cc =  (Concatable) getChildIterator().next();
+            cc.getRightEntry(col, (ExtractBaseAST) cc, Short.valueOf(getLength()));
+        }
+        return null;
     }
 
 }

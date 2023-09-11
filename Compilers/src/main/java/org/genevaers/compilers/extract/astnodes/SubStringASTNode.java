@@ -1,11 +1,10 @@
 package org.genevaers.compilers.extract.astnodes;
 
-import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.genevaio.ltfile.LTFileObject;
-import org.genevaers.repository.components.enums.DataType;
-import org.genevaers.repository.components.enums.DateCode;
 
-public class SubStringASTNode extends StringFunctionASTNode implements EmittableASTNode, Assignable{
+public class SubStringASTNode extends StringFunctionASTNode implements Assignable{
+
+    String startOffest = "0";
 
     public SubStringASTNode() {
         type = ASTFactory.Type.SUBSTR;
@@ -13,26 +12,18 @@ public class SubStringASTNode extends StringFunctionASTNode implements Emittable
 
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAssignmentEntry'");
+        if(getNumberOfChildren() == 1) {
+            Concatable cc =  (Concatable) getChildIterator().next();
+            cc.getSubstreEntry(col, (ExtractBaseAST) cc, Short.valueOf(getStartOffest()), Short.valueOf(getLength()));
+        }
+        return null;
     }
 
-    @Override
-    public void emit() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'emit'");
+    public String getStartOffest() {
+        return startOffest;
     }
 
-    @Override
-    public DataType getDataType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDataType'");
+    public void setStartOffest(String startOffest) {
+        this.startOffest = startOffest;
     }
-
-    @Override
-    public DateCode getDateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDateCode'");
-    }
-
-}
+ }
