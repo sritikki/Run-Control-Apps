@@ -146,6 +146,30 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertDteSource((LogicTableF2)xlt.getFromPosition(7) , 14, 4);
     }
         
+    @Test void testRightColRefAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = RIGHT(Col.1, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(6) , 7, 4);
+    }
+        
+    @Test void testLeftColRefAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = LEFT(Col.1, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(6) , 1, 4);
+    }
+        
+    @Test void testDefaultColRefFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = SUBSTR(Col.1, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(7) , 1, 4);
+    }
+        
+    @Test void testSubstringColRefAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = SUBSTR(Col.1, 3, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(7) , 4, 4);
+    }
+        
     private void assertDte(LogicTableF2 dte, int start, int len) {
         assertEquals(start, dte.getArg2().getStartPosition());
         assertEquals(len, dte.getArg2().getFieldLength());
@@ -173,6 +197,12 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertEquals("DTX", dtx.getFunctionCode());
         assertEquals(start, dtx.getArg2().getStartPosition());
         assertEquals(len, dtx.getArg2().getFieldLength());
+    }
+
+    private void assertDtxSource(LogicTableF2 dtx, int start, int len) {
+        assertEquals("DTX", dtx.getFunctionCode());
+        assertEquals(start, dtx.getArg1().getStartPosition());
+        assertEquals(len, dtx.getArg1().getFieldLength());
     }
 
     private void assertDtc(LogicTableF1 dtc, int start, int len, String val) {
