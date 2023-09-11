@@ -122,6 +122,30 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 24, 4);
     }
         
+    @Test void testRightLookupFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = RIGHT({Concat_ConcatTarg.Ten}, 4)");
+        assertDtlSource((LogicTableF2)xlt.getFromPosition(7) , 17, 4);
+    }
+        
+    @Test void testLeftLookupFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = LEFT({Concat_ConcatTarg.Ten}, 4)");
+        assertDtlSource((LogicTableF2)xlt.getFromPosition(7) , 11, 4);
+    }
+        
+    @Test void testDefaultLookupSubstringFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Concat_ConcatTarg.Ten}, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(7) , 11, 4);
+    }
+        
+    @Test void testSubstringLookupFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Concat_ConcatTarg.Ten}, 3, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(7) , 14, 4);
+    }
+        
     private void assertDte(LogicTableF2 dte, int start, int len) {
         assertEquals(start, dte.getArg2().getStartPosition());
         assertEquals(len, dte.getArg2().getFieldLength());
@@ -137,6 +161,12 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertEquals("DTL", dtl.getFunctionCode());
         assertEquals(start, dtl.getArg2().getStartPosition());
         assertEquals(len, dtl.getArg2().getFieldLength());
+    }
+
+    private void assertDtlSource(LogicTableF2 dtl, int start, int len) {
+        assertEquals("DTL", dtl.getFunctionCode());
+        assertEquals(start, dtl.getArg1().getStartPosition());
+        assertEquals(len, dtl.getArg1().getFieldLength());
     }
 
     private void assertDtx(LogicTableF2 dtx, int start, int len) {
