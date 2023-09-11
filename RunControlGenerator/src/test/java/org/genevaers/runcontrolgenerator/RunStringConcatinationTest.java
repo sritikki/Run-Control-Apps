@@ -170,6 +170,30 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertDtxSource((LogicTableF2)xlt.getFromPosition(7) , 4, 4);
     }
         
+    @Test void testRightStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = RIGHT(\"A Big String\", 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 10, "ring");
+    }
+        
+    @Test void testLeftStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = LEFT(\"A Big String\", 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 12, "A Bi");
+    }
+        
+    @Test void testDefaultStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR(\"A Big String\", 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4), 1, 10, "A Bi");
+    }
+        
+    @Test void testSubstringStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR(\"A Big String\", 3, 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 10, "ig S");
+    }
+        
     private void assertDte(LogicTableF2 dte, int start, int len) {
         assertEquals(start, dte.getArg2().getStartPosition());
         assertEquals(len, dte.getArg2().getFieldLength());

@@ -10,6 +10,8 @@ import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
 
+import difflib.StringUtills;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -84,21 +86,58 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
     }
 
     @Override
-    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLeftEntry'");
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        LogicTableF1 f1 = (LogicTableF1) getAssignmentEntry(col, rhs);
+        LogicTableArg arg = f1.getArg();
+        //This is different in that we need to get the original string value and change it?
+        //arg.setStartPosition(start);
+        arg.setFieldLength((short)arg.getValueLength());
+        short fieldlen = arg.getFieldLength();
+        if(length < fieldlen) { 
+            String val = ((StringAtomAST)rhs).getValue();
+            arg.setValue(val.substring(0, length));
+            arg.setValueLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f1);
+        } else {
+            //Error 
+        }
+        return length;
     }
 
     @Override
-    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRightEntry'");
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        LogicTableF1 f1 = (LogicTableF1) getAssignmentEntry(col, rhs);
+        LogicTableArg arg = f1.getArg();
+        //This is different in that we need to get the original string value and change it?
+        //arg.setStartPosition(start);
+        short fieldlen = arg.getFieldLength();
+        if(length < fieldlen) { 
+            String val = ((StringAtomAST)rhs).getValue();
+            arg.setValue(val.substring(val.length() - length));
+            arg.setValueLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f1);
+        } else {
+            //Error 
+        }
+        return length;
     }
 
     @Override
-    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short len) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSubstreEntry'");
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length) {
+        LogicTableF1 f1 = (LogicTableF1) getAssignmentEntry(col, rhs);
+        LogicTableArg arg = f1.getArg();
+        //This is different in that we need to get the original string value and change it?
+        //arg.setStartPosition(start);
+        short fieldlen = arg.getFieldLength();
+        if(length < fieldlen) { 
+            String val = ((StringAtomAST)rhs).getValue();
+            arg.setValue(val.substring(start, start + length));
+            arg.setValueLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f1);
+        } else {
+            //Error 
+        }
+        return length;
     }
 
 }
