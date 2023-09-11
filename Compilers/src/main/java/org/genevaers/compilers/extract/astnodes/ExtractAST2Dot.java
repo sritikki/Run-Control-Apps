@@ -254,6 +254,9 @@ public class ExtractAST2Dot {
                 case EOS:
                     doEOS(node);
                     break;
+                case LOOKUPFIELDREF:
+                    dotLookupFieldNode(node);
+                    break;
                 default:
                     dotDefaultNode(node);
                     break;
@@ -437,6 +440,15 @@ public class ExtractAST2Dot {
         idString = "Field_" + nodeNum++;
         reverseArrow = true;
     }
+
+    private static void dotLookupFieldNode(ExtractBaseAST node) {
+        LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) node;
+        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName();
+        colour = DATASOURCE;
+        idString = "Field_" + nodeNum++;
+        reverseArrow = true;
+    }
+
 
     private static void dotPriorLrFieldNode(ExtractBaseAST node) {
         FieldReferenceAST fieldRef = (FieldReferenceAST) node;

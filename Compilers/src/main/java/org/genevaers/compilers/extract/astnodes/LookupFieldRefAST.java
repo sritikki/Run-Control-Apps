@@ -247,22 +247,54 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
 
 
     @Override
-    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLeftEntry'");
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        getAssignmentEntry(col, rhs);
+        int numRecords = ltEmitter.getNumberOfRecords();
+        LogicTableF1 dtc = (LogicTableF1) ltEmitter.getLogicTable().getFromPosition(numRecords -1);
+        LogicTableF2 dtl = (LogicTableF2) ltEmitter.getLogicTable().getFromPosition(numRecords -3);
+        LogicTableArg arg1 = ((LogicTableF2)dtl).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setFieldLength(length);
+        } else {
+            //Error 
+        }
+        return length;
     }
 
 
     @Override
-    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRightEntry'");
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        getAssignmentEntry(col, rhs);
+        int numRecords = ltEmitter.getNumberOfRecords();
+        LogicTableF1 dtc = (LogicTableF1) ltEmitter.getLogicTable().getFromPosition(numRecords -1);
+        LogicTableF2 dtl = (LogicTableF2) ltEmitter.getLogicTable().getFromPosition(numRecords -3);
+        LogicTableArg arg1 = ((LogicTableF2)dtl).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + fieldlen - length));
+            arg1.setFieldLength(length);
+        } else {
+            //Error 
+        }
+        return length;
     }
 
 
     @Override
-    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short len) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSubstreEntry'");
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length) {
+        getAssignmentEntry(col, rhs);
+        int numRecords = ltEmitter.getNumberOfRecords();
+        LogicTableF1 dtc = (LogicTableF1) ltEmitter.getLogicTable().getFromPosition(numRecords -1);
+        LogicTableF2 dtl = (LogicTableF2) ltEmitter.getLogicTable().getFromPosition(numRecords -3);
+        LogicTableArg arg1 = ((LogicTableF2)dtl).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + start));
+            arg1.setFieldLength(length);
+        } else {
+            //Error 
+        }
+        return length;
     }
 }
