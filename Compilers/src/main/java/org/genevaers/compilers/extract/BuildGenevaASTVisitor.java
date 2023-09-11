@@ -621,10 +621,19 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
      }
   
     @Override  public ExtractBaseAST visitSubstr(GenevaERSParser.SubstrContext ctx) {
-        SubStringASTNode rn = (SubStringASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.SUBSTR);
-        rn.addChildIfNotNull(visit(ctx.getChild(2)));
-        rn.setLength(ctx.getChild(4).getText());
-        return rn;
+        SubStringASTNode sn = (SubStringASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.SUBSTR);
+        //Subtring may have one or two numbers
+        //start and len
+        //or len only ... so really just a left
+        if(ctx.getChildCount() == 6) {
+            sn.addChildIfNotNull(visit(ctx.getChild(2)));
+            sn.setLength(ctx.getChild(4).getText());
+        } else if(ctx.getChildCount() == 8) {
+            sn.addChildIfNotNull(visit(ctx.getChild(2)));
+            sn.setStartOffest(ctx.getChild(4).getText());
+            sn.setLength(ctx.getChild(6).getText());
+        }
+        return sn;
      }
 
     @Override public ExtractBaseAST visitString(GenevaERSParser.StringContext ctx) { 

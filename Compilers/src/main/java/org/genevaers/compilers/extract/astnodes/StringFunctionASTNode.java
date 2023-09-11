@@ -1,7 +1,5 @@
 package org.genevaers.compilers.extract.astnodes;
 
-import org.genevaers.compilers.base.EmittableASTNode;
-import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 
@@ -19,13 +17,11 @@ public class StringFunctionASTNode extends FormattedASTNode {
 
     @Override
     public DataType getDataType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDataType'");
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.ALPHANUMERIC;
     }
 
     @Override
     public DateCode getDateCode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDateCode'");
+        return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
     }
 }

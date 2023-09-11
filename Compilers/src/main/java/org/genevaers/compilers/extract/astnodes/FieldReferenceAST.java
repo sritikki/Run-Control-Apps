@@ -220,4 +220,48 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         return arg1.getFieldLength();
     }
 
+    @Override
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        LogicTableF2 f2 = (LogicTableF2) getAssignmentEntry(col, rhs);
+        LogicTableArg arg1 = ((LogicTableF2)f2).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setFieldLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f2);
+        } else {
+            //Error 
+        }
+        return length;
+    }
+
+    @Override
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        LogicTableF2 f2 = (LogicTableF2) getAssignmentEntry(col, rhs);
+        LogicTableArg arg1 = ((LogicTableF2)f2).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + fieldlen - length));
+            arg1.setFieldLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f2);
+        } else {
+            //Error 
+        }
+        return length;
+    }
+
+    @Override
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length) {
+        LogicTableF2 f2 = (LogicTableF2) getAssignmentEntry(col, rhs);
+        LogicTableArg arg1 = ((LogicTableF2)f2).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + start));
+            arg1.setFieldLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f2);
+        } else {
+            //Error 
+        }
+        return length;
+    }
+
 }

@@ -101,25 +101,37 @@ class RunStringConcatinationTest extends RunCompilerBase {
     @Test void testRightFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = RIGHT({Ten}, 4)");
-        String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 27, 4);
     }
         
     @Test void testLeftFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = LEFT({Ten}, 4)");
-        String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 21, 4);
+    }
+        
+    @Test void testDefaultSubstringFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Ten}, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 21, 4);
     }
         
     @Test void testSubstringFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
-        "COLUMN = SUBSTR({Ten}, 4)");
-        String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
+        "COLUMN = SUBSTR({Ten}, 3, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 24, 4);
     }
         
     private void assertDte(LogicTableF2 dte, int start, int len) {
         assertEquals(start, dte.getArg2().getStartPosition());
         assertEquals(len, dte.getArg2().getFieldLength());
     }
+
+    private void assertDteSource(LogicTableF2 dte, int start, int len) {
+        assertEquals(start, dte.getArg1().getStartPosition());
+        assertEquals(len, dte.getArg1().getFieldLength());
+    }
+
 
     private void assertDtl(LogicTableF2 dtl, int start, int len) {
         assertEquals("DTL", dtl.getFunctionCode());

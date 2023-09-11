@@ -106,4 +106,22 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         return ((ColumnRefAST)rhs).getViewColumn().getFieldLength();
     }
 
+    @Override
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLeftEntry'");
+    }
+
+    @Override
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRightEntry'");
+    }
+
+    @Override
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short len) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSubstreEntry'");
+    }
+
 }

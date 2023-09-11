@@ -21,5 +21,8 @@ package org.genevaers.compilers.extract.astnodes;
 public interface Concatable {
 
     public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start);
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length);
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length);
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length);
 
 }
