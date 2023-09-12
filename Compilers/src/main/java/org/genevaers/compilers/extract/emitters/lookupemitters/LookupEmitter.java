@@ -264,6 +264,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
+        lklr.setColumnId(lookup.getID());
 
         ExtractBaseAST.getLtEmitter().addToLogicTable(lklr);
         return lklr;
