@@ -282,8 +282,8 @@ public class LookupEmitter extends CodeEmitter {
         //Which leads to comparison errors in the LT Print
         //for multistep lookups
         arg.setFieldId(lookup.getTargetLRIndexID());
-        arg.setLogfileId(lookup.getTargetLFID());
-        arg.setLrId(lookup.getTargetLRID());
+        arg.setLogfileId(lookup.getStep(1).getTargetLF());
+        arg.setLrId(lookup.getStep(1).getTargetLR());
         join.setArg(arg);
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
