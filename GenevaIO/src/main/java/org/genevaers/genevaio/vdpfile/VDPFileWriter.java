@@ -314,13 +314,16 @@ public class VDPFileWriter {
 	private void writeViewSortKeys(ViewNode view) {
 		Iterator<ViewSortKey> vski = view.getSortKeyIterator();
 		while (vski.hasNext()) {
-			writeViewSortKey(vski.next());
+			writeViewSortKey(vski.next(), view);
 		}
 	}
 
-	private void writeViewSortKey(ViewSortKey vsk) {
+	private void writeViewSortKey(ViewSortKey vsk, ViewNode view) {
 		VDPViewSortKey vvsk = new VDPViewSortKey();
         logger.atFine().log("Write sort key %d", vsk.getSequenceNumber());
+		vvsk.setViewId(view.getID());
+		vvsk.setColumnId(vsk.getColumnId());
+		vvsk.setRecordId(vsk.getComponentId());
 		vvsk.fillFromComponent(vsk);
 		vvsk.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();

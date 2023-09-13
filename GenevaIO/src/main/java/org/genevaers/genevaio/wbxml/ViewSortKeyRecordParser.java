@@ -75,7 +75,7 @@ public class ViewSortKeyRecordParser extends RecordParser {
 		vsk.setLabel("");
 		vsk.setSkJustifyId(JustifyId.NONE);
 		vsk.setSktDateCode(DateCode.NONE);
-		vsk.setSktDataType(DataType.INVALID);
+		vsk.setSktDataType(DataType.ALPHANUMERIC);
 		vsk.setSktJustifyId(JustifyId.NONE);
 		vsk.setSortKeyDateTimeFormat(DateCode.NONE);
 		vsk.setSortDisplay(SortKeyDispOpt.CATEGORIZE);
@@ -95,6 +95,7 @@ public class ViewSortKeyRecordParser extends RecordParser {
 				case "VIEWSORTKEYID":
 					vsk = new ViewSortKey();
 					vsk.setComponentId(Integer.parseInt(text));
+					vsk.setViewSortKeyId(Integer.parseInt(text));
 					setDefault(vsk);
 					break;
 				case "VIEWCOLUMNID":
@@ -123,7 +124,7 @@ public class ViewSortKeyRecordParser extends RecordParser {
 					break;
 				case "SKSTARTPOS":
 					s = (short) Integer.parseInt(text);
-					vsk.setSktStartPosition(s);
+					vsk.setSkStartPosition(s);
 					break;
 				case "SKFLDLEN":
 					s = (short) Integer.parseInt(text);

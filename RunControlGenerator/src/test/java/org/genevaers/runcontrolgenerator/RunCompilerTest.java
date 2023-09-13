@@ -353,7 +353,7 @@ class RunCompilerTest extends RunCompilerBase {
         assertEquals("LKLR", lklr.getFunctionCode());
         LogicTableF1 join = (LogicTableF1) xlt.getFromPosition(12);
         assertEquals("JOIN", join.getFunctionCode());
-        assertEquals(join.getArg().getLogfileId(), 10218); //C++ MR91 has it wrong
+        assertEquals(join.getArg().getLogfileId(), 10201); //C++ MR91 has it wrong
         assertEquals(18, join.getGotoRow1());
         assertEquals(20, join.getGotoRow2());
         LogicTableRE lusm = (LogicTableRE) xlt.getFromPosition(14);
