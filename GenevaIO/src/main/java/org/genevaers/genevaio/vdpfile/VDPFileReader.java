@@ -281,6 +281,7 @@ public class VDPFileReader{
 			}
 			vdpObject.writeCSV(csvFile);
 			csvFile.write("\n");
+			csvFile.flush();
 		}
 	}
 
