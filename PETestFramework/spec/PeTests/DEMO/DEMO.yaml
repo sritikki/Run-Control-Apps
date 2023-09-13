@@ -126,7 +126,7 @@ tests:
     primary: "100"
     secondary: "10"
     recfm: "FB"
-    lrecl: "250"
+    lrecl: "51"
     workfile: "3"
 #
 # next test
@@ -189,12 +189,12 @@ tests:
     primary: "100"
     secondary: "10"
     recfm: "FB"
-    lrecl: "250"
+    lrecl: "82"
     workfile: "1"
   - ddname: "DCOBYSTO"
     space: "TRK"
     primary: "100"
     secondary: "10"
     recfm: "FB"
-    lrecl: "250"
+    lrecl: "136"
     workfile: "2"
