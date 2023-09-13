@@ -57,7 +57,7 @@ public class GenevaLog
 		try {
 			StreamHandler fh;
 			String os = System.getProperty("os.name");
-			if (filename.isEmpty() && os.startsWith("z")) {
+			if (os.startsWith("z")) {
 				fh = new ZFileHandler("//DD:" + filename.toUpperCase());
 			} else {
 				fh = new FileHandler(filename);

@@ -73,6 +73,7 @@ public class RunControlWriter {
         try {
             vdpw.writeVDPFrom(vmrs);
             vdpw.close();
+            logger.atInfo().log("VDP Written");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
