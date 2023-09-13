@@ -38,6 +38,7 @@ import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
@@ -196,41 +197,17 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFCE(String v, LRField f, String op) {
-        LogicTableF1 cfce = new LogicTableF1();
-        cfce.setRecordType(LtRecordType.F1);
-        cfce.setFunctionCode("CFCE");
-        LogicTableArg arg = getArgFromField(f);
-        cfce.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
-        cfce.setCompareType(getCompareType(op));
-        return cfce;
+        return makeF1FromValueAndField(v, f, op, "CFCE");
     }
 
     @Override
     public LTFileObject getCFCL(String v, LRField f, String op) {
-        LogicTableF1 cfcl = new LogicTableF1();
-        cfcl.setRecordType(LtRecordType.F1);
-        cfcl.setFunctionCode("CFCL");
-        LogicTableArg arg = getArgFromField(f);
-        cfcl.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
-        cfcl.setCompareType(getCompareType(op));
-        return cfcl;
+        return makeF1FromValueAndField(v, f, op, "CFCL");
     }
 
     @Override
     public LTFileObject getCFCP(String v, LRField f, String op) {
-        LogicTableF1 cfcp = new LogicTableF1();
-        cfcp.setRecordType(LtRecordType.F1);
-        cfcp.setFunctionCode("CFCP");
-        LogicTableArg arg = getArgFromField(f);
-        cfcp.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
-        cfcp.setCompareType(getCompareType(op));
-        return cfcp;
+        return makeF1FromValueAndField(v, f, op, "CFCP");
     }
 
     @Override
@@ -254,40 +231,23 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCFEC(LRField f, String v2, String op) {
-        LogicTableF1 cfec = new LogicTableF1();
-        cfec.setRecordType(LtRecordType.F1);
-        cfec.setFunctionCode("CFEC");
-        LogicTableArg arg = getArgFromField(f);
-        cfec.setArg(arg);
-        arg.setValue(v2);
-        arg.setValueLength(v2.length());
-        cfec.setCompareType(getCompareType(op));
-        return cfec;
+    public LTFileObject getCFEC(LRField f, String v, String op) {
+        return makeF1FromValueAndField(v, f, op, "CFEC");
     }
 
     @Override
     public LTFileObject getCFEE(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfee = makeF2FromFieldAndField(f1, f2);
-        cfee.setFunctionCode("CFEE");
-        cfee.setCompareType(getCompareType(op));
-        return cfee;
+        return makeF2FromFieldAndField(f1, f2, op, "CFEE");
     }
 
     @Override
     public LTFileObject getCFEL(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfel = makeF2FromFieldAndField(f1, f2);
-        cfel.setFunctionCode("CFEL");
-        cfel.setCompareType(getCompareType(op));
-        return cfel;
+        return  makeF2FromFieldAndField(f1, f2, op, "CFEL");
     }
 
     @Override
     public LTFileObject getCFEP(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfep = makeF2FromFieldAndField(f1, f2);
-        cfep.setFunctionCode("CFEP");
-        cfep.setCompareType(getCompareType(op));
-        return cfep;
+        return makeF2FromFieldAndField(f1, f2, op, "CFEP");
     }
 
     @Override
@@ -321,26 +281,17 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFLE(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfle = makeF2FromFieldAndField(f1, f2);
-        cfle.setFunctionCode("CFLE");
-        cfle.setCompareType(getCompareType(op));
-        return cfle;
+        return makeF2FromFieldAndField(f1, f2, op, "CFLE");
     }
 
     @Override
     public LTFileObject getCFLL(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfll = makeF2FromFieldAndField(f1, f2);
-        cfll.setFunctionCode("CFLL");
-        cfll.setCompareType(getCompareType(op));
-        return cfll;
+        return makeF2FromFieldAndField(f1, f2, op, "CFLL");
     }
 
     @Override
     public LTFileObject getCFLP(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfle = makeF2FromFieldAndField(f1, f2);
-        cfle.setFunctionCode("CFLP");
-        cfle.setCompareType(getCompareType(op));
-        return cfle;
+        return makeF2FromFieldAndField(f1, f2, op, "CFLP");
     }
 
     @Override
@@ -374,7 +325,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFPE(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfpe = makeF2FromFieldAndField(f1, f2);
+        LogicTableF2 cfpe = makeF2FromFieldAndField(f1, f2, op, "CFPE");
         cfpe.setFunctionCode("CFPE");
         cfpe.setCompareType(getCompareType(op));
         return cfpe;
@@ -382,18 +333,12 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCFPL(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfpl = makeF2FromFieldAndField(f1, f2);
-        cfpl.setFunctionCode("CFPL");
-        cfpl.setCompareType(getCompareType(op));
-        return cfpl;
+        return makeF2FromFieldAndField(f1, f2, op, "CFPL");
     }
 
     @Override
     public LTFileObject getCFPP(LRField f1, LRField f2, String op) {
-        LogicTableF2 cfpp = makeF2FromFieldAndField(f1, f2);
-        cfpp.setFunctionCode("CFPP");
-        cfpp.setCompareType(getCompareType(op));
-        return cfpp;
+        return makeF2FromFieldAndField(f1, f2, op, "CFPP");
     }
 
     @Override
@@ -535,6 +480,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableF1 ctc = new LogicTableF1();
         ctc.setFunctionCode("CTC");
         LogicTableArg arg = getArgFromValueAndColumn(v, vc);
+        arg.setFieldLength((short)12);
         ctc.setRecordType(LtRecordType.F1);
         //TODO this can rise as a common function
         //These may be at adder level
@@ -551,7 +497,9 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getCTE(LRField f, ViewColumn v) {
         LogicTableF1 cte = new LogicTableF1();
         cte.setRecordType(LtRecordType.F1);
-        cte.setArg(getArgFromField(f));
+        LogicTableArg arg = getArgFromField(f);
+        arg.setFieldLength((short)12);
+        cte.setArg(arg);
         cte.setFunctionCode("CTE");
         cte.setColumnId(v.getComponentId());
         cte.setSuffixSeqNbr((short)v.getColumnNumber());
@@ -574,7 +522,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     @Override
     public LTFileObject getCTX(ViewColumn c, ViewColumn v) {
         LogicTableF2 ctx = new LogicTableF2();
-        ctx.setArg1(getColumnArg(c));
+        ctx.setArg1(getColumnRefArg(c));
         ctx.setArg2(getColumnArg(v));
         ctx.setFunctionCode("CTX");
         ctx.setRecordType(LtRecordType.F2);
@@ -743,12 +691,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getDTX(ViewColumn c, ViewColumn v) {
-        LogicTableF2 dtx = new LogicTableF2();
-        dtx.setArg1(getColumnArg(c));
-        dtx.setArg2(getColumnArg(v));
-        dtx.setFunctionCode("DTX");
-        dtx.setRecordType(LtRecordType.F2);
-        dtx.setCompareType(LtCompareType.EQ);
+        LogicTableF2 dtx = getF2ForColumnRef(c, v);
         return dtx;    
     }
 
@@ -1274,10 +1217,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFEE(LRField f1, LRField f2) {
-        LogicTableF2 sfee = makeF2FromFieldAndField(f1, f2);
-        sfee.setFunctionCode("SFEE");
-        sfee.setCompareType(LtCompareType.CONTAINS);
-        return sfee;
+        return makeF2FromFieldAndField(f1, f2, "CONTAINS", "SFEE");
     }
 
     @Override
@@ -1288,10 +1228,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFEP(LRField f1, LRField f2) {
-        LogicTableF2 sfep = makeF2FromFieldAndField(f1, f2);
-        sfep.setFunctionCode("SFEP");
-        sfep.setCompareType(LtCompareType.CONTAINS);
-        return sfep;
+        return makeF2FromFieldAndField(f1, f2, "CONTAINS", "SFEP");
     }
 
     @Override
@@ -1316,18 +1253,12 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFLL(LRField f1, LRField f2) {
-        LogicTableF2 sfll = makeF2FromFieldAndField(f1, f2);
-        sfll.setFunctionCode("SFLL");
-        sfll.setCompareType(LtCompareType.CONTAINS);
-        return sfll;
+        return makeF2FromFieldAndField(f1, f2, "CONTAINS", "SFLL");
     }
 
     @Override
     public LTFileObject getSFLP(LRField f1, LRField f2) {
-        LogicTableF2 sfll = makeF2FromFieldAndField(f1, f2);
-        sfll.setFunctionCode("SFLP");
-        sfll.setCompareType(LtCompareType.CONTAINS);
-        return sfll;
+        return makeF2FromFieldAndField(f1, f2, "CONTAINS", "SFLP");
     }
 
     @Override
@@ -1353,26 +1284,17 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFPE(LRField f1, LRField f2) {
-        LogicTableF2 sfpe = makeF2FromFieldAndField(f1, f2);
-        sfpe.setFunctionCode("SFPE");
-        sfpe.setCompareType(LtCompareType.CONTAINS);
-        return sfpe;
+        return makeF2FromFieldAndField(f1, f2, "CONTAINS", "SFPE");
     }
 
     @Override
     public LTFileObject getSFPL(LRField f1, LRField f2) {
-        LogicTableF2 sfpl = makeF2FromFieldAndField(f1, f2);
-        sfpl.setFunctionCode("SFPL");
-        sfpl.setCompareType(LtCompareType.CONTAINS);
-        return sfpl;
+        return makeF2FromFieldAndField(f1, f2, "CONTAINS", "SFPL");
     }
 
     @Override
     public LTFileObject getSFPP(LRField f1, LRField f2) {
-        LogicTableF2 sfpp = makeF2FromFieldAndField(f1, f2);
-        sfpp.setFunctionCode("SFPP");
-        sfpp.setCompareType(LtCompareType.CONTAINS);
-        return sfpp;
+        return makeF2FromFieldAndField(f1, f2, "CONTAINS", "SFPP");
     }
 
     @Override
@@ -1557,6 +1479,18 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         return null;
     }
 
+    private LogicTableF1 makeF1FromValueAndField(String v, LRField f, String op, String fcName) {
+        LogicTableF1 cfcp = new LogicTableF1();
+        cfcp.setRecordType(LtRecordType.F1);
+        cfcp.setFunctionCode(fcName);
+        LogicTableArg arg = getArgFromField(f);
+        cfcp.setArg(arg);
+        arg.setValue(v);
+        arg.setValueLength(v.length());
+        cfcp.setCompareType(getCompareType(op));
+        return cfcp;
+    }
+
     public void setAccumNumber(int accumNumber) {
         this.accumNumber = accumNumber;
     }
@@ -1587,7 +1521,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         colarg.setFieldId(0);
         //TODO the start pos is dependent on extract type
         colarg.setStartPosition(vc.getExtractAreaPosition());
-        colarg.setFieldLength(vc.getFieldLength());
+        if(vc.getExtractArea() == ExtractArea.AREACALC) {
+            colarg.setFieldLength((short)12);
+        } else {
+            colarg.setFieldLength(vc.getFieldLength());
+        }
         colarg.setJustifyId(vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
         colarg.setValueLength(0);
@@ -1778,7 +1716,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setPadding2("");  //This seems a little silly
     }
 
-    private LogicTableF2 makeF2FromFieldAndField(LRField f1, LRField f2) {
+    private LogicTableF2 makeF2FromFieldAndField(LRField f1, LRField f2, String op, String fcName) {
          LogicTableF2 ltf2 = new LogicTableF2();
         // want a function to get a populated arg from the field
         LogicTableArg arg1 = getArgFromField(f1);
@@ -1787,7 +1725,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         
         LogicTableArg arg2 = getArgFromField(f2);
         ltf2.setArg2(arg2);
-        ltf2.setCompareType(LtCompareType.EQ);
+        ltf2.setFunctionCode(fcName);
+        ltf2.setCompareType(getCompareType(op));
         return ltf2;
     }
 
@@ -1803,6 +1742,45 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         f1.setRecordType(LtRecordType.F1);
         f1.setArg(getColumnArg(vc));
         return f1;
+    }
+
+    private LogicTableF2 getF2ForColumnRef(ViewColumn c, ViewColumn v) {
+    //     VDPFormatInfo & fiArg = Arg.GetFormatInfo();
+    //     fiArg.SetStartPosition(fiArg.GetStartPosition() + m_offset - 1);
+    //     if (m_viewColumn->GetExtractArea() != AttrExtractAreaCT) {
+    //         fiArg.SetFieldLength(getLength());
+    //     }
+    //     else {
+    //         fiArg.SetFieldLength(12); //CT columns are 12 bytes
+    //     }
+            LogicTableF2 dtx = new LogicTableF2();
+        dtx.setArg1(getColumnRefArg(c));
+        dtx.setArg2(getColumnArg(v));
+        dtx.setFunctionCode("DTX");
+        dtx.setRecordType(LtRecordType.F2);
+        dtx.setCompareType(LtCompareType.EQ);
+        return dtx;
+    }
+
+    protected LogicTableArg getColumnRefArg(ViewColumn vc) {
+        LogicTableArg colarg = new LogicTableArg(); //This is the column data
+        colarg.setDecimalCount(vc.getDecimalCount());
+        colarg.setFieldContentId(vc.getDateCode());
+        colarg.setFieldFormat(vc.getDataType());
+        colarg.setFieldId(vc.getColumnNumber());
+        colarg.setLogfileId(vc.getExtractArea().ordinal());
+        //TODO the start pos is dependent on extract type
+        colarg.setStartPosition(vc.getExtractAreaPosition());
+        if(vc.getExtractArea().equals(ExtractArea.AREACALC)) {
+            colarg.setFieldLength((short)12);
+        } else {
+            colarg.setFieldLength(vc.getFieldLength());
+        }
+        colarg.setJustifyId(vc.getJustifyId());
+        colarg.setSignedInd(vc.isSigned());
+        colarg.setValueLength(0);
+        colarg.setPadding2("");  //This seems a little silly
+        return colarg;
     }
 
 }
