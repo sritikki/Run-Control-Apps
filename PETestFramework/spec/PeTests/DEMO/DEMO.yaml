@@ -128,3 +128,73 @@ tests:
     recfm: "FB"
     lrecl: "250"
     workfile: "3"
+#
+# next test
+#
+- name: "TKNDEMO"
+  #don't worry about header can make the same as the test name 
+  header: "TKNDEMO"
+  description: "Open source demo views with tokens"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "Demo/Demo_Token_Views[1605].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the GERS_TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "ORDIT001" #needs to match what is in the PF DDName
+    filename: "GVBDEMO.ORDITM01"
+  - ddname: "ORDIT002" #needs to match what is in the PF DDName
+    filename: "GVBDEMO.ORDITM02"
+  - ddname: "ORDIT003" #needs to match what is in the PF DDName
+    filename: "GVBDEMO.ORDITM03"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  reffiles:
+  - ddname: "ORDER001"
+    filename: "GVBDEMO.ORDER"
+  - ddname: "PRODDESC"
+    filename: "GVBDEMO.PRODDESC"
+  - ddname: "STORE001"
+    filename: "GVBDEMO.STOREADR"
+  - ddname: "CUSTOMER"
+    filename: "GVBDEMO.CUSTOMER"
+  - ddname: "CUSTADDR"
+    filename: "GVBDEMO.CUSTADDR"
+  - ddname: "CUSTNAME"
+    filename: "GVBDEMO.CUSTNAME"
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - space: "TRK"
+    primary: "500"
+    secondary: "100"
+    recfm: "VB"
+    lrecl: "8192"
+  - space: "TRK"
+    primary: "500"
+    secondary: "100"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "DCUSTORO"
+    space: "TRK"
+    primary: "100"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "250"
+    workfile: "1"
+  - ddname: "DCOBYSTO"
+    space: "TRK"
+    primary: "100"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "250"
+    workfile: "2"
