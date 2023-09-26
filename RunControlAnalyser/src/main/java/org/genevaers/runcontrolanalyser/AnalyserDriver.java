@@ -34,8 +34,11 @@ import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FTPSession;
 
+import com.google.common.flogger.FluentLogger;
+
 
 public class AnalyserDriver {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	/**
 	 *
@@ -177,6 +180,37 @@ public class AnalyserDriver {
 
 	public void aggregateLtCoverage() {
 		ltCoverageAnalyser.aggregateCoverage();
+	}
+
+    public void diffReport(Path root) {
+		//What kind of diff report?
+		//Based on what data?
+		// RCG case
+		// Look for Run Control Files
+		if(runControlFilesPresent(root)) {
+			
+		}
+    }
+
+	private boolean runControlFilesPresent(Path root) {
+		boolean allPresent = false;
+		Path rc1 = root.resolve("RC1");
+		Path rc2 = root.resolve("RC2");
+		if(rcFilesPresent(rc1) && rcFilesPresent(rc2)) {
+			logger.atInfo().log("All run control files found");
+		} else {
+			logger.atSevere().log("Not all run control files are present.\nNeed subdirectories RC1 and RC2 to have VDP, XLT amd JLT files.");
+		}
+		return allPresent;
+	}
+
+	private boolean rcFilesPresent(Path rc) {
+		Path vdpPath = rc.resolve("VDP");
+		Path xltPath = rc.resolve("XLT");
+		Path jltPath = rc.resolve("JLT");
+		return vdpPath.toFile().exists() &&
+				xltPath.toFile().exists() &&
+				jltPath.toFile().exists();
 	}
 
 }
