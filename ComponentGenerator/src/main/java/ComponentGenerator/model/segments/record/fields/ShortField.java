@@ -74,4 +74,9 @@ public class ShortField extends Field {
         return "HL2";
     }
 
+    @Override
+    public String getFieldNodeEntry() {
+        return defaultNumericNodeEntry();
+    }  
+
 }

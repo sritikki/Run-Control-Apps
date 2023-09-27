@@ -75,4 +75,9 @@ public class InternalField extends Field {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public String getFieldNodeEntry() {
+        return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + name + "\"," + name +"), compare);";    
+    }
 }
