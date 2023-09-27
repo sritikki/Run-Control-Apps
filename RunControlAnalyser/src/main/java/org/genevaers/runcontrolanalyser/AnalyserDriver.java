@@ -197,20 +197,31 @@ public class AnalyserDriver {
 		Path rc1 = root.resolve("RC1");
 		Path rc2 = root.resolve("RC2");
 		if(rcFilesPresent(rc1) && rcFilesPresent(rc2)) {
-			logger.atInfo().log("All run control files found");
+			logger.atInfo().log("Run control files found");
+			boolean jlt1 = checkJLTPresent(rc1, "RC1");
+			boolean jlt2 = checkJLTPresent(rc1, "RC2");
 		} else {
 			logger.atSevere().log("Not all run control files are present.\nNeed subdirectories RC1 and RC2 to have VDP, XLT amd JLT files.");
 		}
 		return allPresent;
 	}
 
+	private boolean checkJLTPresent(Path rc, String name) {
+		boolean present = false;
+		Path jltPath = rc.resolve("JLT");
+			if(jltPath.toFile().exists()) {
+				logger.atInfo().log("JLT present %s", name);
+				present = true;
+			} else {
+				logger.atInfo().log("No JLT for %s", name);
+			};
+		return present;
+	}
+
 	private boolean rcFilesPresent(Path rc) {
 		Path vdpPath = rc.resolve("VDP");
 		Path xltPath = rc.resolve("XLT");
-		Path jltPath = rc.resolve("JLT");
-		return vdpPath.toFile().exists() &&
-				xltPath.toFile().exists() &&
-				jltPath.toFile().exists();
+		return vdpPath.toFile().exists() &&	xltPath.toFile().exists();
 	}
 
 }
