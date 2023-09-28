@@ -27,6 +27,7 @@ import java.util.Set;
 
 import com.google.common.flogger.FluentLogger;
 
+import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
@@ -53,6 +54,8 @@ public class VDPFileReader{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private boolean writeCSV;
+	private RecordNode recordsRoot;
+	private boolean compare;
 	
 	private File vdpFile;
 	private RecordFileReaderWriter rr;
@@ -93,6 +96,14 @@ public class VDPFileReader{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setRecordsRoot(RecordNode recordsRoot) {
+		this.recordsRoot = recordsRoot;
+	}
+
+	public void setCompare(boolean comp) {
+		this.compare = comp;
 	}
 
 	public void setCsvPath(Path csvPath) {
@@ -219,6 +230,13 @@ public class VDPFileReader{
 			logger.atWarning().log("Rec Num " + numrecords + " Ignoring type" + recType);
 		}
 		writeCSVIfNeeded(vdpObject);
+		buildTreeIfNeeded(vdpObject);
+	}
+
+	private void buildTreeIfNeeded(VDPFileObject vdpObject) {
+		if(recordsRoot != null) {
+			vdpObject.addRecordNodes(recordsRoot, compare);
+		}
 	}
 
 	private VDPFileObject makeAndStoreReportHeader(VDPFileRecordReader recordReader, FileRecord rec) throws Exception {

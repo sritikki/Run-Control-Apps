@@ -27,6 +27,7 @@ import java.util.Collection;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
@@ -182,13 +183,19 @@ public class AnalyserDriver {
 		ltCoverageAnalyser.aggregateCoverage();
 	}
 
-    public void diffReport(Path root) {
+    public void diffReport(Path root) throws Exception {
 		//What kind of diff report?
 		//Based on what data?
 		// RCG case
 		// Look for Run Control Files
 		if(runControlFilesPresent(root)) {
-			
+			RecordNode recordsRoot = new RecordNode();
+			Path rc1 = root.resolve("RC1");
+			Path rc2 = root.resolve("RC2");
+			fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
+			logger.atInfo().log("VDP Tree built from %s", rc1.toString());
+			// readXLT(xltName, false);
+			// readJLT(jltName, false);
 		}
     }
 
@@ -200,6 +207,7 @@ public class AnalyserDriver {
 			logger.atInfo().log("Run control files found");
 			boolean jlt1 = checkJLTPresent(rc1, "RC1");
 			boolean jlt2 = checkJLTPresent(rc1, "RC2");
+			allPresent = true;
 		} else {
 			logger.atSevere().log("Not all run control files are present.\nNeed subdirectories RC1 and RC2 to have VDP, XLT amd JLT files.");
 		}

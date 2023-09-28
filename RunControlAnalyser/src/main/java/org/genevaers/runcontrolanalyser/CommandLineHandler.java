@@ -110,7 +110,12 @@ public class CommandLineHandler {
 	private static void generateDiffReport(Path root) {
 		//Confirm expected subdirs
 		logger.atInfo().log("Generate Diff Report");
-		flow.diffReport(root);
+		try {
+			flow.diffReport(root);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void showHelpIfNeeded(Options options, boolean showHelp) {
