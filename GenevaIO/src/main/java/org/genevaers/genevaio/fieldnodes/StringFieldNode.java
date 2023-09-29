@@ -8,6 +8,7 @@ public class StringFieldNode extends FieldNodeBase {
     public StringFieldNode(String name, String val) {
         setName(name);
         value = val;
+        type = FieldNodeBase.Type.STRINGFIELD;
     }
 
     public String getValue() {

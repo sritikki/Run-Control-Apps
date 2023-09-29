@@ -28,6 +28,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.fieldnodes.Records2Dot;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
@@ -190,10 +191,12 @@ public class AnalyserDriver {
 		// Look for Run Control Files
 		if(runControlFilesPresent(root)) {
 			RecordNode recordsRoot = new RecordNode();
+			recordsRoot.setName("Root");
 			Path rc1 = root.resolve("RC1");
 			Path rc2 = root.resolve("RC2");
 			fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
 			logger.atInfo().log("VDP Tree built from %s", rc1.toString());
+			Records2Dot.write(recordsRoot, root.resolve("records.gv"));
 			// readXLT(xltName, false);
 			// readJLT(jltName, false);
 		}

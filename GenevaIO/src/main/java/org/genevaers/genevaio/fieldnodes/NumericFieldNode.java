@@ -8,6 +8,7 @@ public class NumericFieldNode extends FieldNodeBase {
     public NumericFieldNode(String name, int val) {
         setName(name);
         value = val;
+        type = FieldNodeBase.Type.NUMBERFIELD;
     }
 
     public int getValue() {

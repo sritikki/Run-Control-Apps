@@ -10,8 +10,10 @@ public class RecordNode extends FieldNodeBase{
     private String name;
     private ComparisonState state;
     private RecordNode parent;
-    private Map<String, FieldNodeBase> childrenByName = new TreeMap<>();
-    private List<FieldNodeBase> children = new ArrayList<>();
+
+    public RecordNode() {
+        type = FieldNodeBase.Type.RECORD;
+    }
 
     public String getName() {
         return name;
@@ -37,16 +39,5 @@ public class RecordNode extends FieldNodeBase{
         this.parent = parent;
     }
 
-    public List<FieldNodeBase> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<FieldNodeBase> children) {
-        this.children = children;
-    }
-
-    public void add(FieldNodeBase rn, boolean compare) {
-        children.add(rn);
-    }
 
 }
