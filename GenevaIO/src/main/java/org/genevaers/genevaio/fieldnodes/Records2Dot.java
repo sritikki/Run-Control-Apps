@@ -41,12 +41,12 @@ public class Records2Dot {
     }
 
     private static void writeNodes(RecordNode root) throws IOException {
-        String r = dotNode(root);
+        //String r = dotNode(root);
         Iterator<FieldNodeBase> asti = root.getChildren().iterator();
         while (asti.hasNext()) {
             FieldNodeBase n = (FieldNodeBase) asti.next();
             String child = dotNode(n);
-            fw.write(r + " -> " + child + "\n");
+            //fw.write(r + " -> " + child + "\n");
             writeBranch(child, n);
         }
 
@@ -78,7 +78,12 @@ public class Records2Dot {
                 colour = "skyblue";
                 idString = "num" + nodeNum++;
                 break;
-            case RECORD:
+            case RECORDTYPE:
+                label = ((RecordTypeNode)node).getName();
+                colour = "pink";
+                idString = "type" + ((RecordTypeNode)node).getTypeNumber();
+                break;
+           case RECORD:
                 label = ((RecordNode)node).getName();
                 colour = "pink";
                 idString = "rec" + label;

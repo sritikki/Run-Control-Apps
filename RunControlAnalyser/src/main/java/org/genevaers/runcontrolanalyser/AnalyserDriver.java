@@ -29,6 +29,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.Records2Dot;
+import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
@@ -197,6 +198,7 @@ public class AnalyserDriver {
 			fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
 			logger.atInfo().log("VDP Tree built from %s", rc1.toString());
 			Records2Dot.write(recordsRoot, root.resolve("records.gv"));
+			VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot);
 			// readXLT(xltName, false);
 			// readJLT(jltName, false);
 		}

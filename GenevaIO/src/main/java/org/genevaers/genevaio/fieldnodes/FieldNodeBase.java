@@ -9,7 +9,8 @@ public class FieldNodeBase {
     public enum Type {
         RECORD("Record"), 
         STRINGFIELD("String"),
-        NUMBERFIELD("Number")
+        NUMBERFIELD("Number"), 
+        RECORDTYPE("Record Type")
          ;
 
         private String name;

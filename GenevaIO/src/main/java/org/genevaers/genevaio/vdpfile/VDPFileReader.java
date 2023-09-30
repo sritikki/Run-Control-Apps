@@ -28,6 +28,8 @@ import java.util.Set;
 import com.google.common.flogger.FluentLogger;
 
 import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.fieldnodes.RecordTypeNode;
+import org.genevaers.genevaio.fieldnodes.RootTypeFactory;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
@@ -77,6 +79,10 @@ public class VDPFileReader{
 
 	private String csvName;
 	private Path csvPath;
+
+	private short currentType;
+
+	private RecordTypeNode currentTypeRoot;
 	
 	public VDPFileReader() {}
 
@@ -230,12 +236,17 @@ public class VDPFileReader{
 			logger.atWarning().log("Rec Num " + numrecords + " Ignoring type" + recType);
 		}
 		writeCSVIfNeeded(vdpObject);
-		buildTreeIfNeeded(vdpObject);
+		buildTreeIfNeeded(recType,vdpObject);
 	}
 
-	private void buildTreeIfNeeded(VDPFileObject vdpObject) {
+	private void buildTreeIfNeeded(short recType, VDPFileObject vdpObject) {
 		if(recordsRoot != null) {
-			vdpObject.addRecordNodes(recordsRoot, compare);
+			if(currentType != recType) {
+				currentType = recType;
+				currentTypeRoot = RootTypeFactory.getRecordNodeForType(recType);
+				recordsRoot.add(currentTypeRoot, compare);
+			}
+			vdpObject.addRecordNodes(currentTypeRoot, compare);
 		}
 	}
 
