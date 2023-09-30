@@ -9,6 +9,7 @@ public class StringFieldNode extends FieldNodeBase {
         setName(name);
         value = val;
         type = FieldNodeBase.Type.STRINGFIELD;
+        state = ComparisonState.ORIGINAL;
     }
 
     public String getValue() {
@@ -27,4 +28,13 @@ public class StringFieldNode extends FieldNodeBase {
         this.diffValue = diffValue;
     }
 
+    @Override
+    public void compareTo(FieldNodeBase rn) {
+        if(value.equals(((StringFieldNode)rn).getValue())) {
+            state = ComparisonState.INSTANCE;
+        } else {
+            state = ComparisonState.DIFF;
+            diffValue = ((StringFieldNode)rn).getValue();
+        }
+    }
 }

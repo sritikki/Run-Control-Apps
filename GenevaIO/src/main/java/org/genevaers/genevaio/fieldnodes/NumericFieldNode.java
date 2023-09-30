@@ -9,6 +9,7 @@ public class NumericFieldNode extends FieldNodeBase {
         setName(name);
         value = val;
         type = FieldNodeBase.Type.NUMBERFIELD;
+        state = ComparisonState.ORIGINAL;
     }
 
     public int getValue() {
@@ -27,4 +28,13 @@ public class NumericFieldNode extends FieldNodeBase {
         this.diffValue = diffValue;
     }
 
+    @Override
+    public void compareTo(FieldNodeBase rn) {
+        if(value == ((NumericFieldNode)rn).getValue()) {
+            state = ComparisonState.INSTANCE;
+        } else {
+            state = ComparisonState.DIFF;
+            diffValue = ((NumericFieldNode)rn).getValue();
+        }
+    }
 }

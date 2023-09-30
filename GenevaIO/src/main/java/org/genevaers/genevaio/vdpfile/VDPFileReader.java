@@ -244,7 +244,7 @@ public class VDPFileReader{
 			if(currentType != recType) {
 				currentType = recType;
 				currentTypeRoot = RootTypeFactory.getRecordNodeForType(recType);
-				recordsRoot.add(currentTypeRoot, compare);
+				currentTypeRoot = (RecordTypeNode) recordsRoot.add(currentTypeRoot, compare);
 			}
 			vdpObject.addRecordNodes(currentTypeRoot, compare);
 		}

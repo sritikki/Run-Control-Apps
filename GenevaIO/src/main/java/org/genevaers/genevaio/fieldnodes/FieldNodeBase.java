@@ -25,7 +25,7 @@ public class FieldNodeBase {
     }
 
     private String name;
-    private ComparisonState state;
+    protected ComparisonState state;
     private FieldNodeBase parent;
     protected Type type;
     private Map<String, FieldNodeBase> childrenByName = new TreeMap<>();
@@ -67,7 +67,26 @@ public class FieldNodeBase {
         this.children = children;
     }
 
-    public void add(FieldNodeBase rn, boolean compare) {
-        children.add(rn);
+    public FieldNodeBase add(FieldNodeBase rn, boolean compare) {
+        FieldNodeBase useThidOne = rn;
+        rn.setParent(this);
+        if(compare) {
+            FieldNodeBase originalNode = childrenByName.get(rn.getName());
+            if(originalNode != null) {
+                originalNode.compareTo(rn);
+                useThidOne = originalNode;
+            } else {
+                children.add(rn);
+                childrenByName.put(rn.getName(), rn);                
+            }
+        } else {
+            children.add(rn);
+            childrenByName.put(rn.getName(), rn);
+        }
+        return useThidOne;
+    }
+
+    public void compareTo(FieldNodeBase rn) {
+        state = ComparisonState.INSTANCE;
     }
 }

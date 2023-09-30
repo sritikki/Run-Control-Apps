@@ -197,6 +197,8 @@ public class AnalyserDriver {
 			Path rc2 = root.resolve("RC2");
 			fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
 			logger.atInfo().log("VDP Tree built from %s", rc1.toString());
+			fa.readVDP(rc2.resolve("VDP"), false, recordsRoot, true);
+			logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
 			Records2Dot.write(recordsRoot, root.resolve("records.gv"));
 			VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot);
 			// readXLT(xltName, false);
