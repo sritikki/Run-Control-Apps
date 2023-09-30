@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 </#if>
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
@@ -46,7 +47,7 @@ ${readerEntry}
     }
 
     @Override
-   	public void addRecordNodes(RecordNode root, boolean compare)
+   	public void addRecordNodes(FieldNodeBase root, boolean compare)
     {
         RecordNode rn = new RecordNode();
 <#if record.recordId gt 0>
