@@ -11,6 +11,7 @@ public class RecordTypeNode extends FieldNodeBase{
 
     public RecordTypeNode() {
         type = FieldNodeBase.Type.RECORDTYPE;
+        state = ComparisonState.ORIGINAL;
     }
 
     public void setTypeNumber(Integer typeNumber) {
