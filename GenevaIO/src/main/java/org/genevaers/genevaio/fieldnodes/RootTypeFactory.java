@@ -3,9 +3,8 @@ package org.genevaers.genevaio.fieldnodes;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 
 public class RootTypeFactory {
-    public static RecordTypeNode getRecordNodeForType(short recType) {
-        RecordTypeNode typeNode = new RecordTypeNode();
-        typeNode.setTypeNumber((int)recType);
+    public static RecordNode getRecordNodeForType(short recType) {
+        RecordNode typeNode = new RecordNode();
         switch (recType) {
             case VDPRecord.VDP_GENERATION:
                 typeNode.setName("Generation");
@@ -48,7 +47,7 @@ public class RootTypeFactory {
                 typeNode.setName("Extract Record File");
                 break;
             case VDPRecord.VDP_VIEW:
-                typeNode.setName("Views");
+                typeNode.setName("View Definition");
                 break;
             case VDPRecord.VDP_FORMAT_OUTPUT_FILE:
                 typeNode.setName("View Output File");

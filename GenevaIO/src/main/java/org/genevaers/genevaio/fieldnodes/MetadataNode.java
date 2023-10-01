@@ -1,16 +1,11 @@
 package org.genevaers.genevaio.fieldnodes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-public class RecordTypeNode extends FieldNodeBase{
+public class MetadataNode extends FieldNodeBase{
 
     private Integer typeNumber;
 
-    public RecordTypeNode() {
-        type = FieldNodeBase.Type.RECORDTYPE;
+    public MetadataNode() {
+        type = FieldNodeBase.FieldNodeType.METADATA;
         state = ComparisonState.ORIGINAL;
     }
 

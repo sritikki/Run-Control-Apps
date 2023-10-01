@@ -18,15 +18,12 @@ package org.genevaers.genevaio.html;
  */
 
 
-import static j2html.TagCreator.a;
 import static j2html.TagCreator.body;
 import static j2html.TagCreator.div;
 import static j2html.TagCreator.each;
 import static j2html.TagCreator.h2;
 import static j2html.TagCreator.head;
-import static j2html.TagCreator.header;
 import static j2html.TagCreator.html;
-import static j2html.TagCreator.i;
 import static j2html.TagCreator.join;
 import static j2html.TagCreator.link;
 import static j2html.TagCreator.meta;
@@ -41,22 +38,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Iterator;
 
+import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
-import org.genevaers.genevaio.fieldnodes.RecordTypeNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
-import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.LogicalFile;
-import org.genevaers.repository.components.PhysicalFile;
+import org.genevaers.genevaio.fieldnodes.ViewFieldNode;
 
 
-import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 import j2html.tags.specialized.DivTag;
-import j2html.tags.specialized.TableTag;
 import j2html.tags.specialized.TdTag;
 import j2html.tags.specialized.ThTag;
 import j2html.tags.specialized.TrTag;
@@ -115,11 +107,20 @@ public class VDPRecordsHTMLWriter {
 	}
 
 	private static DivTag getRecordTable(FieldNodeBase rec) {
-		String recType = ((RecordTypeNode)rec).getName();
-		return div( h2(recType) ,
-					getTableDetails(rec)
-		);
+		String recTypeName;
+		if(rec.getFieldNodeType() == FieldNodeBase.FieldNodeType.VIEW) {
+			recTypeName = ((ViewFieldNode)rec).getName();
+				return div( h2(((ViewFieldNode)rec).getName()) ,
+							getViewTableDetails(rec)).withClass("w3-border");
+		}	else {
+				recTypeName = ((RecordNode)rec).getName();
+				return div( h2(recTypeName) ,
+							getTableDetails(rec));
+		}
+	}
 
+	private static DomContent getViewTableDetails(FieldNodeBase viewRoot) {
+		return div(each(viewRoot.getChildren(), rec  -> getRecordTable(rec)) );
 	}
 
 	private static DomContent getTableDetails(FieldNodeBase rec) {
@@ -135,13 +136,16 @@ public class VDPRecordsHTMLWriter {
 	}
 
 	private static TdTag rowEntry(FieldNodeBase n) {
-		switch(n.getType()) {
+		switch(n.getFieldNodeType()) {
 			case NUMBERFIELD:
-				return td(Integer.toString( ((NumericFieldNode)n).getValue() ));
+				return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
+																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
 			case STRINGFIELD:
-				return td(((StringFieldNode)n).getValue() );
+				return td(((StringFieldNode)n).getValue() ).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
+																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
 			case RECORD:
-			case RECORDTYPE:
 			default:
 				return td("Bad Value");
 		}

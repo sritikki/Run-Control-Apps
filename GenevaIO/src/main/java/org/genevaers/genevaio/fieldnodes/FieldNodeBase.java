@@ -6,15 +6,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class FieldNodeBase {
-    public enum Type {
+    public enum FieldNodeType {
         RECORD("Record"), 
         STRINGFIELD("String"),
         NUMBERFIELD("Number"), 
-        RECORDTYPE("Record Type")
+        METADATA("Metadata"), 
+        VIEW("View"), 
+        ROOT("Root")
          ;
 
         private String name;
-        private Type(String n) {
+        private FieldNodeType(String n) {
             name = n;
         }
         @Override
@@ -27,7 +29,7 @@ public class FieldNodeBase {
     private String name;
     protected ComparisonState state;
     private FieldNodeBase parent;
-    protected Type type;
+    protected FieldNodeType type;
     private Map<String, FieldNodeBase> childrenByName = new TreeMap<>();
     private List<FieldNodeBase> children = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class FieldNodeBase {
         this.parent = parent;
     }
 
-    public Type getType() {
+    public FieldNodeType getFieldNodeType() {
         return type;
     }
 
@@ -76,6 +78,7 @@ public class FieldNodeBase {
                 originalNode.compareTo(rn);
                 useThidOne = originalNode;
             } else {
+                rn.setState(ComparisonState.NEW);
                 children.add(rn);
                 childrenByName.put(rn.getName(), rn);                
             }

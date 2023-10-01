@@ -28,8 +28,8 @@ import java.util.Set;
 import com.google.common.flogger.FluentLogger;
 
 import org.genevaers.genevaio.fieldnodes.RecordNode;
-import org.genevaers.genevaio.fieldnodes.RecordTypeNode;
 import org.genevaers.genevaio.fieldnodes.RootTypeFactory;
+import org.genevaers.genevaio.fieldnodes.ViewFieldNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
@@ -76,13 +76,16 @@ public class VDPFileReader{
 	private VDPManagementRecords vdpManagementRecords = new VDPManagementRecords();
 
 	private ViewManagementData currentVMD;
+	private int currentViewID;
 
 	private String csvName;
 	private Path csvPath;
 
 	private short currentType;
 
-	private RecordTypeNode currentTypeRoot;
+	private RecordNode currentTypeRoot;
+
+	private ViewFieldNode currentViewNode;
 	
 	public VDPFileReader() {}
 
@@ -131,11 +134,12 @@ public class VDPFileReader{
 			rec.bytes.clear();
 			rec = rr.readRecord();
 		}
-		addVDPRecordToRepo(rec);
+		//addVDPRecordToRepo(rec);
 	}
 
 	private void addVDPRecordToRepo(FileRecord rec) throws Exception{
 		VDPFileObject vdpObject = null;
+		int viewID = rec.bytes.getInt(2);
 		short recType = rec.bytes.getShort(14);
 		switch(recType) {
 		case VDPRecord.VDP_GENERATION:
@@ -236,18 +240,35 @@ public class VDPFileReader{
 			logger.atWarning().log("Rec Num " + numrecords + " Ignoring type" + recType);
 		}
 		writeCSVIfNeeded(vdpObject);
-		buildTreeIfNeeded(recType,vdpObject);
+		buildTreeIfNeeded(recType,vdpObject, viewID);
 	}
 
-	private void buildTreeIfNeeded(short recType, VDPFileObject vdpObject) {
+	private void buildTreeIfNeeded(short recType, VDPFileObject vdpObject, int viewID) {
 		if(recordsRoot != null) {
 			if(currentType != recType) {
 				currentType = recType;
-				currentTypeRoot = RootTypeFactory.getRecordNodeForType(recType);
-				currentTypeRoot = (RecordTypeNode) recordsRoot.add(currentTypeRoot, compare);
+				if(viewID > 0) {
+					currentViewNode = checkAndGetViewNode(viewID);
+					currentTypeRoot = RootTypeFactory.getRecordNodeForType(recType);
+					currentTypeRoot = (RecordNode) currentViewNode.add(currentTypeRoot, compare);
+				} else {
+					currentTypeRoot = RootTypeFactory.getRecordNodeForType(recType);
+					currentTypeRoot = (RecordNode) recordsRoot.add(currentTypeRoot, compare);
+				}
 			}
 			vdpObject.addRecordNodes(currentTypeRoot, compare);
 		}
+	}
+
+	private ViewFieldNode checkAndGetViewNode(int viewID) {
+		if(currentViewID != viewID) {
+			currentViewID = viewID;
+			currentViewNode = new ViewFieldNode();
+			currentViewNode.setName("View" + viewID);
+			currentViewNode.setTypeNumber(1000);
+			currentViewNode = (ViewFieldNode) recordsRoot.add(currentViewNode, compare);
+		}
+		return currentViewNode;
 	}
 
 	private VDPFileObject makeAndStoreReportHeader(VDPFileRecordReader recordReader, FileRecord rec) throws Exception {

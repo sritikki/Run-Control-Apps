@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
 
-import org.genevaers.genevaio.fieldnodes.FieldNodeBase.Type;
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
 
 public class Records2Dot {
     
@@ -72,16 +72,16 @@ public class Records2Dot {
         label = "";
         colour = "red";
         shape = "oval";
-        switch(node.getType()) {
+        switch(node.getFieldNodeType()) {
             case NUMBERFIELD:
                 label = node.getName() +" (" + Integer.toString(((NumericFieldNode)node).getValue()) + ")";
                 colour = "skyblue";
                 idString = "num" + nodeNum++;
                 break;
-            case RECORDTYPE:
-                label = ((RecordTypeNode)node).getName();
+            case VIEW:
+                label = ((ViewFieldNode)node).getName();
                 colour = "pink";
-                idString = "type" + ((RecordTypeNode)node).getTypeNumber();
+                idString = "type" + ((ViewFieldNode)node).getTypeNumber();
                 break;
            case RECORD:
                 label = ((RecordNode)node).getName();

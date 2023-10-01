@@ -8,12 +8,19 @@ public class NumericFieldNode extends FieldNodeBase {
     public NumericFieldNode(String name, int val) {
         setName(name);
         value = val;
-        type = FieldNodeBase.Type.NUMBERFIELD;
+        type = FieldNodeBase.FieldNodeType.NUMBERFIELD;
         state = ComparisonState.ORIGINAL;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public String getValueString() {
+        if(state == ComparisonState.DIFF) {
+            return value + " -> " + diffValue;
+        }
+        return Integer.toString(value);
     }
 
     public void setValue(int value) {
