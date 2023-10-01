@@ -55,7 +55,7 @@ ${readerEntry}
 <#else>
         rn.setName("${statics["java.util.UUID"].randomUUID()}"); 
 </#if>
-        root.add(rn, compare);
+        rn = (RecordNode) root.add(rn, compare);
 <#list entries.fieldNodeEntries as fieldNodeEntry>
 ${fieldNodeEntry}
 </#list>
