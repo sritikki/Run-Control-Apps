@@ -57,6 +57,10 @@ public class AnalyserDriver {
 	private Path dataStore;
 	private LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
 
+	private boolean jlt1Present;
+
+	private boolean jlt2Present;
+
 	public void ftpRunControlDatasets(String host, String dataset, String rc, String  user, String password) throws IOException {
 
 		FTPSession session = new FTPSession(host);
@@ -196,10 +200,23 @@ public class AnalyserDriver {
 			Path rc2 = root.resolve("RC2");
 			generateVDPDiffReport(root, rc1, rc2);
 			generateXLTDiffReport(root, rc1, rc2);
-			// readXLT(xltName, false);
-			// readJLT(jltName, false);
+			generateJLTDiffReport(root, rc1, rc2);
 		}
     }
+
+	private void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
+		if(jlt1Present) {
+			RecordNode recordsRoot = new RecordNode();
+			recordsRoot.setName("Root");
+			fa.readXLT(rc1.resolve("JLT"), false, recordsRoot, false);
+			logger.atInfo().log("JLT Tree built from %s", rc1.toString());
+			Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
+			fa.readXLT(rc2.resolve("JLT"), false, recordsRoot, true);
+			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
+			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
+			LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "JLT.html");
+		}
+	}
 
 	private void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
 		RecordNode recordsRoot = new RecordNode();
@@ -210,7 +227,7 @@ public class AnalyserDriver {
 		fa.readXLT(rc2.resolve("XLT"), false, recordsRoot, true);
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
-		LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot);
+		LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "XLT.html");
 	}
 
 	private void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
@@ -230,8 +247,8 @@ public class AnalyserDriver {
 		Path rc2 = root.resolve("RC2");
 		if(rcFilesPresent(rc1) && rcFilesPresent(rc2)) {
 			logger.atInfo().log("Run control files found");
-			boolean jlt1 = checkJLTPresent(rc1, "RC1");
-			boolean jlt2 = checkJLTPresent(rc1, "RC2");
+			jlt1Present = checkJLTPresent(rc1, "RC1");
+			jlt2Present = checkJLTPresent(rc1, "RC2");
 			allPresent = true;
 		} else {
 			logger.atSevere().log("Not all run control files are present.\nNeed subdirectories RC1 and RC2 to have VDP, XLT amd JLT files.");

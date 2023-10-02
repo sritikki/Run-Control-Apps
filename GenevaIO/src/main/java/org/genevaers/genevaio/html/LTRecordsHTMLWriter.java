@@ -53,7 +53,6 @@ import j2html.tags.specialized.TrTag;
 
 public class LTRecordsHTMLWriter {
 	
-	private static final String filename = "LT.html";
 	private static FileWriter fw;
 	static String toggleScript = "function toggleDiv(divname) {" +
 			"var ele = document.getElementById(divname);" +
@@ -65,7 +64,7 @@ public class LTRecordsHTMLWriter {
 			"}" +
 			"}";
 
-	public static void writeFromRecordNodes(Path cwd, RecordNode root) {
+	public static void writeFromRecordNodes(Path cwd, RecordNode root, String filename) {
 
 		File output = cwd.resolve(filename).toFile();
 		try {
@@ -136,10 +135,6 @@ public class LTRecordsHTMLWriter {
 
 	private static ThTag headerElement(FieldNodeBase n) {
 		return th(n.getName());
-	}
-
-	public String getFileName() {
-		return filename;
 	}
 
 }
