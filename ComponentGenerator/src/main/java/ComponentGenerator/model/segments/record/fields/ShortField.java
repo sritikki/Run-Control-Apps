@@ -33,7 +33,9 @@ public class ShortField extends Field {
     @Override
     public String getFieldEntry() {
         String entry = defaultFieldEntryForType(TYPE);
-        if(getComponentField().equals("none")) { 
+        if(getDefault() != null) {
+            entry += " = " + getDefault();
+        } else if(getComponentField().equals("none")) { 
             entry += " = 0";
         }
         entry += ";";
