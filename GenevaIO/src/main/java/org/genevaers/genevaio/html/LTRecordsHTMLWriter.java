@@ -44,6 +44,8 @@ import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
+
 import j2html.tags.DomContent;
 import j2html.tags.UnescapedText;
 import j2html.tags.specialized.DivTag;
@@ -105,7 +107,8 @@ public class LTRecordsHTMLWriter {
 	}
 
 	private static UnescapedText getRows(FieldNodeBase rec) {
-		return join(getHeaderRow(rec),getRow(rec));
+			return join(getHeaderRow(rec),
+						getRow(rec));
 	}
 
 
@@ -113,21 +116,25 @@ public class LTRecordsHTMLWriter {
 		return tr( each(r.getChildren(), n -> rowEntry(n)) );
 	}
 
-	private static TdTag rowEntry(FieldNodeBase n) {
-		switch(n.getFieldNodeType()) {
-			case NUMBERFIELD:
-				return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
-																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
-																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
-																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
-			case STRINGFIELD:
-				return td(((StringFieldNode)n).getValue() ).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
-																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
-																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
-																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
-			case RECORD:
-			default:
-				return td("Bad Value");
+	private static DomContent rowEntry(FieldNodeBase n) {
+		if(n.getFieldNodeType() == FieldNodeType.RECORDPART){
+			return  each(n.getChildren(), d -> rowEntry(d));
+		} else {
+			switch(n.getFieldNodeType()) {
+				case NUMBERFIELD:
+					return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
+																	.withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																	.withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
+																	.withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
+				case STRINGFIELD:
+					return td(((StringFieldNode)n).getValue() ).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
+																	.withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																	.withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
+																	.withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
+				case RECORD:
+				default:
+					return td("Bad Value");
+			}
 		}
 	}
 
@@ -135,8 +142,12 @@ public class LTRecordsHTMLWriter {
 		return tr( each(fieldNodeBase.getChildren(), n -> headerElement(n)) );
 	}
 
-	private static ThTag headerElement(FieldNodeBase n) {
-		return th(n.getName());
+	private static DomContent headerElement(FieldNodeBase n) {
+		if(n.getFieldNodeType() == FieldNodeType.RECORDPART){
+			return each(n.getChildren(), h -> headerElement(h));
+		} else {
+			return th(n.getName());
+		}
 	}
 
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.fieldnodes.RecordPartNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.repository.components.enums.LtRecordType;

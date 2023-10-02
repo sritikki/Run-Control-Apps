@@ -12,7 +12,8 @@ public class FieldNodeBase {
         NUMBERFIELD("Number"), 
         METADATA("Metadata"), 
         VIEW("View"), 
-        ROOT("Root")
+        ROOT("Root"), 
+        RECORDPART("RecordPart")
          ;
 
         private String name;

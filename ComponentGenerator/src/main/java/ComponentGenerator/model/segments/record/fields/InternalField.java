@@ -79,9 +79,9 @@ public class InternalField extends Field {
     @Override
     public String getFieldNodeEntry() {
         StringBuilder strB = new StringBuilder();
-        strB.append(DBLINDENT + "RecordNode " + name + "n = new RecordNode();\n");
-        strB.append(DBLINDENT + "rn.setName(recordType + \"_\" + rowNbr + \"_" + name + "\");\n");
-        strB.append(DBLINDENT + "rn = (RecordNode) root.add(" + name +"n, compare);\n");
+        strB.append(DBLINDENT + "RecordPartNode " + name + "n = new RecordPartNode();\n");
+        strB.append(DBLINDENT + name +"n.setName(recordType + \"_\" + rowNbr + \"_" + name + "\");\n");
+        strB.append(DBLINDENT + name +"n = (RecordPartNode) rn.add(" + name +"n, compare);\n");
         strB.append(DBLINDENT + name + ".addRecordNodes(" + name + "n, compare);\n");
         return strB.toString();
     }
