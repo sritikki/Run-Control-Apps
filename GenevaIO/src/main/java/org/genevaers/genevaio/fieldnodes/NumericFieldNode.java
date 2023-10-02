@@ -36,12 +36,15 @@ public class NumericFieldNode extends FieldNodeBase {
     }
 
     @Override
-    public void compareTo(FieldNodeBase rn) {
+    public boolean compareTo(FieldNodeBase rn) {
+        boolean result = true;
         if(value == ((NumericFieldNode)rn).getValue()) {
             state = ComparisonState.INSTANCE;
         } else {
             state = ComparisonState.DIFF;
             diffValue = ((NumericFieldNode)rn).getValue();
+            result = false;
         }
+        return result;
     }
 }

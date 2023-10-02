@@ -30,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.dots.LookupGenerationDotWriter;
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.html.VDPHTMLWriter;
 import org.genevaers.genevaio.ltfile.LogicTable;
@@ -56,7 +57,7 @@ public class RunControlAnalyser {
 		trg = Paths.get("RunControls");
 	}
 
-	public void readVDP(Path vdpPath, boolean withCSV, RecordNode recordsRoot, boolean compare) throws Exception {
+	public void readVDP(Path vdpPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) throws Exception {
 		logger.atInfo().log("Read VDP %s csv flag %s", vdpPath, Boolean.toString(withCSV));
 		if(vdpPath.toFile().exists()) {
 			VDPFileReader vdpr = new VDPFileReader();

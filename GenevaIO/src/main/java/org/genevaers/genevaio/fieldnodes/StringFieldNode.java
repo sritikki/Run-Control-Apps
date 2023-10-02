@@ -32,12 +32,15 @@ public class StringFieldNode extends FieldNodeBase {
     }
 
     @Override
-    public void compareTo(FieldNodeBase rn) {
+    public boolean compareTo(FieldNodeBase rn) {
+        boolean result = true;
         if(value.equals(((StringFieldNode)rn).getValue())) {
             state = ComparisonState.INSTANCE;
         } else {
             state = ComparisonState.DIFF;
             diffValue = ((StringFieldNode)rn).getValue();
+            result = false;
         }
+        return result;
     }
 }

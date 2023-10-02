@@ -27,6 +27,7 @@ import java.util.Set;
 
 import com.google.common.flogger.FluentLogger;
 
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.RootTypeFactory;
 import org.genevaers.genevaio.fieldnodes.ViewFieldNode;
@@ -56,7 +57,7 @@ public class VDPFileReader{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private boolean writeCSV;
-	private RecordNode recordsRoot;
+	private MetadataNode recordsRoot;
 	private boolean compare;
 	
 	private File vdpFile;
@@ -107,8 +108,8 @@ public class VDPFileReader{
 		}
 	}
 
-	public void setRecordsRoot(RecordNode recordsRoot) {
-		this.recordsRoot = recordsRoot;
+	public void setRecordsRoot(MetadataNode recordsRoot2) {
+		this.recordsRoot = recordsRoot2;
 	}
 
 	public void setCompare(boolean comp) {

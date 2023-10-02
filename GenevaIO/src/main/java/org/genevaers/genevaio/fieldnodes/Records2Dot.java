@@ -22,10 +22,10 @@ public class Records2Dot {
     private static boolean nodeEnabled = true;
     private static int nodeNum = 1;
 
-    public static void write(RecordNode root, Path dest) {
+    public static void write(FieldNodeBase recordsRoot, Path dest) {
         try {
             fw = new FileWriter(dest.toFile());
-            recursivelyWriteTheTree(root);
+            recursivelyWriteTheTree(recordsRoot);
             fw.write("}\n");
             fw.close();
         } catch (IOException e) {
@@ -34,13 +34,13 @@ public class Records2Dot {
         }
     }
 
-    private static void recursivelyWriteTheTree(RecordNode root) throws IOException {
+    private static void recursivelyWriteTheTree(FieldNodeBase root) throws IOException {
         writeHeader();
         writeNodes(root);
 
     }
 
-    private static void writeNodes(RecordNode root) throws IOException {
+    private static void writeNodes(FieldNodeBase root) throws IOException {
         //String r = dotNode(root);
         Iterator<FieldNodeBase> asti = root.getChildren().iterator();
         while (asti.hasNext()) {

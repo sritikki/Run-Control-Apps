@@ -22,6 +22,7 @@ import static j2html.TagCreator.body;
 import static j2html.TagCreator.div;
 import static j2html.TagCreator.each;
 import static j2html.TagCreator.h2;
+import static j2html.TagCreator.h3;
 import static j2html.TagCreator.head;
 import static j2html.TagCreator.html;
 import static j2html.TagCreator.join;
@@ -41,6 +42,7 @@ import java.nio.file.Path;
 
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
@@ -69,7 +71,7 @@ public class VDPRecordsHTMLWriter {
 			"}" +
 			"}";
 
-	public static void writeFromRecordNodes(Path cwd, RecordNode root) {
+	public static void writeFromRecordNodes(Path cwd, MetadataNode recordsRoot) {
 
 		File output = cwd.resolve(filename).toFile();
 		try {
@@ -85,7 +87,7 @@ public class VDPRecordsHTMLWriter {
 									script(join(toggleScript)).withLang("Javascript")
 							),
 							body(
-									bodyContent(root)
+									bodyContent(recordsRoot)
 							)).withStyle("overflow-x: scroll").renderFormatted());
 			fw.close();
 		} catch (IOException e) {
@@ -94,16 +96,18 @@ public class VDPRecordsHTMLWriter {
 		}
 	}
 	
-	private static DivTag bodyContent(RecordNode root) {
+	private static DivTag bodyContent(MetadataNode recordsRoot) {
 		return div(
 						h2("VDP Records"),
-						recordTables(root)
+						h3("Source 1: " + recordsRoot.getSource1()),
+						h3("Source 2: " + recordsRoot.getSource2()),
+						recordTables(recordsRoot)
 				).withClass("w3-container");
 	}
 	
 
-	private static DomContent recordTables(RecordNode root) {
-		return div(each(root.getChildren(), rec  -> getRecordTable(rec)) );
+	private static DomContent recordTables(MetadataNode recordsRoot) {
+		return div(each(recordsRoot.getChildren(), rec  -> getRecordTable(rec)) );
 	}
 
 	private static DivTag getRecordTable(FieldNodeBase rec) {
@@ -128,7 +132,7 @@ public class VDPRecordsHTMLWriter {
 				tbody(
 						getHeaderRow(rec.getChildren().get(0)),
 						each(rec.getChildren(), r -> getRow(r))))
-				.withClass("w3-table w3-striped w3-border");
+				.withClass("w3-table-all");
 	}
 
 	private static TrTag getRow(FieldNodeBase r) {
@@ -140,10 +144,12 @@ public class VDPRecordsHTMLWriter {
 			case NUMBERFIELD:
 				return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
 																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
 																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
 			case STRINGFIELD:
 				return td(((StringFieldNode)n).getValue() ).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
 																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
 																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
 			case RECORD:
 			default:

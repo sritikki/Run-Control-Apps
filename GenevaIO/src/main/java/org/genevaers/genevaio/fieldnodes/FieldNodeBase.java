@@ -75,7 +75,10 @@ public class FieldNodeBase {
         if(compare) {
             FieldNodeBase originalNode = childrenByName.get(rn.getName());
             if(originalNode != null) {
-                originalNode.compareTo(rn);
+                boolean result = originalNode.compareTo(rn);
+                if(result == false) {
+                    this.setState(ComparisonState.DIFF);
+                }
                 useThidOne = originalNode;
             } else {
                 rn.setState(ComparisonState.NEW);
@@ -89,7 +92,8 @@ public class FieldNodeBase {
         return useThidOne;
     }
 
-    public void compareTo(FieldNodeBase rn) {
+    public boolean compareTo(FieldNodeBase rn) {
         state = ComparisonState.INSTANCE;
+        return true;
     }
 }

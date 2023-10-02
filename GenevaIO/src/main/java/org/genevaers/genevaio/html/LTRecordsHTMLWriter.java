@@ -118,10 +118,12 @@ public class LTRecordsHTMLWriter {
 			case NUMBERFIELD:
 				return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
 																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
 																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
 			case STRINGFIELD:
 				return td(((StringFieldNode)n).getValue() ).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
 																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
+																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
 																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
 			case RECORD:
 			default:
