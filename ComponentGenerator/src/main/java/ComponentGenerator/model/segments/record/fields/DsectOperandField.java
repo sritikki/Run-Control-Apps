@@ -70,6 +70,6 @@ public class DsectOperandField extends Field{
 
     @Override
     public String getFieldNodeEntry() {
-        return "Not yet";    }
+        return null;    }
     
 }

@@ -29,6 +29,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.Records2Dot;
+import org.genevaers.genevaio.html.LTRecordsHTMLWriter;
 import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
@@ -191,20 +192,37 @@ public class AnalyserDriver {
 		// RCG case
 		// Look for Run Control Files
 		if(runControlFilesPresent(root)) {
-			RecordNode recordsRoot = new RecordNode();
-			recordsRoot.setName("Root");
 			Path rc1 = root.resolve("RC1");
 			Path rc2 = root.resolve("RC2");
-			fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
-			logger.atInfo().log("VDP Tree built from %s", rc1.toString());
-			fa.readVDP(rc2.resolve("VDP"), false, recordsRoot, true);
-			logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
-			Records2Dot.write(recordsRoot, root.resolve("records.gv"));
-			VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot);
+			generateVDPDiffReport(root, rc1, rc2);
+			generateXLTDiffReport(root, rc1, rc2);
 			// readXLT(xltName, false);
 			// readJLT(jltName, false);
 		}
     }
+
+	private void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
+		RecordNode recordsRoot = new RecordNode();
+		recordsRoot.setName("Root");
+		fa.readXLT(rc1.resolve("XLT"), false, recordsRoot, false);
+		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
+		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
+		fa.readXLT(rc2.resolve("XLT"), false, recordsRoot, true);
+		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
+		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
+		LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot);
+	}
+
+	private void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
+		RecordNode recordsRoot = new RecordNode();
+		recordsRoot.setName("Root");
+		fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
+		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
+		fa.readVDP(rc2.resolve("VDP"), false, recordsRoot, true);
+		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
+		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
+		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot);
+	}
 
 	private boolean runControlFilesPresent(Path root) {
 		boolean allPresent = false;

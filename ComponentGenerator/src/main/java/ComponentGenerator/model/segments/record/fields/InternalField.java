@@ -78,6 +78,6 @@ public class InternalField extends Field {
 
     @Override
     public String getFieldNodeEntry() {
-        return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + name + "\"," + name +"), compare);";    
+        return  DBLINDENT + name +".addRecordNodes(rn, compare);";    
     }
 }

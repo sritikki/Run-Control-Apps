@@ -72,9 +72,11 @@ public class RunControlAnalyser {
 		
 	}
 
-	public void readXLT(Path xltPath, boolean withCSV) {
+	public void readXLT(Path xltPath, boolean withCSV, RecordNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read XLT %s csv flag %s", xltPath, Boolean.toString(withCSV));
 		XLTFileReader xltr = new XLTFileReader();
+		xltr.setCompare(compare);
+		xltr.setRecordsRoot(recordsRoot);
 		xltr.open(xltPath.toString());
 		xlt = xltr.makeLT();
 		if(withCSV) {
@@ -207,7 +209,7 @@ public class RunControlAnalyser {
 			logger.atInfo().log("Write to %s", htmlFileName);
 
 			readVDP(vdpName, withCSV, null, false);
-			readXLT(xltName, withCSV);
+			readXLT(xltName, withCSV, null, false);
 			readJLT(jltName, withCSV);
 			writeHTML(joinsFilter);
 			
