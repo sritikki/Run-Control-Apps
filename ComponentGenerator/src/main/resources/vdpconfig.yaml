@@ -1,0 +1,144 @@
+# Where to get the component and record definitions and where to write the generated classes
+package_name: org.genevaers.genevaio.vdpfile
+source_directory: vdprecords
+target_directory: ../GenevaIO/target/generated-sources
+pe_target_directory: ../../pe/PM4/MAC
+description: The View Defintion Parameter (VDP) records are written to the VDP file. The VDP file is read by the 
+       Performance Engine process to define the metadata describing the data flows to be processed.
+records:
+  - 
+    name: Prefix
+    source: VDPPrefix.yaml
+    target: vdpfile
+    record_part: true
+  - 
+    name: Generation Record
+    source: VDPGenerationRecord.yaml
+    target: vdpfile
+  - 
+    name: Format Views
+    source: VDPFormatViews.yaml
+    target: vdpfile
+  - 
+    name: Control Record
+    source: VDPControlRecord.yaml
+    target: vdpfile
+  - 
+    name: Physical File
+    source: VDPPhysicalFileRecord.yaml
+    target: vdpfile
+  - 
+    name: Exit
+    source: VDPExit.yaml
+    target: vdpfile
+  - 
+    name: Logical Record
+    source: VDPLogicalRecord.yaml
+    target: vdpfile
+  - 
+    name: LR Field
+    source: VDPLRField.yaml
+    target: vdpfile
+  - 
+    name: LR Index
+    source: VDPLRIndex.yaml
+    target: vdpfile
+  - 
+    name: Lookup Path Key
+    source: VDPLookupPathKey.yaml
+    target: vdpfile
+  - 
+    name: Lookup Path Target Set
+    source: VDPLookupPathTargetSet.yaml
+    target: vdpfile
+  - 
+    name: Lookup Path Target Entry
+    source: VDPLookupPathTargetEntry.yaml
+    target: vdpfile
+    record_part: true
+  - 
+    name: Lookup Gen Map
+    source: VDPLookupGenMap.yaml
+    target: vdpfile
+  - 
+    name: Lookup Gen Entry
+    source: VDPLookupGenEntry.yaml
+    target: vdpfile
+    record_part: true
+  - 
+    name: Extract File
+    source: VDPExtractFileRecord.yaml
+    target: vdpfile
+  - 
+    name: Extract Record File
+    source: VDPExtractRecordFile.yaml
+    target: vdpfile
+  - 
+    name: View Definition
+    source: VDPViewDefinition.yaml
+    target: vdpfile
+  - 
+    name: Format File
+    source: VDPFormatFileRecord.yaml
+    target: vdpfile
+  - 
+    name: Extract Target Set
+    source: VDPExtractTargetSet.yaml
+    target: vdpfile
+  - 
+    name: Extract Target Entry
+    source: VDPExtractTargetEntry.yaml
+    target: vdpfile
+    record_part: true
+  - 
+    name: View Column
+    source: VDPViewColumn.yaml
+    target: vdpfile
+  - 
+    name: View Sort Key
+    source: VDPViewSortKey.yaml
+    target: vdpfile
+  - 
+    name: View Source
+    source: VDPViewSource.yaml
+    target: vdpfile
+  - 
+    name: View Column Source
+    source: VDPViewColumnSource.yaml
+    target: vdpfile
+  - 
+    name: Extract Filter
+    source: VDPExtractFilter.yaml
+    target: vdpfile
+  - 
+    name: Format Filter Logic
+    source: VDPFormatFilterLogic.yaml
+    target: vdpfile
+  - 
+    name: Format Filter Stack
+    source: VDPFormatFilterStack.yaml
+    target: vdpfile
+  - 
+    name: Column Logic
+    source: VDPColumnLogic.yaml
+    target: vdpfile
+  - 
+    name: Column Calculation Logic
+    source: VDPColumnCalculationLogic.yaml
+    target: vdpfile
+  - 
+    name: Column Calculation Stack
+    source: VDPColumnCalculationStack.yaml
+    target: vdpfile
+  - 
+    name: Extract Output Logic
+    source: VDPExtractOutputLogic.yaml
+    target: vdpfile
+  - 
+    name: Report Header
+    source: VDPHeader.yaml
+    target: vdpfile
+  - 
+    name: Report Footer
+    source: VDPFooter.yaml
+    target: vdpfile

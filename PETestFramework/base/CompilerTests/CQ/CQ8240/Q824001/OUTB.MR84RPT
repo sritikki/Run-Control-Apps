@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = 0 - {ALNUM}
+ERROR: line 1:12: The source field 'current' does not have a numeric data type and cannot be negated
+ERROR: line 1:12: Data type conflict assigning to column 1 "Column Number 1" (AlphaNum) from accumulated value (Geneva)

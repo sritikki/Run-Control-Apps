@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {BAD}
+ERROR: line 1:11: The field 'BAD' is not defined in the data source's logical record 'All Types'

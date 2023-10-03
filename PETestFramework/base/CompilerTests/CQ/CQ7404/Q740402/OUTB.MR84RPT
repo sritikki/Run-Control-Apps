@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=043,PROCEDURE={FRED})
+ERROR: line 1:54: The module 'FRED' used in the PROCEDURE parameter of the WRITE function is not defined

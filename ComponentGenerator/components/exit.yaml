@@ -1,0 +1,16 @@
+component_name: UserExit
+members:
+- name: componentId 
+  type: integer
+- name: name 
+  type: string
+- name: executable
+  type: string
+- name: exitType
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ExitType
+- name: programType
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ProgramType
+- name: optimizable
+  type: boolean

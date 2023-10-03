@@ -1,0 +1,18 @@
+# Where to get the component and record definitions and where to write the generated classes
+description: GenevaERS Model
+segments:
+    -   name:   VDPRecords
+        type:   record
+        source: src/main/resources/vdpconfig.yaml
+    -   name:   LTRecords
+        type:   record
+        source: src/main/resources/ltconfig.yaml
+    -   name:   Components
+        type:   component
+        source: src/main/resources/componentconfig.yaml
+    -   name:   Enums And Equates
+        type:   enum
+        source: src/main/resources/enumsAndEquates.yaml
+    -   name:   Function Codes
+        type:   functionCodes
+        source: src/main/resources/functionCodes.yaml

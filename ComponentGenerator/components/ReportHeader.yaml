@@ -1,0 +1,20 @@
+component_name: ReportHeader
+members:
+- name: componentId 
+  type: integer
+- name: function
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ReportFunction
+- name: justification
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.JustifyId
+- name: row
+  type: short
+- name: column
+  type: short
+- name: titleLength
+  type: short
+- name: mask
+  type: string
+- name: text
+  type: string

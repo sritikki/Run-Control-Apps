@@ -1,0 +1,30 @@
+---
+name: "TOKLU"
+title: "Token with lookup"
+description: "Check how tokens work with views using lookups"
+category: "PeTests/Token"
+cq: ""
+note: ""
+tests:
+- name: "TOKLU01"
+  header: "Separate"
+  description: "Case where the lookup is referencing a separate file."
+  source: "WBXML"
+  xmlfiles:
+  - name: "toklu.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "TOKEN"
+  reffiles:
+  - ddname: "LKUPALL"
+    filename: "ALLTYPE.LOOKUP"
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0001006"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "FB"
+    lrecl: "41"

@@ -1,0 +1,157 @@
+record_name: VDPViewColumn
+record_id: 2000
+component_name: ViewColumn
+dsect_name: COLUMN
+record_type: VDP_COLUMN
+record_length: 1724
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  component_field: none
+- name: prefix.recordId
+  type: mappingOnly
+  component_field: componentId
+- name: prefix.viewId
+  type: mappingOnly
+  component_field: viewId
+- name: prefix.columnId
+  type: mappingOnly
+  component_field: columnNumber
+- name: column_name
+  type: string
+  maxlength: 48
+  component_field: name
+- name: hidden_ind
+  type: boolean
+  component_field: hidden
+  description: "This is an MR88 field"
+- name: padding1
+  type: string
+  maxlength: 3
+  padding : true
+  component_field: none
+- name: subtotal_type
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.SubtotalType
+  component_field: subtotalType
+- name: spaces_before_column
+  type: short
+  component_field: spacesBeforeColumn
+- name: extract_point_file_nbr
+  type: short
+  description: "Not used?"
+  component_field: extractPointFileNbr
+- name: extract_area
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ExtractArea
+  component_field: extractArea
+- name: extract_area_position
+  type: short
+  component_field: extractAreaPosition
+- name: padding2
+  type: short
+  padding : true
+  component_field: none
+- name: field_id
+  type: integer
+  component_field: fieldId
+- name: field_name
+  type: string
+  maxlength: 48
+  component_field: fieldName
+- name: effective_date
+  type: string
+  maxlength: 8
+  component_field: effectiveDate
+- name: termination_date
+  type: string
+  maxlength: 8
+  component_field: terminationDate
+- name: data_type
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.DataType
+  component_field: dataType
+- name: signed_ind
+  type: boolean
+  component_field: signed
+- name: padding3
+  type: byte
+  padding : true
+  component_field: none
+- name: start_position
+  type: short
+  component_field: startPosition
+- name: field_length
+  type: short
+  component_field: fieldLength
+- name: ordinal_position
+  type: short
+  component_field: ordinalPosition
+- name: decimal_count
+  type: short
+  component_field: decimalCount
+- name: rounding
+  type: short
+  component_field: rounding
+- name: date_code
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.DateCode
+  component_field: dateCode
+- name: justify_id
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.JustifyId
+  component_field: justifyId
+- name: ordinal_offset
+  type: short
+  component_field: ordinalOffset
+- name: padding4
+  type: string
+  maxlength: 46
+  padding : true
+  component_field: none
+- name: detail_prefix
+  type: string
+  maxlength: 48
+  component_field: detailPrefix
+- name: report_mask
+  type: string
+  maxlength: 48
+  component_field: reportMask
+- name: subtotal_prefix
+  type: string
+  maxlength: 48
+  component_field: subtotalPrefix
+- name: subtotal_mask
+  type: string
+  maxlength: 48
+  component_field: subtotalMask
+- name: default_value
+  type: string
+  maxlength: 256
+  component_field: defaultValue
+- name: xml_tag
+  type: string
+  maxlength: 256
+  component_field: none
+- name: header_justify_id
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.JustifyId
+  component_field: headerJustifyId
+- name: header_line1
+  type: string
+  maxlength: 256
+  component_field: headerLine1
+- name: header_line2
+  type: string
+  maxlength: 256
+  component_field: headerLine2
+- name: header_line3
+  type: string
+  maxlength: 256
+  component_field: headerLine3
+- name: padding5
+  type: string
+  maxlength: 16
+  padding : true
+  component_field: none

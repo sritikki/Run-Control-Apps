@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 1
+if Q3(2010) = {HMS} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:13: Date/Time format conflict comparing  (Date - CYMD) with HMS (AlphaNum - HMS)
+ERROR: line 1:13: Date/Time format conflict comparing  (Date - CYMD) with HMS (AlphaNum - HMS)

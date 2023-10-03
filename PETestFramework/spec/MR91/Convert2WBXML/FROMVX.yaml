@@ -1,0 +1,16 @@
+---
+name: "CONV"
+title: "Convert VDL XML to WB XML"
+description: "Generic spec to use to convert VDP XML to WB XML"
+category: "MR91/Convert2WBXML"
+cq: ""
+note: ""
+tests:
+- name: "VDPXML"
+  header: "VDPXML"
+  description: ""
+  source: "XML"
+  xmlfiles: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"

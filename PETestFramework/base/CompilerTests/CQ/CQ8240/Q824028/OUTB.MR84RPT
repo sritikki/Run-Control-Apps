@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 9
+COLUMN = 0 - {MSKNM_MSKNM.MSKNM}
+ERROR: line 1:26: Masked numeric invalid in an arithmetic expression; see lookup field MSKNM (MaskNum :: -Z,ZZ9.99)

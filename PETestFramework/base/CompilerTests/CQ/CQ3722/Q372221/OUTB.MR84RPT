@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 12
+COLUMN = {MSKNM}
+ERROR: line 1:11: Data type conflict assigning to column 12 "Column Number 4" (Geneva) from MSKNM (MaskNum :: -Z,ZZ9.99)

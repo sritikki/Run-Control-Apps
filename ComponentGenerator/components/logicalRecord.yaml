@@ -1,0 +1,40 @@
+component_name: LogicalRecord
+members:
+- name: componentId
+  type: integer
+- name: name
+  type: string
+- name: primaryKey #I don't think we need thi?
+  type: integer
+- name: status
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.LrStatus
+- name: lookupExitID
+  type: integer #Lookup exit ID
+- name: lookupExitParams
+  type: string
+- name: fieldsByID
+  type: map
+  key: componentId
+  key_type: Integer
+  sorted: true
+  values: org.genevaers.repository.components.LRField
+  values_type: LRField
+- name: fieldsByName
+  type: map
+  key: Name
+  key_type: String
+  sorted: true
+  values: org.genevaers.repository.components.LRField
+  values_type: LRField
+- name: indexBySeq
+  type: map
+  key: KeyNumber
+  key_type: Short
+  sorted: true
+  values: org.genevaers.repository.components.LRIndex
+  values_type: LRIndex
+- name: lookupExit
+  type: existing
+  existing_java_type: org.genevaers.repository.components.UserExit
+  vdp_source: none

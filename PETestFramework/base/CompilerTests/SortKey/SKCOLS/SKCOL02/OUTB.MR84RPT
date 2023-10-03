@@ -1,0 +1,7 @@
+INFO: Compiling extract-phase cell logic for column 2
+COLUMN = {ALPHA}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      2  00003263  SKE   00001284/00001264/00063312    10    15  Alpha     00000000/00000000/00000000    31    30  AlphaNum 
+                                  Signed /  Left  /rnd=0000     2     0  None       Signed /  Left  /rnd=0000     2     0  None     

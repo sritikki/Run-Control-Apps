@@ -1,0 +1,7 @@
+#Test Control Record
+name: Test
+description: I'm a test bunny
+firstFiscalMonth: 1
+beginningPeriod: 1
+endingPeriod: 12 	
+rubbish: 77

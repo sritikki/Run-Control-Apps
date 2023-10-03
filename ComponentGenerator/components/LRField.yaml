@@ -1,0 +1,47 @@
+#Logical Record Field
+component_name: LRField
+vdp_source: VDPLrField
+members:
+- name: componentId 
+  type: integer
+  vdp_source: prefix.recordId
+- name: name
+  type: string
+  vdp_source: fieldName
+- name: lrID
+  type: integer
+  vdp_source: LrId
+- name: datatype
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.DataType
+  vdp_source: DataType
+- name: signed
+  type: boolean
+  vdp_source: SignedInd
+- name: startPosition
+  type: short
+  vdp_source: StartPosition
+- name: length
+  type: short
+  vdp_source: FieldLength
+- name: ordinalPosition
+  type: short
+- name: numDecimalPlaces
+  type: short
+  vdp_source: DecimalCount
+- name: rounding
+  type: short
+- name: dateTimeFormat
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.DateCode
+  vdp_source: DateCode
+- name: justification
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.JustifyId
+  vdp_source: JustifyId
+- name: ordinalOffset
+  type: short
+- name: mask
+  type: string
+- name: dbColName
+  type: string

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="../../../xsl/PMSpec.xsl"?><PMSpec>
+
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+	<Name>RTC21518</Name>
+	<Title>VDP XML Cases</Title>
+	<Description>Cases that needed looking at</Description>
+	<Category>PeTests/VDPXML</Category>
+	<CQ>Ignore me</CQ>
+	<Note>Add something if you want</Note>
+	<Tests>
+		<Test>
+			<Name>SFXML</Name>
+			<Header>SFXML</Header>
+			<Description>SFXML</Description>
+			<Source>XML</Source>
+			<RTC>21518</RTC>
+			<MR91ONLY/>
+			<XMLFiles>
+				<XMLFile>
+					<Name>RTC21518.xml</Name>
+					<Replacements/>
+				</XMLFile>
+			</XMLFiles>
+         	<MR91Out>
+            	<DDName>MR91TRAC</DDName>
+            	<FileName>MR91TRAC</FileName>
+         	</MR91Out>
+         	<Result>
+         		<Success></Success>
+         	</Result>
+		</Test>
+	</Tests>
+</PMSpec>

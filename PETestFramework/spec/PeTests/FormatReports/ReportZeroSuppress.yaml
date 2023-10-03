@@ -1,0 +1,33 @@
+---
+name: "ZEROSUP"
+title: "Report with Zero Suppression"
+description: "Report with Zero Suppression"
+category: "PeTests/FormatReports"
+cq: ""
+note: ""
+tests:
+- name: "ZEROS"
+  header: "Report Zero Sup"
+  description: "Report with Zero Suppression"
+  source: "WBXML"
+  timeout: "120"
+  xmlfiles:
+  - name: "RTC_22983_01[10873].xml"
+  eventfiles:
+  - ddname: "ORDER001"
+    filename: "ORDER.ZEROSUP"
+  extractfiles:
+  - space: "TRK"
+    primary: "6200"
+    secondary: "500"
+    recfm: "VB"
+    lrecl: "8180"
+    workfile: "1"
+  formatfiles:
+  - ddname: "F0010873"
+    space: "TRK"
+    primary: "10"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "132"
+    workfile: "1"

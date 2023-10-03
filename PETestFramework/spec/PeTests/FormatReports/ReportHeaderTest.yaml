@@ -1,0 +1,40 @@
+---
+name: "REPHEAD"
+title: "Report Header test ViewID"
+description: "Report Header test ViewID"
+category: "PeTests/FormatReports"
+cq: ""
+note: ""
+tests:
+- name: "RHEAD"
+  header: "Report header"
+  description: "Report Header test ViewID"
+  source: "WBXML"
+  timeout: "120"
+  xmlfiles:
+  - name: "Report_header_with_ViewID_test[12115].xml"
+  eventfiles:
+  - ddname: "ACCTLOG1"
+    filename: "ACCLOG1"
+  - ddname: "ACCTLOG2"
+    filename: "ACCLOG2"
+  reffiles:
+  - ddname: "ACCTINFO"
+    filename: "ACCINFO"
+  - ddname: "CUSTINFO"
+    filename: "CUSTINFO"
+  extractfiles:
+  - space: "TRK"
+    primary: "6200"
+    secondary: "500"
+    recfm: "VB"
+    lrecl: "8180"
+    workfile: "1"
+  formatfiles:
+  - ddname: "CUSTSUM"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "FB"
+    lrecl: "134"
+    workfile: "1"

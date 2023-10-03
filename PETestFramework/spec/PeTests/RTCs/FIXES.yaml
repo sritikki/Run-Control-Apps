@@ -1,0 +1,77 @@
+---
+name: "FIXES"
+title: "RTC Tests to be added to regression"
+description: "Things we have fixed - may merge into the other tests later"
+category: "PeTests/RTCs"
+cq: "Ignore me"
+note: "Add something if you want"
+tests:
+- name: "WREXT"
+  header: "WREXT"
+  description: "Write Extract from logic"
+  source: "WBXML"
+  rtc: "21242"
+  xmlfiles:
+  - name: "WRITE_TEST_EXTR[9959].xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "EXTR003"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  - ddname: "EXTR004"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "SPLITS"
+  header: "SPLITS"
+  description: "Split pipes"
+  source: "WBXML"
+  rtc: "21365"
+  xmlfiles:
+  - name: "split2Threads.xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  - ddname: "ALLTYP2"
+    filename: "ALLTYPE.SPLIT"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "FMTOUT01"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "CFXC"
+  header: "CFXC"
+  description: "Tests CFxC and CFCx with dates"
+  source: "WBXML"
+  rtc: "21523"
+  xmlfiles:
+  - name: "Date_functions_1[11676].xml"
+    
+  eventfiles:
+  - ddname: "DATE2"
+    filename: "DATE2"
+  extractfiles:
+  - ddname: "TESTOUT1"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"

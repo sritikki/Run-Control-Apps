@@ -1,0 +1,62 @@
+---
+name: "BIGART"
+title: "Arithmetic Tests"
+description: "Test the Arithmetic function codes"
+category: "PeTests/Arithmetic"
+cq: ""
+note: ""
+tests:
+- name: "ARTALL"
+  header: "All in one"
+  description: "All the arithmetic tests via many sources"
+  source: "WBXML"
+  xmlfiles:
+  - name: "AllArith.xml"
+  eventfiles:
+  - ddname: "ARTYPE"
+    filename: "ARTYPE"
+  reffiles:
+  - ddname: "LKUPALL"
+    filename: "CMPTYPE.LOOKUP"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "FMTOUT01"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "CMARITH"
+  header: "CMARITH"
+  description: "Compare accumulated, prior, looked up, referenced, const and event\
+    \ values"
+  source: "WBXML"
+  xmlfiles:
+  - name: "CMP_ARITH_PLUS.xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "CMPTYPE"
+  reffiles:
+  - ddname: "LKUPALL"
+    filename: "CMPTYPE.AL"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "FMTOUT01"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"

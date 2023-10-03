@@ -1,0 +1,15 @@
+record_name: LogicTableHD
+record_type: HD
+record_length: 52
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: LTPrefix 
+- name: date
+  dsect_name: datestamp
+  type: string
+  maxlength: 8           
+- name: time
+  dsect_name: timestamp
+  type: string
+  maxlength: 8           

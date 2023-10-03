@@ -1,0 +1,49 @@
+#Logical Record
+record_name: VDPLogicalRecord
+component_name: LogicalRecord
+record_id: 300
+record_length: 424
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  component_field: none
+- name: prefix.recordId
+  type: mappingOnly
+  component_field: componentId
+- name: lr_name
+  type: string
+  maxlength: 48
+  component_field: name
+- name: effective_date
+  type: string
+  maxlength: 8
+  component_field: none
+- name: termination_date
+  type: string
+  maxlength: 8
+  component_field: none
+- name: primkey_index_id
+  type: integer
+  component_field: primaryKey
+- name: lr_type
+  type: integer
+  component_field: none
+- name: lr_status
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.LrStatus
+  component_field: status
+- name: exit_pgm_id
+  type: integer #Lookup exit ID
+  component_field: lookupExitID
+- name: exit_startup
+  type: string
+  maxlength: 48
+  component_field: lookupExitParams
+  # There is stuff that can be ignored
+- name: padding1
+  type: string
+  maxlength: 272
+  padding : true
+  component_field: none
+

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 2
+COLUMN = {NUMER}*3
+ERROR: line 1:17: Data type conflict assigning to sort key column 2 "Column Number 2" (AlphaNum) from accumulated value (Geneva)

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {NUMER} = PRIOR({MSKNM}) THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:12: Data type conflict comparing NUMER (ZonedDec) with MSKNM (MaskNum :: -Z,ZZ9.99)

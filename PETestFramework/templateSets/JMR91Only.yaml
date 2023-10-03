@@ -1,0 +1,9 @@
+---
+name: "JMR91Only"
+templates:
+  - name: "jcl/MR91L.ftl"
+    target: "${test}L.JCL"
+    type: "JCL"
+  - name: "cfg/mr91CFG.ftl"
+    target: "MR91PARM"
+    type: "Config"

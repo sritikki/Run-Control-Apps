@@ -1,0 +1,32 @@
+record_name: VDPFormatViews
+record_id: 2
+component_name: none
+dsect_name: FORMAT_VIEW
+record_type: VDP_FORMAT_VIEWS
+record_length: 0
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+- name: numDTColumns
+  dsect_name: totalDT_columns
+  type: integer
+- name: numTerminatedStackEntries
+  dsect_name: totalCT_columns
+  type: integer
+- name: numSKColumns
+  dsect_name: totalSK_columns
+  type: integer 	
+- name: numViews
+  dsect_name: view_count
+  type: integer
+- name: formatViews
+  dsect_name: view_number
+  type: array
+  array_size: numViews
+  array_type: integer
+- name: padding
+  type: string
+  maxlength: 8
+  padding: true
+   

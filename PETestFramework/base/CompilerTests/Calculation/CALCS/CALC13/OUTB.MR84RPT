@@ -1,0 +1,10 @@
+INFO: Compiling format-phase calculation for column 5
+COLUMN =  COL.4
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      5  00008820  CALC  
+                           Offset  Row  Opcode       Value
+                           -------------------------------
+                                0    1  Push Column  4
+                                8    2  End

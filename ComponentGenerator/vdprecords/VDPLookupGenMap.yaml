@@ -1,0 +1,20 @@
+record_name: VDPLookupGenMap
+component_name: none
+record_id: 651
+record_length: 0
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+- name: lookup_count
+  type: integer
+- name: lookupMaps
+  type: array
+  array_size: lookupCount
+  array_type: VDPLookupGenEntry
+- name: padding1
+  type: string
+  maxlength: 8
+  padding: true
+  component_field: none
+  

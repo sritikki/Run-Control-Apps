@@ -1,0 +1,12 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN={NUMER} + {BSORT}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      3  00003263  DIMN  Declare g_3263_1284_1264_3_0  =  0
+       2      3  00003263  SETE  00001284/00001264/00063313    25     3  ZonedDec 
+             g_3263_1284_1264_3_0   Signed / Right  /rnd=0000     3     0  None     
+       3      3  00003263  ADDE  00001284/00001264/00063317    10     5  BinaSort 
+             g_3263_1284_1264_3_0   Signed /  Left  /rnd=0000     2     0  None     
+       4      3  00003263  DTA   00000000/00000000/00000000    61    30  ZonedDec 
+             g_3263_1284_1264_3_0   Signed /  Left  /rnd=0000     3     0  None     

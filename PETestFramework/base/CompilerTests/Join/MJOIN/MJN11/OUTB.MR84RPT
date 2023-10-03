@@ -1,0 +1,25 @@
+INFO: Compiling extract-phase cell logic for column 7
+COLUMN = {AllTypesRecursiveRef.Alphanumeric}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      7  00009093  JOIN  00001506/00001617/00003034     1     0  AlphaNum  "2503"                                             10    12
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      7  00009093  LKE   00001506/00001595/00090901     1    10  AlphaNum  00001506/00001595/00090901     1    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       3      7  00009093  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4    12
+       4      7  00009093  LKLR  00001506/00001617/00003034     1     0  AlphaNum  "2503"                                        
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       5      7  00009093  LKL   00001506/00001617/00090973     1    10  AlphaNum  00001506/00001617/00090973     1    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       6      7  00009093  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    7    12
+       7      7  00009093  LKLR  00001506/00001617/00003034     1     0  AlphaNum  "2503"                                        
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       8      7  00009093  LKL   00001506/00001617/00090973     1    10  AlphaNum  00001506/00001617/00090973     1    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       9      7  00009093  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   10    12
+      10      7  00009093  DTL   00001506/00001617/00090973     1    10  AlphaNum  00000000/00000000/00000000    59    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     7     0  None     
+      11      7  00009093  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   13
+      12      7  00009093  DTC   00001506/00001595/00000000    59    10  AlphaNum  ""                                            
+                                 Unsigned/  Left  /rnd=0000     7     0  None     

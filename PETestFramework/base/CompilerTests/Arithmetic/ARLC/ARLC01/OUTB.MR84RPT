@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN="Fred" + {MSKNM_MSKNM.ALNUM}
+ERROR: line 1:8: Invalid data type found in an arithmetic expression; see Fred (Const String)
+ERROR: line 1:29: Invalid data type found in an arithmetic expression; see lookup field ALNUM (AlphaNum)

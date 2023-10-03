@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {CYM_SYM_MSKNM_NUMER.ALNUM} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: Step number 1 of the lookup path 'CYM_SYM_MSKNM_NUMER' contains an invalid date symbol value 'TEST'. Check the value of the date symbol value in the lookup path definition and it should be in CCYYMMDD format

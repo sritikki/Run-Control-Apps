@@ -1,0 +1,4 @@
+INFO: Compiling format-phase calculation for column 5
+IF  (COL.4 >= 0 AND COL.4 <= 20 THEN COLUMN =  COL.4  /  COL.5 ELSE COLUMN = 0 ENDIF
+ERROR: line 1:12: expecting a ')', found '>='
+ERROR: line 1:17: unexpected token: AND

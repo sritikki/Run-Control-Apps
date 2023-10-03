@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 13
+COLUMN = 5.8
+ERROR: line 1:10: Date/Time format conflict assigning to column 13 "CMDY Column" (Packed - CYMD) from 5.8 (Const Number)

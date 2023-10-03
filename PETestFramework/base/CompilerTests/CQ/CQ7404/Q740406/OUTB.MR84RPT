@@ -1,0 +1,6 @@
+INFO: Compiling extract-phase cell logic for column 1
+WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=043,PROCEDURE={F0WAU})
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1     43  00002465  WRXT  Dest=Extract, Partition ID=0, Prog ID=96, Param=''

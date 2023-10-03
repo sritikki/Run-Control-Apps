@@ -1,0 +1,10 @@
+INFO: Compiling extract-phase cell logic for column 2
+COLUMN= "fred"
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+                 //
+                 //   Move a constant into the SK area          |------------------+
+                 //                                             V                  |
+       1      2  00003263  SKC   00000000/00000000/00000000    31    30  AlphaNum  "fred"                                        
+                                  Signed /  Left  /rnd=0000     2     0  None     

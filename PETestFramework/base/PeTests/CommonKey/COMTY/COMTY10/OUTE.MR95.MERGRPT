@@ -1,0 +1,68 @@
+1                                   GVBXRCK
+                                CONTROL REPORT
+
+ RUN      DATE:  12/09/14
+ COMPLETE TIME:  09:58:56
+
+0------------------------------------------------------------------------------------------------------------------
+ GVBXRCK PARAMETERS:
+
+0ENTITY   DDNAME   *CATEGORIES* PART  TY DU PL  KP KL BL TP   EP PP DB2 GDG ** DATASET TEMPLATE **                       OUT CATEGORY
+ -------- -------- ------------ ----- -- -- --  -- -- -- --  --- -- --- --- -------------------------------------------- ------------
+ COMAL    COMAL%!! N            00/00  B    00  56 02 02 00  000 00
+ COMLU    COMLU%!! N            00/00  B    00  56 02 02 00  000 00
+ BREAKLEN          02
+ LRBUFFER          001
+ EXTENSION         002
+ NOTFND            CONTINUE
+1------------------------------------------------------------------------------------------------------------------
+ PARTITION 00 SUMMARY TOTALS
+0 DDNAME  ENTITY/SRC INPUT REC COUNT  INPUT LENGTH      INPUT BYTES      DUPLICATE REC COUNT
+ -------- ---------- ---------------  ------------  -------------------  -------------------
+ COMALN00 COMAL   /N              10         100                  1,000                    0
+ COMLUN00 COMLU   /N              10         100                  1,000                    0
+ GENERATED TRANSACT                0                                  0
+           SUBTOTALS              20                              2,000                    0
+
+0------------------------------------------------------------------------------------------------------------------
+ (E) LOOKUPS FOUND                   0
+ (E) LOOKUPS NOT FOUND               0
+ (T) LOOKUPS FOUND                   0
+ (T) LOOKUPS NOT FOUND               0
+ (X) LOOKUPS FOUND                   0
+ (X) LOOKUPS NOT FOUND               0
+ (R) LOOKUPS FOUND                   0
+ (R) LOOKUPS NOT FOUND               0
+ (B) LOOKUPS FOUND                  10
+ (B) LOOKUPS NOT FOUND               0
+
+ BUFFER USE:             234  BUFFER MAX:       1,048,576
+
+ BREAK   KEY COUNT                  10
+ SRB/TCB SW  COUNT                   0
+
+0------------------------------------------------------------------------------------------------------------------
+1------------------------------------------------------------------------------------------------------------------
+ GVBXRCK GRAND TOTALS
+
+0                    INPUT REC COUNT                    INPUT BYTES      DUPLICATE REC COUNT
+                     ---------------                -------------------  -------------------
+                                  20                              2,000                    0
+0(E) LOOKUPS FOUND                   0
+ (E) LOOKUPS NOT FOUND               0
+ (T) LOOKUPS FOUND                   0
+ (T) LOOKUPS NOT FOUND               0
+ (X) LOOKUPS FOUND                   0
+ (X) LOOKUPS NOT FOUND               0
+ (R) LOOKUPS FOUND                   0
+ (R) LOOKUPS NOT FOUND               0
+ (B) LOOKUPS FOUND                  10
+ (B) LOOKUPS NOT FOUND               0
+
+ EXT    USE:               0  EXT    MAX:       2,097,152
+ EXT  COUNT:               0  EXT  QUEUE:               0
+
+ BREAK   KEY COUNT                  10
+ SRB/TCB SW  COUNT                   0
+
+0------------------------------------------------------------------------------------------------------------------

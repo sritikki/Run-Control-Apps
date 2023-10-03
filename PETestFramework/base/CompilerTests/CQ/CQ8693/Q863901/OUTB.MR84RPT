@@ -1,0 +1,30 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN = {MSKNM_MSKNM.NUMER} - {MSKNM_NUMER.PACKD}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      3  00003263  JOIN  00001285/00001364/00000442     1     0  AlphaNum  "1531"                                              4    14
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      3  00003263  LKE   00001284/00001264/00063319    18     8  MaskNum   00001284/00001264/00063319     1     3  MaskNum  
+                                  Signed / Right  /rnd=0000     4     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       3      3  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4    14
+       4      3  00003263  DIMN  Declare g_3263_1284_1264_3_0  =  0
+       5      3  00003263  SETL  00001285/00001364/00065313    25     3  ZonedDec 
+             g_3263_1284_1264_3_0   Signed / Right  /rnd=0000     3     0  None     
+       6      3  00003263  JOIN  00001285/00001364/00000442     1     0  AlphaNum  "1532"                                              9    14
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       7      3  00003263  LKE   00001284/00001264/00063319    18     8  MaskNum   00001284/00001264/00063319     1     3  ZonedDec 
+                                  Signed / Right  /rnd=0000     4     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       8      3  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    9    14
+       9      3  00003263  DIMN  Declare g_3263_1284_1264_3_1  =  0
+      10      3  00003263  SETA  g_3263_1284_1264_3_1  =  "g_3263_1284_1264_3_0"  
+      11      3  00003263  SUBL  00001285/00001364/00065314    28     8  Packed   
+             g_3263_1284_1264_3_1   Signed / Right  /rnd=0000     4     0  None     
+      12      3  00003263  DTA   00000000/00000000/00000000    61    30  ZonedDec 
+             g_3263_1284_1264_3_1   Signed /  Left  /rnd=0000     3     0  None     
+      13      3  00003263  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   15
+                 //
+                 //   Move a constant into the DT area          |------------------+
+                 //                                             V                  |
+      14      3  00003263  DTC   00001284/00001264/00000000    61    30  ZonedDec  "0"                                           
+                                  Signed /  Left  /rnd=0000     3     0  None     

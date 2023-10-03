@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {NUMER_SYM_MSKNM_NUMER.ALNUM; $SYM1 = -12} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:42: A positive integer is required, but the negative number -12 was found

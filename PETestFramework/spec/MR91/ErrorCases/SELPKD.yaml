@@ -1,0 +1,88 @@
+---
+name: "SELPKD"
+title: "Selection via Comparisons"
+description: "Select via ompare different source types to packed."
+category: "MR91/ErrorCases"
+cq: ""
+note: ""
+tests:
+- name: "PKDMTCH"
+  header: "LessThan"
+  description: "Select with BEGINS"
+  source: "XML"
+  mr91only: "Y"
+  decimalplaces: "0"
+  xmlfiles:
+  - name: "packedSELECT.xml"
+    replacements:
+    - replace: "%SELSTMNT%"
+      with: "SELECTIF({Description} MATCHES \\\"4-ve\\\")"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "The end"
+- name: "PKDLIKE"
+  header: "Contains"
+  description: "Select with CONTAINS"
+  source: "XML"
+  mr91only: "Y"
+  decimalplaces: "0"
+  xmlfiles:
+  - name: "packedSELECT.xml"
+    replacements:
+    - replace: "%SELSTMNT%"
+      with: "SELECTIF({Description} LIKE \\\"Column\\\")"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "The end"
+- name: "WRVIEW"
+  header: "WRVIEW"
+  description: "Can't WRITE source VIEW"
+  source: "XML"
+  mr91only: "Y"
+  decimalplaces: "0"
+  xmlfiles:
+  - name: "packedSELECT.xml"
+    replacements:
+    - replace: "%SELSTMNT%"
+      with: "WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=043,PROCEDURE={FRED})"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "The end"
+- name: "WRDATA"
+  header: "WRDATA"
+  description: "Can't WRITE source DATA"
+  source: "XML"
+  mr91only: "Y"
+  decimalplaces: "0"
+  xmlfiles:
+  - name: "packedSELECT.xml"
+    replacements:
+    - replace: "%SELSTMNT%"
+      with: "WRITE(SOURCE=DATA,DESTINATION=EXTRACT=043,PROCEDURE={FRED})"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "The end"
+- name: "NODEST"
+  header: "NODEST"
+  description: "Need a DESTINATION defined"
+  source: "XML"
+  mr91only: "Y"
+  decimalplaces: "0"
+  xmlfiles:
+  - name: "packedSELECT.xml"
+    replacements:
+    - replace: "%SELSTMNT%"
+      with: "WRITE(SOURCE=INPUT)"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "MR91LOG"
+    stopkey: "The End"

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {NUMER} * 2  = "FRED" THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:17: Data type conflict comparing accumulated value (Geneva) with FRED (Const String)

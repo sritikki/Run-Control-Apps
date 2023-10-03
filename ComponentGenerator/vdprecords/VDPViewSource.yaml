@@ -1,0 +1,40 @@
+record_name: VDPViewSource
+record_id: 3000
+component_name: ViewSource
+record_type: VDP_VIEW_SOURCE
+record_length: 308
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+  component_field: none
+- name: prefix.recordId
+  type: mappingOnly
+  component_field: componentId
+- name: prefix.sequenceNbr
+  type: mappingOnly
+  component_field: sequenceNumber
+- name: prefix.inputFileId
+  type: mappingOnly
+  component_field: sourceLFID
+- name: prefix.viewId
+  type: mappingOnly
+  component_field: viewId
+- name: view_src_lr_id
+  type: integer
+  component_field: sourceLRID
+- name: lr_select_value
+  type: string
+  maxlength: 256
+  component_field: none
+- name: lr_select_xlrfield_id
+  type: integer
+  component_field: none
+- name: lr_select_join_id
+  type: integer
+  component_field: none
+- name: padding1
+  type: string
+  maxlength: 16
+  padding : true
+  component_field: none

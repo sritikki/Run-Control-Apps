@@ -1,0 +1,31 @@
+INFO: Compiling extract-phase cell logic for column 2
+COLUMN = {AllTypesRecursive.Alphanumeric}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      2  00009100  JOIN  00001506/00001617/00003034     1     0  AlphaNum  "2501"                                             10    12
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      2  00009100  LKE   00001506/00001617/00090973     1    10  AlphaNum  00001506/00001617/00090973     1    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       3      2  00009100  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4    12
+                 //
+                 //   This value is the index ID ------|
+                 //                                    V
+       4      2  00009100  LKLR  00001506/00001617/00003034     1     0  AlphaNum  "2501"                                        
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       5      2  00009100  LKL   00001506/00001617/00090973     1    10  AlphaNum  00001506/00001617/00090973     1    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       6      2  00009100  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    7    12
+       7      2  00009100  LKLR  00001506/00001617/00003034     1     0  AlphaNum  "2501"                                        
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       8      2  00009100  LKL   00001506/00001617/00090973     1    10  AlphaNum  00001506/00001617/00090973     1    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       9      2  00009100  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   10    12
+      10      2  00009100  DTL   00001506/00001617/00090973     1    10  AlphaNum  00000000/00000000/00000000     1    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     1     0  None      Unsigned/  Left  /rnd=0000     2     0  None     
+      11      2  00009100  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   13
+                 //
+                 //   Move a constant into the DT area          |------------------+
+                 //                                             V                  |
+      12      2  00009100  DTC   00001506/00001617/00000000     1    10  AlphaNum  ""                                            
+                                 Unsigned/  Left  /rnd=0000     2     0  None     

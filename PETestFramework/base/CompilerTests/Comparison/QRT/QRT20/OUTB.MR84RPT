@@ -1,0 +1,17 @@
+INFO: Compiling extract-phase cell logic for column 1
+if Q3(2010) = Q1(2010) THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      1  00003263  CFCC  1st Mon Q1 (2010)              1    16  AlphaNum  GE 1st Mon Q3 (2010)           1    16  AlphaNum    2     5
+                                                                         CCYYMMDD 
+       2      1  00003263  CFCC  Last Mon Q1 (2010)             1    16  AlphaNum  LE Last Mon Q3 (2010)          1    16  AlphaNum    3     5
+                                                                         CCYYMMDD 
+       3      1  00003263  DTE   00001284/00001264/00063311     1     9  AlphaNum  00000000/00000000/00000000     1    30  AlphaNum 
+                                  Signed / Right  /rnd=0000     1     0  None       Signed /  Left  /rnd=0000     1     0  None     
+       4      1  00003263  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    6
+                 //
+                 //   Move a constant into the DT area          |------------------+
+                 //                                             V                  |
+       5      1  00003263  DTC   00000000/00000000/00000000     1    30  AlphaNum  "NO"                                          
+                                  Signed /  Left  /rnd=0000     1     0  None     

@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {CYM_SYM_MSKNM_NUMER.ALNUM; $SYM1 = 12} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:40: Data type conflict for symbol $SYM1 value 12 (Constant Integer) and its lookup field (AlphaNum - CYM).

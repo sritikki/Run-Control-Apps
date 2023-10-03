@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {MSKNM_MSKNM.HMS} = RUNDAY() THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:22: Date/Time format conflict comparing lookup field HMS (AlphaNum - HMS) with accumulated value (Date - CYMD)

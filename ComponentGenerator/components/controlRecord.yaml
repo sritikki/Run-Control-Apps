@@ -1,0 +1,24 @@
+#Control Record   - name
+#Not really much here
+#Used for financial management to define fiscal paramaters
+component_name: ControlRecord
+# A control record is just that a base component is only used within a view
+# so does not need a wrapper class
+# For a record the type object could be changed to record.... maybe
+# that however is not a valid schema keyword
+#The prefix can/should be extracted into its own schema?
+#not sure yet.... for the moment it is here
+members:
+- name: componentId
+  type: integer
+- name: name
+  type: string
+- name: description
+  type: string
+- name: firstFiscalMonth
+  type: short
+- name: beginningPeriod
+  type: short
+- name: endingPeriod
+  type: short
+# We need to figure out how to represent the VDP File record that is associated with this type

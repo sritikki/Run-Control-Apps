@@ -1,0 +1,2 @@
+tests,demoCustomerOrderSales,Ignore JLT date code,,forceJLTPass
+tests,demoExtractOrder,Ignore JLT date code,,forceJLTPass

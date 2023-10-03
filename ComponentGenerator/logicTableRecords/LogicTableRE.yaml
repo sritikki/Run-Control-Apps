@@ -1,0 +1,9 @@
+record_name: LogicTableRE
+record_type: RE
+record_length: 40
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: LTPrefix            
+- name: read_exit_id
+  type: integer

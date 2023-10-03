@@ -1,0 +1,18 @@
+record_name: LogicTableWR
+record_type: WR
+record_length: 308
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: LTPrefix 
+- name: dest_type
+  type: integer
+- name: output_file_id
+  type: integer
+- name: write_exit_id
+  type: integer
+- name: extr_sum_rec_cnt
+  type: integer
+- name: write_exit_parms
+  type: string
+  maxlength: 256

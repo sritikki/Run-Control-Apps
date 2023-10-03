@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 13
+COLUMN = "20101528000000111"
+ERROR: line 1:10: The date/time constant '20101528000000111' is too long. The maximum is 16 characters

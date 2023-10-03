@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 13
+COLUMN = {ALNUM}
+ERROR: line 1:11: Date/Time format conflict assigning to column 13 "CMDY Column" (Packed - CYMD) from ALNUM (AlphaNum)

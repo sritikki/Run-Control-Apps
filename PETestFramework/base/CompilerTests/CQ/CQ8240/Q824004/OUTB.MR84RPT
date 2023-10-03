@@ -1,0 +1,11 @@
+INFO: Compiling extract-phase cell logic for column 5
+COLUMN = 0 - {PSORT}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      5  00003263  DIMN  Declare g_3263_1284_1264_5_0  =  0
+       2      5  00003263  SETC  g_3263_1284_1264_5_0  =  "0"  
+       3      5  00003263  SUBE  00001284/00001264/00063315    26     5  PackSort 
+             g_3263_1284_1264_5_0   Signed / Right  /rnd=0000     5     2  None     
+       4      5  00003263  DTA   00000000/00000000/00000000     1    30  PackSort 
+             g_3263_1284_1264_5_0   Signed /  Left  /rnd=0000     1     0  None     

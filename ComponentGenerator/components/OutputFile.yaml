@@ -1,0 +1,49 @@
+#Output component
+#The output from a format view maps to the 1600 VDP record
+#and is basically a DDName
+#for an extract the situation is less clear but essentially the same
+component_name: OutputFile
+vdp_source: VDPFormatFile
+members:
+- name: componentId 
+  type: integer
+  vdp_source: prefix.inputFileId
+- name: logicalFileId 
+  type: integer
+  vdp_source: prefix.recordId
+- name: name 
+  type: string
+  vdp_source: name
+- name: logicalFilename 
+  type: string
+  vdp_source: LfName
+- name: outputDDName 
+  type: string
+  vdp_source: ddnameOutput
+- name: fileType 
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.FileType
+  vdp_source: allocFileType
+- name: fieldDelimiter 
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.FieldDelimiter
+  vdp_source: fieldDelimId
+- name: recordDelimiter 
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.RecordDelimiter
+  vdp_source: recordDelimId
+- name: textDelimiter 
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.TextDelimiter
+  vdp_source: textDelimId
+- name: accessMethod 
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.AccessMethod
+  vdp_source: accessMethodId
+- name: recfm 
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.FileRecfm
+  vdp_source: AllocRecfm
+- name: lrecl
+  type: short
+  vdp_source: allocLrecl

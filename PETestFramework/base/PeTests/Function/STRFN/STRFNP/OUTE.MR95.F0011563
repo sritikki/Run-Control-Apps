@@ -1,0 +1,10 @@
+Less1     FAIL      FAIL      
+LessPart1 FAIL      FAIL      
+Less3     FAIL      FAIL      
+LessPart3 FAIL      FAIL      
+Equal5    55555555555555555555
+LessPart6 FAIL      FAIL      
+Equal0    00000000000000000000
+ZeroOne   FAIL      0101010101
+Greater4  FAIL      FAIL      
+Greater2  FAIL      FAIL      

@@ -1,0 +1,1152 @@
+AlnumEQ    1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQ    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQ    3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 1 0
+AlnumEQ    4-ve Rev Cols nums: 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+AlnumEQLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumEQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumGE    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGE    3-ve Col nums     : 1 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 0 1 1
+AlnumGE    4-ve Rev Cols nums: 1 1 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 1
+AlnumGELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumGELL  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumGELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGELR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGELR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGT    1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumGT    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGT    3-ve Col nums     : 0 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 0 0 1
+AlnumGT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGTLL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumGTLL  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumGTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGTLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGTLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumGTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLE    1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLE    2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumLE    3-ve Col nums     : 1 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 1 1 0
+AlnumLE    4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumLELL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLELL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumLELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumLELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLT    1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLT    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumLT    3-ve Col nums     : 0 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 1 0 0
+AlnumLT    4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 1 0
+AlnumLTLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLTLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLTLR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumLTLR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumLTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumLTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumNE    1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumNE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumNE    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 1
+AlnumNE    4-ve Rev Cols nums: 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+AlnumNELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumNELL  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumNELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumNELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumNELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumNELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+AlnumNELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+AlnumNELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQ     1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQ     2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQ     3-ve Col nums     : 0 1 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQ     4-ve Rev Cols nums: 0 1 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLL   1Column nums      : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLL   2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLR   1Column nums      : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLR   2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1EQLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GE     1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin1GE     2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GE     3-ve Col nums     : 1 1 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GE     4-ve Rev Cols nums: 1 1 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GELL   1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin1GELL   2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1GELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GELR   1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin1GELR   2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GT     1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin1GT     2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GT     3-ve Col nums     : 1 0 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GT     4-ve Rev Cols nums: 1 0 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GTLL   1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin1GTLL   2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1GTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GTLR   1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin1GTLR   2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1GTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LE     1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 1 0
+Bin1LE     2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin1LE     3-ve Col nums     : 1 1 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin1LE     4-ve Rev Cols nums: 1 1 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin1LELL   1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin1LELL   2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LELR   1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin1LELR   2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1LELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LT     1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin1LT     2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1LT     3-ve Col nums     : 0 0 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1LT     4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1LTLL   1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin1LTLL   2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LTLR   1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin1LTLR   2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1LTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1LTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1NE     1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NE     2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NE     3-ve Col nums     : 1 0 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NE     4-ve Rev Cols nums: 1 0 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NELL   1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NELL   2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1NELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1NELR   1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NELR   2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin1NELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin1NELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQ     1Column nums      : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQ     2Rev Column nums  : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQ     3-ve Col nums     : 0 0 0 1 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQ     4-ve Rev Cols nums: 0 0 0 1 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLL   1Column nums      : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLL   2Rev Column nums  : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLR   1Column nums      : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLR   2Rev Column nums  : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2EQLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GE     1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin2GE     2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GE     3-ve Col nums     : 1 0 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GE     4-ve Rev Cols nums: 1 0 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GELL   1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin2GELL   2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2GELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GELR   1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin2GELR   2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GT     1Column nums      : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin2GT     2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GT     3-ve Col nums     : 1 0 0 0 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GT     4-ve Rev Cols nums: 1 0 0 0 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GTLL   1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin2GTLL   2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2GTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GTLR   1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin2GTLR   2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2GTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LE     1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 1 0
+Bin2LE     2Rev Column nums  : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin2LE     3-ve Col nums     : 1 1 1 1 1 0 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin2LE     4-ve Rev Cols nums: 1 1 1 1 1 0 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin2LELL   1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin2LELL   2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LELR   1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin2LELR   2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2LELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LT     1Column nums      : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin2LT     2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2LT     3-ve Col nums     : 0 1 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2LT     4-ve Rev Cols nums: 0 1 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2LTLL   1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin2LTLL   2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LTLR   1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin2LTLR   2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2LTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2LTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2NE     1Column nums      : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NE     2Rev Column nums  : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NE     3-ve Col nums     : 1 1 1 0 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NE     4-ve Rev Cols nums: 1 1 1 0 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NELL   1Column nums      : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NELL   2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2NELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2NELR   1Column nums      : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NELR   2Rev Column nums  : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin2NELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin2NELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQ     1Column nums      : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+Bin4EQ     2Rev Column nums  : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQ     3-ve Col nums     : 0 0 0 0 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQ     4-ve Rev Cols nums: 0 0 0 0 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQLL   1Column nums      : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+Bin4EQLL   2Rev Column nums  : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQLR   1Column nums      : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+Bin4EQLR   2Rev Column nums  : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4EQLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GE     1Column nums      : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin4GE     2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GE     3-ve Col nums     : 1 0 0 0 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GE     4-ve Rev Cols nums: 1 0 0 0 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GELL   1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 1
+Bin4GELL   2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4GELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GELR   1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin4GELR   2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GT     1Column nums      : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+Bin4GT     2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GT     3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GT     4-ve Rev Cols nums: 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GTLL   1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin4GTLL   2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4GTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GTLR   1Column nums      : 0 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+Bin4GTLR   2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4GTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LE     1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+Bin4LE     2Rev Column nums  : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin4LE     3-ve Col nums     : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin4LE     4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+Bin4LELL   1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+Bin4LELL   2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LELR   1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 1
+Bin4LELR   2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4LELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LT     1Column nums      : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin4LT     2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4LT     3-ve Col nums     : 0 1 1 1 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4LT     4-ve Rev Cols nums: 0 1 1 1 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4LTLL   1Column nums      : 0 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+Bin4LTLL   2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LTLR   1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+Bin4LTLR   2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4LTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4LTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4NE     1Column nums      : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 0 1
+Bin4NE     2Rev Column nums  : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4NE     3-ve Col nums     : 1 1 1 1 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4NE     4-ve Rev Cols nums: 1 1 1 1 1 0 1 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4NELL   1Column nums      : 1 0 0 1 1 0 0 1 1 1 1 1 1 1 6 1 1 0 1
+Bin4NELL   2Rev Column nums  : 1 0 0 1 1 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4NELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4NELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4NELR   1Column nums      : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 0 1
+Bin4NELR   2Rev Column nums  : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin4NELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin4NELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQ     1Column nums      : 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQ     2Rev Column nums  : 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQ     3-ve Col nums     : 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQ     4-ve Rev Cols nums: 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLL   1Column nums      : 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLL   2Rev Column nums  : 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLR   1Column nums      : 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLR   2Rev Column nums  : 0 0 0 0 0 0 0 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8EQLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GE     1Column nums      : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+Bin8GE     2Rev Column nums  : 0 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8GE     3-ve Col nums     : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 1 1
+Bin8GE     4-ve Rev Cols nums: 0 1 0 1 0 1 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin8GELL   1Column nums      : 1 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 1 1
+Bin8GELL   2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin8GELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GELR   1Column nums      : 0 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+Bin8GELR   2Rev Column nums  : 0 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8GELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GT     1Column nums      : 1 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 0 0
+Bin8GT     2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GT     3-ve Col nums     : 0 1 1 1 1 1 1 0 1 0 0 0 0 0 6 0 0 1 1
+Bin8GT     4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8GTLL   1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 1
+Bin8GTLL   2Rev Column nums  : 1 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8GTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GTLR   1Column nums      : 0 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 0 0
+Bin8GTLR   2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8GTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LE     1Column nums      : 1 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8LE     2Rev Column nums  : 0 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+Bin8LE     3-ve Col nums     : 0 0 0 0 0 0 0 1 0 1 1 1 1 1 6 1 1 1 1
+Bin8LE     4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 0 0 0 0 0 6 0 0 1 1
+Bin8LELL   1Column nums      : 0 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+Bin8LELL   2Rev Column nums  : 0 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 0 0
+Bin8LELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LELR   1Column nums      : 1 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 1 1
+Bin8LELR   2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+Bin8LELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LT     1Column nums      : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 1
+Bin8LT     2Rev Column nums  : 1 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8LT     3-ve Col nums     : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+Bin8LT     4-ve Rev Cols nums: 1 0 1 0 1 0 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LTLL   1Column nums      : 0 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 0 0
+Bin8LTLL   2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LTLR   1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 1
+Bin8LTLR   2Rev Column nums  : 1 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8LTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8LTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8NE     1Column nums      : 1 1 1 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NE     2Rev Column nums  : 1 1 1 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NE     3-ve Col nums     : 1 1 1 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NE     4-ve Rev Cols nums: 1 1 1 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NELL   1Column nums      : 1 0 0 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NELL   2Rev Column nums  : 1 0 0 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8NELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8NELR   1Column nums      : 1 1 1 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NELR   2Rev Column nums  : 1 1 1 1 1 1 1 0 1 1 1 1 1 1 6 1 1 1 1
+Bin8NELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+Bin8NELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDEQ      1Column nums      : 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQ      2Rev Column nums  : 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQ      3-ve Col nums     : 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQ      4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQLL    1Column nums      : 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQLL    2Rev Column nums  : 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQLL    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDEQLL    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDEQLR    1Column nums      : 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQLR    2Rev Column nums  : 0 0 0 0 0 0 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDEQLR    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDEQLR    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGE      1Column nums      : 1 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 0 0
+BCDGE      2Rev Column nums  : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 0 0
+BCDGE      3-ve Col nums     : 1 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDGE      4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 0 0 0
+BCDGELL    1Column nums      : 1 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 1 1
+BCDGELL    2Rev Column nums  : 1 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 1 1
+BCDGELL    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGELL    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGELR    1Column nums      : 0 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 0 0
+BCDGELR    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 0 0
+BCDGELR    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGELR    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGT      1Column nums      : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+BCDGT      2Rev Column nums  : 0 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 0 0
+BCDGT      3-ve Col nums     : 1 1 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGT      4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGTLL    1Column nums      : 1 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 1 1
+BCDGTLL    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 1 1
+BCDGTLL    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGTLL    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGTLR    1Column nums      : 0 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+BCDGTLR    2Rev Column nums  : 0 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 0 0
+BCDGTLR    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDGTLR    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLE      1Column nums      : 1 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 0 0
+BCDLE      2Rev Column nums  : 0 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 0 0
+BCDLE      3-ve Col nums     : 1 0 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 0 0
+BCDLE      4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 1 1 1 1 1 1 6 1 1 0 0
+BCDLELL    1Column nums      : 0 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 0 0
+BCDLELL    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 0 0
+BCDLELL    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLELL    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLELR    1Column nums      : 1 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 1 1
+BCDLELR    2Rev Column nums  : 1 0 0 0 0 0 0 0 1 1 1 1 1 1 6 1 1 1 1
+BCDLELR    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLELR    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLT      1Column nums      : 0 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 1 1
+BCDLT      2Rev Column nums  : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 1 1
+BCDLT      3-ve Col nums     : 0 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDLT      4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDLTLL    1Column nums      : 0 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+BCDLTLL    2Rev Column nums  : 0 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 0 0
+BCDLTLL    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLTLL    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLTLR    1Column nums      : 1 1 1 1 1 1 1 1 0 0 0 0 0 0 6 0 0 1 1
+BCDLTLR    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 1 1
+BCDLTLR    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDLTLR    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDNE      1Column nums      : 1 1 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNE      2Rev Column nums  : 1 1 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNE      3-ve Col nums     : 1 1 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNE      4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNELL    1Column nums      : 1 0 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNELL    2Rev Column nums  : 1 0 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNELL    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDNELL    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDNELR    1Column nums      : 1 1 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNELR    2Rev Column nums  : 1 1 1 1 1 1 1 1 0 1 1 1 1 1 6 1 1 1 1
+BCDNELR    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BCDNELR    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortEQ    1Column nums      : 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQ    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQ    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQ    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQLL  1Column nums      : 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortEQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortEQLR  1Column nums      : 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 1 0 0 0 0 6 0 0 0 0
+BSortEQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortEQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGE    1Column nums      : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+BSortGE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 0 0
+BSortGE    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 1 1
+BSortGE    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 1 1 1 1 1 6 1 1 1 1
+BSortGELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 1 1
+BSortGELL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 1 1
+BSortGELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGELR  1Column nums      : 0 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+BSortGELR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 0 0
+BSortGELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGT    1Column nums      : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+BSortGT    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 0 0
+BSortGT    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 1 1
+BSortGT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 1 1 1 1 6 1 1 1 1
+BSortGTLL  1Column nums      : 1 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 1 1
+BSortGTLL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 1 1
+BSortGTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGTLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+BSortGTLR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 0 0
+BSortGTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortGTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 0 0
+BSortLE    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+BSortLE    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 1 1
+BSortLE    4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 1 0 0 0 0 6 0 0 1 1
+BSortLELL  1Column nums      : 0 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 0 0
+BSortLELL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 0 0
+BSortLELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 1 1
+BSortLELR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 1 1 1 1 1 6 1 1 1 1
+BSortLELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLT    1Column nums      : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 1 1
+BSortLT    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 1 1
+BSortLT    3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+BSortLT    4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 0 0 0 0 0 6 0 0 0 0
+BSortLTLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+BSortLTLL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 0 0
+BSortLTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLTLR  1Column nums      : 1 1 1 1 1 1 1 1 1 0 0 0 0 0 6 0 0 1 1
+BSortLTLR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 1 1
+BSortLTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortLTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortNE    1Column nums      : 1 1 1 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNE    2Rev Column nums  : 1 1 1 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNE    3-ve Col nums     : 1 1 1 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNE    4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNELL  1Column nums      : 1 0 0 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNELL  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortNELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortNELR  1Column nums      : 1 1 1 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 0 1 1 1 1 6 1 1 1 1
+BSortNELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+BSortNELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumEQ    1Column nums      : 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQ    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQ    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQ    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumEQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumEQLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 1 0 0 0 6 0 0 0 0
+EdnumEQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumEQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGE    1Column nums      : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+EdnumGE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+EdnumGE    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+EdnumGE    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 1 1 1 1 6 1 1 1 1
+EdnumGELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+EdnumGELL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 1 1
+EdnumGELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGELR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+EdnumGELR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+EdnumGELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGT    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+EdnumGT    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 0 0
+EdnumGT    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 1 1
+EdnumGT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 1 1 1 6 1 1 1 1
+EdnumGTLL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 1 1
+EdnumGTLL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+EdnumGTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGTLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+EdnumGTLR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 0 0
+EdnumGTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumGTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+EdnumLE    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+EdnumLE    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 1 1
+EdnumLE    4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 1 1 0 0 0 6 0 0 1 1
+EdnumLELL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 0 0
+EdnumLELL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+EdnumLELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+EdnumLELR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 1 1 1 1 6 1 1 1 1
+EdnumLELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLT    1Column nums      : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 1 1
+EdnumLT    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+EdnumLT    3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+EdnumLT    4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 1 0 0 0 0 6 0 0 0 0
+EdnumLTLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+EdnumLTLL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 0 0
+EdnumLTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLTLR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 0 0 0 0 6 0 0 1 1
+EdnumLTLR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+EdnumLTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumLTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumNE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNE    2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNE    3-ve Col nums     : 1 1 1 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNE    4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNELL  1Column nums      : 1 0 0 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNELL  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumNELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumNELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 0 1 1 1 6 1 1 1 1
+EdnumNELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+EdnumNELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackEQ     1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQ     2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQ     3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQ     4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQLL   1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQLL   2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackEQLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackEQLR   1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQLR   2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+PackEQLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackEQLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGE     1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+PackGE     2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+PackGE     3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PackGE     4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 1 6 1 1 1 0
+PackGELL   1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PackGELL   2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+PackGELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGELR   1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+PackGELR   2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+PackGELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGT     1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PackGT     2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+PackGT     3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+PackGT     4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 1 1 0
+PackGTLL   1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+PackGTLL   2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+PackGTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGTLR   1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PackGTLR   2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+PackGTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackGTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLE     1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 0 0
+PackLE     2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 1 0
+PackLE     3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 1 1
+PackLE     4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 0 1 0
+PackLELL   1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+PackLELL   2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+PackLELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLELR   1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PackLELR   2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+PackLELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLT     1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+PackLT     2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+PackLT     3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PackLT     4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 1 1 1 1 0 6 0 0 0 1
+PackLTLL   1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PackLTLL   2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+PackLTLL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLTLL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLTLR   1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+PackLTLR   2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+PackLTLR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackLTLR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackNE     1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNE     2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNE     3-ve Col nums     : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNE     4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNELL   1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNELL   2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNELL   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackNELL   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackNELR   1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNELR   2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+PackNELR   3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PackNELR   4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortEQ    1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQ    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQ    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQ    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortEQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortEQLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortEQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortEQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGE    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortGE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+PsortGE    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+PsortGE    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 1 1 0
+PsortGELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+PsortGELL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+PsortGELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGELR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortGELR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+PsortGELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGT    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGT    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+PsortGT    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortGT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 0 1 0
+PsortGTLL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortGTLL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+PsortGTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGTLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGTLR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+PsortGTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortGTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+PsortLE    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 1 0
+PsortLE    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 1 1
+PsortLE    4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 1 1 0
+PsortLELL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+PsortLELL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+PsortLELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+PsortLELR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+PsortLELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLT    1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortLT    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+PsortLT    3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLT    4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 0 0 1
+PsortLTLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLTLL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+PsortLTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLTLR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortLTLR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+PsortLTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortLTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortNE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNE    2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNE    3-ve Col nums     : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNE    4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNELL  1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNELL  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortNELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortNELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+PsortNELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+PsortNELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQ    1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQ    2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQ    3-ve Col nums     : 0 0 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQ    4-ve Rev Cols nums: 0 0 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLL  1Column nums      : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLL  2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLR  1Column nums      : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLR  2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1EQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1GE    2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GE    3-ve Col nums     : 0 1 1 1 0 1 0 0 1 0 0 0 0 0 6 0 0 1 0
+SBin1GE    4-ve Rev Cols nums: 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1GELL  1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin1GELL  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1GELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GELR  1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1GELR  2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GT    1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1GT    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GT    3-ve Col nums     : 0 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 0 1 0
+SBin1GT    4-ve Rev Cols nums: 0 1 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1GTLL  1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin1GTLL  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1GTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GTLR  1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1GTLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1GTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LE    1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 1 0
+SBin1LE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+SBin1LE    3-ve Col nums     : 0 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 1 1 0
+SBin1LE    4-ve Rev Cols nums: 0 0 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 1 0
+SBin1LELL  1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1LELL  2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LELR  1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin1LELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1LELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LT    1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin1LT    2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1LT    3-ve Col nums     : 1 0 0 0 1 0 1 1 0 1 1 1 1 1 6 1 1 0 1
+SBin1LT    4-ve Rev Cols nums: 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin1LTLL  1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin1LTLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LTLR  1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin1LTLR  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1LTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1LTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1NE    1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NE    2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NE    3-ve Col nums     : 1 1 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NE    4-ve Rev Cols nums: 1 1 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NELL  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1NELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1NELR  1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NELR  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin1NELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin1NELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQ    1Column nums      : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQ    2Rev Column nums  : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQ    3-ve Col nums     : 0 0 0 0 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQ    4-ve Rev Cols nums: 0 0 0 0 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLL  1Column nums      : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLL  2Rev Column nums  : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLR  1Column nums      : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLR  2Rev Column nums  : 0 0 0 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2EQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GE    1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin2GE    2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GE    3-ve Col nums     : 0 1 1 1 1 1 0 0 1 0 0 0 0 0 6 0 0 1 0
+SBin2GE    4-ve Rev Cols nums: 0 1 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2GELL  1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin2GELL  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2GELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GELR  1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin2GELR  2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GT    1Column nums      : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin2GT    2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GT    3-ve Col nums     : 0 1 1 1 0 1 0 0 1 0 0 0 0 0 6 0 0 1 0
+SBin2GT    4-ve Rev Cols nums: 0 1 0 1 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2GTLL  1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin2GTLL  2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2GTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GTLR  1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin2GTLR  2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2GTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LE    1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 1 0
+SBin2LE    2Rev Column nums  : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+SBin2LE    3-ve Col nums     : 0 0 0 0 1 0 1 1 0 1 1 1 1 1 6 1 1 1 0
+SBin2LE    4-ve Rev Cols nums: 0 0 1 0 1 0 0 0 0 0 0 0 0 0 6 0 0 1 1
+SBin2LELL  1Column nums      : 0 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin2LELL  2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LELR  1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin2LELR  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2LELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LT    1Column nums      : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin2LT    2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2LT    3-ve Col nums     : 1 0 0 0 0 0 1 1 0 1 1 1 1 1 6 1 1 0 1
+SBin2LT    4-ve Rev Cols nums: 1 0 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LTLL  1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin2LTLL  2Rev Column nums  : 0 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LTLR  1Column nums      : 1 1 1 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin2LTLR  2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2LTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2LTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2NE    1Column nums      : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NE    2Rev Column nums  : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NE    3-ve Col nums     : 1 1 1 1 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NE    4-ve Rev Cols nums: 1 1 1 1 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NELL  1Column nums      : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NELL  2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2NELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2NELR  1Column nums      : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NELR  2Rev Column nums  : 1 1 1 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin2NELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin2NELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQ    1Column nums      : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+SBin4EQ    2Rev Column nums  : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQ    3-ve Col nums     : 0 0 0 0 0 0 1 0 0 0 0 0 0 0 6 0 0 0 1
+SBin4EQ    4-ve Rev Cols nums: 0 0 0 0 0 0 1 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQLL  1Column nums      : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+SBin4EQLL  2Rev Column nums  : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQLR  1Column nums      : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+SBin4EQLR  2Rev Column nums  : 0 0 0 0 0 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4EQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GE    1Column nums      : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin4GE    2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GE    3-ve Col nums     : 0 1 1 1 1 1 1 0 1 0 0 0 0 0 6 0 0 1 1
+SBin4GE    4-ve Rev Cols nums: 0 1 0 1 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4GELL  1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 1
+SBin4GELL  2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4GELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GELR  1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin4GELR  2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GT    1Column nums      : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+SBin4GT    2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GT    3-ve Col nums     : 0 1 1 1 1 1 0 0 1 0 0 0 0 0 6 0 0 1 0
+SBin4GT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4GTLL  1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin4GTLL  2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4GTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GTLR  1Column nums      : 0 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+SBin4GTLR  2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4GTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LE    1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 0
+SBin4LE    2Rev Column nums  : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 0 0
+SBin4LE    3-ve Col nums     : 0 0 0 0 0 0 1 1 0 1 1 1 1 1 6 1 1 1 1
+SBin4LE    4-ve Rev Cols nums: 0 0 1 0 1 0 1 0 0 0 0 0 0 0 6 0 0 1 1
+SBin4LELL  1Column nums      : 0 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 0
+SBin4LELL  2Rev Column nums  : 0 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LELR  1Column nums      : 1 1 1 1 1 1 1 0 0 0 0 0 0 0 6 0 0 1 1
+SBin4LELR  2Rev Column nums  : 1 0 0 0 0 1 1 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4LELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LT    1Column nums      : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin4LT    2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4LT    3-ve Col nums     : 1 0 0 0 0 0 0 1 0 1 1 1 1 1 6 1 1 0 0
+SBin4LT    4-ve Rev Cols nums: 1 0 1 0 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LTLL  1Column nums      : 0 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 0 0
+SBin4LTLL  2Rev Column nums  : 0 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LTLR  1Column nums      : 1 1 1 1 1 0 0 0 0 0 0 0 0 0 6 0 0 0 1
+SBin4LTLR  2Rev Column nums  : 1 0 0 0 0 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4LTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4LTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4NE    1Column nums      : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 0 1
+SBin4NE    2Rev Column nums  : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4NE    3-ve Col nums     : 1 1 1 1 1 1 0 1 1 1 1 1 1 1 6 1 1 1 0
+SBin4NE    4-ve Rev Cols nums: 1 1 1 1 1 1 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4NELL  1Column nums      : 1 0 0 1 1 0 0 1 1 1 1 1 1 1 6 1 1 0 1
+SBin4NELL  2Rev Column nums  : 1 0 0 1 1 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4NELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4NELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4NELR  1Column nums      : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 0 1
+SBin4NELR  2Rev Column nums  : 1 1 1 1 1 0 0 1 1 1 1 1 1 1 6 1 1 1 1
+SBin4NELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+SBin4NELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackEQ    1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQ    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQ    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQ    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackEQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackEQLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 0 0 0
+UPackEQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackEQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGE    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+UPackGE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+UPackGE    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+UPackGE    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 1 6 1 1 1 0
+UPackGELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+UPackGELL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+UPackGELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGELR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+UPackGELR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+UPackGELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGT    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+UPackGT    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+UPackGT    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+UPackGT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 0 6 0 1 1 0
+UPackGTLL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+UPackGTLL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+UPackGTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGTLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+UPackGTLR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+UPackGTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackGTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 0 0
+UPackLE    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 1 0
+UPackLE    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 1 1
+UPackLE    4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 1 1 1 1 1 6 1 0 1 0
+UPackLELL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+UPackLELL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 0
+UPackLELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 1 0 1 1
+UPackLELR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+UPackLELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLT    1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+UPackLT    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+UPackLT    3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+UPackLT    4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 1 1 1 1 0 6 0 0 0 1
+UPackLTLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 0
+UPackLTLL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+UPackLTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLTLR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+UPackLTLR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 1 0 1
+UPackLTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackLTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackNE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNE    2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNE    3-ve Col nums     : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNE    4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNELL  1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNELL  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackNELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackNELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 1 1 1
+UPackNELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UPackNELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneEQ    1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+UZoneEQ    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 1 0
+UZoneEQ    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+UZoneEQ    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 1
+UZoneEQLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+UZoneEQLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 1 0
+UZoneEQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneEQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneEQLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+UZoneEQLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 1 0
+UZoneEQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneEQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGE    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+UZoneGE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+UZoneGE    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+UZoneGE    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 1 1 1 6 1 1 1 1
+UZoneGELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+UZoneGELL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+UZoneGELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGELR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+UZoneGELR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+UZoneGELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGT    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+UZoneGT    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+UZoneGT    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+UZoneGT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 1 6 1 1 1 0
+UZoneGTLL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+UZoneGTLL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+UZoneGTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGTLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+UZoneGTLR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+UZoneGTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneGTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 0 0
+UZoneLE    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 0
+UZoneLE    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+UZoneLE    4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 1 1 1 1 0 6 0 0 1 1
+UZoneLELL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+UZoneLELL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+UZoneLELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+UZoneLELR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+UZoneLELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLT    1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+UZoneLT    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+UZoneLT    3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+UZoneLT    4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 1 1 0 0 0 6 0 0 0 0
+UZoneLTLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+UZoneLTLL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+UZoneLTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLTLR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+UZoneLTLR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+UZoneLTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneLTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneNE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+UZoneNE    2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 0 1
+UZoneNE    3-ve Col nums     : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+UZoneNE    4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 0
+UZoneNELL  1Column nums      : 1 0 0 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+UZoneNELL  2Rev Column nums  : 1 0 0 1 1 1 1 1 1 1 1 0 0 1 6 1 1 0 1
+UZoneNELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneNELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneNELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+UZoneNELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 0 1
+UZoneNELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+UZoneNELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDEQ    1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+ZONEDEQ    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 1 0
+ZONEDEQ    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+ZONEDEQ    4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 1
+ZONEDEQLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+ZONEDEQLL  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 1 0
+ZONEDEQLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDEQLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDEQLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 0 0
+ZONEDEQLR  2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 0 6 0 0 1 0
+ZONEDEQLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDEQLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGE    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+ZONEDGE    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+ZONEDGE    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+ZONEDGE    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 1 1 1 6 1 1 1 1
+ZONEDGELL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+ZONEDGELL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+ZONEDGELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGELR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+ZONEDGELR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+ZONEDGELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGT    1Column nums      : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+ZONEDGT    2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+ZONEDGT    3-ve Col nums     : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+ZONEDGT    4-ve Rev Cols nums: 0 1 0 1 0 1 0 0 1 0 0 0 0 1 6 1 1 1 0
+ZONEDGTLL  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+ZONEDGTLL  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+ZONEDGTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGTLR  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+ZONEDGTLR  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+ZONEDGTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDGTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 0 0
+ZONEDLE    2Rev Column nums  : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 0
+ZONEDLE    3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+ZONEDLE    4-ve Rev Cols nums: 0 0 1 0 1 0 1 1 0 1 1 1 1 0 6 0 0 1 1
+ZONEDLELL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 0 0
+ZONEDLELL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 0
+ZONEDLELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 1 1 0 6 0 0 1 1
+ZONEDLELR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 1 1 1 6 1 1 1 1
+ZONEDLELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLT    1Column nums      : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+ZONEDLT    2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+ZONEDLT    3-ve Col nums     : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+ZONEDLT    4-ve Rev Cols nums: 1 0 1 0 1 0 1 1 0 1 1 0 0 0 6 0 0 0 0
+ZONEDLTLL  1Column nums      : 0 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 0
+ZONEDLTLL  2Rev Column nums  : 0 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 0 0
+ZONEDLTLL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLTLL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLTLR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 0 6 0 0 1 1
+ZONEDLTLR  2Rev Column nums  : 1 0 0 0 0 0 0 0 0 0 0 0 0 1 6 1 1 0 1
+ZONEDLTLR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDLTLR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDNE    1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+ZONEDNE    2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 0 1
+ZONEDNE    3-ve Col nums     : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+ZONEDNE    4-ve Rev Cols nums: 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 0
+ZONEDNELL  1Column nums      : 1 1 0 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+ZONEDNELL  2Rev Column nums  : 1 1 0 1 1 1 1 1 1 1 1 0 0 1 6 1 1 0 1
+ZONEDNELL  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDNELL  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDNELR  1Column nums      : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 1 1
+ZONEDNELR  2Rev Column nums  : 1 1 1 1 1 1 1 1 1 1 1 0 0 1 6 1 1 0 1
+ZONEDNELR  3-ve Col nums     : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0
+ZONEDNELR  4-ve Rev Cols nums: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0

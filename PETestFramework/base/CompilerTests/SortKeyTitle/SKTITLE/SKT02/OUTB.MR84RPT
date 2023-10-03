@@ -1,0 +1,16 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {ALNUM}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      1  00003263  SKE   00001284/00001264/00063311     1     9  AlphaNum  00000000/00000000/00000000     1    30  AlphaNum 
+                                  Signed / Right  /rnd=0000     1     0  None       Signed /  Left  /rnd=0000     1     0  None     
+                 //
+                 //   This value is the index ID ------|
+                 //                                    V
+       2      1  00003263  LKLR  00001285/00001364/00000442     1     0  AlphaNum  "1531"                                        
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       3      1  00003263  LKE   00001284/00001264/00063319    18     8  MaskNum   00001284/00001264/00063319     1     3  MaskNum  
+                                  Signed / Right  /rnd=0000     4     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       4      1  00003263  KSLK  00001285/00001364/00065311     1     9  AlphaNum 
+                                  Signed / Right  /rnd=0000     1     0  None     

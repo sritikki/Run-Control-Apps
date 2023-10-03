@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = 0 - {FRED}
+ERROR: line 1:15: The field 'FRED' is not defined in the data source's logical record 'All Types'
+ERROR: line 1:12: Data type conflict assigning to column 1 "Column Number 1" (AlphaNum) from accumulated value (Geneva)

@@ -1,0 +1,12 @@
+INFO: Compiling extract-phase filter for data source file ID 1284, LR ID 1264
+SKIPIF({EVENT_JOURNAL_TO_LE_DESC.LEGAL_ENTITY_TITLE}="FRED")
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      0  00003263  JOIN  00001287/00001263/00002890     1     0  AlphaNum  "1534"                                              4     5
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      0  00003263  LKE   00001284/00001264/00063311     1     9  ZonedDec  00001284/00001264/00063311     1     9  ZonedDec 
+                                  Signed / Right  /rnd=0000     1     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       3      0  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4     5
+       4      0  00003263  CFLC  00001287/00001263/00063310    10    30  AlphaNum  EQ "FRED"                                          NV     5
+                                  Signed /  Left  /rnd=0000     2     0  None     

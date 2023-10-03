@@ -1,0 +1,35 @@
+---
+name: "CMSFOR"
+title: "Search for cases"
+description: "Exercise the SFxx function codes"
+category: "PeTests/Comparison/SearchFor"
+cq: ""
+note: ""
+tests:
+- name: "SRCHFOR"
+  header: "SRCHFOR"
+  description: "Exercise the SFxx function codes"
+  source: "WBXML"
+  xmlfiles:
+  - name: "SEARCHFOR[11350].xml"
+    
+  eventfiles:
+  - ddname: "SRCHFOR"
+    filename: "CMPTYPE.SFORFB"
+  reffiles:
+  - ddname: "SRCHLKP"
+    filename: "CMPTYPE.SFORFB.LKUP"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "FMTOUT01"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"

@@ -1,0 +1,20 @@
+INFO: Compiling format-phase calculation for column 5
+IF  COL.4 > 0 THEN IF  COL.4 < 110 THEN COLUMN =  COL.4  +  COL.5 ELSE COLUMN = 0 ENDIF ENDIF
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      5  00008820  CALC  
+                           Offset  Row  Opcode       Value
+                           -------------------------------
+                                0    1  Push Column  4
+                                8    2  Push Number  0
+                               60    3  Branch LE    216
+                               68    4  Push Column  4
+                               76    5  Push Number  110
+                              128    6  Branch GE    164
+                              136    7  Push Column  4
+                              144    8  Push Column  5
+                              152    9  Add
+                              156   10  Branch       216
+                              164   11  Push Number  0
+                              216   12  End

@@ -1,0 +1,4 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN = 0 - {BANANA.FRED}
+ERROR: line 1:15: The lookup path 'BANANA' is not defined
+ERROR: line 1:15: The lookup path 'BANANA' is not defined

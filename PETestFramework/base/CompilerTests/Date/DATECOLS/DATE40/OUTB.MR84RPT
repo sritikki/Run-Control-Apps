@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 13
+COLUMN = RUNDAY(1.33)
+ERROR: line 1:17: An integer is required, but a floating point number 1.33 was found

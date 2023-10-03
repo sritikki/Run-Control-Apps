@@ -1,0 +1,27 @@
+INFO: Compiling extract-phase cell logic for column 2
+IF ISNOTFOUND({SALES_to_PRODUCT_TYPES}) THEN COLUMN = {TOTAL_AMOUNT}  ELSE   COLUMN = 0 ENDIF
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      2  00001312  JOIN  00000199/00000270/00000442     1     0  AlphaNum  "302"                                              11     9
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      2  00001312  LKE   00000204/00000293/00004268     3    10  AlphaNum  00000204/00000293/00004268     1    26  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     2     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       3      2  00001312  LKDC  00000000/00000000/00000000     1     4  Binary    RUNDAY (0)                                    
+                                 Unsigned/  Left  /rnd=0000     0     0  CCYYMMDD 
+       4      2  00001312  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    5     9
+                 //
+                 //   This value is the index ID ------|
+                 //                                    V
+       5      2  00001312  LKLR  00000200/00000271/00000441     1     0  AlphaNum  "302"                                         
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       6      2  00001312  LKL   00000199/00000270/00004043    61     2  AlphaNum  00000199/00000270/00004043     1    18  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     3     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       7      2  00001312  LKDC  00000000/00000000/00000000     1     4  Binary    RUNDAY (0)                                    
+                                 Unsigned/  Left  /rnd=0000     0     0  CCYYMMDD 
+       8      2  00001312  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   11     9
+       9      2  00001312  CTE   00000204/00000293/00004275    48     6  Packed   
+                                 Unsigned/ Right  /rnd=0000     7     2  None     
+      10      2  00001312  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   12
+      11      2  00001312  CTC   00000000/00000000/00000000     1    10  EditNum   "0"                                           
+                                 Unsigned/ Right  /rnd=0000     2     2  None     

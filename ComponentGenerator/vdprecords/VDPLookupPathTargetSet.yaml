@@ -1,0 +1,20 @@
+record_name: VDPLookupPathTargetSet
+component_name: none
+dsect_name: JOIN
+record_id: 650
+record_length: 0
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix
+- name: ref_count
+  type: integer
+- name: ref_views
+  type: array
+  array_size: refCount
+  array_type: VDPLookupPathTargetEntry
+- name: padding1
+  type: string
+  maxlength: 8
+  padding: true
+  component_field: none

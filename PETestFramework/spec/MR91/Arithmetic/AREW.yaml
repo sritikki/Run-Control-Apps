@@ -1,0 +1,177 @@
+---
+name: "AREW"
+title: "Arithmetic Error and Warning Tests"
+description: "Cover the generation arithmetic operations where errors or warnings\
+  \ are generated"
+category: "MR91/Arithmetic"
+cq: ""
+note: ""
+tests:
+- name: "AREW04"
+  header: "AREW04"
+  description: "Accum + String const"
+  source: "WBXML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "AllTypesBase.xml"
+    replacements:
+    - replace: "COLUMN = {Binary8}"
+      with: "COLUMN={Binary8}*2 + \\\"Fred\\\""
+  mr91out:
+    ddname: "MR91RPT"
+    filename: "MR91ERRS"
+    startkey: "compiler errors:"
+    stopkey: "Execution summary:"
+  expectedresult:
+    message: "badrc"
+    rc: "0008"
+# - name: "AREW05"
+#   header: "AREW05"
+#   description: "String const + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN=\\\"Fred\\\" + {NUMER}*2"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the grim end"
+# - name: "AREW07"
+#   header: "AREW07"
+#   description: "Accum + DATEAccum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN={NUMER}*2 + {CDMY}/3"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW09"
+#   header: "AREW09"
+#   description: "DATE  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN={CDMY}/3 + {NUMER}*2"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW10"
+#   header: "AREW10"
+#   description: "DATE  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN={NUMER} + RUNDAY(1)"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW11"
+#   header: "AREW11"
+#   description: "DATE  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN=RUNDAY(1) + {NUMER}"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW12"
+#   header: "AREW12"
+#   description: "DATE  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN={NUMER} + FISCALDAY(1)"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW13"
+#   header: "AREW13"
+#   description: "DATE  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN=FISCALDAY(1) + {NUMER}"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW16"
+#   header: "AREW16"
+#   description: "DATE  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN={NUMER} + BATCHDATE(1)"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW17"
+#   header: "AREW17"
+#   description: "DATE  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN=BATCHDATE(1) + {NUMER}"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"
+# - name: "AREW18"
+#   header: "AREW18"
+#   description: "Masked  + Accum"
+#   source: "XML"
+#   mr91only: "Y"
+#   xmlfiles:
+#   - name: "allTypes.xml"
+#     replacements:
+#     - replace: "COLUMN = {NUMER}"
+#       with: "COLUMN={MSKNM} + {NUMER}"
+#   mr91out:
+#     ddname: "MR91LOG"
+#     filename: "MR91LOG"
+#     startkey: "column 3"
+#     stopkey: "the bitter end"

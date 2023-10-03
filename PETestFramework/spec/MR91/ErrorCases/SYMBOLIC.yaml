@@ -1,0 +1,280 @@
+---
+name: "SYMBOLIC"
+title: "Symbolic Join Tests"
+description: "Cover the cases for symbolic joins"
+category: "MR91/ErrorCases"
+cq: "9699"
+note: ""
+tests:
+- name: "SYM05"
+  header: "SYM05"
+  description: "Symbolic lookup from ConstString symbol"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM07"
+  header: "SYM07"
+  description: "Symbolic lookup from ConstNumber"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM08"
+  header: "SYM08"
+  description: "Date Symbolic lookup from constString"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM20"
+  header: "SYM20"
+  description: "Date Symbolic lookup from ConstNumer"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM21"
+  header: "SYM21"
+  description: "Date Symbolic lookup from Too short a date string"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM22"
+  header: "SYM22"
+  description: "Date Symbolic lookup from Too long a date string"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM24"
+  header: "SYM24"
+  description: "Date Symbolic lookup from DATE function which fails"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM25"
+  header: "SYM25"
+  description: "Numeric Symbolic lookup from negative constant number"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM32"
+  header: "SYM32"
+  description: "Default test - with invalid date default"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM33"
+  header: "SYM33"
+  description: "Default test - with valid numeric default"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM35"
+  header: "SYM35"
+  description: "Default test - with an invalid default number."
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM36"
+  header: "SYM36"
+  description: "Symbolic name too long error"
+  source: "WBXML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "SYMBOLIC.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: "IF {ALNUM_SYM_MSKNM_NUMER.ALNUM; $TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST\"\
+        \n                       + \"TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST1\
+        \ = \\\"FRED\\\"} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN=\\\"NO\\\" ENDIF"
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 12"
+- name: "SYM42"
+  header: "SYM42"
+  description: "Symbolic field - not found"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM51"
+  header: "SYM51"
+  description: "Symbolic lookup from ConstString (wrong length) symbol"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "allTypes.xml"
+    replacements:
+    - replace: "COLUMN = {ALNUM}"
+      with: ""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 1"
+    stopkey: "column 2"
+- name: "SYM60"
+  header: "SYM60"
+  description: "1st Symbolic invalid"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "cq9699.xml"
+    replacements:
+    - replace: "SYMBOL_LIST"
+      with: "$SRCX_LKUP_CD=\\\"N\\\", $TIME_LKUP_CD=\\\"N\\\""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 4"
+    stopkey: "Compiling view source"
+- name: "SYM61"
+  header: "SYM61"
+  description: "2nd Symbolic invalid"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "cq9699.xml"
+    replacements:
+    - replace: "SYMBOL_LIST"
+      with: "$SRC_LKUP_CD=\\\"N\\\", $TIMEX_LKUP_CD=\\\"N\\\""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 4"
+    stopkey: "Compiling view source"
+- name: "SYM62"
+  header: "SYM62"
+  description: "additional symbol supplied"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "cq9699.xml"
+    replacements:
+    - replace: "SYMBOL_LIST"
+      with: "$SRC_LKUP_CD=\\\"N\\\", $TIME_LKUP_CD=\\\"N\\\",$NOTME=\\\"N\\\""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 4"
+    stopkey: "Compiling view source"
+- name: "SYM63"
+  header: "SYM63"
+  description: "additional symbol supplied and one in error"
+  source: "XML"
+  mr91only: "Y"
+  xmlfiles:
+  - name: "cq9699.xml"
+    replacements:
+    - replace: "SYMBOL_LIST"
+      with: "$SRC_LKUPX_CD=\\\"N\\\", $TIME_LKUP_CD=\\\"N\\\",$NOTME=\\\"N\\\""
+  mr91out:
+    ddname: "MR91LOG"
+    filename: "MR91LOG"
+    startkey: "column 4"
+    stopkey: "Compiling view source"

@@ -1,0 +1,24 @@
+CFA        1Column nums      :A=           16 A=   18 CFAA gt  0 C=  5   CFAC gt  1 E=     3 CFAE gt  1 L=     6 CFAL gt  1 P=     7 CFAP gt  1 X6=   18 CFAX gt  0
+CFA        2Rev Column nums  :A=            6 A=    4 CFAA gt  1 C=  5   CFAC gt  1 E=     8 CFAE gt  0 L=     5 CFAL gt  1 P=     7 CFAP gt  0 X6=    4 CFAX gt  1
+CFA        3-ve Col nums     :A=          -16 A=  -18 CFAA gt  1 C=  5   CFAC gt  0 E=    -3 CFAE gt  0 L=    -6 CFAL gt  0 P=     4 CFAP gt  0 X6=  -18 CFAX gt  1
+CFA        4-ve Rev Cols nums:A=           -6 A=   -4 CFAA gt  0 C=  5   CFAC gt  0 E=    -8 CFAE gt  1 L=    -5 CFAL gt  0 P=    -7 CFAP gt  1 X6=   -4 CFAX gt  0
+CFC        1Column nums      :C=            5 A=   18 CFCA gt  0 C=  5   CFCC gt  0 E=     3 CFCE gt  1 L=     6 CFCL gt  0 P=     7 CFCP gt  0 X6=   18 CFCX gt  0
+CFC        2Rev Column nums  :C=            5 A=    4 CFCA gt  1 C=  5   CFCC gt  0 E=     8 CFCE gt  0 L=     5 CFCL gt  0 P=     7 CFCP gt  0 X6=    4 CFCX gt  1
+CFC        3-ve Col nums     :C=            5 A=  -18 CFCA gt  1 C=  5   CFCC gt  0 E=    -3 CFCE gt  1 L=    -6 CFCL gt  1 P=     4 CFCP gt  1 X6=  -18 CFCX gt  1
+CFC        4-ve Rev Cols nums:C=            5 A=   -4 CFCA gt  1 C=  5   CFCC gt  0 E=    -8 CFCE gt  1 L=    -5 CFCL gt  1 P=    -7 CFCP gt  1 X6=   -4 CFCX gt  1
+CFE        1Column nums      :E=            4 A=   18 CFEA gt  0 C=  5   CFEC gt  0 E=     3 CFEE gt  1 L=     6 CFEL gt  0 P=     7 CFEP gt  0 X6=   18 CFEX gt  0
+CFE        2Rev Column nums  :E=            7 A=    4 CFEA gt  1 C=  5   CFEC gt  1 E=     8 CFEE gt  0 L=     5 CFEL gt  1 P=     7 CFEP gt  0 X6=    4 CFEX gt  1
+CFE        3-ve Col nums     :E=           -4 A=  -18 CFEA gt  1 C=  5   CFEC gt  0 E=    -3 CFEE gt  0 L=    -6 CFEL gt  1 P=     4 CFEP gt  0 X6=  -18 CFEX gt  1
+CFE        4-ve Rev Cols nums:E=           -7 A=   -4 CFEA gt  0 C=  5   CFEC gt  0 E=    -8 CFEE gt  1 L=    -5 CFEL gt  0 P=    -7 CFEP gt  0 X6=   -4 CFEX gt  0
+CFL        1Column nums      :L=           10 A=   18 CFLA gt  0 C=  5   CFLC gt  1 E=     3 CFLE gt  1 L=     6 CFLL gt  1 P=     7 CFLP gt  1 X6=   18 CFLX gt  0
+CFL        2Rev Column nums  :L=            1 A=    4 CFLA gt  0 C=  5   CFLC gt  0 E=     8 CFLE gt  0 L=     5 CFLL gt  0 P=     7 CFLP gt  0 X6=    4 CFLX gt  0
+CFL        3-ve Col nums     :L=          -10 A=  -18 CFLA gt  1 C=  5   CFLC gt  0 E=    -3 CFLE gt  0 L=    -6 CFLL gt  0 P=     4 CFLP gt  0 X6=  -18 CFLX gt  1
+CFL        4-ve Rev Cols nums:L=           -1 A=   -4 CFLA gt  1 C=  5   CFLC gt  0 E=    -8 CFLE gt  1 L=    -5 CFLL gt  1 P=    -7 CFLP gt  1 X6=   -4 CFLX gt  1
+CFP        1Column nums      :P=            3 A=   18 CFPA gt  0 C=  5   CFPC gt  0 E=     3 CFPE gt  0 L=     6 CFPL gt  0 P=     7 CFPP gt  0 X6=   18 CFPX gt  0
+CFP        2Rev Column nums  :P=            3 A=    4 CFPA gt  0 C=  5   CFPC gt  0 E=     8 CFPE gt  0 L=     5 CFPL gt  0 P=     7 CFPP gt  0 X6=    4 CFPX gt  0
+CFP        3-ve Col nums     :P=            8 A=  -18 CFPA gt  1 C=  5   CFPC gt  1 E=    -3 CFPE gt  1 L=    -6 CFPL gt  1 P=     4 CFPP gt  1 X6=  -18 CFPX gt  1
+CFP        4-ve Rev Cols nums:P=           -3 A=   -4 CFPA gt  1 C=  5   CFPC gt  0 E=    -8 CFPE gt  1 L=    -5 CFPL gt  1 P=    -7 CFPP gt  1 X6=   -4 CFPX gt  1
+CFX        1Column nums      :X=           16 A=   18 CFXA gt  0 C=  5   CFXC gt  1 E=     3 CFXE gt  1 L=     6 CFXL gt  1 P=     7 CFXP gt  1 X6=   18 CFPX gt  0
+CFX        2Rev Column nums  :X=            6 A=    4 CFXA gt  1 C=  5   CFXC gt  1 E=     8 CFXE gt  0 L=     5 CFXL gt  1 P=     7 CFXP gt  0 X6=    4 CFPX gt  1
+CFX        3-ve Col nums     :X=          -16 A=  -18 CFXA gt  1 C=  5   CFXC gt  0 E=    -3 CFXE gt  0 L=    -6 CFXL gt  0 P=     4 CFXP gt  0 X6=  -18 CFPX gt  1
+CFX        4-ve Rev Cols nums:X=           -6 A=   -4 CFXA gt  0 C=  5   CFXC gt  0 E=    -8 CFXE gt  1 L=    -5 CFXL gt  0 P=    -7 CFXP gt  1 X6=   -4 CFPX gt  0

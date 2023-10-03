@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+IF {EFFDATE_MSKNM_NUMER.ALNUM, "Garbage"} = {ALNUM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:32: The date/time constant 'Garbage' contains invalid date or time values

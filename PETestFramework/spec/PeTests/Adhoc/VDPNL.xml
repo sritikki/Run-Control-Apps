@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<?xml-stylesheet type="text/xsl" href="../../../xsl/PMSpec.xsl"?>
+<PMSpec>
+	<Name>VDPNL</Name>
+	<Title>VDP Analyser Run</Title>
+    <Description>Run single or comparison</Description>
+	<Category>PeTests/AdHoc</Category>
+	<CQ>Ignore me</CQ>
+	<Note>Add something if you want</Note>
+	<Tests>
+		<Test>
+			<Name>SINGLE</Name>
+			<Header>N/A</Header>
+            <Description>Examine one VDP</Description>
+            <VDP1>
+            	<DSN>GEBT.RTC20331.STFM.VDP.E104</DSN>
+            </VDP1>
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+		</Test>
+		<Test>
+			<Name>CMPARE</Name>
+			<Header>N/A</Header>
+            <Description>Compare VDPs</Description>
+            <VDP1>
+            	<DSN>GEBT.RTC20331.STFM.VDP.E104</DSN>
+            </VDP1>
+            <VDP2>
+            	<DSN>GEBT.RTC20331.STFM.VDP.E118</DSN>
+            </VDP2>
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+		</Test>
+		<Test>
+			<Name>FMTMP</Name>
+			<Header>N/A</Header>
+            <Description>Examine one VDP</Description>
+            <FMTEMP>Y</FMTEMP>
+            <VDP1>
+            	<DSN>GEBT.ETEST.OLDR.OLDP0.MR91.VDP</DSN>
+            </VDP1>
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+		</Test>
+	</Tests>
+</PMSpec>

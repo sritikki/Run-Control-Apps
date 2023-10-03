@@ -1,0 +1,31 @@
+INFO: Compiling extract-phase cell logic for column 5
+COLUMN = {LookupRef3.ALNUMREf}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      5  00009093  JOIN  00001514/00001610/00003029     1     0  AlphaNum  "2496"                                             13    15
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      5  00009093  LKE   00001506/00001595/00090911    66     8  Packed    00001506/00001595/00090911     1     8  Packed   
+                                  Signed / Right  /rnd=0000    10     0  None       Signed / Right  /rnd=0000     1     0  None     
+       3      5  00009093  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4    15
+       4      5  00009093  LKLR  00001516/00001612/00003031     1     0  AlphaNum  "2496"                                        
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       5      5  00009093  LKE   00001506/00001595/00090911    66     8  Packed    00001514/00001595/00090911     1     8  Packed   
+                                  Signed / Right  /rnd=0000    10     0  None       Signed / Right  /rnd=0000     1     0  None     
+       6      5  00009093  LKL   00001514/00001610/00090957    27     8  ZonedDec  00001514/00001610/00090957     9     8  ZonedDec 
+                                 Unsigned/ Right  /rnd=0000     4     0  None      Unsigned/ Right  /rnd=0000     2     0  None     
+       7      5  00009093  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    8    15
+       8      5  00009093  LKLR  00001518/00001613/00003033     1     0  AlphaNum  "2496"                                        
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       9      5  00009093  LKL   00001514/00001610/00090958     9     8  Packed    00001516/00001610/00090958     1     8  Packed   
+                                 Unsigned/ Right  /rnd=0000     2     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+      10      5  00009093  LKE   00001506/00001595/00090911    66     8  Packed    00001516/00001595/00090911     9     8  Packed   
+                                  Signed / Right  /rnd=0000    10     0  None       Signed / Right  /rnd=0000     2     0  None     
+      11      5  00009093  LKL   00001516/00001612/00090962     9     8  Packed    00001516/00001612/00090962    17     8  Packed   
+                                 Unsigned/ Right  /rnd=0000     2     0  None      Unsigned/ Right  /rnd=0000     3     0  None     
+      12      5  00009093  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   13    15
+      13      5  00009093  DTL   00001518/00001613/00090968    25    10  AlphaNum  00000000/00000000/00000000    39    10  AlphaNum 
+                                 Unsigned/  Left  /rnd=0000     4     0  None      Unsigned/  Left  /rnd=0000     5     0  None     
+      14      5  00009093  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   16
+      15      5  00009093  DTC   00001506/00001595/00000000    39    10  AlphaNum  ""                                            
+                                 Unsigned/  Left  /rnd=0000     5     0  None     

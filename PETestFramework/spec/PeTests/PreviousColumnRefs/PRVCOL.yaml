@@ -1,0 +1,145 @@
+---
+name: "PRVCOL"
+title: "Previous Columns"
+description: "Test the different previous column case"
+category: "PeTests/PreviousColumnRefs"
+cq: "Ignore me"
+note: "Add something if you want"
+tests:
+- name: "COLREF"
+  header: "COLREF"
+  description: "Column Reference test"
+  source: "WBXML"
+  xmlfiles:
+  - name: "ColRefExtractOnly[11408].xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011408"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "REFSK"
+  header: "REFSK"
+  description: "Column Reference test"
+  source: "WBXML"
+  xmlfiles:
+  - name: "ColRefSorted[11409].xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "F0011409"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "REFSK2"
+  header: "REFSK2"
+  description: "Column Reference test"
+  source: "WBXML"
+  xmlfiles:
+  - name: "ColRefSKEValue[11410].xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "F0011410"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "REFSKM"
+  header: "REFSKM"
+  description: "Column Reference SK Moved"
+  source: "WBXML"
+  xmlfiles:
+  - name: "ColRefSKEValueMoved[11429].xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "F0011429"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "REFCT1"
+  header: "REFCT1"
+  description: "Column Reference SK and CT"
+  source: "WBXML"
+  xmlfiles:
+  - name: "ColRefSKEValueCTed[11430].xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "F0011430"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+- name: "REFCT2"
+  header: "REFCT2"
+  description: "Column Reference SK and 2 separate CTs"
+  source: "WBXML"
+  xmlfiles:
+  - name: "ColRefSKEValueManyCTs[11433].xml"
+    
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "EXTR001"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"
+  formatfiles:
+  - ddname: "F0011433"
+    space: "CYL"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "300"

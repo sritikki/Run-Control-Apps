@@ -1,0 +1,48 @@
+digraph RunControlGeneratoFileFlowr {
+rankdir=TB
+//Nodes
+graph [label="Component Dependencies\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22];
+labeljust=center;
+
+// Files
+
+VIEW[label="View" shape=rect style=filled color=PaleGreen]
+VS[label="View Source" shape=rect style=filled color=PaleGreen]
+VC[label="View Column" shape=rect style=filled color=PaleGreen]
+VCS[label="View Column Source" shape=rect style=filled color=PaleGreen]
+VSK[label="View Sort Key" shape=rect style=filled color=PaleGreen]
+LR[label="Logical Record" shape=rect style=filled color=cyan]
+LF[label="Logical File" shape=rect style=filled color=deepskyblue]
+PF[label="Physical File" shape=rect style=filled color=dodgerblue]
+OLF[label="Output Logical File" shape=rect style=filled color=plum]
+OPF[label="Output Physical File" shape=rect style=filled color=orchid]
+RE[label="Read Exit" shape=rect style=filled color=pink]
+WE[label="Write Exit" shape=rect style=filled color=pink]
+LE[label="Lookup Exit" shape=rect style=filled color=pink]
+FE[label="Format Exit" shape=rect style=filled color=pink]
+LP[label="Lookup Path" shape=rect style=filled color=beige]
+LPS[label="Lookup Path Step" shape=rect style=filled color=beige]
+LPK[label="Lookup Path Key" shape=rect style=filled color=beige]
+
+VIEW -> VS
+VIEW -> VSK
+VS -> LR
+VSK -> LR
+VSK -> LP
+LR -> LF
+VIEW -> VC
+VC -> VCS
+LF -> PF
+PF -> RE
+VIEW -> FE
+VS -> VCS
+VCS -> LP -> LPS -> LPK
+LR -> LE
+LPS -> LR
+VCS -> LR
+LPK -> LR
+VS -> OLF -> OPF
+VS -> WE
+
+
+}

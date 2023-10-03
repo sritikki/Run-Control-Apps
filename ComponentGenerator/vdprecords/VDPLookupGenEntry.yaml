@@ -1,0 +1,14 @@
+record_name: VDPLookupGenEntry
+record_id: 0
+record_length: 0
+component_name: none
+fields:
+- name: lookup_id
+  type: integer
+- name: number_of_mappings
+  type: integer
+- name: mappings
+  type: array
+  array_size: numberOfMappings
+  array_type: integer
+  

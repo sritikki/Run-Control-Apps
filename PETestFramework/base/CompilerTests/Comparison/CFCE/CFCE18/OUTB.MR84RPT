@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if 0 = {MSKNM} THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:6: Data type conflict comparing 0 (Const Number) with MSKNM (MaskNum :: -Z,ZZ9.99)

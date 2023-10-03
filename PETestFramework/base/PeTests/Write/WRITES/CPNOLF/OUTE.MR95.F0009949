@@ -1,0 +1,15 @@
+1POSITIVE NUMBERS :0000000123     
+       H                    77700088888     rr 0                 
+2BIG BINR NUMBERS :0009999999""           H                    77700088888     rr 0                 
+3-ve binary 1 2 3 :0009999999                                  77700088888     rr 0                 
+4-ve zoned/packed :0000000123     
+       H                    7770008888Q     rr 0                 
+5-ve bsort psort  :0000000123     
+       H           "     V6 77700088888     rr                   
+6NEGATIVE EDNUM   :0000000123     
+       H                   -77700088888     rr 0                 
+7Column nums      :0000000123                                 000700000008        0                 
+8Rev Column nums  :0000000123                                 000400000003        0                 
+9FAIL LOOKUP  here:0000000123                                  00700000008               6          
+9-ve Col nums     :0000000123                         "         -70000000Q                          
+9-ve Rev Cols nums:00000001236 7   8       9          "         -40000000L                          

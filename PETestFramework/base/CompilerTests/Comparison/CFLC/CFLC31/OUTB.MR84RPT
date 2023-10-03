@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+if {MSKNM_MSKNM.DMY} = "01/01/1900T00:00:00" THEN COLUMN={ALNUM} ELSE COLUMN="NO" ENDIF
+ERROR: line 1:22: The date/time constant '01/01/1900T00:00:00' is too long. The maximum is 16 characters

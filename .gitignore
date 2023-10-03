@@ -1,0 +1,185 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+bin/**
+FlowAnalyser/.gradle/**
+FlowAnalyser/build/**
+FlowAnalyser/generated-src/**
+FlowAnalyser/RunControls/**
+
+.gradle/**
+
+FlowAnalyser/rat.txt
+FlowAnalyser/bin/test/cmarith.vdp
+FlowAnalyser/bin/test/comlu.vdp
+FlowAnalyser/bin/test/mfoldp1.vdp
+FlowAnalyser/bin/test/OLDP3.MR91.VDP
+FlowAnalyser/bin/test/writeTest.vdp
+# ComponentGenerator/bin/main/componentconfig.yaml
+# ComponentGenerator/bin/main/ltconfig.yaml
+# ComponentGenerator/bin/main/vdpconfig.yaml
+# ComponentGenerator/bin/test/controlRecord/controlRecord.yaml
+RunControlGenerator/.settings/org.eclipse.buildship.core.prefs
+RunControlGenerator/.classpath
+RunControlGenerator/.project
+RunControlGenerator/src/test/resources/MR91ParmTest
+RunControlGenerator/bin/test/MR91Log
+RunControlGenerator/bin/test/MR91ParmTest
+RunControlGenerator/bin/test/MR91Report
+RunControlGenerator/MR91LOG
+RunControlGenerator/MR91PARM
+RunControlGenerator/MR91RPT
+Repository/generated-src/**
+Repository/.classpath
+Repository/.settings/org.eclipse.buildship.core.prefs
+Repository/gradle/wrapper/gradle-wrapper.properties
+Repository/.gitattributes
+Repository/.project
+GenevaIO/.settings/org.eclipse.buildship.core.prefs
+GenevaIO/.vscode/settings.json
+GenevaIO/bin/test/mergeAssAll.xml
+GenevaIO/generated-src/**
+GenevaIO/.classpath
+GenevaIO/.project
+# ComponentGenerator/bin/main/wbxmlconfig.yaml
+# ComponentGenerator/.vscode/settings.json
+# ComponentGenerator/.settings/org.eclipse.buildship.core.prefs
+# ComponentGenerator/.settings/org.eclipse.jdt.core.prefs
+# ComponentGenerator/.classpath
+# ComponentGenerator/.project
+FlowAnalyser/.settings/**
+FlowAnalyser/.classpath
+FlowAnalyser/.project
+GenevaIO/.settings/org.eclipse.jdt.core.prefs
+GenevaIO/bin/**
+RunControls/**
+Repository/.settings/**
+.settings/**
+GenevaIO/bin/test/writeTest.vdp
+GenevaIO/src/test/resources/writeTest.vdp
+MR91LOG*
+MR91Parm
+MR91RPT
+RunControlGenerator/src/test/resources/MR91Log
+GenevaIO/src/test/resources/WBXMLI/**
+RunControlGenerator/bin/**
+RunControlGenerator/src/test/resources/WBXMLI/**
+RunControlGenerator/.vscode/settings.json
+RunControlGenerator/.settings/org.eclipse.jdt.core.prefs
+
+RunControlGenerator/src/test/resources/CKB_View[1009].xml
+RunControlGenerator/src/test/resources/mr91.dot
+RunControlGenerator/src/test/resources/mr91.dot.svg
+RunControlGenerator/src/test/resources/mr91orig.dot
+RunControlGenerator/src/test/resources/mr91.dot
+RunControlGenerator/src/test/resources/mr91orig.dot
+RunControlGenerator/src/test/resources/MR91Log
+RunControlGenerator/src/test/resources/MR91Parm
+RunControlGenerator/LT
+RunControlGenerator/LTPRTLOG
+RunControlGenerator/LTPRTRPT
+RunControlGenerator/CRECRPT1
+RunControlGenerator/DDRPT1
+RunControlGenerator/EXITRPT1
+RunControlGenerator/LFRPT1
+RunControlGenerator/LOGCRPT1
+RunControlGenerator/LPRPT1
+RunControlGenerator/LRRPT1
+RunControlGenerator/PFRPT1
+RunControlGenerator/VDP
+RunControlGenerator/XLT
+RunControlGenerator/VDP1
+RunControlGenerator/VDPDTL1
+RunControlGenerator/VDPNLLOG
+RunControlGenerator/VDPNLRPT
+RunControlGenerator/VDPSUM1
+RunControlGenerator/VIEWRPT1
+VDPNLLOG
+VDPNLRPT
+RunControlGenerator/docs/FileFlow.dot.svg
+VDP
+XLT
+RunControlGenerator/JLT
+rcg.VDP.csv
+JLT
+
+Compilers/build/**
+Compilers/bin/**
+Compilers/bin
+Compilers/build/**
+Compilers/build
+Compilers/src/main/antlr/org/genevaers/compilers/grammar/.antlr**
+Compilers/src/test/resources/mr91.dot
+Compilers/src/test/resources/mr91.dot.svg
+
+RunControlGenerator/src/test/resources/mr91Joins.dot
+RunControlGenerator/src/test/resources/mr91Joins.dot.svg
+Compilers/.gradle/**
+RunControlGenerator/JLT.dot
+RunControlGenerator/JLT.dot.svg
+RunControlGenerator/XLT.dot
+RunControlGenerator/XLT.dot.svg
+# ComponentGenerator/target/**
+# ComponentGenerator/dependency-reduced-pom.xml
+# ComponentGenerator/pom.xml.versionsBackup
+Repository/target/**
+GenevaIO/target/**
+Compilers/target/**
+RunControlGenerator/target/**
+FlowAnalyser/target/**
+
+Repository/generated-sources/**
+Repository/bin/**
+
+GenevaIO/generated-sources/**
+Compilers/.settings/org.eclipse.core.resources.prefs
+Compilers/.settings/org.eclipse.m2e.core.prefs
+Compilers/.vscode/settings.json
+#ComponentGenerator/genevaModel.yaml
+GenevaIO/.settings/org.eclipse.core.resources.prefs
+GenevaIO/.settings/org.eclipse.m2e.core.prefs
+GenevaIO/bin/test/cmarith.vdp
+GenevaIO/bin/test/comlu.vdp
+GenevaIO/bin/test/mfoldp1.vdp
+GenevaIO/bin/test/OLDP3.MR91.VDP
+RunControlGenerator/.settings/org.eclipse.core.resources.prefs
+RunControlGenerator/.settings/org.eclipse.m2e.core.prefs
+target/**
+mr91.log.*
+RunControlGenerator/WBXMLI/*
+RunControlGenerator/MR91Parm.*
+
+
+Logging/target/**
+*.*.releaseBackup
+release.properties
+RunControlAnalyser/target/**
+
+PETestFramework/Config/**
+PETestFramework/jcl/**
+PETestFramework/out/**
+PETestFramework/target/**
+PETestFramework/xmlout/**
+Utilities/target/**
+mr91Outputs/**
+PETestFramework/mr91Outputs/**

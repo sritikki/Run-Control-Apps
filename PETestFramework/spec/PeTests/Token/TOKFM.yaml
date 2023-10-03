@@ -1,0 +1,91 @@
+---
+name: "TOKFM"
+title: "Token File Format"
+description: "Check how tokens handle different output format types"
+category: "PeTests/Token"
+cq: ""
+note: ""
+tests:
+- name: "TOKFM01"
+  header: "FB"
+  description: "Check Token with FB format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "TOKEN"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "FB"
+    lrecl: "38"
+    blksize: "76"
+- name: "TOKFM02"
+  header: "F"
+  description: "Check Token with F format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "TOKEN"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "F"
+    lrecl: "38"
+- name: "TOKFM03"
+  header: "VB"
+  description: "Check Token with VB format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "TOKEN"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "VB"
+    lrecl: "42"
+    blksize: "88"
+- name: "TOKFM04"
+  header: "V"
+  description: "Check Token with V format type"
+  source: "WBXML"
+  xmlfiles:
+  - name: "tokfm.xml"
+    replacements: 
+    - replace: "%PFTYPE%"
+      with: "TOKEN"
+  reffiles: []
+  eventfiles:
+  - ddname: "ALLTYPE"
+    filename: "ALLTYPE"
+  extractfiles:
+  - ddname: "F0011234"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "V"
+    lrecl: "42"
+    blksize: "46"

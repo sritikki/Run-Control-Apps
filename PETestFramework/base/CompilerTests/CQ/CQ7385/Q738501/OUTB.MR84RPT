@@ -1,0 +1,196 @@
+INFO: Compiling extract-phase cell logic for column 17
+If {Partition_Nbr}= "00" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=041)
+ 
+Else
+ 
+If {Partition_Nbr}= "01" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=042)
+ 
+Else
+ 
+If {Partition_Nbr}= "02" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=043)
+ 
+Else
+ 
+If {Partition_Nbr}= "03" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=044)
+ 
+Else
+ 
+If {Partition_Nbr}= "04" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=045)
+ 
+Else
+ 
+If {Partition_Nbr}= "05" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=046)
+ 
+Else
+ 
+If {Partition_Nbr}= "06" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=047)
+ 
+Else
+ 
+If {Partition_Nbr}= "07" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=048)
+ 
+Else
+ 
+If {Partition_Nbr}= "08" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=049)
+ 
+Else
+ 
+If {Partition_Nbr}= "09" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=050)
+ 
+Else
+ 
+If {Partition_Nbr}= "10" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=051)
+ 
+Else
+ 
+If {Partition_Nbr}= "11" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=052)
+ 
+Else
+ 
+If {Partition_Nbr}= "12" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=053)
+ 
+Else
+ 
+If {Partition_Nbr}= "13" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=054)
+ 
+Else
+ 
+If {Partition_Nbr}= "14" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=055)
+ 
+Else
+ 
+If {Partition_Nbr}="15" Then
+ 
+   WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=056)
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+EndIf
+ 
+ 
+ 
+ 
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "00"                                             2     4
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+       2     41  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+       3     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+       4     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "01"                                             5     7
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+       5     42  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+       6     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+       7     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "02"                                             8    10
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+       8     43  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+       9     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      10     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "03"                                            11    13
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      11     44  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      12     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      13     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "04"                                            14    16
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      14     45  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      15     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      16     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "05"                                            17    19
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      17     46  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      18     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      19     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "06"                                            20    22
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      20     47  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      21     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      22     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "07"                                            23    25
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      23     48  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      24     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      25     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "08"                                            26    28
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      26     49  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      27     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      28     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "09"                                            29    31
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      29     50  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      30     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      31     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "10"                                            32    34
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      32     51  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      33     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      34     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "11"                                            35    37
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      35     52  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      36     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      37     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "12"                                            38    40
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      38     53  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      39     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      40     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "13"                                            41    43
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      41     54  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      42     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      43     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "14"                                            44    46
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      44     55  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''
+      45     17  00008898  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   48
+      46     17  00008898  CFEC  00001130/00001219/00038449  1084     2  AlphaNum  EQ "15"                                            47    48
+                                 Unsigned/  Left  /rnd=0000   114     0  None     
+      47     56  00008898  WRXT  Dest=Extract, Partition ID=0, Prog ID=0, Param=''

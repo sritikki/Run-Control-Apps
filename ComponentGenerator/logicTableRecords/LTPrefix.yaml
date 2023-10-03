@@ -1,0 +1,28 @@
+record_name: LTPrefix
+record_type: none
+record_length: 36
+fields:
+- name: rec_len
+  type: short
+- name: version
+  type: short
+- name: file_id
+  type: integer
+- name: row_nbr
+  type: integer
+- name: view_id
+  type: integer
+- name: function_code
+  type: string
+  maxlength: 4
+- name: source_seq_nbr
+  type: short
+- name: suffix_seq_nbr
+  type: short
+- name: goto_row1
+  type: integer
+- name: goto_row2
+  type: integer
+- name: record_type
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.LtRecordType

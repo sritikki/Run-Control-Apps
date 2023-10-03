@@ -1,0 +1,14 @@
+---
+name: "MyView"
+title: "Big Bang Assignment Tests"
+description: "Assignment tests to a type by row"
+category: "JMR91"
+cq: ""
+note: ""
+tests:
+- name: "rcgtest"
+  header: "My RC App Test"
+  description: "Let's see what it does"
+  source: "WBXML"
+  xmlfiles:
+  - name: "JMR91/blah[12076].xml"

@@ -1,0 +1,12 @@
+~ERRS - SAFR compiler errors:
+=============================
+ 
+View(9953) Loc(ColAssign) SrcLR(1595)  SrcLF(1506) Col(3)
+ line 1:20: Invalid data type found in an arithmetic expression; see Fred (Const String)
+ 
+View(9953) Loc(ColAssign) SrcLR(1595)  SrcLF(1506) Col(12)
+ line 1:20: Invalid data type found in an arithmetic expression; see Fred (Const String)
+ 
+ 
+ 
+==========================

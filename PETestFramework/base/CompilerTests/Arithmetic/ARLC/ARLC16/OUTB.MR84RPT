@@ -1,0 +1,5 @@
+INFO: Compiling extract-phase cell logic for column 13
+COLUMN={MSKNM_MSKNM.CDMY} + RUNDAY(0)
+ERROR: line 1:20: Date/time invalid in an arithmetic expression; see lookup field CDMY (Packed - CYMD)
+ERROR: line 1:29: Date/time invalid in an arithmetic expression; see RUNDAY (Date - CYMD)
+ERROR: line 1:27: Date/Time format conflict assigning to column 13 "CMDY Column" (Packed - CYMD) from accumulated value (Geneva)

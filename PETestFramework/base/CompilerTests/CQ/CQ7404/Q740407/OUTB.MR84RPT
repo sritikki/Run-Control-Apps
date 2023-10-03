@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 1
+WRITE(SOURCE=VIEW,DESTINATION=EXTRACT=043,USEREXIT={FRED})
+ERROR: line 1:53: The user exit routine 'FRED' used in the WRITE function is not defined

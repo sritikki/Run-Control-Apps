@@ -1,0 +1,1170 @@
+ 
+IBM Scalable Architecture for Financial Reporting (SAFR)
+IP Asset Family Component ID 6949-17P
+Performance Engine (MVS) - Base Product
+Build PM 4.13.000  
+ 
+GVBMR84 - XML-to-VDP Converter
+(Rev. 00000000: 2013-02-04 01:40)
+ 
+Executed: 2013-02-22 10:00:10
+ 
+Parsing XML: DD:XML1 
+startDocument Rxed
+Set JobInfo GeneratedDate to 2009-10-15
+Set JobInfo RunNumber to 24597
+Set JobInfo MaxStdExtractFileNum to 4
+Extract Output File (VDP Record 800)
+Set FileInfo Name to Auto-generated Name for Extract Phase Output
+Set FileInfo Server ID to 1
+Set FileInfo RecordDelimiter to VAREX(5)
+Set FileInfo FieldDelimiter to FIXED(5)
+Set FileInfo TextDelimiter to DBLQT(2)
+Set FileInfo ProcessInParallel to 1
+Set FileInfo PosixDirectory to $extractdir
+Set FileInfo PosixFileName to $extractfile
+Set FileInfo DSN to GEBT.RHNDS.EXT.@D.PASS01.EXTR
+Set FileInfo DDNameExtract to EXTR
+Set FileInfo DeviceType to SYSDA
+Set FileInfo AllocSpaceUnit to TRK(2)
+Set FileInfo SpacePrimaryQuantity to 20
+Set FileInfo SpaceSecondaryQuantity to 200
+Set FileInfo ReleaseUnused to 1
+Set FileInfo LRECL to 7168
+Set FileInfo VSAMORG to KSDS(1)
+Set FileInfo RECFM to VB(2)
+Set FileInfo ExpirationDate to 2009-10-15
+Set Env ID to 1 (VDP Record 001)
+Swap to Metadata 
+Swap to ControlRecords 
+Created Control Record:ID 1 (VDP Record 050)
+Set ControlRecord Name to GENEVA DEMO 
+Set ControlRecord EffectiveDate to 2003-03-03
+Set ControlRecord TerminationDate to 2100-12-31
+Set ControlRecord MonthOfFirstPeriod to 1
+Set ControlRecord LowPeriodValue to 1
+Set ControlRecord HighPeriodValue to 12
+Set ControlRecord FiscalDate to 2009-10-15
+Swap to Servers 
+Created Server:ID 1 (VDP Record 100)
+Set Server HostName to Corporate IBM Mainframe 
+Set Server MainFrame to MAINF
+Set Server Database to Corporate IBM Mainframe
+Set Server Comment not supported
+Swap to Partitions 
+Created Partition ID 6757 (VDP Record 200)
+Set FileInfo Name to EVENT_JOURNAL
+Set FileInfo Server ID to 1
+Set FileInfo CodeSet to EBCDI
+Set FileInfo DynamicallyAllocated to 1
+Set FileInfo OutputMaxRecCount to 3452816845
+Set FileInfo RecordDelimiter to VAREX(5)
+Set FileInfo FieldDelimiter to FIXED(5)
+Set FileInfo FileNameIsRoot to 1
+Set FileInfo ProcessInParallel to 1
+Set FileInfo DDNameInput to EVENT
+Set FileInfo DDNameExtract to E0006757
+Set FileInfo DDNameOutput to O0006757
+Set FileInfo VolSequenceNum to 3452816845
+Set FileInfo DeviceType to SYSDA
+Set FileInfo AllocSpaceUnit to TRK(2)
+Set FileInfo ReleaseUnused to 1
+Set FileInfo KeyLength to 3452816845
+Set FileInfo KeyPosition to 3452816845
+Set FileInfo RECFM to VB(2)
+Set FileInfo SYSOUTCopies to 3452816845
+Set FileInfo SYSOUTLimit to 3452816845
+Set FileInfo SYSOUTHold to 1
+Set FileInfo ExpirationDate to 2009-10-15
+Created Partition ID 6758 (VDP Record 200)
+Set FileInfo Name to ACCOUNT_TITLES
+Set FileInfo Server ID to 1
+Set FileInfo CodeSet to EBCDI
+Set FileInfo DynamicallyAllocated to 1
+Set FileInfo OutputMaxRecCount to 3452816845
+Set FileInfo RecordDelimiter to VAREX(5)
+Set FileInfo FieldDelimiter to FIXED(5)
+Set FileInfo FileNameIsRoot to 1
+Set FileInfo ProcessInParallel to 1
+Set FileInfo DDNameInput to ACCTIT
+Set FileInfo DDNameExtract to E0006758
+Set FileInfo DDNameOutput to O0006758
+Set FileInfo VolSequenceNum to 3452816845
+Set FileInfo DeviceType to SYSDA
+Set FileInfo AllocSpaceUnit to TRK(2)
+Set FileInfo ReleaseUnused to 1
+Set FileInfo KeyLength to 3452816845
+Set FileInfo KeyPosition to 3452816845
+Set FileInfo RECFM to VB(2)
+Set FileInfo SYSOUTCopies to 3452816845
+Set FileInfo SYSOUTLimit to 3452816845
+Set FileInfo SYSOUTHold to 1
+Set FileInfo ExpirationDate to 2009-10-15
+Created Partition ID 6759 (VDP Record 200)
+Set FileInfo Name to CC_DESC
+Set FileInfo Server ID to 1
+Set FileInfo CodeSet to EBCDI
+Set FileInfo DynamicallyAllocated to 1
+Set FileInfo RecordDelimiter to VAREX(5)
+Set FileInfo FieldDelimiter to FIXED(5)
+Set FileInfo FileNameIsRoot to 1
+Set FileInfo ProcessInParallel to 1
+Set FileInfo DDNameInput to CCDESC
+Set FileInfo DDNameExtract to E0006759
+Set FileInfo DDNameOutput to O0006759
+Set FileInfo VolSequenceNum to 3452816845
+Set FileInfo DeviceType to SYSDA
+Set FileInfo AllocSpaceUnit to TRK(2)
+Set FileInfo ReleaseUnused to 1
+Set FileInfo KeyLength to 3452816845
+Set FileInfo KeyPosition to 3452816845
+Set FileInfo RECFM to VB(2)
+Set FileInfo SYSOUTCopies to 3452816845
+Set FileInfo SYSOUTLimit to 3452816845
+Set FileInfo SYSOUTHold to 1
+Set FileInfo ExpirationDate to 2009-10-15
+Created Partition ID 6760 (VDP Record 200)
+Set FileInfo Name to LE_DESC
+Set FileInfo Server ID to 1
+Set FileInfo CodeSet to EBCDI
+Set FileInfo DynamicallyAllocated to 1
+Set FileInfo RecordDelimiter to VAREX(5)
+Set FileInfo FieldDelimiter to FIXED(5)
+Set FileInfo FileNameIsRoot to 1
+Set FileInfo ProcessInParallel to 1
+Set FileInfo DDNameInput to LEDESC
+Set FileInfo DDNameExtract to E0006760
+Set FileInfo DDNameOutput to O0006760
+Set FileInfo VolSequenceNum to 3452816845
+Set FileInfo DeviceType to SYSDA
+Set FileInfo AllocSpaceUnit to TRK(2)
+Set FileInfo ReleaseUnused to 1
+Set FileInfo KeyLength to 3452816845
+Set FileInfo KeyPosition to 3452816845
+Set FileInfo RECFM to VB(2)
+Set FileInfo SYSOUTCopies to 3452816845
+Set FileInfo SYSOUTLimit to 3452816845
+Set FileInfo SYSOUTHold to 1
+Set FileInfo ExpirationDate to 2009-10-15
+Swap to LogicalFiles 
+Created File:ID 1284 
+Set Logical File ColumnId to 11070
+Created File:ID 1285 
+Set Logical File ColumnId to 11071
+Created File:ID 1286 
+Set Logical File ColumnId to 11072
+Created File:ID 1287 
+Set Logical File ColumnId to 11073
+Swap to LogicalRecords 
+Created LR:ID 1264 (VDP Record 300)
+Set LogicalRecordName All Types 
+Set Logical Record Type to FILE
+Set Logical Record Status to ACTVE
+Set Logical Record EffectiveDate to 2009-06-18
+Set Logical Record TerminationDate to 2100-12-31
+Swap to Fields 
+Created LR Field:ID 63311 (VDP Record 400)
+Set Field Name to ALNUM
+Set Field format to ALNUM
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 63312 (VDP Record 400)
+Set Field Name to ALPHA
+Set Field format to ALPHA
+Set Field Length to 15
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Created LR Field:ID 63313 (VDP Record 400)
+Set Field Name to NUMER
+Set Field format to NUMER
+Set Field Length to 3
+Set Field Start Position to 25
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Set Field DBColName to ACCOUNT
+Created LR Field:ID 63314 (VDP Record 400)
+Set Field Name to PACKD
+Set Field format to PACKD
+Set Field Length to 8
+Set Field Start Position to 28
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Field DBColName to RECORD_COUNT
+Created LR Field:ID 63315 (VDP Record 400)
+Set Field Name to PSORT
+Set Field format to PSORT
+Set Field Length to 5
+Set Field Start Position to 26
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 5
+Set Decimal Places to 2
+Set Field DBColName to AMOUNT
+Created LR Field:ID 63316 (VDP Record 400)
+Set Field Name to BINRY
+Set Field format to BINRY
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 63317 (VDP Record 400)
+Set Field Name to BSORT
+Set Field format to BSORT
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 63318 (VDP Record 400)
+Set Field Name to BCD
+Set Field format to BCD
+Set Field Length to 3
+Set Field Start Position to 15
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Set Field DBColName to ACCOUNT
+Created LR Field:ID 63319 (VDP Record 400)
+Set Field Name to MSKNM
+Set Field format to MSKNM
+Set Field Length to 8
+Set Field Start Position to 18
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Field Mask to LY12Y
+Set Field DBColName to RECORD_COUNT
+Created LR Field:ID 63320 (VDP Record 400)
+Set Field Name to EDNUM
+Set Field format to EDNUM
+Set Field Length to 5
+Set Field Start Position to 26
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 5
+Set Decimal Places to 2
+Set Field DBColName to AMOUNT
+Created LR Field:ID 63321 (VDP Record 400)
+Set Field Name to FLOAT
+Set Field format to FLOAT
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 63322 (VDP Record 400)
+Set Field Name to GNUM
+Set Field format to GNUM
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 63323 (VDP Record 400)
+Set Field Name to MSKNM2
+Set Field format to MSKNM
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field Mask to PY11Y
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 63324 (VDP Record 400)
+Set Field Name to DMY
+Set Field format to ALNUM
+Set Field content to DMY
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 63325 (VDP Record 400)
+Set Field Name to HMS
+Set Field format to ALNUM
+Set Field content to HMS
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 63326 (VDP Record 400)
+Set Field Name to CDMY
+Set Field format to NUMER
+Set Field content to CYMD
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 63327 (VDP Record 400)
+Set Field Name to CYM
+Set Field format to ALNUM
+Set Field content to CYM
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR:ID 1364 (VDP Record 300)
+Set LogicalRecordName Target_All_Types 
+Set Logical Record Type to FILE
+Set Logical Record Status to ACTVE
+Set Logical Record EffectiveDate to 2009-06-18
+Set Logical Record TerminationDate to 2100-12-31
+Swap to Index 
+Set Index Name to ALNUMKey
+Created LR Index:ID 442 seq 1 (VDP Record 500)
+For Field Ref 65313
+Set Index ColumnID to 634
+Swap to Fields 
+Created LR Field:ID 65311 (VDP Record 400)
+Set Field Name to ALNUM
+Set Field format to ALNUM
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 65312 (VDP Record 400)
+Set Field Name to ALPHA
+Set Field format to ALPHA
+Set Field Length to 15
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Created LR Field:ID 65313 (VDP Record 400)
+Set Field Name to NUMER
+Set Field format to NUMER
+Set Field Length to 3
+Set Field Start Position to 25
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Set Field DBColName to ACCOUNT
+Created LR Field:ID 65314 (VDP Record 400)
+Set Field Name to PACKD
+Set Field format to PACKD
+Set Field Length to 8
+Set Field Start Position to 28
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Field DBColName to RECORD_COUNT
+Created LR Field:ID 65315 (VDP Record 400)
+Set Field Name to PSORT
+Set Field format to PSORT
+Set Field Length to 5
+Set Field Start Position to 26
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 5
+Set Decimal Places to 2
+Set Field DBColName to AMOUNT
+Created LR Field:ID 65316 (VDP Record 400)
+Set Field Name to BINRY
+Set Field format to BINRY
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 65317 (VDP Record 400)
+Set Field Name to BSORT
+Set Field format to BSORT
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 65318 (VDP Record 400)
+Set Field Name to BCD
+Set Field format to BCD
+Set Field Length to 3
+Set Field Start Position to 15
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Set Field DBColName to ACCOUNT
+Created LR Field:ID 65319 (VDP Record 400)
+Set Field Name to MSKNM
+Set Field format to MSKNM
+Set Field Length to 8
+Set Field Start Position to 18
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Field Mask to LY12Y
+Set Field DBColName to RECORD_COUNT
+Created LR Field:ID 65320 (VDP Record 400)
+Set Field Name to EDNUM
+Set Field format to EDNUM
+Set Field Length to 5
+Set Field Start Position to 26
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 5
+Set Decimal Places to 2
+Set Field DBColName to AMOUNT
+Created LR Field:ID 65321 (VDP Record 400)
+Set Field Name to FLOAT
+Set Field format to FLOAT
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 65322 (VDP Record 400)
+Set Field Name to GNUM
+Set Field format to GNUM
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 65323 (VDP Record 400)
+Set Field Name to MSKNM2
+Set Field format to MSKNM
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field Mask to PY11Y
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 65324 (VDP Record 400)
+Set Field Name to DMY
+Set Field format to ALNUM
+Set Field content to DMY
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 65325 (VDP Record 400)
+Set Field Name to HMS
+Set Field format to ALNUM
+Set Field content to HMS
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 65326 (VDP Record 400)
+Set Field Name to CDMY
+Set Field format to PACKD
+Set Field content to CYMD
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR:ID 1464 (VDP Record 300)
+Set LogicalRecordName EffDate_Target_All_Types 
+Set Logical Record Type to FILE
+Set Logical Record Status to ACTVE
+Set Logical Record EffectiveDate to 2009-06-18
+Set Logical Record TerminationDate to 2100-12-31
+Swap to Index 
+Set Index Name to PrimaryKey
+Created LR Index:ID 742 seq 1 (VDP Record 500)
+For Field Ref 75313
+Set Index ColumnID to 634
+Created LR Index:ID 742 seq 2 (VDP Record 500)
+For Field Ref 4228
+Set Index EffectiveDateStart to 1
+Created LR Index:ID 742 seq 3 (VDP Record 500)
+For Field Ref 4229
+Set Index EffectiveDateEnd to 1
+Swap to Fields 
+Created LR Field:ID 75311 (VDP Record 400)
+Set Field Name to ALNUM
+Set Field format to ALNUM
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 75312 (VDP Record 400)
+Set Field Name to ALPHA
+Set Field format to ALPHA
+Set Field Length to 15
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Created LR Field:ID 75313 (VDP Record 400)
+Set Field Name to NUMER
+Set Field format to NUMER
+Set Field Length to 3
+Set Field Start Position to 25
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Set Field DBColName to ACCOUNT
+Created LR Field:ID 75314 (VDP Record 400)
+Set Field Name to PACKD
+Set Field format to PACKD
+Set Field Length to 8
+Set Field Start Position to 28
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Field DBColName to RECORD_COUNT
+Created LR Field:ID 75315 (VDP Record 400)
+Set Field Name to PSORT
+Set Field format to PSORT
+Set Field Length to 5
+Set Field Start Position to 26
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 5
+Set Decimal Places to 2
+Set Field DBColName to AMOUNT
+Created LR Field:ID 75316 (VDP Record 400)
+Set Field Name to BINRY
+Set Field format to BINRY
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 75317 (VDP Record 400)
+Set Field Name to BSORT
+Set Field format to BSORT
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 75318 (VDP Record 400)
+Set Field Name to BCD
+Set Field format to BCD
+Set Field Length to 3
+Set Field Start Position to 15
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Set Field DBColName to ACCOUNT
+Created LR Field:ID 75319 (VDP Record 400)
+Set Field Name to MSKNM
+Set Field format to MSKNM
+Set Field Length to 8
+Set Field Start Position to 18
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Field Mask to LY12Y
+Set Field DBColName to RECORD_COUNT
+Created LR Field:ID 75320 (VDP Record 400)
+Set Field Name to EDNUM
+Set Field format to EDNUM
+Set Field Length to 5
+Set Field Start Position to 26
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 5
+Set Decimal Places to 2
+Set Field DBColName to AMOUNT
+Created LR Field:ID 75321 (VDP Record 400)
+Set Field Name to FLOAT
+Set Field format to FLOAT
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 75322 (VDP Record 400)
+Set Field Name to GNUM
+Set Field format to GNUM
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 75323 (VDP Record 400)
+Set Field Name to MSKNM2
+Set Field format to MSKNM
+Set Field Length to 5
+Set Field Start Position to 10
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Set Field Mask to PY11Y
+Set Field DBColName to COST_CENTRE
+Created LR Field:ID 75324 (VDP Record 400)
+Set Field Name to DMY
+Set Field format to ALNUM
+Set Field content to DMY
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 75325 (VDP Record 400)
+Set Field Name to HMS
+Set Field format to ALNUM
+Set Field content to HMS
+Set Field Length to 9
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set Field DBColName to LEGAL_ENTITY
+Created LR Field:ID 4228 (VDP Record 400)
+Set Field Name to EFFECTIVE_DATE
+Set Field format to ALNUM
+Set Field content to CYMD
+Set Field Length to 8
+Set Field Start Position to 81
+Set Field Ordinal Position to 8
+Created LR Field:ID 4229 (VDP Record 400)
+Set Field Name to END_DATE
+Set Field format to ALNUM
+Set Field content to CYMD
+Set Field Length to 8
+Set Field Start Position to 89
+Set Field Ordinal Position to 9
+Swap to Lookups 
+Set Join Name to CONVLKUP
+Created Lookeup:ID 1531 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to ALNUM
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to ALPHA
+Created Lookeup:ID 1532 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to ALPHA
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to NUMER
+Created Lookeup:ID 1533 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to NUMER
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to PACKD
+Created Lookeup:ID 1534 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to PACKD
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to PSORT
+Created Lookeup:ID 1535 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to PSORT
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to BINRY
+Created Lookeup:ID 1536 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to BINRY
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to BSORT
+Created Lookeup:ID 1537 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to BSORT
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to BCD
+Created Lookeup:ID 1538 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to BCD
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to MSKNM
+Created Lookeup:ID 1539 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to MSKNM
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to EDNUM
+Created Lookeup:ID 1540 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to EDNUM
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to FLOAT
+Created Lookeup:ID 1541 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to FLOAT
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Set Join Name to GNUM
+Created Lookeup:ID 1542 step 1 fieldStepNum 1 (VDP Record 601)
+Set Field format to GNUM
+Set Field Length to 3
+Set Field Justification to RIGHT
+Set Field Ordinal Position to 1
+Swap to Folders 
+Created Folder:ID 482 
+Set Folder Description to Kip
+Swap to Views 
+Created View ID: 3263  (VDP Record 1000)
+Set View Name to Types_Testing
+Set EffectiveDate to 2009-07-15
+Set TerminationDate to 2100-12-31
+Set View Status ACTVE
+Set View Type EXTR
+Set OwnerUser to REGGR
+Set Output Folder ID to 482
+Swap to Input 
+Set ControlRecordRef 1 
+Create Source File Ref 4447,1284 (VDP Record 3000)
+Set View Source File ID LogicalRecordRef
+Set XID 
+New Col mapping from 4447 to 83201 (VDP Record 4000)
+Set Sourcetype to 3 
+Set Fieldref to 63311 
+Created Input Logic for col 176401 seq 1 value COLUMN = {CONVLKUP.ALNUM} (VDP Record 4200)
+New Col mapping from 4447 to 83202 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63312 
+Set Lookupref to 1533 
+Created Input Logic for col 176402 seq 1 value COLUMN = {ALPHA} (VDP Record 4200)
+New Col mapping from 4447 to 83203 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63313 
+Set Lookupref to 1533 
+Created Input Logic for col 176403 seq 1 value COLUMN = {NUMER} (VDP Record 4200)
+New Col mapping from 4447 to 83204 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63314 
+Set Lookupref to 1532 
+Created Input Logic for col 176404 seq 1 value COLUMN = {PACKD} (VDP Record 4200)
+New Col mapping from 4447 to 83205 (VDP Record 4000)
+Set Sourcetype to 3 
+Set Fieldref to 63315 
+Created Input Logic for col 176405 seq 1 value COLUMN = {PSORT} (VDP Record 4200)
+New Col mapping from 4447 to 83206 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63316 
+Set Lookupref to 1533 
+Created Input Logic for col 176406 seq 1 value COLUMN = {BINRY} (VDP Record 4200)
+New Col mapping from 4447 to 83207 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63317 
+Set Lookupref to 1533 
+Created Input Logic for col 176407 seq 1 value COLUMN = {BSORT} (VDP Record 4200)
+New Col mapping from 4447 to 83208 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63318 
+Set Lookupref to 1532 
+Created Input Logic for col 176408 seq 1 value COLUMN = {BCD} (VDP Record 4200)
+New Col mapping from 4447 to 83209 (VDP Record 4000)
+Set Sourcetype to 3 
+Set Fieldref to 63319 
+Created Input Logic for col 176409 seq 1 value COLUMN = {MSKNM} (VDP Record 4200)
+New Col mapping from 4447 to 83210 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63319 
+Set Lookupref to 1533 
+Created Input Logic for col 176410 seq 1 value COLUMN = {EDNUM} (VDP Record 4200)
+New Col mapping from 4447 to 83211 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63320 
+Set Lookupref to 1533 
+Created Input Logic for col 176411 seq 1 value COLUMN = {FLOAT} (VDP Record 4200)
+New Col mapping from 4447 to 83212 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63321 
+Set Lookupref to 1532 
+Created Input Logic for col 176412 seq 1 value COLUMN = {GNUM} (VDP Record 4200)
+New Col mapping from 4447 to 83213 (VDP Record 4000)
+Set Sourcetype to 2 
+Set Fieldref to 63314 
+Set Lookupref to 1532 
+Created Input Logic for col 176413 seq 1 value COLUMN = {CDMY} (VDP Record 4200)
+Swap to Extract 
+Set Extract File Num 1 
+Set Extract Aggregation to 0 
+New Extract Col ID 83201 num 1 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to ALNUM
+Set Field Length to 30
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+New Extract Col ID 83202 num 2 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to ALPHA
+Set Field Length to 30
+Set ExtractAreaPosition to 31 
+Set Field Start Position to 31
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+New Extract Col ID 83203 num 3 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to NUMER
+Set Field Length to 30
+Set ExtractAreaPosition to 61 
+Set Field Start Position to 61
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+New Extract Col ID 83204 num 4 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to PACKD
+Set Field Length to 8
+Set ExtractAreaPosition to 91 
+Set Field Start Position to 91
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Report Mask to LY12Y 
+Set Subtotal/Excel Mask to -Z,ZZ9.99 
+New Extract Col ID 83205 num 5 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to PSORT
+Set Field Length to 30
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+New Extract Col ID 83206 num 6 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to BINRY
+Set Field Length to 30
+Set ExtractAreaPosition to 31 
+Set Field Start Position to 31
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+New Extract Col ID 83207 num 7 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to BSORT
+Set Field Length to 30
+Set ExtractAreaPosition to 61 
+Set Field Start Position to 61
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+New Extract Col ID 83208 num 8 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to BCD
+Set Field Length to 8
+Set ExtractAreaPosition to 91 
+Set Field Start Position to 91
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Report Mask to LY12Y 
+Set Subtotal/Excel Mask to -Z,ZZ9.99 
+New Extract Col ID 83209 num 9 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to MSKNM
+Set Field Length to 30
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+New Extract Col ID 83210 num 10 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to EDNUM
+Set Field Length to 30
+Set ExtractAreaPosition to 31 
+Set Field Start Position to 31
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+New Extract Col ID 83211 num 11 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to FLOAT
+Set Field Length to 30
+Set ExtractAreaPosition to 61 
+Set Field Start Position to 61
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+New Extract Col ID 83212 num 12 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to GNUM
+Set Field Length to 8
+Set ExtractAreaPosition to 91 
+Set Field Start Position to 91
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Report Mask to LY12Y 
+Set Subtotal/Excel Mask to -Z,ZZ9.99 
+New Extract Col ID 83213 num 13 (VDP Record 2000)
+Set Extract Area to AREDT 
+Set Field format to PACKD
+Set Field Length to 8
+Set ExtractAreaPosition to 99 
+Set Field Start Position to 99
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set Report Mask to LY12Y 
+Set Subtotal/Excel Mask to -Z,ZZ9.99 
+Swap to Output 
+Set Output Media FILE 
+Created Output partition ID 1 (VDP Record 1600)
+Set FileInfo Name to Auto-generated Name for Format Phase Output
+Set FileInfo Server ID to 1
+Set FileInfo RecordDelimiter to VAREX(5)
+Set FileInfo FieldDelimiter to FIXED(5)
+Set FileInfo TextDelimiter to DBLQT(2)
+Set FileInfo ProcessInParallel to 1
+Set FileInfo PosixDirectory to $summarydir
+Set FileInfo PosixFileName to V3263_Extract_only_lookups_P24597_D20091015
+Set FileInfo DSN to $HLQ.F0003263
+Set FileInfo DDNameOutput to F0003263
+Set FileInfo DeviceType to SYSDA
+Set FileInfo AllocSpaceUnit to TRK(2)
+Set FileInfo ReleaseUnused to 1
+Set FileInfo LRECL to 27994
+Set FileInfo VSAMORG to KSDS(1)
+Set FileInfo RECFM to VB(2)
+Set FileInfo ExpirationDate to 2009-10-15
+Set output linesperpage to 66
+Set OutputLineSizeMax to 250
+Set OutputColHeaderLinesMax to 1
+Set output error text to ****************************************
+Set output error text to ########################################
+Swap to FormatColumns 
+Found and set defaults for View Column 83201
+Set View Column name  Column Number 1
+Set Header Alignment CNTER
+Set View Column HeaderLine1  ALNUM COLUMN
+Set View Column spaces before column  0
+Set Field format to ALNUM
+Set Field Length to 30
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Found and set defaults for View Column 83202
+Set View Column name  Column Number 2
+Set Header Alignment CNTER
+Set View Column HeaderLine1  ALNUM COLUMN
+Set View Column spaces before column  0
+Set Field format to ALNUM
+Set Field Length to 30
+Set Field Start Position to 31
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Found and set defaults for View Column 83203
+Set View Column name  Column Number 3
+Set Header Alignment CNTER
+Set View Column HeaderLine1  ACCOUNT_TITLES
+Set View Column spaces before column  0
+Set Field format to NUMER
+Set Field Length to 30
+Set Field Start Position to 61
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Found and set defaults for View Column 83204
+Set View Column name  Column Number 4
+Set Header Alignment CNTER
+Set View Column HeaderLine1  RECORD_COUNT
+Set View Column spaces before column  0
+Set Field format to PACKD
+Set Field Length to 8
+Set Field Start Position to 91
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set View Column DefaultValue  0
+Set View Column Mask  LY12Y
+Set View Column Excel Mask  -Z,ZZ9.99
+Found and set defaults for View Column 83205
+Set View Column name  Column Number 1
+Set Header Alignment CNTER
+Set View Column HeaderLine1  COST_CENTRE_TITLE
+Set View Column spaces before column  0
+Set Field format to PSORT
+Set Field Length to 30
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Found and set defaults for View Column 83206
+Set View Column name  Column Number 2
+Set Header Alignment CNTER
+Set View Column HeaderLine1  LEGAL_ENTITY_TITLE
+Set View Column spaces before column  0
+Set Field format to BINRY
+Set Field Length to 30
+Set Field Start Position to 31
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Found and set defaults for View Column 83207
+Set View Column name  Column Number 3
+Set Header Alignment CNTER
+Set View Column HeaderLine1  ACCOUNT_TITLES
+Set View Column spaces before column  0
+Set Field format to BSORT
+Set Field Length to 30
+Set Field Start Position to 61
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Found and set defaults for View Column 83208
+Set View Column name  Column Number 4
+Set Header Alignment CNTER
+Set View Column HeaderLine1  RECORD_COUNT
+Set View Column spaces before column  0
+Set Field format to BCD
+Set Field Length to 8
+Set Field Start Position to 91
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set View Column DefaultValue  0
+Set View Column Mask  LY12Y
+Set View Column Excel Mask  -Z,ZZ9.99
+Found and set defaults for View Column 83209
+Set View Column name  Column Number 1
+Set Header Alignment CNTER
+Set View Column HeaderLine1  COST_CENTRE_TITLE
+Set View Column spaces before column  0
+Set Field format to MSKNM
+Set Field Length to 30
+Set Field Signed to 1
+Set Field Ordinal Position to 1
+Set View Column Mask  LY12Y
+Found and set defaults for View Column 83210
+Set View Column name  Column Number 2
+Set Header Alignment CNTER
+Set View Column HeaderLine1  LEGAL_ENTITY_TITLE
+Set View Column spaces before column  0
+Set Field format to EDNUM
+Set Field Length to 30
+Set Field Start Position to 31
+Set Field Signed to 1
+Set Field Ordinal Position to 2
+Found and set defaults for View Column 83211
+Set View Column name  Column Number 3
+Set Header Alignment CNTER
+Set View Column HeaderLine1  ACCOUNT_TITLES
+Set View Column spaces before column  0
+Set Field format to FLOAT
+Set Field Length to 30
+Set Field Start Position to 61
+Set Field Signed to 1
+Set Field Ordinal Position to 3
+Found and set defaults for View Column 83212
+Set View Column name  Column Number 4
+Set Header Alignment CNTER
+Set View Column HeaderLine1  RECORD_COUNT
+Set View Column spaces before column  0
+Set Field format to GNUM
+Set Field Length to 8
+Set Field Start Position to 91
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set View Column DefaultValue  0
+Set View Column Mask  LY12Y
+Set View Column Excel Mask  -Z,ZZ9.99
+Found and set defaults for View Column 83213
+Set View Column name  CMDY Column
+Set Header Alignment CNTER
+Set View Column HeaderLine1  CDMY
+Set View Column spaces before column  0
+Set Field format to PACKD
+Set Field content to CYMD
+Set Field Length to 8
+Set Field Start Position to 99
+Set Field Justification to RIGHT
+Set Field Signed to 1
+Set Field Ordinal Position to 4
+Set View Column DefaultValue  0
+Set View Column Mask  LY12Y
+Set View Column Excel Mask  -Z,ZZ9.99
+endDocument Rxed
+INFO: Compiler build date Feb  4 2013 - 02:01:16
+INFO: Compiling view ID 3263
+INFO: Compiling extract-phase cell logic for column 1
+COLUMN = {CONVLKUP.ALNUM}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      1  00003263  JOIN  00001285/00001364/00000442     1     0  AlphaNum  "1531"                                              4     6
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      1  00003263  LKE   00001284/00001264/00063313    25     3  ZonedDec  00001284/00001264/00063313     1     3  AlphaNum 
+                                  Signed / Right  /rnd=0000     3     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       3      1  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4     6
+       4      1  00003263  DTL   00001285/00001364/00065311     1     9  AlphaNum  00000000/00000000/00000000     1    30  AlphaNum 
+                                  Signed / Right  /rnd=0000     1     0  None       Signed /  Left  /rnd=0000     1     0  None     
+       5      1  00003263  GOTO   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    7
+                 //
+                 //   Move a constant into the DT area          |------------------+
+                 //                                             V                  |
+       6      1  00003263  DTC   00001284/00001264/00000000     1    30  AlphaNum  ""                                            
+                                  Signed /  Left  /rnd=0000     1     0  None     
+INFO: Compiling extract-phase cell logic for column 2
+COLUMN = {ALPHA}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      2  00003263  DTE   00001284/00001264/00063312    10    15  Alpha     00000000/00000000/00000000    31    30  AlphaNum 
+                                  Signed /  Left  /rnd=0000     2     0  None       Signed /  Left  /rnd=0000     2     0  None     
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN = {NUMER}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      3  00003263  DTE   00001284/00001264/00063313    25     3  ZonedDec  00000000/00000000/00000000    61    30  ZonedDec 
+                                  Signed / Right  /rnd=0000     3     0  None       Signed /  Left  /rnd=0000     3     0  None     
+INFO: Compiling extract-phase cell logic for column 4
+COLUMN = {PACKD}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      4  00003263  DTE   00001284/00001264/00063314    28     8  Packed    00000000/00000000/00000000    91     8  Packed   
+                                  Signed / Right  /rnd=0000     4     0  None       Signed / Right  /rnd=0000     4     0  None     
+INFO: Compiling extract-phase cell logic for column 5
+COLUMN = {PSORT}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      5  00003263  DTE   00001284/00001264/00063315    26     5  PackSort  00000000/00000000/00000000     1    30  PackSort 
+                                  Signed / Right  /rnd=0000     5     2  None       Signed /  Left  /rnd=0000     1     0  None     
+INFO: Compiling extract-phase cell logic for column 6
+COLUMN = {BINRY}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      6  00003263  DTE   00001284/00001264/00063316     1     9  Binary    00000000/00000000/00000000    31    30  Binary   
+                                  Signed / Right  /rnd=0000     1     0  None       Signed /  Left  /rnd=0000     2     0  None     
+INFO: Compiling extract-phase cell logic for column 7
+COLUMN = {BSORT}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      7  00003263  DTE   00001284/00001264/00063317    10     5  BinaSort  00000000/00000000/00000000    61    30  BinaSort 
+                                  Signed /  Left  /rnd=0000     2     0  None       Signed /  Left  /rnd=0000     3     0  None     
+INFO: Compiling extract-phase cell logic for column 8
+COLUMN = {BCD}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      8  00003263  DTE   00001284/00001264/00063318    15     3  BCD       00000000/00000000/00000000    91     8  BCD      
+                                  Signed / Right  /rnd=0000     3     0  None       Signed / Right  /rnd=0000     4     0  None     
+INFO: Compiling extract-phase cell logic for column 9
+COLUMN = {MSKNM}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      9  00003263  DTE   00001284/00001264/00063319    18     8  MaskNum   00000000/00000000/00000000     1    30  MaskNum  
+                                  Signed / Right  /rnd=0000     4     0  None       Signed /  Left  /rnd=0000     1     0  None     
+INFO: Compiling extract-phase cell logic for column 10
+COLUMN = {EDNUM}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1     10  00003263  DTE   00001284/00001264/00063320    26     5  EditNum   00000000/00000000/00000000    31    30  EditNum  
+                                  Signed / Right  /rnd=0000     5     2  None       Signed /  Left  /rnd=0000     2     0  None     
+INFO: Compiling extract-phase cell logic for column 11
+COLUMN = {FLOAT}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1     11  00003263  DTE   00001284/00001264/00063321     1     9  Float     00000000/00000000/00000000    61    30  Float    
+                                  Signed / Right  /rnd=0000     1     0  None       Signed /  Left  /rnd=0000     3     0  None     
+INFO: Compiling extract-phase cell logic for column 12
+COLUMN = {GNUM}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1     12  00003263  DTE   00001284/00001264/00063322    10     5  Geneva #  00000000/00000000/00000000    91     8  Geneva # 
+                                  Signed /  Left  /rnd=0000     2     0  None       Signed / Right  /rnd=0000     4     0  None     
+INFO: Compiling extract-phase cell logic for column 13
+COLUMN = {CDMY}
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1     13  00003263  DTE   00001284/00001264/00063326     1     9  ZonedDec  00000000/00000000/00000000    99     8  Packed   
+                                  Signed / Right  /rnd=0000     1     0  CCYYMMDD   Signed / Right  /rnd=0000     4     0  CCYYMMDD 

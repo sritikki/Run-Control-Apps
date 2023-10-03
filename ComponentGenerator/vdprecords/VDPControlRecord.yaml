@@ -1,0 +1,60 @@
+#Control Record
+#Not really much here
+#Used for financial management to define fiscal paramaters
+record_name: VDPControlRecord
+component_name: ControlRecord
+dsect_name: control
+#This name will map into the enum that has all of the rcord type numbers
+#Or should we just use the explicit number?
+record_id: 50
+#VDP Records a generally a fixed length
+#keep that number so we can set and cross check it when writing
+record_length: 632
+# A control record is just that, a base component that is only used within a view
+fields:
+- name: prefix
+  type: mappingOnly
+  existing_java_type: VDPPrefix 
+  component_field: none
+- name: record_id
+  type: mappingOnly
+  component_field: componentId
+- name: month_of_fiscal_period
+  type: short
+  component_field: firstFiscalMonth
+- name: low_period_value
+  type: short
+  component_field: beginningPeriod
+- name: high_period_thing
+  type: short 	
+  component_field: endingPeriod
+- name: padding1 
+  type: string
+  maxlength: 2
+  padding : true
+  component_field: none
+- name: effective_date
+  type: string
+  maxlength: 8
+  component_field: none
+- name: term_date
+  type: string
+  maxlength: 8
+  component_field: none
+- name: fiscal_date
+  type: string
+  maxlength: 8
+  component_field: none
+- name: name
+  type: string
+  maxlength: 256
+  component_field: name
+- name: description
+  type: string
+  maxlength: 256
+  component_field: description
+- name: padding2 
+  type: string
+  maxlength: 64
+  padding : true
+  component_field: none

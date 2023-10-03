@@ -1,0 +1,3 @@
+INFO: Compiling extract-phase cell logic for column 3
+COLUMN = 0 - {MSKNM_MSKNM.FRED}
+ERROR: line 1:27: The lookup field 'FRED' is not defined in the target's logical record 'Target_All_Types'

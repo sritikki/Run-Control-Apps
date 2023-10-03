@@ -1,0 +1,455 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<?xml-stylesheet type="text/xsl" href="../../../../xsl/PMSpec.xsl"?>
+<PMSpec>
+	<Name>SELPKD</Name>
+	<Title>Selection via Comparisons</Title>
+	<Description>Select via ompare different source types to packed.</Description>
+        <Category>PeTests/Comparison/Selection</Category>
+	<CQ></CQ>
+	<Note></Note>
+	<Tests>
+		<Test>
+			<Name>PKDBEG</Name>
+			<Header>LessThan</Header>
+			<Description>Select with BEGINS</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+                            <With>SELECTIF({Description} BEGINS_WITH \"4-ve\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+        </Test>
+		<Test>
+			<Name>PKDCON</Name>
+			<Header>Contains</Header>
+			<Description>Select with CONTAINS</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SELECTIF({Description} CONTAINS \"Column\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+                    </Test>
+		<Test>
+			<Name>PKDEND</Name>
+			<Header>Ends With</Header>
+			<Description>Select with END_WITH</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SELECTIF({Description} ENDS_WITH \"nums:\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+                    </Test>
+		<Test>
+			<Name>PKDENF</Name>
+                        <Header>Not Found</Header>
+			<Description>SKIP with ENDS_WITH (selects all)</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SKIPIF({Description} ENDS_WITH \"RUBBISH\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+                    </Test>
+		<Test>
+			<Name>PKDBNF</Name>
+                        <Header>Not Found</Header>
+			<Description>Skip with BEGINS_WITH (select all)</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SKIPIF({Description} BEGINS_WITH \"RUBBISH\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+                    </Test>
+		<Test>
+			<Name>PKDBAD</Name>
+                        <Header>BAD Type</Header>
+			<Description>Select with ENDS_WITH</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SELECTIF({PACKED} ENDS_WITH \"nums:\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+            <BadRC>
+               <RC>0008</RC>
+            </BadRC>
+			</Result>
+                    </Test>
+		<Test>
+			<Name>PKDSKP</Name>
+                        <Header>SKIP</Header>
+			<Description>Skip with BEGINS_WITH</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SKIPIF({Description} BEGINS_WITH \"6NEGATIVE\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+                    </Test>
+		<Test>
+			<Name>PKDCOF1</Name>
+			<Header>Contains</Header>
+			<Description>SKIP with CONTAINS - not found - select all</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SKIPIF({Description} CONTAINS \"Rubbish\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+                    </Test>
+		<Test>
+			<Name>PKDCOF2</Name>
+			<Header>Contains</Header>
+			<Description>SELECT with CONTAINS - ""</Description>
+			<Source>XML</Source>
+			<DecimalPlaces>0</DecimalPlaces>
+			<XMLfiles>
+				<XMLfile>
+					<Name>packedSELECT.xml</Name>
+					<Replacements>
+						<Replacement>
+							<Replace>%SELSTMNT%</Replace>
+							<With>SELECTIF({Description} CONTAINS \"\")</With>
+						</Replacement>
+					</Replacements>
+				</XMLfile>
+			</XMLfiles>
+			<EventFiles>
+				<EventFile>
+					<DDName>ALLTYPE</DDName>
+					<FileName>ALLTYPE</FileName>
+				</EventFile>
+			</EventFiles>
+			<ExtractFiles>
+				<ExtractFile>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>10</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>8192</LRECL>
+ 				</ExtractFile>
+			</ExtractFiles>
+            <FormatFiles>
+                <FormatFile>
+                    <DDName>FMTOUT01</DDName>
+                    <SPACE>TRK</SPACE>
+                    <PRIMARY>1</PRIMARY>
+                    <SECONDARY>1</SECONDARY>
+                    <RECFM>VB</RECFM>
+                    <LRECL>200</LRECL>
+                </FormatFile>
+            </FormatFiles>            
+			<Result>
+				<Success>
+				</Success>
+			</Result>
+                    </Test>
+        </Tests>
+
+</PMSpec>

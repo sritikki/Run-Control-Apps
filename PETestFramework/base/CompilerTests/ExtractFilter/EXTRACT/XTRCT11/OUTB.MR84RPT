@@ -1,0 +1,26 @@
+INFO: Compiling extract-phase filter for data source file ID 1284, LR ID 1264
+SELECTIF({EVENT_JOURNAL_TO_LE_DESC.LEGAL_ENTITY_TITLE}="FRED" AND {EVENT_JOURNAL_TO_CC_DESC.COST_CENTRE_TITLE} = "DAD" AND {EVENT_JOURNAL_TO_ACC_TITLES.ACCOUNT_TITLES} = "FRED")
+  Row      Seq             Func            Field 1 (Source) Attributes                    Field 2 (Destination) Attributes             Goto
+  Num      Num   View ID   Sub   File ID /  LRID  /FieldID   Pos   Len    Format   File ID /  LRID  /FieldID   Pos   Len    Format  Row1  Row2
+----------------------------------------------------------------------------------------------------------------------------------------------
+       1      0  00003263  JOIN  00001287/00001263/00002890     1     0  AlphaNum  "1534"                                              4    NV
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       2      0  00003263  LKE   00001284/00001264/00063311     1     9  ZonedDec  00001284/00001264/00063311     1     9  ZonedDec 
+                                  Signed / Right  /rnd=0000     1     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+       3      0  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    4    NV
+       4      0  00003263  CFLC  00001287/00001263/00063310    10    30  AlphaNum  EQ "FRED"                                           5    NV
+                                  Signed /  Left  /rnd=0000     2     0  None     
+       5      0  00003263  JOIN  00001286/00001262/00002889     1     0  AlphaNum  "1533"                                              8    NV
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+       6      0  00003263  LKE   00001284/00001264/00063312    10     5  AlphaNum  00001284/00001264/00063312     1     5  AlphaNum 
+                                  Signed /  Left  /rnd=0000     2     0  None      Unsigned/  Left  /rnd=0000     1     0  None     
+       7      0  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .    8    NV
+       8      0  00003263  CFLC  00001286/00001262/00063308     6    30  AlphaNum  EQ "DAD"                                            9    NV
+                                  Signed /  Left  /rnd=0000     2     0  None     
+       9      0  00003263  JOIN  00001285/00001258/00002888     1     0  AlphaNum  "1532"                                             12    NV
+                                 Unsigned/  Left  /rnd=0000     0     0  None     
+      10      0  00003263  LKE   00001284/00001264/00063313    15     3  ZonedDec  00001284/00001264/00063313     1     3  ZonedDec 
+                                  Signed / Right  /rnd=0000     3     0  None      Unsigned/ Right  /rnd=0000     1     0  None     
+      11      0  00003263  LUSM   .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .   12    NV
+      12      0  00003263  CFLC  00001285/00001258/00063304     4    30  AlphaNum  EQ "FRED"                                          13    NV
+                                  Signed /  Left  /rnd=0000     2     0  None     

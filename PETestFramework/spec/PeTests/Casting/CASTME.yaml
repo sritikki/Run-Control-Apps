@@ -1,0 +1,25 @@
+---
+name: "CASTME"
+title: "Casting Tests"
+description: "Does our casting work"
+category: "PeTests/Casting"
+cq: ""
+note: ""
+tests:
+- name: "ISFUNC"
+  header: "ISFUNC"
+  description: "IsFunction Casts"
+  source: "WBXML"
+  xmlfiles:
+  - name: "FunctionCasts[11205].xml"
+    
+  eventfiles:
+  - ddname: "FUNCIN"
+    filename: "FUNCS"
+  extractfiles:
+  - ddname: "F0011205"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"

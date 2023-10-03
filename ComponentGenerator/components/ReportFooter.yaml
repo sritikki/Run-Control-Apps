@@ -1,0 +1,21 @@
+component_name: ReportFooter
+members:
+- name: componentId 
+  type: integer
+- name: function
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.ReportFunction
+- name: justification
+  type: enum
+  existing_java_type: org.genevaers.repository.components.enums.JustifyId
+  vdp_source: justifyId
+- name: row
+  type: short
+- name: column
+  type: short
+- name: footerLength
+  type: short
+- name: mask
+  type: string
+- name: text
+  type: string
