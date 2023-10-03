@@ -238,10 +238,11 @@ public class AnalyserDriver {
 		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
 		fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
+		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "VDP1.html");
 		fa.readVDP(rc2.resolve("VDP"), false, recordsRoot, true);
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
-		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot);
+		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "VDPDiff.html");
 	}
 
 	private boolean runControlFilesPresent(Path root) {

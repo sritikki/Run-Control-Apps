@@ -58,7 +58,6 @@ import j2html.tags.specialized.TrTag;
 public class VDPRecordsHTMLWriter {
 	
 	private static String currentRecType = "";
-	private static final String filename = "VDP.html";
 	private static FileWriter fw;
 	private static final String POPUP = "w3-modal-content w3-animate-zoom";
 	static String toggleScript = "function toggleDiv(divname) {" +
@@ -71,7 +70,7 @@ public class VDPRecordsHTMLWriter {
 			"}" +
 			"}";
 
-	public static void writeFromRecordNodes(Path cwd, MetadataNode recordsRoot) {
+	public static void writeFromRecordNodes(Path cwd, MetadataNode recordsRoot, String filename) {
 
 		File output = cwd.resolve(filename).toFile();
 		try {
@@ -168,10 +167,6 @@ public class VDPRecordsHTMLWriter {
 	private static String getRecordTypeName(String typeStr) {
 		String[] typeParts = typeStr.split("_");
 		return "Record Type: " + typeParts[0];
-	}
-
-	public String getFileName() {
-		return filename;
 	}
 
 }
