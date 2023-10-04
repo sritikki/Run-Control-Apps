@@ -295,7 +295,7 @@ public class VDPFileWriter {
 
 			veol.setRecordType(VDPRecord.VDP_OUTPUT_LOGIC);
 			veol.setViewId(vs.getViewId());
-			veol.setSequenceNbr(vs.getSequenceNumber());
+			veol.setSequenceNbr((short) 0);
 			veol.setRecordId(vs.getComponentId());
 			veol.setInputFileId(vs.getComponentId());
 			veol.setLogicLength((short) eol.length());
@@ -446,7 +446,7 @@ public class VDPFileWriter {
 		vcl.setRecordType(VDPRecord.VDP_COLUMN_LOGIC);
 		vcl.setViewId(vcs.getViewId());
 		vcl.setColumnId(colNumber);
-		vcl.setSequenceNbr(vcs.getSequenceNumber());
+		vcl.setSequenceNbr((short) 0);
 		vcl.setRecordId(vcs.getComponentId());
 		vcl.setInputFileId(vcs.getComponentId());
 		vcl.setLogicLength((short) cl.length());
