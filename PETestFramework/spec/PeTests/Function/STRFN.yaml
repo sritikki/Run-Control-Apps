@@ -103,7 +103,7 @@ tests:
     recfm: "FB"
     lrecl: "35"
     comparable: "true"
-  - name: "STRFNP"
+- name: "STRFNP"
   header: "Compare concat both side"
   description: "Check compare with concatenation both sides"
   source: "WBXML"
