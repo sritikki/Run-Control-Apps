@@ -54,7 +54,7 @@ public class LogicTableEmitter {
 
     public void addToLogicTable(LTRecord rec) {
         if (rec != null) { //Should never really be null but handy during development testing
-            if(rec.getViewId() == 0)
+            if(rec.getRecordType() != LtRecordType.F0 && rec.getViewId() == 0)
                 rec.setViewId(viewId);
             if(rec.getFileId() == 0)
                 rec.setFileId(fileId);

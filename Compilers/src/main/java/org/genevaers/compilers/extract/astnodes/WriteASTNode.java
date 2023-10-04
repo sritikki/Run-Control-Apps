@@ -113,6 +113,7 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
             wr.setWriteExitParms("");
             wr.setWriteExitId(0);
         }
+        wr.setSourceSeqNbr((short) ltEmitter.getLogicTable().getNumberOfRecords());
         ltEmitter.addToLogicTable(wr);
     }
 

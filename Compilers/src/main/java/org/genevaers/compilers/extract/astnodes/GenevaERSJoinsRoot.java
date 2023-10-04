@@ -113,6 +113,7 @@ public class GenevaERSJoinsRoot extends ExtractBaseAST implements EmittableASTNo
         LogicTableF0 en = new LogicTableF0();
         en.setRecordType(LtRecordType.F0);
         en.setFunctionCode("EN");
+        en.setViewId(0);
         ltEmitter.addToLogicTable(en);
     }
 

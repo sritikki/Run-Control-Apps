@@ -38,6 +38,7 @@ public class EndOfSetASTNode extends ExtractBaseAST implements EmittableASTNode{
         LogicTableF0 end = new LogicTableF0();
         end.setFunctionCode("ES");
         end.setRecordType(LtRecordType.F0);
+        end.setViewId(0);
         ltEmitter.setSuffixSeqNbr((short)0);
         ltEmitter.setFileId(lfID);
         ltEmitter.addToLogicTable(end);

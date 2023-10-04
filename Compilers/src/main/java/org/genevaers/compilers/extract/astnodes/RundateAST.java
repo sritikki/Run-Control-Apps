@@ -95,13 +95,16 @@ RunDateASTNode::getLength() const
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LTRecord fc;
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(String.valueOf(value), currentViewColumn));
+            fc = (LTRecord) fcf.getCTC(String.valueOf(value), currentViewColumn);
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(String.valueOf(value), currentViewColumn));
+            fc = (LTRecord) fcf.getDTC(String.valueOf(value), currentViewColumn);
         } else {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(String.valueOf(value), currentViewColumn));
+            fc = (LTRecord) fcf.getSKC(String.valueOf(value), currentViewColumn);
         }
+        fc.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords() + 1));
+        ltEmitter.addToLogicTable((LTRecord)fc);
         return null;
     }
 

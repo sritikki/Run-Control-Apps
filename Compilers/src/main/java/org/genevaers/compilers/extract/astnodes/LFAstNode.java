@@ -21,6 +21,7 @@ package org.genevaers.compilers.extract.astnodes;
 import com.google.common.flogger.FluentLogger;
 
 import org.genevaers.compilers.base.EmittableASTNode;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfile.LogicTableF0;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
 import org.genevaers.repository.Repository;
@@ -63,6 +64,7 @@ public class LFAstNode extends ExtractBaseAST implements EmittableASTNode{
     private void emitRE() {
         LogicTableRE re = new LogicTableRE();
         re.setRecordType(LtRecordType.RE);
+        LtFactoryHolder.getLtFunctionCodeFactory().setLogFileId(lf.getID());
         re.setFileId(lf.getID());
         PhysicalFile pf1 = lf.getPFIterator().next();
         if (pf1.getFileType() == FileType.TOKEN) {
@@ -90,6 +92,7 @@ public class LFAstNode extends ExtractBaseAST implements EmittableASTNode{
         } else {
             end.setFunctionCode("ES");
         }
+        end.setViewId(0);
         ltEmitter.addToLogicTable(end);
     }
 
