@@ -33,6 +33,7 @@ import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
 import org.genevaers.repository.components.PhysicalFile;
+import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
 
@@ -76,6 +77,7 @@ public class RecordParserData {
 				LRLF lrlf = lrlfs.get(lrlfAssocID);
 				vs.setSourceLFID(lrlf.lfid);
 				vs.setSourceLRID(lrlf.lrid);
+				fixViewColumnSources(vs, lrlf.lrid);
 				if (vs2lfpf.size() > 0) {
 					int lfpfAssocID = vs2lfpf.get(vs.getComponentId());
 					LFPF lfpf = lfpfs.get(lfpfAssocID);
@@ -85,6 +87,13 @@ public class RecordParserData {
 					}
 				}
 			}
+		}
+	}
+
+	private static void fixViewColumnSources(ViewSource vs, int lrid) {
+		Iterator<ViewColumnSource> csi = vs.getIteratorForColumnSourcesByNumber();
+		while(csi.hasNext()) {
+			csi.next().setViewSrcLrId(lrid);
 		}
 	}
 
