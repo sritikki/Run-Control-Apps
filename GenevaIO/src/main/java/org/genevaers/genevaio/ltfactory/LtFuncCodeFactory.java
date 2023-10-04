@@ -37,8 +37,10 @@ import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
@@ -1591,6 +1593,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableArg arg = getColumnArg(vc);;
         arg.setValue(v);
         arg.setValueLength(v.length());
+        arg.setLogfileId(logFileId);
+        arg.setOrdinalPosition(vc.getOrdinalPosition());
+        if(vc.getDataType() == DataType.ALPHANUMERIC) {
+            arg.setJustifyId(JustifyId.LEFT);
+        }
         return arg;
     }
 

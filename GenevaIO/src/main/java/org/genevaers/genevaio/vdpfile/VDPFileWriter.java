@@ -170,7 +170,7 @@ public class VDPFileWriter {
 			vof.setComponentId(view.getID());
 			String ddname = String.format("F%07d", view.getID());
 			vof.setOutputDDName(ddname);
-			vof.setName("MR91 generated for " + ddname);
+			vof.setName("Auto-generated Name for Extract Phase Output ");
 	}
 
 	private void writeTheOutputFile(ViewNode view) {
@@ -188,10 +188,12 @@ public class VDPFileWriter {
 			ff.setRecordType(VDPRecord.VDP_FORMAT_OUTPUT_FILE);
 			ff.setViewId(view.getID());
 			ff.setSequenceNbr((short) 1);
-			ff.setRecordId(view.getID());
+			ff.setRecordId(0);
 			ff.setInputFileId(0);
 
 			//Keep the writer happy
+			ff.setServerId(1);
+			ff.setDbmsRowFmtOptId(1);
 			ff.setAllocFileType(FileType.DISK);
 			ff.setFieldDelimId(FieldDelimiter.INVALID);
 			ff.setRecordDelimId(RecordDelimiter.INVALID);
@@ -199,6 +201,20 @@ public class VDPFileWriter {
 			ff.setAccessMethodId(AccessMethod.SEQUENTIAL);
 			ff.setAllocLrecl((short) 400);
 			ff.setAllocRecfm(FileRecfm.FB);
+			ff.setExpirationDate("00000000");
+			ff.setCodesetId(2);
+			ff.setEndianId(1);
+			ff.setFieldDelimId(FieldDelimiter.FIXEDWIDTH);
+			ff.setRecordDelimId(RecordDelimiter.CR);
+			ff.setAllocDsorg(1);
+			ff.setAllocVsamorg(1);
+			ff.setAllocRecfm(FileRecfm.VB);
+			ff.setAllocLrecl((short) 27994);
+			ff.setAllocReleaseInd(true);
+			ff.setControlRectypeId(1);
+			ff.setVersNbrFldFmtId(1);
+			ff.setRecCountFldFmtId(1);
+			ff.setProcessInParallel(true);
 		}
 
 		ff.fillTheWriteBuffer(VDPWriter);
