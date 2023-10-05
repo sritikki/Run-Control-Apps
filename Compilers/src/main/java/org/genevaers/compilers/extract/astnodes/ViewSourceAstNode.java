@@ -126,7 +126,7 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
     }
 
     public boolean hasExtractFilterText() {
-        return vs.getExtractFilter().length() > 0;
+        return vs.getExtractFilter() != null && vs.getExtractFilter().length() > 0;
     }
 
     public ViewAreaValues getAreaValues() {
