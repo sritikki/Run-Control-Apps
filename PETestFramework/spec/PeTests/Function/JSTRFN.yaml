@@ -86,3 +86,23 @@ tests:
     recfm: "FB"
     lrecl: "35"
     comparable: "true"
+- name: "STRFNU"
+  header: "Left with UC"
+  description: "Test left function with UPPER CASE formula"
+  source: "WBXML"
+  xmlfiles:
+  - name: "Left_UC.xml"
+  eventfiles:
+  - ddname: "CONCAT"
+    filename: "CONCAT"
+  reffiles:
+  - ddname: "CONTARG"
+    filename: "CONTARG"
+  extractfiles:
+  - ddname: "F0012155"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "35"
+    comparable: "true"
