@@ -7,7 +7,7 @@ description: "Test functions on with field lengths > 256 \
   \ stuff"
 #The category maps to the directory path below the Spec directory
 #Which is where the spec file should be located
-category: "dev/longFields"
+category: "PeTests/LongFields"
 cq: ""
 note: ""
 #There can be many tests.
