@@ -67,6 +67,9 @@ public class RepositoryBuilder {
 		} else if (rcc.getInputType().equals(InputType.DB2.toString())) {
 			logger.atInfo().log("Build repository from DB2");
 			buildRepoFromDB2();
+		} else if (rcc.getInputType().equals(InputType.POSTGRES.getName())) {
+			logger.atInfo().log("Build repository from Postgres");
+			buildRepoFromPostgres();
 		} else {
 			logger.atSevere().log("Unknown Input Type %s", rcc.getInputType());
 			retval = Status.ERROR;
@@ -86,6 +89,22 @@ public class RepositoryBuilder {
 		conParams.setSchema(rcc.getParm(RunControlConfigration.DB2_SCHEMA));
 		conParams.setUsername(System.getenv("TSO_USERID"));
 		conParams.setPassword(System.getenv("TSO_PASSWORD"));
+		DBReader dbr = new DBReader();
+		dbr.addViewsToRepository(conParams);
+	}
+
+	private void buildRepoFromPostgres() {
+		DatabaseConnectionParams conParams = new DatabaseConnectionParams();
+		conParams.setDatabase(rcc.getParm(RunControlConfigration.DB2_DATABASE));
+		conParams.setDbType(DbType.POSTGRES);
+		conParams.setEnvironmenID(rcc.getParm(RunControlConfigration.DB2_ENVIRONMENT_ID));
+		conParams.setPort(rcc.getParm(RunControlConfigration.DB2_PORT));
+		conParams.setServer(rcc.getParm(RunControlConfigration.DB2_SERVER));
+		conParams.setFolderIds(rcc.getParm(RunControlConfigration.DBFLDRS));
+		conParams.setViewIds(rcc.getParm(RunControlConfigration.DBVIEWS));
+		conParams.setSchema(rcc.getParm(RunControlConfigration.DB2_SCHEMA));
+		conParams.setUsername(System.getenv("PG_USERID"));
+		conParams.setPassword(System.getenv("PG_PASSWORD"));
 		DBReader dbr = new DBReader();
 		dbr.addViewsToRepository(conParams);
 	}

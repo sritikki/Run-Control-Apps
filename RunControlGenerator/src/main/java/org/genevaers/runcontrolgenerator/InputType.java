@@ -20,14 +20,15 @@ package org.genevaers.runcontrolgenerator;
 
 public enum InputType {
     WBXML("Workbench XML"),
-    DB2("DB2");
+    DB2("DB2"),
+    POSTGRES("PG");
 
     String name;
     private InputType(String name) {
         this.name = name;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 }

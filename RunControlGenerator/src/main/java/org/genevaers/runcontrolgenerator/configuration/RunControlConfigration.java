@@ -195,6 +195,8 @@ public class RunControlConfigration {
             break;
             case "DB2":
             break;
+            case "PG":
+            break;
             default:
                 valid = false;
 
