@@ -117,7 +117,7 @@ public class DBViewsReader extends DBReaderBase {
 
     private void addViewsToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String viewsQuery = queryBase + " from " + params.getSchema() + ".View v " 
-        + "INNER JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
+        + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
         + "where viewid IN(" + viewIds + ") and v.environid = " + params.getEnvironmenID() + ";";
 
         executeAndWriteToRepo(dbConnection, viewsQuery);
