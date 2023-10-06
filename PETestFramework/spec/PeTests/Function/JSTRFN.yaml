@@ -1,0 +1,108 @@
+---
+name: "JSTRFN"
+title: "String Function Function Tests Java MR91"
+description: "String Function Function Tests supported by Java MR91"
+category: "PeTests/Function"
+cq: ""
+note: ""
+tests:
+- name: "STRFNC"
+  header: "String Concatenation"
+  description: "String Concatenation compares and assignments"
+  source: "WBXML"
+  xmlfiles:
+  - name: "ConcatNew[12150].xml"
+  eventfiles:
+  - ddname: "CONCAT"
+    filename: "CONCAT"
+  reffiles:
+  - ddname: "CONTARG"
+    filename: "CONTARG"
+  extractfiles:
+  - ddname: "F0012150"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "122"
+    comparable: "true"
+- name: "STRFNS"
+  header: "Substring"
+  description: "Test substring function with all types"
+  source: "WBXML"
+  xmlfiles:
+  - name: "SubStr.xml"
+  eventfiles:
+  - ddname: "CONCAT"
+    filename: "CONCAT"
+  reffiles:
+  - ddname: "CONTARG"
+    filename: "CONTARG"
+  extractfiles:
+  - ddname: "F0011560"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "35"
+    comparable: "true"
+- name: "STRFNE"
+  header: "Left"
+  description: "Test left function with all types"
+  source: "WBXML"
+  xmlfiles:
+  - name: "Left.xml"
+  eventfiles:
+  - ddname: "CONCAT"
+    filename: "CONCAT"
+  reffiles:
+  - ddname: "CONTARG"
+    filename: "CONTARG"
+  extractfiles:
+  - ddname: "F0011561"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "35"
+    comparable: "true"
+- name: "STRFNI"
+  header: "Right"
+  description: "Test right function with all types"
+  source: "WBXML"
+  xmlfiles:
+  - name: "Right.xml"
+  eventfiles:
+  - ddname: "CONCAT"
+    filename: "CONCAT"
+  reffiles:
+  - ddname: "CONTARG"
+    filename: "CONTARG"
+  extractfiles:
+  - ddname: "F0011562"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "35"
+    comparable: "true"
+- name: "STRFNU"
+  header: "Left with UC"
+  description: "Test left function with UPPER CASE formula"
+  source: "WBXML"
+  xmlfiles:
+  - name: "Left_UC.xml"
+  eventfiles:
+  - ddname: "CONCAT"
+    filename: "CONCAT"
+  reffiles:
+  - ddname: "CONTARG"
+    filename: "CONTARG"
+  extractfiles:
+  - ddname: "F0012155"
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "FB"
+    lrecl: "35"
+    comparable: "true"

@@ -1,11 +1,28 @@
+<?xml version='1.0'?>
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 <safrxml>
     <Generation>
         <Record>
             <XMLVERSION>3</XMLVERSION>
             <TYPE>View</TYPE>
             <PROGRAM>Workbench Version 4.20.0 :  OS2</PROGRAM>
-            <FILENAME></FILENAME>
-            <CREATEDTIMESTAMP>2023-10-03 15:21:11</CREATEDTIMESTAMP>
+            <FILENAME>Right[11562].xml</FILENAME>
+            <CREATEDTIMESTAMP>2023-10-04 16:51:06</CREATEDTIMESTAMP>
             <CREATEDUSERID>GILLIAN</CREATEDUSERID>
         </Record>
     </Generation>
@@ -19,7 +36,7 @@
             <VIEWTYPECD>EXTR </VIEWTYPECD>
             <EXTRACTFILEPARTNBR>1</EXTRACTFILEPARTNBR>
             <OUTPUTMEDIACD>FILE </OUTPUTMEDIACD>
-            <OUTPUTLRID>0</OUTPUTLRID>
+            <OUTPUTLRID></OUTPUTLRID>
             <LFPFASSOCID>0</LFPFASSOCID>
             <PAGESIZE>66</PAGESIZE>
             <LINESIZE>250</LINESIZE>
@@ -29,9 +46,9 @@
             <EXTRACTSUMMARYBUF>0</EXTRACTSUMMARYBUF>
             <OUTPUTMAXRECCNT>0</OUTPUTMAXRECCNT>
             <CONTROLRECID>1043</CONTROLRECID>
-            <WRITEEXITID>0</WRITEEXITID>
+            <WRITEEXITID></WRITEEXITID>
             <WRITEEXITSTARTUP></WRITEEXITSTARTUP>
-            <FORMATEXITID>0</FORMATEXITID>
+            <FORMATEXITID></FORMATEXITID>
             <FORMATEXITSTARTUP></FORMATEXITSTARTUP>
             <FILEFLDDELIMCD></FILEFLDDELIMCD>
             <FILESTRDELIMCD></FILESTRDELIMCD>
@@ -40,10 +57,10 @@
             <COMMENTS></COMMENTS>
             <CREATEDTIMESTAMP>2019-10-30 23:08:05</CREATEDTIMESTAMP>
             <CREATEDUSERID>ADMIN   </CREATEDUSERID>
-            <LASTMODTIMESTAMP>2023-10-02 23:58:40</LASTMODTIMESTAMP>
+            <LASTMODTIMESTAMP>2023-10-04 01:46:05</LASTMODTIMESTAMP>
             <LASTMODUSERID>GILLIAN </LASTMODUSERID>
-            <COMPILER>PM 4.18.100</COMPILER>
-            <LASTACTTIMESTAMP>2023-10-02 23:58:40</LASTACTTIMESTAMP>
+            <COMPILER>sycadas: 1.0.3</COMPILER>
+            <LASTACTTIMESTAMP>2023-10-04 01:46:05</LASTACTTIMESTAMP>
             <LASTACTUSERID>GILLIAN </LASTACTUSERID>
         </Record>
     </View>
@@ -307,10 +324,10 @@
             <EFFDATELRFIELDID>0</EFFDATELRFIELDID>
             <SORTTITLELOOKUPID>0</SORTTITLELOOKUPID>
             <SORTTITLELRFIELDID>0</SORTTITLELRFIELDID>
-            <EXTRACTCALCLOGIC><![CDATA[COLUMN = RIGHT({CONCAT_CONCATTARG.SECONDTEN},5)]]></EXTRACTCALCLOGIC>
+            <EXTRACTCALCLOGIC><![CDATA[COLUMN = RIGHT({Concat_ConcatTarg.SecondTen},5)]]></EXTRACTCALCLOGIC>
             <CREATEDTIMESTAMP>2019-10-30 23:08:06</CREATEDTIMESTAMP>
             <CREATEDUSERID>ADMIN   </CREATEDUSERID>
-            <LASTMODTIMESTAMP>2023-10-02 23:58:41</LASTMODTIMESTAMP>
+            <LASTMODTIMESTAMP>2023-10-04 01:46:06</LASTMODTIMESTAMP>
             <LASTMODUSERID>GILLIAN </LASTMODUSERID>
         </Record>
         <Record>
