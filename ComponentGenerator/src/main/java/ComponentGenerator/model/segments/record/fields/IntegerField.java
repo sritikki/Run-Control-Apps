@@ -71,8 +71,8 @@ public class IntegerField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry() {
-        return defaultNumericNodeEntry();
+    public String getFieldNodeEntry(boolean prefix) {
+        return defaultNumericNodeEntry(prefix);
     }
 
 }

@@ -117,7 +117,7 @@ public class BooleanField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry() {
+    public String getFieldNodeEntry(boolean prefix) {
         StringBuilder fieldNodeEntry = new StringBuilder();
         String ccName = NameUtils.getCamelCaseName(name, false);
         fieldNodeEntry.append(DBLINDENT + "String " + ccName + "val;\n");

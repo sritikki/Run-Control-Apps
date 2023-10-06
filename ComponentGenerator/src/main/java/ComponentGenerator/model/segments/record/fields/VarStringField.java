@@ -92,8 +92,8 @@ public class VarStringField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry() {
-        return defaultStringNodeEntry();    
+    public String getFieldNodeEntry(boolean prefix) {
+        return defaultStringNodeEntry(prefix);    
     }
 
 }

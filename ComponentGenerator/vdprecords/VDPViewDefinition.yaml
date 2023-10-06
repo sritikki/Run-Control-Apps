@@ -41,7 +41,6 @@ fields:
 - name: owner_user
   type: string
   maxlength: 8
-  component_field: none
 - name: output_media
   type: enum
   existing_java_type: org.genevaers.repository.components.enums.OutputMedia
@@ -72,13 +71,10 @@ fields:
   component_field: none
 - name: output_page_size_max
   type: short
-  component_field: none
 - name: output_line_size_max
   type: short
-  component_field: none
 - name: output_col_hdr_lns_max
   type: short
-  component_field: none
 - name: output_nbr_of_copies
   type: short
   component_field: none

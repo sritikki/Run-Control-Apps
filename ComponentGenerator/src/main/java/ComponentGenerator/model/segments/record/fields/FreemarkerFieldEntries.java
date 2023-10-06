@@ -119,19 +119,19 @@ public class FreemarkerFieldEntries {
     }
 
     public void addEntriesFrom(Record record) {
-		addRecordEntries(record);
+		addRecordEntries(record, false);
     }
 
     public void addEntriesFrom(Record prefix, Record record) {
         addComment(Field.INDENT + "//Prefix entries");
-		addRecordEntries(prefix);
+		addRecordEntries(prefix, true);
         addComment(Field.INDENT + "//Record entries");
-		addRecordEntries(record);
+		addRecordEntries(record, false);
     }
 
     public void addEntriesFrom(Record prefix, Record arg, Record record) {
         addComment(Field.INDENT + "//Prefix entries");
-		addRecordEntries(prefix);
+		addRecordEntries(prefix, true);
         addComment(Field.INDENT + "//Field entries");
 		addRecordEntries(record, arg);
     }
@@ -150,7 +150,7 @@ public class FreemarkerFieldEntries {
                 }
                 addArgDsectEntries(arg, argNum);
             }
-            addFieldEntries(f);
+            addFieldEntries(f, false);
         }
     }
 
@@ -175,17 +175,17 @@ public class FreemarkerFieldEntries {
 		}
     }
 
-    private void addRecordEntries(Record rec) {
+    private void addRecordEntries(Record rec, boolean prefix) {
         for(Field f : rec.getFields()) {
-			addFieldEntries(f);
+			addFieldEntries(f, prefix);
 		}
     }
 
-    private void addFieldEntries(Field f) {
+    private void addFieldEntries(Field f, boolean prefix) {
         addFieldEntryIfNotNull(f.getFieldEntry());
         addGetAndSetEntryIfNotNull(f.getGetAndSetEntry());
         addReaderEntryIfNotNull(f.getReadEntry());
-        addFieldNodes(f.getFieldNodeEntry());
+        addFieldNodes(f.getFieldNodeEntry(prefix));
         addCsvEntryIfNotNull(f.getCsvEntry());
         addCsvHeaderEntryIfNotNull(f.getCsvHeaderEntry());
         addComponentEntryIfNotNull(f.getComponentEntry());

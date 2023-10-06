@@ -138,7 +138,7 @@ public class ArrayField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry() {
+    public String getFieldNodeEntry(boolean prefix) {
         StringBuilder fieldNodeEntry = new StringBuilder();
         String ccName = NameUtils.getCamelCaseName(name, false);
         fieldNodeEntry.append(DBLINDENT + "StringBuilder " + ccName+"Str = new StringBuilder();\n");

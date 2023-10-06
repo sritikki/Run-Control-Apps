@@ -28,7 +28,7 @@ public interface FieldGenerator {
 
     public String getReadEntry();
 
-    public String getFieldNodeEntry();
+    public String getFieldNodeEntry(boolean prefix);
 
     public String getCsvEntry();
 

@@ -10,83 +10,83 @@ public class RootTypeFactory {
                 typeNode.setName("Generation");
                 break;
             case VDPRecord.VDP_FORMAT_VIEWS:
-                typeNode.setName("Format Views");
+                typeNode.setName("Format_Views");
                 break;
             case VDPRecord.VDP_CONTROL:
-                typeNode.setName("Control Records");
+                typeNode.setName("Control_Records");
                 break;
             case VDPRecord.VDP_PHYSICAL_FILE:
-                typeNode.setName("Physical Files");
+                typeNode.setName("Physical_Files");
                 break;
             case VDPRecord.VDP_EXIT:
                 typeNode.setName("Exits");
                 break;
             case VDPRecord.VDP_LOGICAL_RECORD:
-                typeNode.setName("Logical Records");
+                typeNode.setName("Logical_Records");
                 break;
             case VDPRecord.VDP_LRFIELD:
-                typeNode.setName("LR Fields");
+                typeNode.setName("LR_Fields");
                 break;
             case VDPRecord.VDP_INDEX:
-                typeNode.setName("LR Indexes");
+                typeNode.setName("LR_Indexes");
                 break;
             case VDPRecord.VDP_LOOKUP:
             case VDPRecord.VDP_LOOKUP_OLD:
-                typeNode.setName("Lookup Paths");
+                typeNode.setName("Lookup_Paths");
                 break;
             case VDPRecord.VDP_LOOKUP_TARGET_SET:
-                typeNode.setName("Lookup Target Set");
+                typeNode.setName("Lookup_Target_Set");
                 break;
             case VDPRecord.VDP_LOOKUP_GENMAP:
-                typeNode.setName("Lookup Generation Map");
+                typeNode.setName("Lookup_Generation_Map");
                 break;
             case VDPRecord.VDP_EXTRACT_OUTPUT_FILE:
-                typeNode.setName("Extract Output File");
+                typeNode.setName("Extract_Output_File");
                 break;
             case VDPRecord.VDP_EXTRACT_RECORD_FILE:
-                typeNode.setName("Extract Record File");
+                typeNode.setName("Extract_Record_File");
                 break;
             case VDPRecord.VDP_VIEW:
-                typeNode.setName("View Definition");
+                typeNode.setName("View_Definition");
                 break;
             case VDPRecord.VDP_FORMAT_OUTPUT_FILE:
-                typeNode.setName("View Output File");
+                typeNode.setName("View_Output_File");
                 break;
             case VDPRecord.VDP_EXTRACT_TARGET_SET:
-                typeNode.setName("Extract Target Set");
+                typeNode.setName("Extract_Target_Set");
                 break;
             case VDPRecord.VDP_COLUMN:
                 typeNode.setName("Columns");
                 break;
             case VDPRecord.VDP_SORT_KEY:
-                typeNode.setName("Sort Keys");
+                typeNode.setName("Sort_Keys");
                 break;
             case VDPRecord.VDP_VIEW_SOURCE:
                 typeNode.setName("Sources");
                 break;
             case VDPRecord.VDP_EXTRACT_FILTER:
-                typeNode.setName("Extract Filter");
+                typeNode.setName("Extract_Filter");
                 break;
             case VDPRecord.VDP_COLUMN_SOURCE:
-                typeNode.setName("Column Sources");
+                typeNode.setName("Column_Sources");
                 break;
             case VDPRecord.VDP_COLUMN_LOGIC:
-                typeNode.setName("Column Logic");
+                typeNode.setName("Column_Logic");
                 break;
             case VDPRecord.VDP_OUTPUT_LOGIC:
-                typeNode.setName("Output Logic");
+                typeNode.setName("Output_Logic");
                 break;
             case VDPRecord.VDP_FORMAT_FILTER_LOGIC:
-                typeNode.setName("Format Filter");
+                typeNode.setName("Format_Filter");
                 break;
             case VDPRecord.VDP_COLUMN_CALCULATION:
-                typeNode.setName("Column Calculation");
+                typeNode.setName("Column_Calculation");
                 break;
             case VDPRecord.VDP_FORMAT_FILTER_STACK:
-                typeNode.setName("Format Filter Stack");
+                typeNode.setName("Format_Filter_Stack");
                 break;
             case VDPRecord.VDP_COLUMN_CALCULATION_LT:
-                typeNode.setName("Column Calculation Stack");
+                typeNode.setName("Column_Calculation_Stack");
                 break;
             case VDPRecord.VDP_HEADER:
                 typeNode.setName("Header");

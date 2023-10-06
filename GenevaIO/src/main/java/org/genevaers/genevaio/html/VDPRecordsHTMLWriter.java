@@ -43,6 +43,7 @@ import java.nio.file.Path;
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
+import org.genevaers.genevaio.fieldnodes.NoComponentNode;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
@@ -150,6 +151,8 @@ public class VDPRecordsHTMLWriter {
 																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
 																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
 																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
+			case NOCOMPONENT:
+				return td(((NoComponentNode)n).getValue() ).withClass("w3-pale-yellow");
 			case RECORD:
 			default:
 				return td("Bad Value");
