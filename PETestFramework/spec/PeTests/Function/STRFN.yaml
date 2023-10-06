@@ -15,6 +15,9 @@ tests:
   eventfiles:
   - ddname: "CONCAT"
     filename: "CONCAT"
+  reffiles:
+  - ddname: "CONTARG"
+    filename: "CONTARG"
   extractfiles:
   - ddname: "F0011556"
     space: "TRK"
