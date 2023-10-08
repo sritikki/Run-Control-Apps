@@ -348,5 +348,16 @@ public class Repository {
 		return generationTime;
 	}
 
+	public static void fixupPFDDNames() {
+		for(PhysicalFile pf : pfs.getValues()) {
+			if(pf.getOutputDDName().length() == 0) {
+				pf.setOutputDDName(String.format("O%07d", pf.getComponentId()));
+			}
+			if(pf.getInputDDName().length() == 0) {
+				pf.setInputDDName(String.format("I%07d", pf.getComponentId()));
+			}
+		}
+	}
+
 
 }
