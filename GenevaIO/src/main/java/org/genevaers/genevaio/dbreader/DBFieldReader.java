@@ -71,7 +71,12 @@ public class DBFieldReader extends DBReaderBase{
         lrf.setNumDecimalPlaces(rs.getShort("DECIMALCNT"));
         lrf.setRounding(rs.getShort("ROUNDING"));
         lrf.setDateTimeFormat(DateCode.fromdbcode(getDefaultedString(rs.getString("FLDCONTENTCD"), "NONE")));
-        lrf.setJustification(JustifyId.fromdbcode(getDefaultedString(rs.getString("JUSTIFYCD"), "NONE")));
+        if (lrf.getDatatype() == DataType.ALPHANUMERIC) {
+            lrf.setJustification(JustifyId.LEFT);
+        } else {
+            lrf.setJustification(JustifyId.RIGHT);
+        }
+        //lrf.setJustification(JustifyId.fromdbcode(getDefaultedString(rs.getString("JUSTIFYCD"), "NONE")));
         lrf.setMask("");  //These probably should not be here at all
         lrf.setDbColName("");
         Repository.addLRField(lrf);
