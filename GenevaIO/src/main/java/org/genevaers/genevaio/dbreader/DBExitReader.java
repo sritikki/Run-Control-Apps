@@ -52,7 +52,7 @@ public class DBExitReader extends DBReaderBase {
         UserExit ue = new UserExit();
         ue.setComponentId(rs.getInt("EXITID")); 
         ue.setName(rs.getString("NAME"));
-        ue.setExecutable("MODULEID");
+        ue.setExecutable(rs.getString("MODULEID"));
         ue.setProgramType(ProgramType.fromdbcode(rs.getString("PROGRAMTYPECD")));
         ue.setExitType(ExitType.fromdbcode(rs.getString("EXITTYPECD")));
         ue.setOptimizable(rs.getBoolean("OPTIMIZEIND"));
