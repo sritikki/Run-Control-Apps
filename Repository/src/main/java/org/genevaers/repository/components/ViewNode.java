@@ -166,6 +166,7 @@ public class ViewNode extends ComponentNode{
 		vcs.setSequenceNumber(vs.getSequenceNumber());
 		ViewColumn vc = getColumnByID(vcs.getColumnID());
 		vcs.setColumnNumber(vc.getColumnNumber());
+		vcs.setViewSrcLrId(vs.getSourceLRID());
 
 		//It has no view sources
 		vc.addToSourcesByID(vcs);
