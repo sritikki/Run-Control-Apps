@@ -104,6 +104,7 @@ public class RunControlWriter {
         VDPGenerationRecord gen = new VDPGenerationRecord();
         gen.setRecordType(VDPRecord.VDP_GENERATION);
         gen.setAsciiInd(System.getProperty("os.name").startsWith("z") ? false : true);
+        gen.setBigEndianInd(true);
         DateFormat dateFormat1 = new SimpleDateFormat("YYYYMMdd");
         Date dt = Repository.getGenerationTime();
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
@@ -114,7 +115,19 @@ public class RunControlWriter {
         gen.setDescription("Java MR91 via " + rcc.getInputType());
         gen.setPadding4("");
         gen.setPadding5("");
+        setNumberNode(gen);
         return gen;
+    }
+
+
+    private void setNumberNode(VDPGenerationRecord gen) {
+        if(rcc.isNumberModeStandard()) {
+            gen.setMaxDecimalDigits((byte)23);
+            gen.setMaxDecimalPlaces((byte)8);
+        } else {
+            gen.setMaxDecimalDigits((byte)23);
+            gen.setMaxDecimalPlaces((byte)3);
+        }
     }
 
     public void setExtractLogicTable(LogicTable lt) {
