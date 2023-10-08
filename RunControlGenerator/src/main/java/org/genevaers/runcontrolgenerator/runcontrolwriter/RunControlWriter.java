@@ -111,7 +111,7 @@ public class RunControlWriter {
         gen.setDate(dateFormat.format(dt));
         gen.setRunDate(dateFormat1.format(dt));
         gen.setTime(timeFormat.format(dt));
-        gen.setDescription("Java MR91");
+        gen.setDescription("Java MR91 via " + rcc.getInputType());
         gen.setPadding4("");
         gen.setPadding5("");
         return gen;
