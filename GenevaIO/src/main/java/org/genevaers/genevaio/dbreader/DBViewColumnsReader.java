@@ -68,14 +68,18 @@ public class DBViewColumnsReader extends DBReaderBase{
             vc.setExtractAreaPosition(rs.getShort("EXTRAREAPOSITION"));
             vc.setSubtotalPrefix(getDefaultedString(rs.getString("SUBTLABEL"), ""));
             vc.setReportMask(getDefaultedString(rs.getString("RPTMASK"), ""));
-            vc.setHeaderJustifyId(JustifyId.fromdbcode(getDefaultedString(rs.getString("HDRJUSTIFYCD"), "NONE")));
+            vc.setHeaderJustifyId(JustifyId.fromdbcode(getDefaultedString(rs.getString("HDRJUSTIFYCD"), "CNTER")));
             vc.setHeaderLine1(getDefaultedString(rs.getString("HDRLINE1"), ""));
             vc.setHeaderLine2(getDefaultedString(rs.getString("HDRLINE2"), ""));
             vc.setHeaderLine3(getDefaultedString(rs.getString("HDRLINE3"), ""));
             vc.setColumnCalculation(getDefaultedString(rs.getString("FORMATCALCLOGIC"), ""));
 
+            if(vc.getHeaderLine1().length() > 0) {
+                vc.setName(vc.getHeaderLine1().trim());
+            } else {
+                vc.setName("Column Number " + vc.getColumnNumber());
+            }
             //Candidates for removal?
-            vc.setName("");
             vc.setFieldName("");
             vc.setEffectiveDate("");
             vc.setTerminationDate("");
