@@ -473,6 +473,7 @@ public class VDPFileWriter {
 		vvd.fillFromComponent(viewDefinition);
 		vvd.setOutputPageSizeMax((short)66);
 		vvd.setOutputLineSizeMax((short)250);
+		vvd.setOutputColHdrLnsMax(viewDefinition.getOutputColHdrLnsMax());
 		vvd.fillTheWriteBuffer(VDPWriter);
 		//set some defaults
 		VDPWriter.writeAndClearTheRecord();

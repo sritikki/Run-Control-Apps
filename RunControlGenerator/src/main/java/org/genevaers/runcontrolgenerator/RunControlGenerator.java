@@ -61,6 +61,7 @@ public class RunControlGenerator {
 		GenevaLog.writeHeader("Run Control Generator");
 
 		if(buildComponentRepositoryFromSelectedInput(rcc) != Status.ERROR) {
+			Repository.fixupMaxHeaderLines();
 			Repository.fixupPFDDNames();
 			Repository.allPFsNotRequired();
 			Repository.setGenerationTime(Calendar.getInstance().getTime());

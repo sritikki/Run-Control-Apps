@@ -359,5 +359,13 @@ public class Repository {
 		}
 	}
 
+    public static void fixupMaxHeaderLines() {
+		Iterator<ViewNode> vi = views.getIterator();
+		while(vi.hasNext()) {
+			ViewNode view = vi.next();
+			view.fixupMaxHeaderLines();
+		}
+    }
+
 
 }

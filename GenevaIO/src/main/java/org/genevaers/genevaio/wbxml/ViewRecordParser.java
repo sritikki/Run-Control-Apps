@@ -47,8 +47,6 @@ public class ViewRecordParser extends RecordParser {
 					componentID = Integer.parseInt(id);
 					vd = new ViewDefinition();
 					vd.setComponentId(componentID);
-					vd.setProcessAsofDate("");
-					vd.setLookupAsofDate("");
 					vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 					break;
 

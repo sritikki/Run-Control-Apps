@@ -294,4 +294,24 @@ public class ViewNode extends ComponentNode{
 		return reportFooters.iterator();
 	}
 
+	public void fixupMaxHeaderLines() {
+		int maxNumHeaderLines = 0;
+		Iterator<ViewColumn> ci = columns.values().iterator();
+		while(ci.hasNext()) {
+			ViewColumn col = ci.next();
+			if (maxNumHeaderLines < 3 && col.isHidden() == false) {
+				if (col.getHeaderLine3().length() > 0) {
+					maxNumHeaderLines = 3;
+				} 
+				else if (col.getHeaderLine2().length() > 0 && maxNumHeaderLines < 2) {
+					maxNumHeaderLines = 2;
+				}
+				else if (col.getHeaderLine1().length() > 0 && maxNumHeaderLines < 1) {
+					maxNumHeaderLines = 1;
+				}
+			}
+		}
+		viewDef.setOutputColHdrLnsMax((short)maxNumHeaderLines);
+	}
+
 }

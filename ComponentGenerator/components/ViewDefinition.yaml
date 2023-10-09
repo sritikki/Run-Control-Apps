@@ -45,14 +45,6 @@ members:
   type: integer
 - name: outputMaxRecCount
   type: integer
-- name: processAsofDate
-  type: string
-- name: lookupAsofDate
-  type: string
-- name: procRelPeriodId
-  type: integer
-- name: lookupRelPeriodId
-  type: integer
 - name: ownerUser
   type: string
 - name: extractSummarized

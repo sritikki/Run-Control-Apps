@@ -154,8 +154,6 @@ public class JLTView {
         vd.setViewType(ViewType.EXTRACT);
         vd.setExtractSummarized(false);
         vd.setStatus(ViewStatus.ACTIVE);
-        vd.setProcessAsofDate("");
-        vd.setLookupAsofDate("");
         vd.setWriteExitParams("");
         vd.setFormatExitParams("");
         vn = Repository.getViewNodeMakeIfDoesNotExist(vd);

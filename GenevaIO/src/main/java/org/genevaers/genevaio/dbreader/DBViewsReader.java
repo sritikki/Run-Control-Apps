@@ -161,8 +161,6 @@ public class DBViewsReader extends DBReaderBase {
         vd.setControlRecordId(rs.getInt("CONTROLRECID"));
 
         //These probably should not be here
-        vd.setProcessAsofDate("");
-		vd.setLookupAsofDate("");
         vd.setOwnerUser(rs.getString("CREATEDUSERID"));
         vd.setOwnerUser(rs.getString("LASTMODUSERID"));
 

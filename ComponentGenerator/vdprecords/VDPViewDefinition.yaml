@@ -103,11 +103,11 @@ fields:
 - name: process_asof_date
   type: string
   maxlength: 8
-  component_field: processAsofDate
+  component_field: none
 - name: lookup_asof_date
   type: string
   maxlength: 8
-  component_field: lookupAsofDate
+  component_field: none
 - name: proc_rel_period_id
   type: integer
   component_field: none
