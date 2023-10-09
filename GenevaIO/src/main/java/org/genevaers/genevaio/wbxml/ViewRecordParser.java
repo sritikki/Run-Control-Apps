@@ -28,6 +28,8 @@ import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
 
+import difflib.StringUtills;
+
 public class ViewRecordParser extends RecordParser {
 
 	private ViewDefinition vd;
@@ -47,8 +49,6 @@ public class ViewRecordParser extends RecordParser {
 					vd.setComponentId(componentID);
 					vd.setProcessAsofDate("");
 					vd.setLookupAsofDate("");
-					vd.setFillErrorValue("###########################");
-					vd.setFillTruncationValue("********************************");
 					vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 					break;
 
@@ -121,7 +121,11 @@ public class ViewRecordParser extends RecordParser {
 				case "FORMATFILTLOGIC":
 					vn.setFormatFilterLogic(removeBRLineEndings(text));
 					break;
-
+				case "CREATEDUSERID":
+				case "LASTMODUSERID": //Last will overwrite the created if set
+					vd.setOwnerUser(text);
+					break;
+				
 				default:
 					// logger.atInfo().log(reader.getText());
 					break;

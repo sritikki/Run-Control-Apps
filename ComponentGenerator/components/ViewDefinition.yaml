@@ -53,9 +53,7 @@ members:
   type: integer
 - name: lookupRelPeriodId
   type: integer
-- name: fillErrorValue
-  type: string
-- name: fillTruncationValue
+- name: ownerUser
   type: string
 - name: extractSummarized
   type: boolean

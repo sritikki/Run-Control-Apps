@@ -469,6 +469,7 @@ public class VDPFileWriter {
 		private void writeViewDefinition(ViewDefinition viewDefinition) {
 		VDPViewDefinition vvd = new VDPViewDefinition();
 		logger.atFine().log("Write View %d Definition", viewDefinition.getComponentId());
+		fillTheErrorAndTruncFields(vvd);
 		vvd.fillFromComponent(viewDefinition);
 		vvd.setOutputPageSizeMax((short)66);
 		vvd.setOutputLineSizeMax((short)250);
@@ -477,6 +478,18 @@ public class VDPFileWriter {
 		VDPWriter.writeAndClearTheRecord();
 	}
 
+	private void fillTheErrorAndTruncFields(VDPViewDefinition vvd) {
+		vvd.setFillErrorValue(fill('*'));
+		vvd.setFillTruncationValue(fill('#'));
+	}
+
+	private String fill(char c) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<256; i++) {
+			sb.append(c);
+		}
+		return sb.toString();
+	}
 	private void writeExtractRecordFile() {
 		if (vdpMgmtRecs.getExtractRecordFile() != null) {
 		    logger.atFine().log("Write Extract Record File");

@@ -41,6 +41,7 @@ fields:
 - name: owner_user
   type: string
   maxlength: 8
+  component_field: ownerUser
 - name: output_media
   type: enum
   existing_java_type: org.genevaers.repository.components.enums.OutputMedia
@@ -116,11 +117,9 @@ fields:
 - name: fill_error_value
   type: string
   maxlength: 256
-  component_field: fillErrorValue
 - name: fill_truncation_value
   type: string
   maxlength: 256
-  component_field: fillTruncationValue
 - name: freq_code_letters
   type: short
   component_field: none

@@ -71,7 +71,7 @@ fields:
 - name: db_col_name
   type: string
   maxlength: 48
-  component_field: dbColName
+  component_field: none
   # There is stuff that can be ignored
 - name: padding3
   type: string

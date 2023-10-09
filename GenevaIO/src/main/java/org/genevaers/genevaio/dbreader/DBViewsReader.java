@@ -163,8 +163,8 @@ public class DBViewsReader extends DBReaderBase {
         //These probably should not be here
         vd.setProcessAsofDate("");
 		vd.setLookupAsofDate("");
-		vd.setFillErrorValue("###########################");
-		vd.setFillTruncationValue("********************************");
+        vd.setOwnerUser(rs.getString("CREATEDUSERID"));
+        vd.setOwnerUser(rs.getString("LASTMODUSERID"));
 
         currentViewNode = Repository.getViewNodeMakeIfDoesNotExist(vd);
         currentViewNode.setFormatFilterLogic(rs.getString("FORMATFILTLOGIC"));
