@@ -50,8 +50,6 @@ public class ViewColumnRecordParser extends RecordParser {
 					vc.setComponentId(Integer.parseInt(text.trim()));
 					vc.setName("");
 					vc.setFieldName("");
-					vc.setEffectiveDate("");
-					vc.setTerminationDate("");
 					vc.setDetailPrefix("");
 					vc.setSubtotalMask("");
 					vc.setDateCode(DateCode.NONE);

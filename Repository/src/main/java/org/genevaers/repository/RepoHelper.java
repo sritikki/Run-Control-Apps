@@ -100,8 +100,6 @@ public class RepoHelper {
 
         vc.setSubtotalType(SubtotalType.NONE);
         vc.setExtractArea(ExtractArea.AREADATA);
-        vc.setEffectiveDate("");
-        vc.setTerminationDate("");
         vc.setDetailPrefix("");
         vc.setSubtotalPrefix("");
         vc.setSubtotalMask("");
@@ -127,8 +125,6 @@ public class RepoHelper {
 
         vc.setSubtotalType(SubtotalType.NONE);
         vc.setExtractArea(ExtractArea.AREADATA);
-        vc.setEffectiveDate("");
-        vc.setTerminationDate("");
         vc.setDetailPrefix("");
         vc.setSubtotalPrefix("");
         vc.setSubtotalMask("");

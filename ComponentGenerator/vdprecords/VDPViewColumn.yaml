@@ -63,11 +63,11 @@ fields:
 - name: effective_date
   type: string
   maxlength: 8
-  component_field: effectiveDate
+  component_field: none
 - name: termination_date
   type: string
   maxlength: 8
-  component_field: terminationDate
+  component_field: none
 - name: data_type
   type: enum
   existing_java_type: org.genevaers.repository.components.enums.DataType

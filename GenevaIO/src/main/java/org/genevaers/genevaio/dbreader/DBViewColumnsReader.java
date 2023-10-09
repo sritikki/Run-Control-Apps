@@ -81,8 +81,6 @@ public class DBViewColumnsReader extends DBReaderBase{
             }
             //Candidates for removal?
             vc.setFieldName("");
-            vc.setEffectiveDate("");
-            vc.setTerminationDate("");
             vc.setDetailPrefix("");
             vc.setSubtotalMask("");
             vc.setDefaultValue("");
