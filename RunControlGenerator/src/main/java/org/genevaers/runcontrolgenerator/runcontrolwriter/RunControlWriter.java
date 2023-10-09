@@ -122,7 +122,7 @@ public class RunControlWriter {
 
 
     private void setRecordNumbers(VDPGenerationRecord gen) {
-        gen.setInputFileCount(Repository.getPhysicalFiles().size());
+        gen.setInputFileCount(Repository.getNumberOfRequiredPhysicalFiles());
         gen.setPgmFileCount(Repository.getUserExits().size());
         gen.setLrCount(Repository.getLogicalRecords().size());
         gen.setLrFieldCount(Repository.getFields().size());

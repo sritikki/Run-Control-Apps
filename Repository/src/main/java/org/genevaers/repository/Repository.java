@@ -367,5 +367,16 @@ public class Repository {
 		}
     }
 
+	public static int getNumberOfRequiredPhysicalFiles() {
+		int count = 0;
+		Iterator<PhysicalFile> pfi = pfs.getIterator();
+		while(pfi.hasNext()) {
+			if(pfi.next().isRequired()) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 
 }
