@@ -92,7 +92,8 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(col, rhs);
         DTResult res = dc.verifyOperands(col, rhs);
         if(res ==DTResult.ASSIGN_OK) {
-            LTFileObject lto = ((Assignable)rhs).getAssignmentEntry(col, (ExtractBaseAST)rhs);
+            LTRecord lto = (LTRecord) ((Assignable)rhs).getAssignmentEntry(col, (ExtractBaseAST)rhs);
+            lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
             ltEmitter.addToLogicTable((LTRecord)lto);
         }
         // if(ae.isLookup()) {

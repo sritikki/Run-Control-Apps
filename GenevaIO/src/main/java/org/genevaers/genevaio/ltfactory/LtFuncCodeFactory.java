@@ -1523,6 +1523,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         colarg.setFieldId(0);
         //TODO the start pos is dependent on extract type
         colarg.setStartPosition(vc.getExtractAreaPosition());
+        colarg.setOrdinalPosition(vc.getOrdinalPosition());
         if(vc.getExtractArea() == ExtractArea.AREACALC) {
             colarg.setFieldLength((short)12);
         } else {

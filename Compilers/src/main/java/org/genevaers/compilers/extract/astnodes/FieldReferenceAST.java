@@ -128,6 +128,7 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
             } else {
                 arg = ((LogicTableF2)ltEntry).getArg1();
                 arg.setFieldFormat(getDataType());
+                arg.setOrdinalPosition(ref.getOrdinalPosition());
                 LogicTableArg arg2 = ((LogicTableF2)ltEntry).getArg2();
                 flipDataTypeIfFieldAlphanumeric(arg, arg2);
             }
