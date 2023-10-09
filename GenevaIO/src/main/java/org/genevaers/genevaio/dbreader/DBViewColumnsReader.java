@@ -53,6 +53,11 @@ public class DBViewColumnsReader extends DBReaderBase{
             vc.setViewId(rs.getInt("VIEWID"));
             vc.setColumnNumber(rs.getInt("COLUMNNUMBER"));
             vc.setDataType(DataType.fromdbcode(rs.getString("FLDFMTCD")));
+            if(vc.getDataType() == DataType.ALPHANUMERIC) {
+                vc.setJustifyId(JustifyId.LEFT);
+            } else {
+                vc.setJustifyId(JustifyId.RIGHT);
+            }
             vc.setSigned(rs.getBoolean("SIGNEDIND"));
             vc.setStartPosition(rs.getShort("STARTPOSITION"));
             vc.setFieldLength(rs.getShort("MAXLEN"));
@@ -60,7 +65,10 @@ public class DBViewColumnsReader extends DBReaderBase{
             vc.setDecimalCount(rs.getShort("DECIMALCNT"));
             vc.setRounding(rs.getShort("ROUNDING"));
             vc.setDateCode(DateCode.fromdbcode(getDefaultedString(rs.getString("FLDCONTENTCD"), "NONE")));
-            vc.setJustifyId(JustifyId.fromdbcode(getDefaultedString(rs.getString("JUSTIFYCD"), "NONE")));
+            String jfy = rs.getString("JUSTIFYCD");
+            if(jfy != null) {
+                vc.setJustifyId(JustifyId.fromdbcode(jfy));
+            }
             vc.setHidden(!rs.getBoolean("VISIBLE"));
             vc.setSubtotalType(SubtotalType.fromdbcode(getDefaultedString(rs.getString("SUBTOTALTYPECD"), "NONE")));
             vc.setSpacesBeforeColumn(rs.getShort("SPACESBEFORECOLUMN"));
@@ -74,11 +82,7 @@ public class DBViewColumnsReader extends DBReaderBase{
             vc.setHeaderLine3(getDefaultedString(rs.getString("HDRLINE3"), ""));
             vc.setColumnCalculation(getDefaultedString(rs.getString("FORMATCALCLOGIC"), ""));
 
-            if(vc.getHeaderLine1().length() > 0) {
-                vc.setName(vc.getHeaderLine1().trim());
-            } else {
-                vc.setName("Column Number " + vc.getColumnNumber());
-            }
+            vc.setName("Column Number " + vc.getColumnNumber());
             //Candidates for removal?
             vc.setFieldName("");
             vc.setDetailPrefix("");
