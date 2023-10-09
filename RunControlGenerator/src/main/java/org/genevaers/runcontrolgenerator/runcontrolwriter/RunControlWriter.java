@@ -116,9 +116,21 @@ public class RunControlWriter {
         gen.setPadding4("");
         gen.setPadding5("");
         setNumberNode(gen);
+        setRecordNumbers(gen);
         return gen;
     }
 
+
+    private void setRecordNumbers(VDPGenerationRecord gen) {
+        gen.setInputFileCount(Repository.getPhysicalFiles().size());
+        gen.setPgmFileCount(Repository.getUserExits().size());
+        gen.setLrCount(Repository.getLogicalRecords().size());
+        gen.setLrFieldCount(Repository.getFields().size());
+        gen.setLrIndexFieldCount(Repository.getIndexes().size());
+        gen.setJoinStepCount(Repository.getLookups().size());
+        gen.setViewCount(Repository.getViews().size());
+        //Still need number of records and byte count.
+    }
 
     private void setNumberNode(VDPGenerationRecord gen) {
         if(rcc.isNumberModeStandard()) {
