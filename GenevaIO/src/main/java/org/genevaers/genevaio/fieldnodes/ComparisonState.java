@@ -5,5 +5,6 @@ public enum ComparisonState {
     NEW,
     DIFF,
     CHANGED, // means there is a DIFF below
-    INSTANCE
+    INSTANCE,
+    IGNORED
 }

@@ -39,6 +39,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
@@ -70,8 +72,19 @@ public class VDPRecordsHTMLWriter {
 			"ele.style.display = \"none\";" +
 			"}" +
 			"}";
+	private static Map<String, Boolean> ignoreTheseDiffs = new HashMap<>();
 
 	public static void writeFromRecordNodes(Path cwd, MetadataNode recordsRoot, String filename) {
+
+		//Hide diffs we don't care about via map
+		ignoreTheseDiffs.put("Generation_runDate", true); 
+		ignoreTheseDiffs.put("Generation_date", true); 
+		ignoreTheseDiffs.put("Generation_description", true); 
+		ignoreTheseDiffs.put("Generation_time", true); 
+		ignoreTheseDiffs.put("Control_Records_description", true); 
+		ignoreTheseDiffs.put("Physical_Files_columnId", true); 
+
+		//Optionally only show relevant fields
 
 		File output = cwd.resolve(filename).toFile();
 		try {
@@ -140,23 +153,32 @@ public class VDPRecordsHTMLWriter {
 	}
 
 	private static TdTag rowEntry(FieldNodeBase n) {
+		if(ignoreNode(n)) {
+			n.setState(ComparisonState.IGNORED);
+		}
 		switch(n.getFieldNodeType()) {
 			case NUMBERFIELD:
 				return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
 																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
 																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
-																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
+																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink")
+																 .withCondClass(n.getState() == ComparisonState.IGNORED, "w3-orange");
 			case STRINGFIELD:
 				return td(((StringFieldNode)n).getValue() ).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
 																 .withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
 																 .withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
-																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
+																 .withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink")
+																 .withCondClass(n.getState() == ComparisonState.IGNORED, "w3-orange");
 			case NOCOMPONENT:
 				return td(((NoComponentNode)n).getValue() ).withClass("w3-pale-yellow");
 			case RECORD:
 			default:
 				return td("Bad Value");
 		}
+	}
+
+	private static boolean ignoreNode(FieldNodeBase n) {
+		return n.getState() == ComparisonState.DIFF && ignoreTheseDiffs.get(n.getParent().getParent().getName() + "_" + n.getName()) != null;
 	}
 
 	private static TrTag getHeaderRow(FieldNodeBase fieldNodeBase) {
