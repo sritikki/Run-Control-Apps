@@ -156,6 +156,8 @@ public class JLTView {
         vd.setStatus(ViewStatus.ACTIVE);
         vd.setWriteExitParams("");
         vd.setFormatExitParams("");
+        vd.setOwnerUser("SAFR");
+        
         vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 
         ViewSource vs = addViewSource(lfid);

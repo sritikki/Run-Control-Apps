@@ -176,11 +176,13 @@ public class JLTTreeGenerator {
         hdrPf.setReadExitIDParm("");
         hdrPf.setDatabaseRowFormat(DbmsRowFmtOptId.NONE);
         hdrPf.setInputDDName("");
-        hdrPf.setFieldDelimiter(FieldDelimiter.INVALID);
-        hdrPf.setRecordDelimiter(RecordDelimiter.FIXED);
+        hdrPf.setFieldDelimiter(FieldDelimiter.FIXEDWIDTH);
+        hdrPf.setRecordDelimiter(RecordDelimiter.VARIABLE_EXCLUSIVE);
         hdrPf.setTextDelimiter(TextDelimiter.INVALID);
         hdrPf.setAccessMethod(AccessMethod.SEQUENTIAL);
-        hdrPf.setRecfm(FileRecfm.FB);
+        hdrPf.setRecfm(FileRecfm.VB);
+        hdrPf.setLrecl((short)4144);
+        hdrPf.setDatabaseRowFormat(DbmsRowFmtOptId.SQL);
         Repository.getPhysicalFiles().add(hdrPf, viewNum);
         LogicalFile lf = new LogicalFile();
         lf.setID(viewNum);

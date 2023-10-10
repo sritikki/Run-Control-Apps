@@ -83,6 +83,8 @@ public class VDPRecordsHTMLWriter {
 		ignoreTheseDiffs.put("Generation_time", true); 
 		ignoreTheseDiffs.put("Control_Records_description", true); 
 		ignoreTheseDiffs.put("Physical_Files_columnId", true); 
+		ignoreTheseDiffs.put("Physical_Files_name", true); 
+		ignoreTheseDiffs.put("Physical_Files_lfName", true); 
 
 		//Optionally only show relevant fields
 
@@ -149,6 +151,8 @@ public class VDPRecordsHTMLWriter {
 	}
 
 	private static TrTag getRow(FieldNodeBase r) {
+		//pre-check ignores and final state
+		//Could also be a way to remove the NoComponent Nodes
 		return tr( each(r.getChildren(), n -> rowEntry(n)) );
 	}
 
