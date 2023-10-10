@@ -63,7 +63,7 @@ public class RunControlGenerator {
 		if(buildComponentRepositoryFromSelectedInput(rcc) != Status.ERROR) {
 			Repository.fixupMaxHeaderLines();
 			Repository.fixupPFDDNames();
-			Repository.allPFsNotRequired();
+			Repository.allLFsNotRequired();
 			Repository.setGenerationTime(Calendar.getInstance().getTime());
 			singlePassOptimise(rcc);
 			runCompilers(rcc);

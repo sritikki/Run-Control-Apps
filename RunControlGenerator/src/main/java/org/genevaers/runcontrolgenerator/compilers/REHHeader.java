@@ -184,6 +184,7 @@ public class REHHeader {
         vn.getOutputFile().setOutputDDName(Repository.getPhysicalFiles().get(rehViewNum).getOutputDDName());
         vsnode.setViewSource(vs);
         lfNode.getLogicalFile().getPFIterator().next().setRequired(true); //There should be only one
+        lfNode.getLogicalFile().setRequired(true);
         lfNode.addChildIfNotNull(vsnode);
         addViewColumnSourceNodes(vsnode);
         addWriteNode(vsnode, rehViewNum);

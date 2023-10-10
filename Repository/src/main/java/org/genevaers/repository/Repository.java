@@ -334,9 +334,10 @@ public class Repository {
 		extractFileNubers.add(fileNumber);
     }
 
-    public static void allPFsNotRequired() {
-		for(PhysicalFile pf : pfs.getValues()) {
-			pf.setRequired(false);
+    public static void allLFsNotRequired() {
+		for(LogicalFile lf : lfs.getValues()) {
+			lf.setRequired(false);
+			lf.makePFsNotRequired();
 		}
     }
 

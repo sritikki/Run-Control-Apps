@@ -101,6 +101,7 @@ public class LogicGroup implements Comparable<LogicGroup> {
         sb.append("\nLF " + lfID + "\nHas PFs ");
         lf.getPFs().stream().forEach(pf -> sb.append(pf.getComponentId() + " "));
         lf.getPFs().stream().forEach(pf -> pf.setRequired(true));
+        lf.setRequired(true);
         // sb.append("\nPFs cross check ");
         // pfIds.stream().forEach(pf -> sb.append(pf + " "));
         sb.append("\nRead by View Sources\n");

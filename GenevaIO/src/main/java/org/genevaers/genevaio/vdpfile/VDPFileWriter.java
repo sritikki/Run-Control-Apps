@@ -649,7 +649,7 @@ public class VDPFileWriter {
 				pf.setLogicalFileId(lf.getID());
 				pf.setLogicalFilename(lf.getName());
 				VDPPhysicalFile vdppf = new VDPPhysicalFile();
-				if(pf.isRequired()) {
+				if(lf.isRequired() && pf.isRequired()) {
 			        logger.atFine().log("Write PF:%d", pf.getComponentId());
 					vdppf.fillFromComponent(pf);
 					vdppf.setSequenceNbr(seqNum++);
