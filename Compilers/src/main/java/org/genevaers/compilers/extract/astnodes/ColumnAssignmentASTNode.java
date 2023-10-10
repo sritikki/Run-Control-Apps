@@ -93,7 +93,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         DTResult res = dc.verifyOperands(col, rhs);
         if(res ==DTResult.ASSIGN_OK) {
             LTRecord lto = (LTRecord) ((Assignable)rhs).getAssignmentEntry(col, (ExtractBaseAST)rhs);
-            lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
+            if(lto != null) {
+                lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
+            }
             ltEmitter.addToLogicTable((LTRecord)lto);
         }
         // if(ae.isLookup()) {

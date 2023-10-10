@@ -53,7 +53,7 @@ public class RecordCountAST  extends FormattedASTNode implements Assignable, Cal
         LogicTableNameF1 rc = (LogicTableNameF1) LtFactoryHolder.getLtFunctionCodeFactory().getDTA(accName, col.getViewColumn());
         ltEmitter.addToLogicTable((LTRecord)rc);
         rc.setSourceSeqNbr(accumulatorNumber); //set after writing to table to override column number
-        return null;
+        return rc;
     }
 
     @Override
