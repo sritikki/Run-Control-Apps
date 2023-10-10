@@ -189,3 +189,32 @@ tests:
     recfm: "FB"
     lrecl: "1630"
     workfile: "1"
+#
+# next test
+#
+- name: "FMTDTR"
+  header: "FMTDTR"
+  description: "Test DT* functions 256+ length fields Format Report"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format_report[12156].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012156"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1538"
+    workfile: "1"
