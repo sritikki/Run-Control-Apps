@@ -153,13 +153,30 @@ public class VDPRecordsHTMLWriter {
 	private static TrTag getRow(FieldNodeBase r) {
 		//pre-check ignores and final state
 		//Could also be a way to remove the NoComponent Nodes
+		preCheckAndChangeRowState(r);
 		return tr( each(r.getChildren(), n -> rowEntry(n)) );
 	}
 
-	private static TdTag rowEntry(FieldNodeBase n) {
-		if(ignoreNode(n)) {
-			n.setState(ComparisonState.IGNORED);
+	private static void preCheckAndChangeRowState(FieldNodeBase r) {
+		boolean updateRowState = true;
+		for( FieldNodeBase n : r.getChildren()) {
+			if(n.getState() == ComparisonState.DIFF) {
+				if(ignoreTheseDiffs.get(n.getParent().getParent().getName() + "_" + n.getName()) != null) {
+					n.setState(ComparisonState.IGNORED);
+				} else {
+					updateRowState = false;
+				}
+			}
 		}
+		if(updateRowState) {
+			r.setState(ComparisonState.INSTANCE);
+		}
+	}
+
+	private static TdTag rowEntry(FieldNodeBase n) {
+		// if(ignoreNode(n)) {
+		// 	n.setState(ComparisonState.IGNORED);
+		// }
 		switch(n.getFieldNodeType()) {
 			case NUMBERFIELD:
 				return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
