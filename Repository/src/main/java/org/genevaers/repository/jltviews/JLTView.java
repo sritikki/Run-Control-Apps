@@ -243,7 +243,7 @@ public class JLTView {
         }       
     }
 
-    public void buildREDLRs() {
+    public void buildREDLRs(int joinNumber) {
         // make the RED LR - the LR 
         // make the generation RED LR - the LR used to generate the ref data
         // they can be different due to redefines
@@ -252,7 +252,7 @@ public class JLTView {
         //Need to sort the fields in start position order
         //The ignore the overlapped/redefined 
         sortRefFields();
-        makeREDLR();
+        makeREDLR(joinNumber);
         makeREDGenerationLR();
         //This has to be after above since it works out the key length
 
@@ -424,8 +424,9 @@ public class JLTView {
         genFld.setName("start date");
     }
 
-    private void makeREDLR() {
-        redLR = Repository.makeLR("Ref LR for Lookup lr " + lrid);
+    private void makeREDLR(int joinNumber) {
+        //need to use LR id based BASE number
+        redLR = Repository.makeLR("Ref LR for Lookup lr " + lrid, JOINVIEWBASE + joinNumber);
     }
 
     public int getLRid() {

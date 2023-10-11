@@ -60,7 +60,6 @@ import j2html.tags.specialized.TrTag;
 
 public class VDPRecordsHTMLWriter {
 	
-	private static String currentRecType = "";
 	private static FileWriter fw;
 	private static final String POPUP = "w3-modal-content w3-animate-zoom";
 	static String toggleScript = "function toggleDiv(divname) {" +
@@ -85,6 +84,7 @@ public class VDPRecordsHTMLWriter {
 		ignoreTheseDiffs.put("Physical_Files_columnId", true); 
 		ignoreTheseDiffs.put("Physical_Files_name", true); 
 		ignoreTheseDiffs.put("Physical_Files_lfName", true); 
+		ignoreTheseDiffs.put("Logical_Records_lrName", true); 
 
 		//Optionally only show relevant fields
 
@@ -174,9 +174,6 @@ public class VDPRecordsHTMLWriter {
 	}
 
 	private static TdTag rowEntry(FieldNodeBase n) {
-		// if(ignoreNode(n)) {
-		// 	n.setState(ComparisonState.IGNORED);
-		// }
 		switch(n.getFieldNodeType()) {
 			case NUMBERFIELD:
 				return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
@@ -198,21 +195,12 @@ public class VDPRecordsHTMLWriter {
 		}
 	}
 
-	private static boolean ignoreNode(FieldNodeBase n) {
-		return n.getState() == ComparisonState.DIFF && ignoreTheseDiffs.get(n.getParent().getParent().getName() + "_" + n.getName()) != null;
-	}
-
 	private static TrTag getHeaderRow(FieldNodeBase fieldNodeBase) {
 		return tr( each(fieldNodeBase.getChildren(), n -> headerElement(n)) );
 	}
 
 	private static ThTag headerElement(FieldNodeBase n) {
 		return th(n.getName());
-	}
-
-	private static String getRecordTypeName(String typeStr) {
-		String[] typeParts = typeStr.split("_");
-		return "Record Type: " + typeParts[0];
 	}
 
 }

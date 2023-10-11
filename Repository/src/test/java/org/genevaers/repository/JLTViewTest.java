@@ -72,7 +72,7 @@ public class JLTViewTest {
         JLTView jv = new ReferenceJoin(1, 1);
         jv.addRefField(r1);
         assertEquals(1, jv.getLRid());
-        jv.buildREDLRs();
+        jv.buildREDLRs(9000001);
         LogicalRecord genLR = Repository.getLogicalRecords().get(3);
         LogicalRecord redLR = Repository.getLogicalRecords().get(2);
         showMeTheLR(srcLR);
@@ -101,7 +101,7 @@ public class JLTViewTest {
         JLTView jv = new ReferenceJoin(1, 1);
         jv.addRefField(r1);
         assertEquals(1, jv.getLRid());
-        jv.buildREDLRs();
+        jv.buildREDLRs(9000001);
         LogicalRecord genLR = Repository.getLogicalRecords().get(3);
         LogicalRecord redLR = Repository.getLogicalRecords().get(2);
         showMeTheLR(srcLR);
@@ -130,7 +130,7 @@ public class JLTViewTest {
         jv.addRefField(r2);
         jv.addRefField(r1);
         assertEquals(1, jv.getLRid());
-        jv.buildREDLRs();
+        jv.buildREDLRs(9000001);
         LogicalRecord genLR = Repository.getLogicalRecords().get(3);
         LogicalRecord redLR = Repository.getLogicalRecords().get(2);
         showMeTheLR(srcLR);
@@ -167,7 +167,7 @@ public class JLTViewTest {
         jv.addRefField(r2);
         jv.addRefField(r1);
         assertEquals(1, jv.getLRid());
-        jv.buildREDLRs();
+        jv.buildREDLRs(9000001);
         LogicalRecord genLR = Repository.getLogicalRecords().get(3);
         LogicalRecord redLR = Repository.getLogicalRecords().get(2);
         showMeTheLR(srcLR);
@@ -207,7 +207,7 @@ public class JLTViewTest {
         jv.addRefField(r1);
         jv.addRefField(r3);
         assertEquals(1, jv.getLRid());
-        jv.buildREDLRs();
+        jv.buildREDLRs(9000001);
         LogicalRecord genLR = Repository.getLogicalRecords().get(3);
         LogicalRecord redLR = Repository.getLogicalRecords().get(2);
         showMeTheLR(srcLR);
@@ -250,7 +250,7 @@ public class JLTViewTest {
         jv.addRefField(r5);
         jv.addRefField(r4);
         assertEquals(1, jv.getLRid());
-        jv.buildREDLRs();
+        jv.buildREDLRs(9000001);
         LogicalRecord genLR = Repository.getLogicalRecords().get(3);
         LogicalRecord redLR = Repository.getLogicalRecords().get(2);
         showMeTheLR(srcLR);

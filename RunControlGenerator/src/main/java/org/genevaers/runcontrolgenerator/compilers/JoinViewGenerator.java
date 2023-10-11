@@ -48,8 +48,8 @@ public class JoinViewGenerator {
         return lfNode;
     }
 
-    public ViewSourceAstNode addViewToLFNode(JLTView jv, LFAstNode lfNode) {
-        jv.buildREDLRs();
+    public ViewSourceAstNode addViewToLFNode(JLTView jv, LFAstNode lfNode, int joinNumber) {
+        jv.buildREDLRs(joinNumber);
         ViewNode vn = jv.buildRefViewForLF(lfNode.getLogicalFile().getID());
         ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
         ViewSource vs = vn.getViewSource((short)1); //There will be only one

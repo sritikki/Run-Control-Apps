@@ -210,6 +210,7 @@ public class Repository {
 		if(maxIndexID < lri.getComponentId())
 			maxIndexID = lri.getComponentId();
 		indexes.add(lri, lri.getComponentId());
+		lrs.get(lri.getLrId()).setPrimaryKey(lri.getComponentId());
 	}
 
 	public static void addLookupPathKey(LookupPathKey lpk) {
@@ -377,6 +378,16 @@ public class Repository {
 			}
 		}
 		return count;
+	}
+
+	public static LogicalRecord makeLR(String name, int lrid) {
+        LogicalRecord lr = new LogicalRecord();
+        lr.setComponentId(lrid);
+        lr.setName(name);
+        lr.setStatus(LrStatus.ACTIVE);
+        lr.setLookupExitParams("");
+        addLogicalRecord(lr);    
+		return lr;
 	}
 
 
