@@ -52,7 +52,11 @@ ${readerEntry}
     {
         RecordNode rn = new RecordNode();
 <#if record.recordId gt 0>
+<#if record.recordId == 400>
+        rn.setName(recordType + "_" + lrId + "_" + fieldName);
+<#else>
         rn.setName(recordType + "_" + recordId + "_" + sequenceNbr);
+</#if>
 <#else>
         rn.setName("${statics["java.util.UUID"].randomUUID()}"); 
 </#if>
