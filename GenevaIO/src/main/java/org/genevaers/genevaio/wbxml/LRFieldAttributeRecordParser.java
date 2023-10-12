@@ -69,8 +69,6 @@ public class LRFieldAttributeRecordParser extends RecordParser {
 					field.setDateTimeFormat(DateCode.fromdbcode(text));
 					break;
 				case "JUSTIFYCD":
-					field.setJustification(JustifyId.fromdbcode(text));
-					// I seem to remember to following rule
 					break;
 				case "INPUTMASK":
 					field.setMask(text);
