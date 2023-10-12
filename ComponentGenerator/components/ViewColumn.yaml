@@ -36,10 +36,6 @@ members:
   type: integer
 - name: fieldName
   type: string
-- name: effectiveDate
-  type: string
-- name: terminationDate
-  type: string
 - name: dataType
   type: enum
   existing_java_type: org.genevaers.repository.components.enums.DataType
