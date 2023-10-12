@@ -60,7 +60,7 @@ public class Repository {
 	private static int currentLRID = 0;
 	private static LogicalRecord currentLR;
 	private static int maxViewID = 0;
-	private static int maxLRID = 0;
+	private static int maxComponentLRID = 0;
 	private static int maxFieldID = 0;
 	private static int maxIndexID = 0;
 
@@ -102,7 +102,7 @@ public class Repository {
 		currentLRID = 0;
 		currentLR = null;
 		maxViewID = 0;
-		maxLRID = 0;
+		maxComponentLRID = 0;
 		maxFieldID = 0;
 		maxIndexID = 0;
 	
@@ -181,8 +181,8 @@ public class Repository {
 	}
 
 	public static void addLogicalRecord(LogicalRecord lr) {
-		if(maxLRID < lr.getComponentId())
-			maxLRID = lr.getComponentId();
+		if(maxComponentLRID < lr.getComponentId())
+			maxComponentLRID = lr.getComponentId();
 		lrs.add(lr, lr.getComponentId(), lr.getName());
 	}
 
@@ -285,7 +285,7 @@ public class Repository {
     }
 
 	public static LogicalRecord makeLR(String name) {
-        int nextLRid = maxLRID + 1;
+        int nextLRid = maxComponentLRID + 1;
         LogicalRecord lr = new LogicalRecord();
         lr.setComponentId(nextLRid);
         lr.setName(name);
@@ -296,8 +296,8 @@ public class Repository {
 	}
 
     public static int getNextLRid() {
-		maxLRID++;
-		return maxLRID;
+		maxComponentLRID++;
+		return maxComponentLRID;
     }
 
     public static LRField makeNewField(LogicalRecord lr) {
@@ -386,7 +386,7 @@ public class Repository {
         lr.setName(name);
         lr.setStatus(LrStatus.ACTIVE);
         lr.setLookupExitParams("");
-        addLogicalRecord(lr);    
+		lrs.add(lr, lr.getComponentId(), lr.getName());
 		return lr;
 	}
 

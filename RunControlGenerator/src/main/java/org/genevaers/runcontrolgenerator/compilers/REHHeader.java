@@ -91,7 +91,7 @@ public class REHHeader {
         vd.setFormatExitParams("");
         vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 
-        makeHeaderLR();
+        makeHeaderLR(rehViewNum);
 
         addColumns();
 
@@ -128,8 +128,8 @@ public class REHHeader {
         Repository.getLogicalFiles().add(lf, viewNum, NAME +"_LF");
     }
 
-    protected void makeHeaderLR() {
-        hdrLR = Repository.makeLR("Ref Header LR");
+    protected void makeHeaderLR(int rehLRNum) {
+        hdrLR = Repository.makeLR("Ref Header LR", rehLRNum);
         startPos = 1;
         short dwordLen = 4;
         short wordLen = 2;

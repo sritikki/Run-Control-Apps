@@ -45,7 +45,7 @@ public class RTHHeader extends REHHeader{
         vd.setFormatExitParams("");
         vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 
-        makeHeaderLR();
+        makeHeaderLR(rehViewNum);
 
         addColumns();
 
