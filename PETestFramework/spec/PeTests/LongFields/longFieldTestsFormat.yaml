@@ -216,5 +216,5 @@ tests:
     primary: "100"
     secondary: "100"
     recfm: "FB"
-    lrecl: "400"
+    lrecl: "512"
     workfile: "1"
