@@ -59,7 +59,9 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
             ltEmitter.setSuffixSeqNbr((short)en.getFileNumber());
             //We need to accumulate the extract ids
             //then we can generate the 801 record
-            Repository.addExtractFileNumber((short)en.getFileNumber());
+            if(vs.getViewId() < 9000000) {
+                Repository.addExtractFileNumber((short)en.getFileNumber());
+            }
         } else {
             //We need to know the view type
             //if there is a format phase then we use the extract number in the view defintion
