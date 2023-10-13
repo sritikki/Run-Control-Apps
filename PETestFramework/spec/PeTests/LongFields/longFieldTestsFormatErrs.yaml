@@ -1,10 +1,11 @@
 ---
-name: "LERR"
+name: "LONGERR"
 title: "Long field Errors - test specification"
 description: "Test Error msgs"
 category: "PeTests/LongFields"
 cq: ""
 note: ""
+tests:
 - name: "LERR1"
   header: "LERR1"
   description: "Test Format Report, report too wide error"
@@ -14,9 +15,6 @@ note: ""
   eventfiles:
   - ddname: "LNGALPHA" #needs to match what is in the PF DDName
     filename: "LONGFLD.ALPHA"
-  #List of reference files 
-  # omit if no reference phase required
-  #Extract output 
   extractfiles:
   - space: "TRK"
     primary: "1"
