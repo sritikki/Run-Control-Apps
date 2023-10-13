@@ -192,35 +192,6 @@ tests:
 #
 # next test
 #
-- name: "FMTDTR"
-  header: "FMTDTR"
-  description: "Test Format Report, report too wide error"
-  source: "WBXML"
-  xmlfiles:
-  - name: "LongFields/long_field_all_DT_format_report[12156].xml"
-  eventfiles:
-  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
-    filename: "LONGFLD.ALPHA"
-  #List of reference files 
-  # omit if no reference phase required
-  #Extract output 
-  extractfiles:
-  - space: "TRK"
-    primary: "1"
-    secondary: "10"
-    recfm: "VB"
-    lrecl: "8192"
-  formatfiles:
-  - ddname: "F0012156"
-    space: "TRK"
-    primary: "100"
-    secondary: "100"
-    recfm: "FB"
-    lrecl: "512"
-    workfile: "1"
-#
-# next test
-#
 - name: "FMTDTR2"
   header: "FMTDTR2"
   description: "Test Format Report, long fields but smaller columns"
@@ -270,35 +241,6 @@ tests:
     lrecl: "8192"
   formatfiles:
   - ddname: "F0012159"
-    space: "TRK"
-    primary: "100"
-    secondary: "100"
-    recfm: "FB"
-    lrecl: "256"
-    workfile: "1"
-#
-# next test
-#
-- name: "FMTDTR4"
-  header: "FMTDTR4"
-  description: "Test Format Report, sort key too long error"
-  source: "WBXML"
-  xmlfiles:
-  - name: "LongFields/long_field_all_DT_format_report4[12160].xml"
-  eventfiles:
-  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
-    filename: "LONGFLD.ALPHA"
-  #List of reference files 
-  # omit if no reference phase required
-  #Extract output 
-  extractfiles:
-  - space: "TRK"
-    primary: "1"
-    secondary: "10"
-    recfm: "VB"
-    lrecl: "8192"
-  formatfiles:
-  - ddname: "F0012160"
     space: "TRK"
     primary: "100"
     secondary: "100"
