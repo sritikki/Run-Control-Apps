@@ -117,7 +117,7 @@ public class BooleanField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry(boolean prefix) {
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
         StringBuilder fieldNodeEntry = new StringBuilder();
         String ccName = NameUtils.getCamelCaseName(name, false);
         if (getRawComponentField() != null && getRawComponentField().equals("none") && prefix==false) {
@@ -129,7 +129,11 @@ public class BooleanField extends Field {
             fieldNodeEntry.append(DBLINDENT + "} else {\n");
             fieldNodeEntry.append(DBLINDENT + "     "+ ccName + "val = \"False\";\n");
             fieldNodeEntry.append(DBLINDENT + "}\n");
-            fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\", "+ ccName + "val ), compare);");  
+            if(arrayValue) {
+                fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\" + n, "+ ccName + "val ), compare);");  
+            } else {
+                fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\", "+ ccName + "val ), compare);");  
+            }
             return fieldNodeEntry.toString();
         }
     }

@@ -85,6 +85,13 @@ public class VDPRecordsHTMLWriter {
 		ignoreTheseDiffs.put("Physical_Files_name", true); 
 		ignoreTheseDiffs.put("Physical_Files_lfName", true); 
 		ignoreTheseDiffs.put("Logical_Records_lrName", true); 
+		ignoreTheseDiffs.put("LR_Fields_recordId", true); 
+		ignoreTheseDiffs.put("LR_Fields_ordinalPosition", true); 
+		ignoreTheseDiffs.put("Lookup_Paths_columnId", true); 
+		ignoreTheseDiffs.put("LR_Indexes_columnId", true); 
+		ignoreTheseDiffs.put("LR_Indexes_lrIndexName", true); 
+		ignoreTheseDiffs.put("View_Definition_viewName", true); 
+		ignoreTheseDiffs.put("View_Output_File_name", true); 
 
 		//Optionally only show relevant fields
 

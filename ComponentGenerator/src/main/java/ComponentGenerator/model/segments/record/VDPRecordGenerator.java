@@ -64,14 +64,14 @@ public class VDPRecordGenerator extends GeneratorBase {
 		nodeMap.put("dsectEntry", new DSectEntryMethod());
 		nodeMap.put("statics", new BeansWrapperBuilder(Configuration.VERSION_2_3_31).build().getStaticModels());
 		writeJavaObject(recordItem, nodeMap);
-		writeRecordToDSECT(recordItem, nodeMap);
+		//writeRecordToDSECT(recordItem, nodeMap);
 	}
 
 	private FreemarkerFieldEntries prepocessTemplateEntries(Record record) {
 		// build lists of the strings to be written
 		FreemarkerFieldEntries freeMarkerEntries = new FreemarkerFieldEntries(); 
 		if(record.getRecordId() == 0) {
-			freeMarkerEntries.addEntriesFrom(record);
+			freeMarkerEntries.addEntriesFrom(record, true);
 		} else {
 			freeMarkerEntries.addEntriesFrom(prefix, record);
 		}

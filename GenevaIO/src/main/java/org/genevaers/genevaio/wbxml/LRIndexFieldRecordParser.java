@@ -54,9 +54,11 @@ public class LRIndexFieldRecordParser extends RecordParser {
 					break;
 				case "LRFIELDID":
 					fieldID = Integer.parseInt(text);
-					LRIndex rawndx = Repository.getIndexes().get(ndxid);
-					ndx = new LRIndex();
-					currentLR = Repository.getLogicalRecords().get(rawndx.getLrId());
+					ndx = Repository.getIndexes().get(ndxid);
+					if(ndx == null) {
+						ndx = new LRIndex();
+					}
+					currentLR = Repository.getLogicalRecords().get(ndx.getLrId());
 					ndx.setComponentId(ndxid);
 					ndx.setFieldID(fieldID);
 					ndx.setKeyNumber((short) sequenceNumber);

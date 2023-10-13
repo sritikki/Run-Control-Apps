@@ -165,19 +165,27 @@ public abstract class Field implements FieldGenerator {
         return csvHeader;
     }
 
-    public String defaultNumericNodeEntry(boolean prefix) {
+    public String defaultNumericNodeEntry(boolean prefix, boolean arrayValue) {
         if (getRawComponentField() != null && getRawComponentField().equals("none") && prefix==false) {
             return  DBLINDENT + "rn.add(new NoComponentNode(\"" + NameUtils.getCamelCaseName(name, false) +"\"), compare);";  
         } else {
-            return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            if(arrayValue) {
+                return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\" + n," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            } else {
+                return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            }
         }
     }
 
-    public String defaultStringNodeEntry(boolean prefix) {
+    public String defaultStringNodeEntry(boolean prefix, boolean arrayValue) {
         if (getRawComponentField() != null && getRawComponentField().equals("none") && prefix==false) {
             return  DBLINDENT + "rn.add(new NoComponentNode(\"" + NameUtils.getCamelCaseName(name, false) +"\"), compare);";  
         } else {
-            return  DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            if(arrayValue) {
+                return  DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\" + n," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            } else {
+               return  DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";                  
+            }
         }
     }
 

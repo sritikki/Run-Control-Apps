@@ -94,7 +94,7 @@ public class StringField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry(boolean prefix) {
-        return defaultStringNodeEntry(prefix);
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
+        return defaultStringNodeEntry(prefix, arrayValue);
     }
 }

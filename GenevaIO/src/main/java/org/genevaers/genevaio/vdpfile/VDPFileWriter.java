@@ -514,6 +514,7 @@ public class VDPFileWriter {
 		Iterator<JoinTargetEntry> jti = Repository.getJoinViews().getJoinTargetsIterator();
 		VDPLookupPathTargetSet lpts = new VDPLookupPathTargetSet();
 		lpts.setRecordId(650);
+		lpts.setSequenceNbr((short)0);
 		List<VDPLookupPathTargetEntry> refViews = lpts.getRefViews();
 		while(jti.hasNext()) {
 			JoinTargetEntry jt = jti.next();

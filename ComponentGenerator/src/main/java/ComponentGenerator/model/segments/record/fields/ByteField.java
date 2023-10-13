@@ -67,8 +67,8 @@ public class ByteField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry(boolean prefix) {
-        return defaultNumericNodeEntry(prefix);
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
+        return defaultNumericNodeEntry(prefix, arrayValue);
     }
 
 }

@@ -138,13 +138,13 @@ public class ArrayField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry(boolean prefix) {
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
         StringBuilder fieldNodeEntry = new StringBuilder();
         String ccName = NameUtils.getCamelCaseName(name, false);
         fieldNodeEntry.append(DBLINDENT + "StringBuilder " + ccName+"Str = new StringBuilder();\n");
         fieldNodeEntry.append(DBLINDENT + "for (int i = 0; i<" + arraySize + "; i += 1) {\n");
         if (arrayType.startsWith("VDP")) {
-            fieldNodeEntry.append(DBLINDENT + "    " + ccName + ".get(i).addRecordNodes(rn, compare);\n");
+            fieldNodeEntry.append(DBLINDENT + "    " + ccName + ".get(i).addRecordNodes(rn, i, compare);\n");
         } else {
             fieldNodeEntry.append(DBLINDENT + "    " + ccName+"Str" + ".append(" + ccName + ".get(i)+\",\");\n");
         }
