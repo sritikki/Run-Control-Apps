@@ -91,6 +91,8 @@ public class VDPRecordsHTMLWriter {
 		ignoreTheseDiffs.put("LR_Indexes_columnId", true); 
 		ignoreTheseDiffs.put("LR_Indexes_lrIndexName", true); 
 		ignoreTheseDiffs.put("View_Definition_viewName", true); 
+		ignoreTheseDiffs.put("View_Definition_outputLineSizeMax", true); 
+		ignoreTheseDiffs.put("View_Definition_ownerUser", true); 
 		ignoreTheseDiffs.put("View_Output_File_name", true); 
 
 		//Optionally only show relevant fields
