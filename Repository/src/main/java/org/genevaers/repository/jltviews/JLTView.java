@@ -171,8 +171,9 @@ public class JLTView {
 
     private void setupViewOutputFile(ViewNode vn, String ddname) {
         vn.getOutputFile().setComponentId(vn.getID());
-        vn.getOutputFile().setName("Generated for " + ddname);
+        vn.getOutputFile().setName("PF Generated for " + ddname);
         vn.getOutputFile().setOutputDDName(ddname);
+        vn.getOutputFile().setLogicalFilename("LF Generated for " + ddname);
     }
 
     private void addPaddingIfNeeded(short genStartPos, ViewSource vs) {
