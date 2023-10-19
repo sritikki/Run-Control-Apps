@@ -99,6 +99,8 @@ public class VDPRecordsHTMLWriter {
 		ignoreTheseDiffs.put("View_Output_File_allocLrecl", true); 
 		ignoreTheseDiffs.put("View_Output_File_lfName", true); 
 		ignoreTheseDiffs.put("View_Output_File_ddnameOutput", true); 
+		ignoreTheseDiffs.put("Columns_columnName", true); 
+		ignoreTheseDiffs.put("Columns_fieldName", true); 
 
 		//Optionally only show relevant fields
 
