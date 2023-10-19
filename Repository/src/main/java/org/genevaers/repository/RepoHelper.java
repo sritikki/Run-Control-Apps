@@ -104,16 +104,16 @@ public class RepoHelper {
         vc.setSubtotalPrefix("");
         vc.setSubtotalMask("");
         vc.setDefaultValue("");
-        vc.setHeaderLine1(f.getName());
+        vc.setHeaderLine1("");
         vc.setHeaderLine2("");
         vc.setHeaderLine3("");
-        vc.setHeaderJustifyId(JustifyId.NONE);
+        vc.setHeaderJustifyId(JustifyId.LEFT    );
     }
 
-    public static void setViewAlmunColumn(ViewColumn vc, short start, short len, String name) {
+    public static void setViewAlnumColumn(ViewColumn vc, short start, short len, String name) {
         vc.setDataType(DataType.ALPHANUMERIC);
         vc.setDateCode(DateCode.NONE);
-        vc.setJustifyId(JustifyId.NONE);
+        vc.setJustifyId(JustifyId.LEFT);
         vc.setStartPosition(start);
         vc.setExtractAreaPosition(start);
         vc.setFieldLength(len);
@@ -129,10 +129,10 @@ public class RepoHelper {
         vc.setSubtotalPrefix("");
         vc.setSubtotalMask("");
         vc.setDefaultValue("");
-        vc.setHeaderLine1(name);
+        vc.setHeaderLine1("");
         vc.setHeaderLine2("");
         vc.setHeaderLine3("");
-        vc.setHeaderJustifyId(JustifyId.NONE);
+        vc.setHeaderJustifyId(JustifyId.LEFT);
     }
 
     public static void fillPF(PhysicalFile rehPF) {

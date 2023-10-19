@@ -43,6 +43,7 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.ColumnSourceType;
 import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
@@ -186,8 +187,8 @@ public class JLTView {
     }
 
     private void addPadToViewColumnSources(short genStartPos, int padSize, ViewSource vs) {
-        ViewColumn vc = vn.makeColumn(PADDING, colNum);
-        RepoHelper.setViewAlmunColumn(vc, genStartPos, (short)padSize, PADDING);
+        ViewColumn vc = vn.makeJLTColumn(PADDING, colNum);
+        RepoHelper.setViewAlnumColumn(vc, genStartPos, (short)padSize, PADDING);
         ViewColumnSource vcs = new ViewColumnSource();
         vcs.setColumnID(vc.getComponentId());
         vcs.setColumnNumber(colNum);
@@ -210,7 +211,7 @@ public class JLTView {
         //Probably needs a new id -> ask the repo to make it
         //It will know that the ids are - or use the view number. 
         //It will be unique and the will only be one source
-        vs.setComponentId(vn.getID());
+        vs.setComponentId(1);
         vs.setSequenceNumber((short)1);
         vs.setSourceLFID(lfid);
         vs.setSourceLRID(lrid);
@@ -226,7 +227,7 @@ public class JLTView {
         colNum = 1;
         while(fi.hasNext()) {
             LRField f = fi.next();
-            ViewColumn vc = vn.makeColumn(f.getName(), colNum);
+            ViewColumn vc = vn.makeJLTColumn(f.getName(), colNum);
             RepoHelper.setViewColumnFromLRField(vc, f);
             ViewColumnSource vcs = new ViewColumnSource();
             vcs.setColumnID(vc.getComponentId());

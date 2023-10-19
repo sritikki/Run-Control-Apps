@@ -51,6 +51,7 @@ import org.genevaers.repository.components.enums.DbmsRowFmtOptId;
 import org.genevaers.repository.components.enums.FieldDelimiter;
 import org.genevaers.repository.components.enums.FileRecfm;
 import org.genevaers.repository.components.enums.FileType;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.TextDelimiter;
@@ -157,12 +158,13 @@ public class REHHeader {
         while(fldIt.hasNext()) {
             LRField fld = fldIt.next();
             ViewColumn vc = new ViewColumn();
-            int colID = ComponentNode.getMaxColumnID() + 1;
-            vc.setComponentId(colID);
+            vc.setComponentId(columnNumber);
             vc.setViewId(rehViewNum);
             vc.setName(fld.getName());
+            vc.setOrdinalPosition((short)columnNumber);
             vc.setColumnNumber(columnNumber++);
             RepoHelper.setViewColumnFromLRField(vc, fld);
+            vc.setJustifyId(JustifyId.LEFT);
             vn.addViewColumn(vc);
         }
     }

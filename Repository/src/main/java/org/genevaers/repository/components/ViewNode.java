@@ -32,6 +32,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.FieldDelimiter;
 import org.genevaers.repository.components.enums.FileRecfm;
 import org.genevaers.repository.components.enums.FileType;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.TextDelimiter;
 import org.genevaers.repository.components.enums.ViewType;
@@ -211,13 +212,16 @@ public class ViewNode extends ComponentNode{
         return found;
     }
 
-	public ViewColumn makeColumn(String name, int num) {
+	public ViewColumn makeJLTColumn(String name, int num) {
         int colID = ComponentNode.getMaxColumnID() + 1;
         ViewColumn vc = new ViewColumn();
 		vc.setComponentId(colID);
 		vc.setName(name);
 		vc.setColumnNumber(num);
+		vc.setOrdinalPosition((short)num);;
 		vc.setViewId(viewDef.getComponentId());
+		vc.setHeaderJustifyId(JustifyId.LEFT);
+		vc.setHeaderLine1("");
 		addViewColumn(vc);
 		return vc;
 	}
