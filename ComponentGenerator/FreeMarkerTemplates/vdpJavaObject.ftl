@@ -47,20 +47,25 @@ ${readerEntry}
 </#list>
     }
 
+<#if record.recordId gt 0>
     @Override
    	public void addRecordNodes(FieldNodeBase root, boolean compare)
     {
         RecordNode rn = new RecordNode();
-<#if record.recordId gt 0>
 <#if record.recordId == 400>
         rn.setName(recordType + "_" + lrId + "_" + fieldName);
 <#else>
         rn.setName(recordType + "_" + recordId + "_" + sequenceNbr);
 </#if>
-<#else>
-        rn.setName("${statics["java.util.UUID"].randomUUID()}"); 
-</#if>
         rn = (RecordNode) root.add(rn, compare);
+<#else>
+    @Override
+   	public void addRecordNodes(FieldNodeBase root, boolean compare)
+    {
+    }
+   	public void addRecordNodes(FieldNodeBase rn, int n, boolean compare)
+    {
+</#if>
 <#list entries.fieldNodeEntries as fieldNodeEntry>
 ${fieldNodeEntry}
 </#list>
