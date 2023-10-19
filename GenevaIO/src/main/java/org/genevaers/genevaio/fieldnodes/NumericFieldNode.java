@@ -17,7 +17,7 @@ public class NumericFieldNode extends FieldNodeBase {
     }
 
     public String getValueString() {
-        if(state == ComparisonState.DIFF) {
+        if(state == ComparisonState.DIFF || state == ComparisonState.IGNORED) {
             return value + " -> " + diffValue;
         }
         return Integer.toString(value);
