@@ -217,6 +217,7 @@ public class ViewNode extends ComponentNode{
 		vc.setComponentId(colID);
 		vc.setName(name);
 		vc.setColumnNumber(num);
+		vc.setViewId(viewDef.getComponentId());
 		addViewColumn(vc);
 		return vc;
 	}
