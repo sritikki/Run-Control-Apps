@@ -94,6 +94,11 @@ public class VDPRecordsHTMLWriter {
 		ignoreTheseDiffs.put("View_Definition_outputLineSizeMax", true); 
 		ignoreTheseDiffs.put("View_Definition_ownerUser", true); 
 		ignoreTheseDiffs.put("View_Output_File_name", true); 
+		ignoreTheseDiffs.put("View_Output_File_recordDelimId", true); 
+		ignoreTheseDiffs.put("View_Output_File_allocRecfm", true); 
+		ignoreTheseDiffs.put("View_Output_File_allocLrecl", true); 
+		ignoreTheseDiffs.put("View_Output_File_lfName", true); 
+		ignoreTheseDiffs.put("View_Output_File_ddnameOutput", true); 
 
 		//Optionally only show relevant fields
 
