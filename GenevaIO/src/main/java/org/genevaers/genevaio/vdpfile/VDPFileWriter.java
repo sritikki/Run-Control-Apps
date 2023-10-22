@@ -288,7 +288,7 @@ public class VDPFileWriter {
 	}
 
 	private void writeOutputLogic(ViewSource vs) {
-		if (vs.getExtractOutputLogic() != null) {
+		if (vs.getExtractOutputLogic() != null && vs.getExtractOutputLogic().length() > 0) {
             logger.atFine().log("Output Logic\n%s", vs.getExtractOutputLogic());
 			String eol = vs.getExtractOutputLogic();
 			VDPExtractOutputLogic veol = new VDPExtractOutputLogic();
