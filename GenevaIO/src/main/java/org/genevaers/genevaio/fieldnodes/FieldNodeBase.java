@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
 
 public class FieldNodeBase {
     public enum FieldNodeType {
@@ -15,7 +14,8 @@ public class FieldNodeBase {
         VIEW("View"), 
         ROOT("Root"), 
         RECORDPART("RecordPart"), 
-        NOCOMPONENT("No Component")
+        NOCOMPONENT("No Component"), 
+        FUNCCODE("FunctionCode")
          ;
 
         private String name;

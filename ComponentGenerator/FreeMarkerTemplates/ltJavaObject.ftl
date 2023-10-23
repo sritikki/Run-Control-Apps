@@ -15,6 +15,7 @@ import java.util.List;
 </#if>
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
+import org.genevaers.genevaio.fieldnodes.FunctionCodeNode;
 import org.genevaers.genevaio.fieldnodes.NoComponentNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.RecordPartNode;
@@ -53,9 +54,10 @@ ${readerEntry}
 <#if !(record.recordType == "none")>
    	public void addRecordNodes(FieldNodeBase root, boolean compare)
     {
-        RecordNode rn = new RecordNode();
+        FunctionCodeNode rn = new FunctionCodeNode();
         rn.setName(recordType + "_" + rowNbr);
-        rn = (RecordNode) root.add(rn, compare);
+        rn.setFunctionCode(functionCode);
+        rn = (FunctionCodeNode) root.add(rn, compare);
 <#else>
    	public void addRecordNodes(FieldNodeBase rn, boolean compare)
     {
