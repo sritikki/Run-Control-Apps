@@ -104,7 +104,6 @@ public class CommandLineHandler {
 			flow.writeCoverageResults(root);
 			generateFlow();
 		}
-
 	}
 
 	private static void generateDiffReport(Path root) {

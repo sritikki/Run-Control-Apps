@@ -73,7 +73,7 @@ public class RunControlAnalyser {
 		
 	}
 
-	public void readXLT(Path xltPath, boolean withCSV, RecordNode recordsRoot, boolean compare) {
+	public void readXLT(Path xltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read XLT %s csv flag %s", xltPath, Boolean.toString(withCSV));
 		XLTFileReader xltr = new XLTFileReader();
 		xltr.setCompare(compare);
@@ -90,7 +90,7 @@ public class RunControlAnalyser {
 		}
 	}
 
-	public void readJLT(Path jltPath, boolean withCSV, RecordNode recordsRoot, boolean compare) {
+	public void readJLT(Path jltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read JLT %s csv flag %s", jltPath, Boolean.toString(withCSV));
 		if(jltPath.toFile().exists()) {
 			XLTFileReader jltr = new XLTFileReader();

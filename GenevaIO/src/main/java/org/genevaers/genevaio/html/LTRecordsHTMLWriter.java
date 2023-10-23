@@ -41,10 +41,12 @@ import java.nio.file.Path;
 
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
+import org.genevaers.genevaio.fieldnodes.FunctionCodeNode;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
 
 import j2html.tags.DomContent;
 import j2html.tags.UnescapedText;
@@ -53,100 +55,67 @@ import j2html.tags.specialized.TdTag;
 import j2html.tags.specialized.ThTag;
 import j2html.tags.specialized.TrTag;
 
-public class LTRecordsHTMLWriter {
+public class LTRecordsHTMLWriter extends HTMLRecordsWriter{
 	
-	private static FileWriter fw;
-	static String toggleScript = "function toggleDiv(divname) {" +
-			"var ele = document.getElementById(divname);" +
-			"if (ele.style.display == \"none\") {" +
-			"ele.style.display = \"block\";" +
-			"}" +
-			"else {" +
-			"ele.style.display = \"none\";" +
-			"}" +
-			"}";
-
-	public static void writeFromRecordNodes(Path cwd, RecordNode root, String filename) {
-
-		File output = cwd.resolve(filename).toFile();
-		try {
-			
-			fw = new FileWriter(output);
-			fw.write(
-					html(
-							head(
-									meta().withContent("text/html; charset=UTF-8"),
-									link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/w3css/4/w3.css"),
-									link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/lib/w3-colors-flat.css"),
-									link().withRel("stylesheet").withType("text/css").withHref("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
-									script(join(toggleScript)).withLang("Javascript")
-							),
-							body(
-									bodyContent(root)
-							)).withStyle("overflow-x: scroll").renderFormatted());
-			fw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private static DivTag bodyContent(RecordNode root) {
-		return div(
-						h2("Logic Table Records"),
-						recordTables(root)
-				).withClass("w3-container");
-	}
-	
-
-	private static DomContent recordTables(RecordNode root) {
+	@Override
+	protected  DomContent recordTables(MetadataNode root) {
 		return table(
 				tbody(
 						each(root.getChildren(), rec  -> getRows(rec))))
 				.withClass("w3-table w3-striped w3-border");
 	}
 
-	private static UnescapedText getRows(FieldNodeBase rec) {
+	private  UnescapedText getRows(FieldNodeBase rec) {
 			return join(getHeaderRow(rec),
 						getRow(rec));
 	}
 
 
-	private static TrTag getRow(FieldNodeBase r) {
-		return tr( each(r.getChildren(), n -> rowEntry(n)) );
+	protected  TrTag getRow(FieldNodeBase r) {
+		preCheckAndChangeRowState(r);
+		return tr( each(r.getChildren(), n -> ltrowEntry(n)) );
 	}
 
-	private static DomContent rowEntry(FieldNodeBase n) {
+	protected  DomContent ltrowEntry(FieldNodeBase n) {
 		if(n.getFieldNodeType() == FieldNodeType.RECORDPART){
 			return  each(n.getChildren(), d -> rowEntry(d));
 		} else {
-			switch(n.getFieldNodeType()) {
-				case NUMBERFIELD:
-					return td(((NumericFieldNode)n).getValueString()).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
-																	.withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
-																	.withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
-																	.withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
-				case STRINGFIELD:
-					return td(((StringFieldNode)n).getValue() ).withCondClass(n.getState() == ComparisonState.ORIGINAL, "w3-pale-blue")
-																	.withCondClass(n.getState() == ComparisonState.NEW, "w3-pale-green")
-																	.withCondClass(n.getParent().getState() == ComparisonState.DIFF, "w3-pale-red")
-																	.withCondClass(n.getState() == ComparisonState.DIFF, "w3-pink");
-				case RECORD:
-				default:
-					return td("Bad Value");
-			}
+			return super.rowEntry(n);
 		}
 	}
 
-	private static TrTag getHeaderRow(FieldNodeBase fieldNodeBase) {
-		return tr( each(fieldNodeBase.getChildren(), n -> headerElement(n)) );
+	@Override
+	public void setIgnores() {
+		ignoreTheseDiffs.put("GEN_fileId", true); 
+		ignoreTheseDiffs.put("GEN_timeHh", true); 
+		ignoreTheseDiffs.put("GEN_timeMm", true); 
+		ignoreTheseDiffs.put("GEN_timeSs", true); 
+		ignoreTheseDiffs.put("GEN_desc", true); 
+		ignoreTheseDiffs.put("GEN_padding", true); 
+		ignoreTheseDiffs.put("HD_fileId", true); 
+		ignoreTheseDiffs.put("HD_time", true); 
+		ignoreTheseDiffs.put("sourceSeqNbr", true); 
+		ignoreTheseDiffs.put("GOTO_viewId", true); 
 	}
 
-	private static DomContent headerElement(FieldNodeBase n) {
+	@Override
+	protected TrTag getHeaderRow(FieldNodeBase fieldNodeBase) {
+		return tr( each(fieldNodeBase.getChildren(), n -> ltheaderElement(n)) );
+	}
+
+	private DomContent ltheaderElement(FieldNodeBase n) {
 		if(n.getFieldNodeType() == FieldNodeType.RECORDPART){
 			return each(n.getChildren(), h -> headerElement(h));
 		} else {
 			return th(n.getName());
+		}
+	}
+
+	protected String getDiffKey(FieldNodeBase n) {
+		if(n.getName().equals("sourceSeqNbr")) {
+			return n.getName();
+		} else {
+			return ((FunctionCodeNode)n.getParent()).getFunctionCode() + "_" + n.getName();
 		}
 	}
 

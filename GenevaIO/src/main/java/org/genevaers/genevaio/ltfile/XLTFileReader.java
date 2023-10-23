@@ -21,6 +21,7 @@ package org.genevaers.genevaio.ltfile;
 import java.io.File;
 import java.io.IOException;
 
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
@@ -29,7 +30,7 @@ import org.genevaers.repository.components.enums.LtRecordType;
 public class XLTFileReader {
 
 	private LTRecordReader recordReader = new LTRecordReader();
-	private RecordNode recordsRoot;
+	private MetadataNode recordsRoot;
 	private boolean compare;
 	
 	private RecordFileReaderWriter rr;
@@ -99,11 +100,11 @@ public class XLTFileReader {
 		this.compare = compare;
 	}
 
-	public void setRecordsRoot(RecordNode recordsRoot) {
-		this.recordsRoot = recordsRoot;
+	public void setRecordsRoot(MetadataNode rr) {
+		this.recordsRoot = rr;
 	}
 
-	public RecordNode getRecordsRoot() {
+	public MetadataNode getRecordsRoot() {
 		return recordsRoot;
 	}
 
