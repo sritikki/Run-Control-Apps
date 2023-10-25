@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 
 
@@ -86,7 +87,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
 
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
         assertEquals(61, wbxmlReader.getCatalogEntries().size());
 
@@ -97,7 +98,7 @@ public class WBXMLReaderTest {
         WBXMLSaxIterator wbxmlReader = new WBXMLSaxIterator();
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         assertEquals(2, Repository.getViews().size());
@@ -115,8 +116,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(EXIT_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         assertEquals(2, Repository.getUserExits().size());
@@ -128,8 +128,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         assertEquals(2, Repository.getViews().size());
@@ -144,7 +143,7 @@ public class WBXMLReaderTest {
         WBXMLSaxIterator wbxmlReader = new WBXMLSaxIterator();
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         ViewNode v1 = Repository.getViews().get(11288);
@@ -167,7 +166,7 @@ public class WBXMLReaderTest {
         Path readme = root.resolve(ARITH_FILE);
 
 
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         ViewNode v1 = Repository.getViews().get(11288);
@@ -192,8 +191,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         // assertEquals(34, repo.getViews().size());
@@ -207,8 +205,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         assertEquals(1, Repository.getLookups().size());
@@ -231,8 +228,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         assertEquals(5, Repository.getPhysicalFiles().size());
@@ -244,8 +240,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         LogicalRecord lr = Repository.getLogicalRecords().get(1595);
@@ -265,8 +260,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(ARITH_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 
         LogicalRecord lr = Repository.getLogicalRecords().get(1801);
@@ -281,8 +275,7 @@ public class WBXMLReaderTest {
         Path root = Paths.get(resources);
         Path readme = root.resolve(HEADER_FOOTER_FILE);
 
-
-        wbxmlReader.inputFrom(new FileInputStream(readme.toFile()));
+        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
         wbxmlReader.addToRepsitory();
 		ViewNode v = Repository.getViews().get(12088);
 		assertTrue(v.hasReportHeaders());

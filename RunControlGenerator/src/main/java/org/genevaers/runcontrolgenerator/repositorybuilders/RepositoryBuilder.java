@@ -1,13 +1,12 @@
 package org.genevaers.runcontrolgenerator.repositorybuilders;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -30,6 +29,7 @@ import java.util.Iterator;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
+import com.ibm.jzos.FileFactory;
 import com.ibm.jzos.PdsDirectory;
 import com.ibm.jzos.ZFile;
 import com.ibm.jzos.ZFileConstants;
@@ -52,6 +52,7 @@ public class RepositoryBuilder {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	private RunControlConfigration rcc;
 	private Status retval;
+	private BufferedInputStream inputBuffer;
 
 	public RepositoryBuilder(RunControlConfigration rcc) {
 		this.rcc = rcc;
@@ -134,10 +135,10 @@ public class RepositoryBuilder {
 			// Problem here is that this will be a PDS and we need to iterate its memebers
 			int type = dd.getDsorg();
 			switch (type) {
-				case ZFileConstants.DSORG_PDS_DIR:
-				logger.atInfo().log("found PDS E");
+				case ZFileConstants.DSORG_PDSE: 
+					logger.atInfo().log("found PDS E");
 					//Drop through
-				case ZFileConstants.DSORG_PDSE: {
+				case ZFileConstants.DSORG_PDS_DIR: {
 					logger.atInfo().log("found PDS");
 					String pdsName = dd.getActualFilename();
 					logger.atInfo().log("Actual filename " + pdsName);
@@ -149,9 +150,11 @@ public class RepositoryBuilder {
 							String mname = mem.getName();
 							String buildName = ddname + "(" + mname + ")";
 							logger.atInfo().log("Build Repo from " + buildName);
-							ZFile pdsmem = new ZFile(buildName, "r");
-							buildFromXML(pdsmem.getInputStream());
-							pdsmem.close();
+							inputBuffer = FileFactory.newBufferedInputStream(buildName);
+							// ZFile pdsmem = new ZFile(buildName, "r");
+							buildFromXML();
+							// pdsmem.close();
+							inputBuffer.close();
 						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -160,13 +163,13 @@ public class RepositoryBuilder {
 				}
 					break;
 				case ZFileConstants.DSORG_PDS_MEM:
-				logger.atInfo().log("found PDS member");
-					buildFromXML(dd.getInputStream());
-					break;
+				// logger.atInfo().log("found PDS member");
+				// 	buildFromXML(dd.getInputStream());
+				// 	break;
 				case ZFileConstants.DSORG_PS:
-					logger.atInfo().log("found DSOR PS");
-					buildFromXML(dd.getInputStream());
-					break;
+					// logger.atInfo().log("found DSOR PS");
+					// buildFromXML(dd.getInputStream());
+					// break;
 				default:
 					logger.atSevere().log("Unhandled DSORG " + type);
 			}
@@ -186,7 +189,8 @@ public class RepositoryBuilder {
 			for (File d : xmlFiles) {
 				logger.atFine().log("Read %s", d.getName());
 				try {
-					buildFromXML(new FileInputStream(d));
+					inputBuffer = new BufferedInputStream(new FileInputStream(d)); 
+					buildFromXML();
 				} catch (FileNotFoundException e) {
 					logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
 					retval = Status.ERROR;
@@ -197,10 +201,10 @@ public class RepositoryBuilder {
 		}
 	}
 
-	private void buildFromXML(InputStream inputStream) {
+	private void buildFromXML() {
 		WBXMLSaxIterator wbReader = new WBXMLSaxIterator();
 		try {
-			wbReader.inputFrom(inputStream);
+			wbReader.setInputBuffer(inputBuffer);
 			wbReader.addToRepsitory();
 		} catch (Exception e) {
 			logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
