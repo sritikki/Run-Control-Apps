@@ -96,6 +96,15 @@ public class LTRecordsHTMLWriter extends HTMLRecordsWriter{
 		ignoreTheseDiffs.put("HD_time", true); 
 		ignoreTheseDiffs.put("sourceSeqNbr", true); 
 		ignoreTheseDiffs.put("GOTO_viewId", true); 
+		ignoreTheseDiffs.put("DTC_lrId", true); 
+		ignoreTheseDiffs.put("JOIN_fieldId", true); 
+		ignoreTheseDiffs.put("JOIN_fieldFormat", true); 
+		ignoreTheseDiffs.put("JOIN_startPosition", true); 
+		ignoreTheseDiffs.put("JOIN_ordinalPosition", true); 
+		ignoreTheseDiffs.put("JOIN_justifyId", true); 
+		ignoreTheseDiffs.put("LKE_ordinalPosition", true); 
+		ignoreTheseDiffs.put("DTL_ordinalPosition", true); 
+		ignoreTheseDiffs.put("CFLC_ordinalPosition", true); 
 	}
 
 	@Override
@@ -115,7 +124,11 @@ public class LTRecordsHTMLWriter extends HTMLRecordsWriter{
 		if(n.getName().equals("sourceSeqNbr")) {
 			return n.getName();
 		} else {
-			return ((FunctionCodeNode)n.getParent()).getFunctionCode() + "_" + n.getName();
+			if(n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
+				return ((FunctionCodeNode)n.getParent().getParent()).getFunctionCode() + "_" + n.getName();
+			} else {
+				return ((FunctionCodeNode)n.getParent()).getFunctionCode() + "_" + n.getName();
+			}
 		}
 	}
 

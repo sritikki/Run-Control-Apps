@@ -50,7 +50,7 @@ import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.ViewFieldNode;
-
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
 
 import j2html.tags.DomContent;
 import j2html.tags.specialized.DivTag;
@@ -154,11 +154,15 @@ public abstract class HTMLRecordsWriter {
 	protected  void preCheckAndChangeRowState(FieldNodeBase r) {
 		boolean updateRowState = true;
 		for( FieldNodeBase n : r.getChildren()) {
-			if(n.getState() == ComparisonState.DIFF) {
-				if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
-					n.setState(ComparisonState.IGNORED);
-				} else {
-					updateRowState = false;
+			if(n.getFieldNodeType() == FieldNodeType.RECORDPART) {
+				preCheckAndChangeRowState(n);
+			} else {
+				if(n.getState() == ComparisonState.DIFF) {
+					if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
+						n.setState(ComparisonState.IGNORED);
+					} else {
+						updateRowState = false;
+					}
 				}
 			}
 		}
