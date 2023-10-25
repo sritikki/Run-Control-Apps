@@ -218,6 +218,7 @@ public class AnalyserDriver {
 			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
 			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
 			LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+			ltrw.setIgnores();
 			ltrw.writeFromRecordNodes(root, recordsRoot, "JLT.html");
 		}
 	}
