@@ -1715,7 +1715,9 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         else
             arg.setFieldContentId(key.getDateTimeFormat());
         arg.setFieldFormat(key.getDatatype());
-        arg.setFieldId(key.getComponentId());
+        arg.setFieldId(key.getFieldId());
+        arg.setLogfileId(key.getTargetlfid());
+        arg.setLrId(key.getSourceLrId());
         //TODO the start pos is dependent on extract type
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
