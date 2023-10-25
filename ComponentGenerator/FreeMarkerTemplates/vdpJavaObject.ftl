@@ -54,6 +54,8 @@ ${readerEntry}
         RecordNode rn = new RecordNode();
 <#if record.recordId == 400>
         rn.setName(recordType + "_" + lrId + "_" + fieldName);
+<#elseif record.recordId == 2000>
+        rn.setName(viewId + "_" + recordType + "_" + columnId);
 <#else>
         rn.setName(recordType + "_" + recordId + "_" + sequenceNbr);
 </#if>
