@@ -165,7 +165,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         switch(currentViewColumn.getExtractArea()) {
             case AREADATA:
             if(currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getDTC("", currentViewColumn));
+                ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(" ", currentViewColumn));
             } else {
                 ltEmitter.addToLogicTable((LTRecord)fcf.getDTC("0", currentViewColumn));
             }
@@ -173,7 +173,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             
             case AREACALC:
             if(currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getCTC("", currentViewColumn));
+                ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(" ", currentViewColumn));
             } else {
                 ltEmitter.addToLogicTable((LTRecord)fcf.getCTC("0", currentViewColumn));
             }
@@ -182,7 +182,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
                 break;
             case SORTKEY:
             if(currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getSKC("", currentViewColumn));
+                ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(" ", currentViewColumn));
             } else {
                 ltEmitter.addToLogicTable((LTRecord)fcf.getSKC("0", currentViewColumn));
             }
