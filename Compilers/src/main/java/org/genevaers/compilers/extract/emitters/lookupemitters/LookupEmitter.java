@@ -356,5 +356,20 @@ public class LookupEmitter extends CodeEmitter {
         }
     }
 
+    public void setFalseGotos() {
+        //Naughty hard coding... should be done after assigment or whatever
+        int falsePos = ExtractBaseAST.getLtEmitter().getLogicTable().getLastEntry().getRowNbr();
+        if(firstLookupRecord != null) {
+            firstLookupRecord.setGotoRow2(falsePos);
+        }
+        if(lusm != null) {
+            //The default is that the LUSM gotos are the same as the JOIN
+            //But for the intermediate steps this is not the case
+            lusm.setGotoRow2(falsePos);
+            for (LogicTableRE intenalLUSM : lusms) {
+                intenalLUSM.setGotoRow2(falsePos);
+            }
+        }
+    }
 
 }

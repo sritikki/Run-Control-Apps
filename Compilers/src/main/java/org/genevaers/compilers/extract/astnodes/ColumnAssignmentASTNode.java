@@ -60,54 +60,62 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
     @Override
     public void emit() {
-        //C++ has emitter classes - table driven to examine datatypes and dates
-        //And warnings on date conversion or possible truncation etc
+        // C++ has emitter classes - table driven to examine datatypes and dates
+        // And warnings on date conversion or possible truncation etc
 
-        //Here we're just going to generate a DTC or DTE
-        //Depending on type of the first child.
-        //Ignore the error cases for the moment
+        // Here we're just going to generate a DTC or DTE
+        // Depending on type of the first child.
+        // Ignore the error cases for the moment
 
-        //We should be able to derive the column details locally
+        // We should be able to derive the column details locally
         // Therefore the target of DT
         // Our first child will give the source of the DT
 
-        if(children.size() == 2) {
+        if (children.size() == 2) {
 
-        Iterator<ASTBase> ci = children.iterator();
-        ExtractBaseAST rhs = (ExtractBaseAST) ci.next();
-        ColumnAST col = (ColumnAST)ci.next();
+            Iterator<ASTBase> ci = children.iterator();
+            ExtractBaseAST rhs = (ExtractBaseAST) ci.next();
+            ColumnAST col = (ColumnAST) ci.next();
 
-        if(rhs instanceof CastAST) {
-            rhs = ((CastAST)rhs).decast();
-        }
-        ltEmitter.setSuffixSeqNbr((short)col.getViewColumn().getColumnNumber());
-        if(rhs instanceof EmittableASTNode)
-                ((EmittableASTNode)rhs).emit();
+            LookupFieldRefAST lkref = checkForJOINandEmitIfRequired();
 
-        // This is where we need the rules checking and data type adjustment
-        
-        
-        // The rhs will have its own emmitter since it will be assignable
-        // If not ... boom
-        DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(col, rhs);
-        DTResult res = dc.verifyOperands(col, rhs);
-        if(res ==DTResult.ASSIGN_OK) {
-            LTRecord lto = (LTRecord) ((Assignable)rhs).getAssignmentEntry(col, (ExtractBaseAST)rhs);
-            if(lto != null) {
-                lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
+            if (rhs instanceof CastAST) {
+                rhs = ((CastAST) rhs).decast();
             }
-            ltEmitter.addToLogicTable((LTRecord)lto);
-        }
-        // if(ae.isLookup()) {
-        //     emitLookupDefault(col);
-        // }
-        //} else {
-        //    logger.atSevere().log("Should never get here");
-        //}
-        col.emit(); //In case there is a sort title emit
+            ltEmitter.setSuffixSeqNbr((short) col.getViewColumn().getColumnNumber());
+            if (rhs instanceof EmittableASTNode)
+                ((EmittableASTNode) rhs).emit();
+
+            // This is where we need the rules checking and data type adjustment
+
+            // The rhs will have its own emmitter since it will be assignable
+            // If not ... boom
+            DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(col, rhs);
+            DTResult res = dc.verifyOperands(col, rhs);
+            if (res == DTResult.ASSIGN_OK) {
+                LTRecord lto = (LTRecord) ((Assignable) rhs).getAssignmentEntry(col, (ExtractBaseAST) rhs);
+                if (lto != null) {
+                    lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
+                }
+                ltEmitter.addToLogicTable((LTRecord) lto);
+            }
+            if (lkref != null) {
+                lkref.emitLookupDefault();
+                //We now know how the set the lookup goto
+            }
+
+            col.emit(); // In case there is a sort title emit
         } else {
             int workToDo = 1;
         }
+    }
+
+    private LookupFieldRefAST checkForJOINandEmitIfRequired() {
+        LookupFieldRefAST lkref = (LookupFieldRefAST) getFirstNodeOfType(ASTFactory.Type.LOOKUPFIELDREF);
+        if(lkref != null) {
+            lkref.getLkEmitter().emitJoin(lkref, false);
+        }
+        return lkref;
     }
 
     private void emitLookupDefault(ColumnAST col) {

@@ -415,4 +415,8 @@ public class JoinViewsManager {
 	public Iterator<JoinTargetEntry> getJoinTargetsIterator() {
 		return joinTargets.iterator();
 	}
+
+	public int getLfidFromJoinLR(int lrid) {
+		return lr2lf.get(lrid);
+	}
 }

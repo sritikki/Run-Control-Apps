@@ -490,5 +490,9 @@ public class JLTView {
     public int getDdNum() {
         return ddNum;
     }
+
+    public LogicalRecord getRedLR() {
+        return redLR;
+    }
     
 }
