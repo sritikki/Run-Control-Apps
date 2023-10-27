@@ -93,7 +93,7 @@ public class GenevaERSJoinsRoot extends ExtractBaseAST implements EmittableASTNo
         gen.setIsAscii(System.getProperty("os.name").startsWith("z") ? false : true);
         gen.setDesc("Java MR91");
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        DateFormat timeFormat = new SimpleDateFormat("hhmmss");
+        DateFormat timeFormat = new SimpleDateFormat("HHmmss");
         Date dt = Repository.getGenerationTime();
         String date = dateFormat.format(dt);
         gen.setDateCc(date.substring(0,2));

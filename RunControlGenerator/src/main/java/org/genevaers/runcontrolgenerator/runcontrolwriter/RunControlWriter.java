@@ -108,7 +108,7 @@ public class RunControlWriter {
         DateFormat dateFormat1 = new SimpleDateFormat("YYYYMMdd");
         Date dt = Repository.getGenerationTime();
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-        DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         gen.setDate(dateFormat.format(dt));
         gen.setRunDate(dateFormat1.format(dt));
         gen.setTime(timeFormat.format(dt));
