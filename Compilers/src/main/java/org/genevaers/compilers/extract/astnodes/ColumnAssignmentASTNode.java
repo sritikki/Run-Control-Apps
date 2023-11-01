@@ -111,9 +111,20 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
     }
 
     private LookupFieldRefAST checkForJOINandEmitIfRequired() {
-        LookupFieldRefAST lkref = (LookupFieldRefAST) getFirstNodeOfType(ASTFactory.Type.LOOKUPFIELDREF);
-        if(lkref != null) {
-            lkref.getLkEmitter().emitJoin(lkref, false);
+        LookupFieldRefAST lkref = null;
+        ExtractBaseAST c1 = (ExtractBaseAST) children.get(0);
+        if(c1.getType() == ASTFactory.Type.CALCULATION) {
+            Iterator<ASTBase> calcIterator = c1.getChildIterator();
+            ExtractBaseAST setterChild = (ExtractBaseAST) calcIterator.next().getChildIterator().next();
+            ExtractBaseAST opChild = (ExtractBaseAST) calcIterator.next().getChildIterator().next();
+            if(setterChild.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
+                lkref = (LookupFieldRefAST)setterChild;
+                lkref.getLkEmitter().emitJoin(lkref, false);
+            }
+            if(opChild.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
+                lkref = (LookupFieldRefAST)opChild;
+                lkref.getLkEmitter().emitJoin(lkref, false);
+            }
         }
         return lkref;
     }

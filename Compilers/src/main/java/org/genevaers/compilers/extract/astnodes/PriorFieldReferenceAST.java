@@ -88,36 +88,36 @@ public class PriorFieldReferenceAST extends FieldReferenceAST{
     @Override
     public LTFileObject emitAddFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableNameF1 adde = (LogicTableNameF1) fcf.getADDE("", ref);
-        adde.getArg().setLogfileId(ltEmitter.getFileId());
-        ltEmitter.addToLogicTable((LTRecord)adde);
+        LogicTableNameF1 addp = (LogicTableNameF1) fcf.getADDP("", ref);
+        addp.getArg().setLogfileId(ltEmitter.getFileId());
+        ltEmitter.addToLogicTable((LTRecord)addp);
         return null;
     }
 
     @Override
     public LTFileObject emitSubFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableNameF1 sube = (LogicTableNameF1) fcf.getSUBE("", ref);
-        sube.getArg().setLogfileId(ltEmitter.getFileId());
-        ltEmitter.addToLogicTable((LTRecord)sube);
+        LogicTableNameF1 subp = (LogicTableNameF1) fcf.getSUBP("", ref);
+        subp.getArg().setLogfileId(ltEmitter.getFileId());
+        ltEmitter.addToLogicTable((LTRecord)subp);
         return null;
     }
 
     @Override
     public LTFileObject emitMulFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableNameF1 mule = (LogicTableNameF1) fcf.getMULE("", ref);
-        mule.getArg().setLogfileId(ltEmitter.getFileId());
-        ltEmitter.addToLogicTable((LTRecord)mule);
+        LogicTableNameF1 mulp = (LogicTableNameF1) fcf.getMULP("", ref);
+        mulp.getArg().setLogfileId(ltEmitter.getFileId());
+        ltEmitter.addToLogicTable((LTRecord)mulp);
         return null;
     }
 
     @Override
     public LTFileObject emitDivFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableNameF1 dive = (LogicTableNameF1) fcf.getDIVE("", ref);
-        dive.getArg().setLogfileId(ltEmitter.getFileId());
-        ltEmitter.addToLogicTable((LTRecord)dive);
+        LogicTableNameF1 divp = (LogicTableNameF1) fcf.getDIVP("", ref);
+        divp.getArg().setLogfileId(ltEmitter.getFileId());
+        ltEmitter.addToLogicTable((LTRecord)divp);
         return null;
     }
 

@@ -50,6 +50,7 @@ public class XLTFileReader {
 			rec.bytes.clear();
 			rec = rr.readRecord();
 		}
+		//rr.readRecord();
 		return logicTable;
 	}
 

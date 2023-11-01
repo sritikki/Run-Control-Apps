@@ -1,5 +1,8 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import java.util.Iterator;
+
+import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 
 /*
@@ -45,11 +48,26 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
         //we will persist with the silly names until we know we are generating things correctly
         //Then we can switch the names to be somthing more simple
         //String accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(viewSource, vc)
+        
+        // Need to recurse here without the name if our children are Calculation nodes
+        checkAndRecursIfCalcluationChildrenFound();
         if(accName == null) {
             generateAccumulatorName();
             ltEmitter.addToLogicTable((LTRecord)LtFactoryHolder.getLtFunctionCodeFactory().getDIMN());
         }
         emitChildNodes();
+    }
+
+    private void checkAndRecursIfCalcluationChildrenFound() {
+            Iterator<ASTBase> calcIterator = getChildIterator();
+            ExtractBaseAST setterChild = (ExtractBaseAST) calcIterator.next().getChildIterator().next();
+            ExtractBaseAST opChild = (ExtractBaseAST) calcIterator.next().getChildIterator().next();
+            if(setterChild.getType() == ASTFactory.Type.CALCULATION) {
+                ((CalculationAST)setterChild).emit();
+            }
+            if(opChild.getType() == ASTFactory.Type.CALCULATION) {
+                ((CalculationAST)opChild).emit();
+            }
     }
 
     @Override
@@ -79,7 +97,6 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
     @Override
     public LTFileObject emitSetFunctionCode() {
         //Need to make sure all our child nodes have been emitted first
-        emit();
         LTFileObject seta = LtFactoryHolder.getLtFunctionCodeFactory().getSETA(((CalculationAST)parent.getParent()).getAccName(), accName);
         ltEmitter.addToLogicTable((LTRecord)seta);
         return null;
@@ -87,7 +104,6 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
 
     @Override
     public LTFileObject emitAddFunctionCode() {
-        emit();
         LTFileObject adda = LtFactoryHolder.getLtFunctionCodeFactory().getADDA(((CalculationAST)parent.getParent()).getAccName(), accName);
         ltEmitter.addToLogicTable((LTRecord)adda);
         return null;
@@ -95,7 +111,6 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
 
     @Override
     public LTFileObject emitSubFunctionCode() {
-        emit();
         LTFileObject suba = LtFactoryHolder.getLtFunctionCodeFactory().getSUBA(((CalculationAST)parent.getParent()).getAccName(), accName);
         ltEmitter.addToLogicTable((LTRecord)suba);
         return null;
@@ -103,7 +118,6 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
 
     @Override
     public LTFileObject emitMulFunctionCode() {
-        emit();
         LTFileObject mula = LtFactoryHolder.getLtFunctionCodeFactory().getMULA(((CalculationAST)parent.getParent()).getAccName(), accName);
         ltEmitter.addToLogicTable((LTRecord)mula);
         return null;
@@ -111,7 +125,6 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
 
     @Override
     public LTFileObject emitDivFunctionCode() {
-        emit();
         LTFileObject diva = LtFactoryHolder.getLtFunctionCodeFactory().getDIVA(((CalculationAST)parent.getParent()).getAccName(), accName);
         ltEmitter.addToLogicTable((LTRecord)diva);
         return null;

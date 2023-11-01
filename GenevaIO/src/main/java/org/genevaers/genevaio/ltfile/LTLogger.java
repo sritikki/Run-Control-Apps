@@ -189,6 +189,12 @@ public class LTLogger {
 			case "DIVC":
 				LogicTableNameValue setc = (LogicTableNameValue) ltr;
 				return(String.format(ACCUMASSIGNMENT, leadin, setc.getTableName(), setc.getValue()));
+			case "SETA":
+				LogicTableNameValue seta = (LogicTableNameValue) ltr;
+				return(String.format(ACCUMAOP, leadin, seta.getTableName(), "<-", seta.getValue()));
+			case "ADDA":
+				LogicTableNameValue adda = (LogicTableNameValue) ltr;
+				return(String.format(ACCUMAOP, leadin, adda.getTableName(), "/", adda.getValue()));
 			case "DIVA":
 				LogicTableNameValue diva = (LogicTableNameValue) ltr;
 				return(String.format(ACCUMAOP, leadin, diva.getTableName(), "/", diva.getValue()));

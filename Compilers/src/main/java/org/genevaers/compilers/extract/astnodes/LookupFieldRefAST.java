@@ -126,22 +126,29 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         //The ref field should now be replaced by the gen lr field.
         //How do we get to it?
+        LogicTableNameF1 setl = (LogicTableNameF1) fcf.getSETL("", ref);
+        LogicTableArg arg = setl.getArg();
+        argFixup(arg);
+        ltEmitter.addToLogicTable((LTRecord)setl);
+        return null;
+    }
+
+
+    private void argFixup(LogicTableArg arg) {
         ReferenceJoin refJoin = Repository.getJoinViews().getReferenceJLTViews().getJLTView(ref.getLrID(), false);
         LRField redField = refJoin.getRedLR().findFromFieldsByName(ref.getName());
-        LogicTableNameF1 setl = (LogicTableNameF1) fcf.getSETL("", ref);
         JoinViewsManager jvm = Repository.getJoinViews();
-        LogicTableArg arg = setl.getArg();
         arg.setStartPosition(redField.getStartPosition());
         arg.setLogfileId(jvm.getLfidFromJoinLR(ref.getLrID()));
         arg.setOrdinalPosition(ref.getOrdinalPosition());
-        ltEmitter.addToLogicTable((LTRecord)setl);
-        return null;
     }
 
     @Override
     public LTFileObject emitAddFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getADDL("", ref));
+        LogicTableNameF1 addl = (LogicTableNameF1) fcf.getADDL("", ref);
+        argFixup(addl.getArg());
+        ltEmitter.addToLogicTable((LTRecord)addl);
         return null;
     }
 

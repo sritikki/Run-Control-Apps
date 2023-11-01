@@ -114,8 +114,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getADDP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 adde = makeNameF1FromAccumAndField(accumName, f);
+        adde.setFunctionCode("ADDP");
+        adde.setCompareType(LtCompareType.EQ);
+        return adde;
     }
 
     @Override
@@ -636,8 +638,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getDIVP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 divp = makeNameF1FromAccumAndField(accumName, f);
+        divp.setFunctionCode("DIVP");
+        divp.setCompareType(LtCompareType.EQ);
+        return divp;
     }
 
     @Override
@@ -1066,8 +1070,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getMULP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 mulp = makeNameF1FromAccumAndField(accumName, f);
+        mulp.setFunctionCode("MULP");
+        mulp.setCompareType(LtCompareType.EQ);
+        return mulp;
     }
 
     @Override
@@ -1441,8 +1447,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSUBP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 subp = makeNameF1FromAccumAndField(accumName, f);
+        subp.setFunctionCode("SUBP");
+        subp.setCompareType(LtCompareType.EQ);
+        return subp;
     }
 
     @Override
