@@ -121,9 +121,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getADDX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getADDX(String accum, ViewColumn vc) {
+        LogicTableNameF1 addx = getNameF1FromAccumAndColumn(accumName, vc);
+        addx.setFunctionCode("ADDX");
+        addx.setAccumulatorName(accumName);
+        return addx;
     }
 
     @Override
@@ -645,9 +647,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getDIVX(String accum, LRField f) {
-        // TODO Auto-generated method stubL
-        return null;
+    public LTFileObject getDIVX(String accum, ViewColumn vc) {
+        LogicTableNameF1 divx = getNameF1FromAccumAndColumn(accumName, vc);
+        divx.setFunctionCode("DIVX");
+        divx.setAccumulatorName(accumName);
+        return divx;
     }
 
     @Override
@@ -1084,9 +1088,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getMULX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getMULX(String accum, ViewColumn vc) {
+        LogicTableNameF1 mulx = getNameF1FromAccumAndColumn(accumName, vc);
+        mulx.setFunctionCode("MULX");
+        mulx.setAccumulatorName(accumName);
+        return mulx;
     }
 
     @Override
@@ -1154,9 +1160,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSETX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSETX(String accum, ViewColumn vc) {
+        LogicTableNameF1 setx = getNameF1FromAccumAndColumn(accum, vc);
+        setx.setFunctionCode("SETX");
+        setx.setAccumulatorName(accumName);
+        return setx;
     }
 
     @Override
@@ -1454,9 +1462,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSUBX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSUBX(String accum, ViewColumn vc) {
+        LogicTableNameF1 subx = getNameF1FromAccumAndColumn(accumName, vc);
+        subx.setFunctionCode("SUBX");
+        subx.setAccumulatorName(accumName);
+        return subx;
     }
 
     @Override

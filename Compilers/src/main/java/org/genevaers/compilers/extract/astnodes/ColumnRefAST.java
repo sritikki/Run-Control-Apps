@@ -7,6 +7,7 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
+import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
@@ -39,26 +40,41 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
 
      @Override
     public LTFileObject emitSetFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 setx = (LogicTableNameF1) fcf.getSETX("", vc);
+        ltEmitter.addToLogicTable((LTRecord)setx);
         return null;
     }
 
     @Override
     public LTFileObject emitAddFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 addx = (LogicTableNameF1) fcf.getADDX("", vc);
+        ltEmitter.addToLogicTable((LTRecord)addx);
         return null;
     }
 
     @Override
     public LTFileObject emitSubFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 subx = (LogicTableNameF1) fcf.getSUBX("", vc);
+        ltEmitter.addToLogicTable((LTRecord)subx);
         return null;
     }
 
     @Override
     public LTFileObject emitMulFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 mulx = (LogicTableNameF1) fcf.getMULX("", vc);
+        ltEmitter.addToLogicTable((LTRecord)mulx);
         return null;
     }
 
     @Override
     public LTFileObject emitDivFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 divx = (LogicTableNameF1) fcf.getDIVX("", vc);
+        ltEmitter.addToLogicTable((LTRecord)divx);
         return null;
     }
 

@@ -55,7 +55,7 @@ ${readerEntry}
    	public void addRecordNodes(FieldNodeBase root, boolean compare)
     {
         FunctionCodeNode rn = new FunctionCodeNode();
-        rn.setName(recordType + "_" + rowNbr);
+        rn.setName("LT_" + rowNbr);
         rn.setFunctionCode(functionCode);
         rn = (FunctionCodeNode) root.add(rn, compare);
 <#else>
