@@ -42,6 +42,8 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
     public LTFileObject emitSetFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableNameF1 setx = (LogicTableNameF1) fcf.getSETX("", vc);
+        setx.getArg().setFieldId(vc.getColumnNumber());
+        setx.getArg().setLogfileId(vc.getExtractArea().ordinal());
         ltEmitter.addToLogicTable((LTRecord)setx);
         return null;
     }
@@ -50,6 +52,8 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
     public LTFileObject emitAddFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableNameF1 addx = (LogicTableNameF1) fcf.getADDX("", vc);
+        addx.getArg().setFieldId(vc.getColumnNumber());
+        addx.getArg().setLogfileId(vc.getExtractArea().ordinal());
         ltEmitter.addToLogicTable((LTRecord)addx);
         return null;
     }
@@ -58,6 +62,8 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
     public LTFileObject emitSubFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableNameF1 subx = (LogicTableNameF1) fcf.getSUBX("", vc);
+        subx.getArg().setFieldId(vc.getColumnNumber());
+        subx.getArg().setLogfileId(vc.getExtractArea().ordinal());
         ltEmitter.addToLogicTable((LTRecord)subx);
         return null;
     }
@@ -66,6 +72,8 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
     public LTFileObject emitMulFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableNameF1 mulx = (LogicTableNameF1) fcf.getMULX("", vc);
+        mulx.getArg().setFieldId(vc.getColumnNumber());
+        mulx.getArg().setLogfileId(vc.getExtractArea().ordinal());
         ltEmitter.addToLogicTable((LTRecord)mulx);
         return null;
     }
@@ -74,6 +82,8 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
     public LTFileObject emitDivFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableNameF1 divx = (LogicTableNameF1) fcf.getDIVX("", vc);
+        divx.getArg().setFieldId(vc.getColumnNumber());
+        divx.getArg().setLogfileId(vc.getExtractArea().ordinal());
         ltEmitter.addToLogicTable((LTRecord)divx);
         return null;
     }
