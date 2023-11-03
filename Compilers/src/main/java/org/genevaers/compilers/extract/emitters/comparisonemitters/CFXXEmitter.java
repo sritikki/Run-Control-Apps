@@ -25,6 +25,7 @@ import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 
 public class CFXXEmitter extends ComparisonEmitter{
@@ -33,8 +34,14 @@ public class CFXXEmitter extends ComparisonEmitter{
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         ltFact.setLogFileId(getLtEmitter().getFileId());
-        LogicTableF2 cfxp = (LogicTableF2) ltFact.getCFXX(((ColumnRefAST) lhs).getViewColumn(), ((ColumnRefAST) lhs).getViewColumn(),  op);
-        return cfxp;
+        LogicTableF2 cfxx = (LogicTableF2) ltFact.getCFXX(((ColumnRefAST) lhs).getViewColumn(), ((ColumnRefAST) lhs).getViewColumn(),  op);
+        LogicTableArg arg1 = cfxx.getArg1();
+        arg1.setFieldId(((ColumnRefAST) lhs).getViewColumn().getColumnNumber());
+        arg1.setLogfileId(((ColumnRefAST) lhs).getViewColumn().getExtractArea().ordinal());
+        LogicTableArg arg2 = cfxx.getArg2();
+        arg2.setFieldId(((ColumnRefAST) rhs).getViewColumn().getColumnNumber());
+        arg2.setLogfileId(((ColumnRefAST) rhs).getViewColumn().getExtractArea().ordinal());
+        return cfxx;
     }
 
 }
