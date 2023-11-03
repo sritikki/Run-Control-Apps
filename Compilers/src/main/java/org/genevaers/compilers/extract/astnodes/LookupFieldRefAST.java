@@ -45,7 +45,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     public LookupFieldRefAST() {
         type = ASTFactory.Type.LOOKUPFIELDREF;
     }
-
  
     public void resolveField(LookupPath lk, String fieldName) {
         //get the targer LR
@@ -133,13 +132,12 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         return null;
     }
 
-
     private void argFixup(LogicTableArg arg) {
         ReferenceJoin refJoin = Repository.getJoinViews().getReferenceJLTViews().getJLTView(ref.getLrID(), false);
         LRField redField = refJoin.getRedLR().findFromFieldsByName(ref.getName());
         JoinViewsManager jvm = Repository.getJoinViews();
         arg.setStartPosition(redField.getStartPosition());
-        arg.setLogfileId(jvm.getLfidFromJoinLR(ref.getLrID()));
+        arg.setLogfileId(lookup.getTargetLFID());
         arg.setOrdinalPosition(ref.getOrdinalPosition());
     }
 
@@ -155,21 +153,27 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     @Override
     public LTFileObject emitSubFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getSUBL("", ref));
+        LogicTableNameF1 subl = (LogicTableNameF1) fcf.getSUBL("", ref);
+        argFixup(subl.getArg());
+        ltEmitter.addToLogicTable((LTRecord)subl);
         return null;
     }
 
     @Override
     public LTFileObject emitMulFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getMULL("", ref));
+        LogicTableNameF1 mull = (LogicTableNameF1) fcf.getMULL("", ref);
+        argFixup(mull.getArg());
+        ltEmitter.addToLogicTable((LTRecord)mull);
         return null;
     }
 
     @Override
     public LTFileObject emitDivFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getDIVL("", ref));
+        LogicTableNameF1 divl = (LogicTableNameF1) fcf.getMULL("", ref);
+        argFixup(divl.getArg());
+        ltEmitter.addToLogicTable((LTRecord)divl);
         return null;
     }
 
@@ -235,7 +239,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         }
     }
 
-
     @Override
     public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
         getAssignmentEntry(col, rhs);
@@ -265,7 +268,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         return arg1.getFieldLength();
     }
 
-
     @Override
     public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
         getAssignmentEntry(col, rhs);
@@ -281,7 +283,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         }
         return length;
     }
-
 
     @Override
     public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
@@ -300,7 +301,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         return length;
     }
 
-
     @Override
     public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length) {
         getAssignmentEntry(col, rhs);
@@ -317,7 +317,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         }
         return length;
     }
-
 
     public void fixupGotos() {
         //
