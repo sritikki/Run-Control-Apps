@@ -34,7 +34,7 @@ public class CFXXEmitter extends ComparisonEmitter{
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         ltFact.setLogFileId(getLtEmitter().getFileId());
-        LogicTableF2 cfxx = (LogicTableF2) ltFact.getCFXX(((ColumnRefAST) lhs).getViewColumn(), ((ColumnRefAST) lhs).getViewColumn(),  op);
+        LogicTableF2 cfxx = (LogicTableF2) ltFact.getCFXX(((ColumnRefAST) lhs).getViewColumn(), ((ColumnRefAST) rhs).getViewColumn(),  op);
         LogicTableArg arg1 = cfxx.getArg1();
         arg1.setFieldId(((ColumnRefAST) lhs).getViewColumn().getColumnNumber());
         arg1.setLogfileId(((ColumnRefAST) lhs).getViewColumn().getExtractArea().ordinal());
