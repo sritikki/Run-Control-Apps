@@ -49,6 +49,12 @@ public class DTColumnAST extends ColumnAST {
     }
 
     @Override
+    public LTFileObject getPriorFieldLtEntry(LRField field) {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        return fcf.getDTP(field, vc);
+    }
+
+    @Override
     public LTFileObject getConstLtEntry(String value) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         return fcf.getDTC(value, vc);

@@ -53,6 +53,10 @@ public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNo
         return null;
     }
 
+    public LTFileObject getPriorFieldLtEntry(LRField field) {
+        return null;
+    }
+
     public LTFileObject getConstLtEntry(String string) {
         return null;
     }

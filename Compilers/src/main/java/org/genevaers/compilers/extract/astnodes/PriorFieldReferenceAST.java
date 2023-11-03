@@ -59,7 +59,7 @@ public class PriorFieldReferenceAST extends FieldReferenceAST{
         LTFileObject ltEntry = null;
         LRField field = ((FieldReferenceAST)rhs).getRef();
         if(field != null) {
-            ltEntry =((ColumnAST)lhs).getFieldLtEntry(field);
+            ltEntry =((ColumnAST)lhs).getPriorFieldLtEntry(field);
             LogicTableArg arg;
             if(vc.getExtractArea() == ExtractArea.AREACALC) {
                 arg = ((LogicTableF1)ltEntry).getArg();
