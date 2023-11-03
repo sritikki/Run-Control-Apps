@@ -132,6 +132,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getCFAA(String accum, String rhsAccum, String op) {
         LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAA");
         cfac.setValue(rhsAccum);
+        cfac.setValueLength(rhsAccum.length());
         cfac.setTableName(accum);
         cfac.setCompareType(getCompareType(op));
         return cfac; 
@@ -141,6 +142,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getCFAC(String accum, String rhs, String op) {
         LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAC");
         cfac.setValue(rhs);
+        cfac.setValueLength(rhs.length());
         cfac.setTableName(accum);
         cfac.setCompareType(getCompareType(op));
         return cfac; 
@@ -182,6 +184,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getCFCA(String accum, String val, String op) {
         LogicTableNameValue cfca = makeNameValueFromAccum(accum, "CFCA");
         cfca.setValue(val);
+        cfca.setValueLength(val.length());
         cfca.setTableName(accum);
         cfca.setCompareType(getCompareType(op));
         return cfca; 
@@ -521,8 +524,16 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getCTP(LRField f, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 ctp = new LogicTableF1();
+        ctp.setRecordType(LtRecordType.F1);
+        LogicTableArg arg = getArgFromField(f);
+        arg.setFieldLength((short)12);
+        ctp.setArg(arg);
+        ctp.setFunctionCode("CTP");
+        ctp.setColumnId(v.getComponentId());
+        ctp.setSuffixSeqNbr((short)v.getColumnNumber());
+        ctp.setCompareType(LtCompareType.EQ);
+        return ctp;
     }
 
     @Override
@@ -694,9 +705,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getDTP(LRField f, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getDTP(LRField f, ViewColumn vc) {
+        LogicTableF2 dtp = makeF2FromFieldAndColumn(f, vc);
+        dtp.setFunctionCode("DTP");
+        return dtp;
     }
 
     @Override
@@ -1409,7 +1421,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     @Override
     public LTFileObject getSKP(LRField f, ViewColumn vc) {
         LogicTableF2 skp = makeF2FromFieldAndColumn(f, vc);
-        skp.setFunctionCode("SKE");
+        skp.setFunctionCode("SKP");
         return skp;
     }
 
