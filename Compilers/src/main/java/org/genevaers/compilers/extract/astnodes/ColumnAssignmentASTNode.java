@@ -125,6 +125,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
                 lkref = (LookupFieldRefAST)opChild;
                 lkref.getLkEmitter().emitJoin(lkref, false);
             }
+        } else if(c1.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
+            lkref = (LookupFieldRefAST) c1;
+            lkref.getLkEmitter().emitJoin(lkref, false);
         }
         return lkref;
     }
