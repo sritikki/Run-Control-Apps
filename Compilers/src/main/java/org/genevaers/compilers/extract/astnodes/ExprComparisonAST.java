@@ -64,6 +64,7 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonEmi
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
@@ -283,6 +284,17 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         if( lhsCastTo != null) {
             if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
                 ((LogicTableF1)ltfo).getArg().setFieldFormat(lhsCastTo);
+            }
+        }
+        FormattedASTNode frmtLhs = ((FormattedASTNode) lhs);
+        FormattedASTNode frmtRhs = ((FormattedASTNode) rhs);
+        if(((LTRecord)ltfo).getRecordType() == LtRecordType.F2) {
+            if(frmtLhs.getDataType() == DataType.ALPHANUMERIC && frmtRhs.isNumeric()) {
+                //flip LHS to Zoned
+                ((LogicTableF2)ltfo).getArg1().setFieldFormat(DataType.ZONED);
+            } else if(frmtLhs.isNumeric() && frmtRhs.getDataType() == DataType.ALPHANUMERIC) {
+                ((LogicTableF2)ltfo).getArg2().setFieldFormat(DataType.ZONED);
+                //flip RHS to Zoned
             }
         }
     }
