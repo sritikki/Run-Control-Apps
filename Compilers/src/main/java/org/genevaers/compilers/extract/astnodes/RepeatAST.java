@@ -31,7 +31,7 @@ public class RepeatAST extends FormattedASTNode implements GenevaERSValue, Assig
     private String value;
 
     public RepeatAST() {
-        type = ASTFactory.Type.STRINGATOM;
+        type = ASTFactory.Type.REPEAT;
     }
 
     public void setValue(String value) {

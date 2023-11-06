@@ -1,5 +1,8 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -18,7 +21,7 @@ package org.genevaers.compilers.extract.astnodes;
  */
 
 
-public class FiscaldateAST extends ExtractBaseAST implements GenevaERSValue{
+public class FiscaldateAST extends FormattedASTNode implements GenevaERSValue{
 
     private String value;
 
@@ -40,6 +43,16 @@ public class FiscaldateAST extends ExtractBaseAST implements GenevaERSValue{
     @Override
     public String getValueString() {
         return value;
+    }
+
+    @Override
+    public DataType getDataType() {
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.ALPHANUMERIC;
+    }
+
+    @Override
+    public DateCode getDateCode() {
+        return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
     }
 
 }
