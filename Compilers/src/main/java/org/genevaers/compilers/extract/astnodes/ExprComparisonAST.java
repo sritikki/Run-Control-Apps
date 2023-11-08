@@ -68,7 +68,6 @@ import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.LtRecordType;
-import org.genevaers.repository.data.NormalisedDate;
 
 public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNode{
 
@@ -311,7 +310,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
                 fld = ((FieldReferenceAST) lhs);
                 lhsDate = fld.getDateCode();
                 if(rhs.getType() == ASTFactory.Type.DATEFUNC) {
-                    ds = ((DateFunc)lhs).getNormalisedDate();
+                    ds = ((DateFunc)rhs).getNormalisedDate();
                     rhsDate = ((DateFunc)rhs).getDateCode();
                 }
             } else if(((LTRecord)ltfo).getFunctionCode().equals("CFCE") ) {
