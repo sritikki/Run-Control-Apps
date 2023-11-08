@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.ltfile;
 
+import java.lang.reflect.Array;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -19,11 +21,11 @@ package org.genevaers.genevaio.ltfile;
 
 
 import java.nio.ByteBuffer;
-import java.util.List;
 
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
+
 
 public class ArgHelper {
     
@@ -58,8 +60,9 @@ public class ArgHelper {
     }
 
     public static void setArgValueFrom(LogicTableArg arg, int val) {
-        String valStr = Integer.toString(val);
-        setValBuffer(arg, valStr.getBytes());
+        ByteBuffer bb = ByteBuffer.allocate(4);
+        bb.putInt(val);
+        setValBuffer(arg, bb.array());
         //arg.setValueLength(valStr.length());
     }
 

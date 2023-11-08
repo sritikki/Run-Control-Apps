@@ -1,7 +1,10 @@
 package org.genevaers.repository;
 
+import java.util.Iterator;
+
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LRIndex;
+import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.AccessMethod;
@@ -152,4 +155,16 @@ public class RepoHelper {
         rehPF.setTextDelimiter(TextDelimiter.SINGLEQUOTE);        
     }
    
+    public static boolean isLrEffectiveDated(int lrid) {
+        boolean isEffectiveDated = false;
+        LogicalRecord lr = Repository.getLogicalRecords().get(lrid);
+        Iterator<LRIndex> ii = lr.getIteratorForIndexBySeq();
+        while(!isEffectiveDated && ii.hasNext()) {
+            LRIndex ndx = ii.next();
+            if(ndx.isEffectiveDateStart() || ndx.isEffectiveDateEnd()) {
+                isEffectiveDated = true;
+            }
+        }
+        return isEffectiveDated;
+    }
 }

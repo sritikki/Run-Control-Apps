@@ -31,10 +31,12 @@ import org.genevaers.compilers.extract.emitters.CodeEmitter;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
+import org.genevaers.repository.RepoHelper;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupPath;
@@ -90,7 +92,7 @@ public class LookupEmitter extends CodeEmitter {
                 ExtractBaseAST.getLtEmitter().addToLogicTable(firstLookupRecord);
             } else {
                 // An LKLR does not have gotos really
-                retEntry = addLKLR(lookup, skt);
+                retEntry = addLKLR(lookup, step, skt);
             }
             Iterator<LookupPathKey> ki = step.getKeyIterator();
             while(ki.hasNext()) {
@@ -130,9 +132,9 @@ public class LookupEmitter extends CodeEmitter {
     }
 
     private void emitEffectiveDateForStepIfNeeded(LookupPathAST lookupAST, LookupPathStep step) {
-        // if(Repository.getLogicalRecords().get(step.getTargetLR()).isEffectiveDated()) {
-        //     lookupAST.emitEffectiveDate();
-        // }
+        if(RepoHelper.isLrEffectiveDated(step.getTargetLR())) {
+            lookupAST.emitEffectiveDate();
+        }
     }
 
     private LogicTableRE emitLUEX(LookupPathStep step, LookupPath lookup) {
@@ -257,19 +259,21 @@ public class LookupEmitter extends CodeEmitter {
         //What type of key field is this
     }
 
-    private LogicTableF1  addLKLR(LookupPath lookup, boolean skt) {
+    private LogicTableF1  addLKLR(LookupPath lookup, LookupPathStep step, boolean skt) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         //we need to know if this is an skt case or not
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lookup, skt);
         LogicTableF1 lklr = (LogicTableF1) ltFact.getLKLR(jv.getUniqueKey());
         LogicTableArg arg = lklr.getArg();
         arg.setFieldId(lookup.getTargetLRIndexID());
-        arg.setLogfileId(lookup.getTargetLFID());
-        arg.setLrId(lookup.getTargetLRID());
+        arg.setLogfileId(step.getTargetLF());
+        arg.setLrId(step.getTargetLR());
+        ArgHelper.setArgValueFrom(arg, jv.getUniqueKey());
         lklr.setArg(arg);
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
+        arg.setOrdinalPosition((short)step.getStepNum());
         lklr.setColumnId(lookup.getID());
 
         ExtractBaseAST.getLtEmitter().addToLogicTable(lklr);
@@ -295,6 +299,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
+        ArgHelper.setArgValueFrom(arg, jv.getUniqueKey());
 
         //TODO There is still magic to do with the gotos
         join.setGotoRow1(parentAST.getGoto1());
