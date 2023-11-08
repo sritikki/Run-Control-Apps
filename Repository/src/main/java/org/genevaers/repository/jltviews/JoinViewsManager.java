@@ -315,16 +315,9 @@ public class JoinViewsManager {
 					//we don't know what that is here?
 					resolveKeyFields(step, lookup);
 				}
-				if(isEffectiveDated(lrid)) {
-					normJoin.setEffectiveDateLrid(lrid);
-				}
 			}
 		}
     }
-
-	private boolean isEffectiveDated(int lrid) {
-		return Repository.getLogicalRecords().get(lrid).isEffectiveDated();
-	}
 
 	private void resolveKeyFields(LookupPathStep step, LookupPath lookup) {
 		Iterator<LookupPathKey> ki = step.getKeyIterator();

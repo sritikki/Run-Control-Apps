@@ -61,7 +61,7 @@ public class RepoHelper {
 
     public static void setEffDateBinaryField(LRField fld) {
         fld.setDatatype(DataType.BINARY);
-        fld.setDateTimeFormat(DateCode.CYMD);
+        fld.setDateTimeFormat(DateCode.CCYYMMDD);
         fld.setLength((short)4);
         fld.setJustification(JustifyId.NONE);
         fld.setMask("");

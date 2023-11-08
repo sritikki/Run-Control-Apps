@@ -130,9 +130,9 @@ public class LookupEmitter extends CodeEmitter {
     }
 
     private void emitEffectiveDateForStepIfNeeded(LookupPathAST lookupAST, LookupPathStep step) {
-        if(Repository.getLogicalRecords().get(step.getTargetLR()).isEffectiveDated()) {
-            lookupAST.emitEffectiveDate();
-        }
+        // if(Repository.getLogicalRecords().get(step.getTargetLR()).isEffectiveDated()) {
+        //     lookupAST.emitEffectiveDate();
+        // }
     }
 
     private LogicTableRE emitLUEX(LookupPathStep step, LookupPath lookup) {
