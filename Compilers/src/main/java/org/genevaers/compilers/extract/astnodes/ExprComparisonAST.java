@@ -321,7 +321,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
                     lhsDate = ((DateFunc)lhs).getDateCode();
                 }
             }
-            if(lhsDate == rhsDate) {
+            if(lhsDate == rhsDate || lhsDate == DateCode.NONE || rhsDate == DateCode.NONE) {
                 ((LogicTableF1)ltfo).getArg().setFieldContentId(DateCode.NONE);
             } else if(ds.length() > 0) {
                 ((LogicTableF1)ltfo).getArg().setValue(ds);
