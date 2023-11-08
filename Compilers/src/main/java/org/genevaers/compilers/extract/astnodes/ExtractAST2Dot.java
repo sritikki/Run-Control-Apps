@@ -257,6 +257,9 @@ public class ExtractAST2Dot {
                 case LOOKUPFIELDREF:
                     dotLookupFieldNode(node);
                     break;
+                case DATEFUNC:
+                    doDateFunc(node);
+                    break;
                 default:
                     dotDefaultNode(node);
                     break;
@@ -267,6 +270,15 @@ public class ExtractAST2Dot {
             }
         }
         return idString;
+    }
+
+    private static void doDateFunc(ExtractBaseAST node) {
+       idString = "UN_" + nodeNum++;
+        DateFunc df = (DateFunc) node;
+        label =  "DATE(" + df.getValue() + "," + df.getDateCodeStr() + ")";
+        colour = DATECONST;
+        reverseArrow = true;
+
     }
 
     private static void doFunctionNode(ExtractBaseAST node) {

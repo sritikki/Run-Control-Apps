@@ -66,7 +66,9 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.LtRecordType;
+import org.genevaers.repository.data.NormalisedDate;
 
 public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNode{
 
@@ -291,10 +293,40 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         if(((LTRecord)ltfo).getRecordType() == LtRecordType.F2) {
             if(frmtLhs.getDataType() == DataType.ALPHANUMERIC && frmtRhs.isNumeric()) {
                 //flip LHS to Zoned
+                //TODO Generate Warning
                 ((LogicTableF2)ltfo).getArg1().setFieldFormat(DataType.ZONED);
             } else if(frmtLhs.isNumeric() && frmtRhs.getDataType() == DataType.ALPHANUMERIC) {
                 ((LogicTableF2)ltfo).getArg2().setFieldFormat(DataType.ZONED);
                 //flip RHS to Zoned
+            }
+        }
+        //Date mamangement
+        //Strip off if equal or only one sided
+        if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
+            FieldReferenceAST fld = null;
+            DateCode lhsDate = DateCode.NONE;
+            DateCode rhsDate = DateCode.NONE;
+            String ds = "";
+            if(((LTRecord)ltfo).getFunctionCode().equals("CFEC") ) {
+                fld = ((FieldReferenceAST) lhs);
+                lhsDate = fld.getDateCode();
+                if(rhs.getType() == ASTFactory.Type.DATEFUNC) {
+                    ds = ((DateFunc)lhs).getNormalisedDate();
+                    rhsDate = ((DateFunc)rhs).getDateCode();
+                }
+            } else if(((LTRecord)ltfo).getFunctionCode().equals("CFCE") ) {
+                fld = ((FieldReferenceAST) rhs);
+                rhsDate = fld.getDateCode();
+                if(lhs.getType() == ASTFactory.Type.DATEFUNC) {
+                    ds = ((DateFunc)lhs).getNormalisedDate();
+                    lhsDate = ((DateFunc)lhs).getDateCode();
+                }
+            }
+            if(lhsDate == rhsDate) {
+                ((LogicTableF1)ltfo).getArg().setFieldContentId(DateCode.NONE);
+            } else if(ds.length() > 0) {
+                ((LogicTableF1)ltfo).getArg().setValue(ds);
+                ((LogicTableF1)ltfo).getArg().setValueLength(ds.length());
             }
         }
     }
