@@ -60,7 +60,7 @@ public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assi
         //or is it the 
         switch (value) {
         case "RUNDAY":
-            return DateCode.CYMD;
+            return DateCode.CCYYMMDD;
         case "RUNMONTH":
             return DateCode.CYM;
         case "RUNYEAR":

@@ -96,7 +96,7 @@ public class LookupEmitter extends CodeEmitter {
             while(ki.hasNext()) {
                 emitKey(lookupAST, lkse, lkfe, lookup, ki);
             }
-            lookupAST.emitEffectiveDate();
+            emitEffectiveDateForStepIfNeeded(lookupAST, step);
             if(parentAST.getType() == Type.SORTTITLE) {
                 kslk = ((SortTitleAST)parentAST).emitKSLK();
                 kslk.getArg().setLogfileId(lookup.getTargetLFID());
@@ -127,6 +127,12 @@ public class LookupEmitter extends CodeEmitter {
             }
         }
         return retEntry;
+    }
+
+    private void emitEffectiveDateForStepIfNeeded(LookupPathAST lookupAST, LookupPathStep step) {
+        if(Repository.getLogicalRecords().get(step.getTargetLR()).isEffectiveDated()) {
+            lookupAST.emitEffectiveDate();
+        }
     }
 
     private LogicTableRE emitLUEX(LookupPathStep step, LookupPath lookup) {

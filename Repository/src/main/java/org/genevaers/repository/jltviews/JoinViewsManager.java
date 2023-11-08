@@ -221,7 +221,6 @@ public class JoinViewsManager {
 	}
 
 	private JLTViewMap<ReferenceJoin> makeReferenceJoinMap(LookupType skt, int lfid) {
-
 		return new JLTViewMap<ReferenceJoin>();
 	}
 
@@ -294,8 +293,9 @@ public class JoinViewsManager {
 			Iterator<LookupPathStep> si = lookup.getStepIterator();
 			while(si.hasNext()) {
 				LookupPathStep step = si.next();
+				int lrid = step.getTargetLR();
+				ReferenceJoin normJoin = null;
 				if(step.getStepNum() <= lookup.getNumberOfSteps()) { //This is an internal step 
-					int lrid = step.getTargetLR();
 					int lfid = step.getTargetLF();
 					lr2lf.put(lrid, lfid);
 					if(Repository.getLogicalRecords().get(step.getTargetLR()).getLookupExit() == null) {
@@ -304,7 +304,7 @@ public class JoinViewsManager {
 							referenceJoins.getOrAddJoinifAbsent(LookupType.SKT, step.getTargetLR(), lookup.getID());
 						} else {
 							referenceJoins = referenceDataSet.computeIfAbsent(lfid, k -> makeReferenceJoinMap(LookupType.NORMAL, lfid));							
-							referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
+							normJoin = referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
 						}
 					} else {
 						exitJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
@@ -315,9 +315,16 @@ public class JoinViewsManager {
 					//we don't know what that is here?
 					resolveKeyFields(step, lookup);
 				}
+				if(isEffectiveDated(lrid)) {
+					normJoin.setEffectiveDateLrid(lrid);
+				}
 			}
 		}
     }
+
+	private boolean isEffectiveDated(int lrid) {
+		return Repository.getLogicalRecords().get(lrid).isEffectiveDated();
+	}
 
 	private void resolveKeyFields(LookupPathStep step, LookupPath lookup) {
 		Iterator<LookupPathKey> ki = step.getKeyIterator();

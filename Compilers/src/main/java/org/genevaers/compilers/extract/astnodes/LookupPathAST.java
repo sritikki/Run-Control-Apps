@@ -84,13 +84,8 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
 
     public void emitEffectiveDate() {
-        if(lookup.isEffectiveDated()) {
-            if(effDateValue != null) {
-                effDateValue.emit();
-            } else {
-                emitDefaultLKDC();
-            }
-         }
+        //Need to add types
+        emitDefaultLKDC();
     }
 
 
@@ -102,7 +97,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
         LogicTableArg arg = new LogicTableArg();
         arg.setStartPosition((short)1);
-        arg.setFieldContentId(DateCode.CYMD);
+        arg.setFieldContentId(DateCode.CCYYMMDD);
         arg.setFieldLength((short)4);
         arg.setFieldFormat(DataType.BINARY);
         arg.setJustifyId(JustifyId.NONE);

@@ -59,7 +59,7 @@ public class EffDateValue extends ExtractBaseAST implements EmittableASTNode{
         arg.setLogfileId(ltEmitter.getFileId());
 
         LogicTableArg arg2 = new LogicTableArg();
-        arg2.setFieldContentId(DateCode.CYMD);
+        arg2.setFieldContentId(DateCode.CCYYMMDD);
         arg2.setFieldFormat(DataType.BINARY);
         arg2.setStartPosition((short)1);
         arg2.setFieldLength((short)4);
