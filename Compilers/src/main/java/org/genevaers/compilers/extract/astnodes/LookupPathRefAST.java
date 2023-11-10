@@ -1,5 +1,6 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.repository.components.LookupPath;
 
 import com.google.common.flogger.FluentLogger;

@@ -341,7 +341,12 @@ public class LookupEmitter extends CodeEmitter {
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
-        arg.setValueLength(0);
+        if(key.getValue().length() > 0) {
+            arg.setValue(key.getValue());
+            arg.setValueLength(key.getValue().length());
+        } else {
+            arg.setValueLength(key.getFieldLength());
+        }
         arg.setPadding2("");  //This seems a little silly
     }
 

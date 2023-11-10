@@ -1034,8 +1034,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getLKS() {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 lks = new LogicTableF1();
+        lks.setRecordType(LtRecordType.F1);
+        lks.setFunctionCode("LKS");
+        return lks;
     }
 
     @Override
