@@ -48,6 +48,7 @@ public class ASTFactory {
         BOOLAND("And"),
         BOOLOR("Or"), 
         NUMACC("Numeric Accumulator"), 
+        LOOKUPREF("Lookup"),
         LOOKUPFIELDREF("Lookup Field"), 
         SYMBOLLIST("Symbol list"), 
         SYMBOL("Symbol"), 
@@ -89,8 +90,10 @@ public class ASTFactory {
         STRINGCONCAT("Concatination"), 
         RIGHT("Right"),
         LEFT("Left"),
-        SUBSTR("Substring")
-         ;
+        SUBSTR("Substring"), 
+        ISFOUND("Is Found"),
+        ISNOTFOUND("Is Not Found")
+        ;
 
         private String name;
         private Type(String n) {
@@ -153,6 +156,8 @@ public class ASTFactory {
                 return new BooleanOrAST();
             case NUMACC:
                 return new NumericAccumulator();
+            case LOOKUPREF:
+                return new LookupPathRefAST();
             case LOOKUPFIELDREF:
                 return new LookupFieldRefAST();
             case SYMBOLLIST:
@@ -229,6 +234,10 @@ public class ASTFactory {
                 return new BetweenFunc();
             case REPEAT:
                 return new RepeatAST();
+            case ISFOUND:
+                return new IsFoundAST();
+            case ISNOTFOUND:
+                return new IsNotFoundAST();
             default:
                 return null;
         }

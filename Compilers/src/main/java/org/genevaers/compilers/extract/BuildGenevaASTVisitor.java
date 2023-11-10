@@ -40,9 +40,11 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.compilers.extract.astnodes.FiscaldateAST;
 import org.genevaers.compilers.extract.astnodes.IfAST;
+import org.genevaers.compilers.extract.astnodes.IsFoundAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
+import org.genevaers.compilers.extract.astnodes.LookupPathRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RepeatAST;
 import org.genevaers.compilers.extract.astnodes.RightASTNode;
@@ -182,6 +184,21 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         }
         return fast;
     }
+
+    public ExtractBaseAST visitIsFounds(GenevaERSParser.IsFoundsContext ctx) {
+        //1st child is the type of ISFOUND
+        ExtractBaseAST fnd;
+        if(ctx.getChild(0).getText().equals("ISFOUND")) {
+            fnd = ASTFactory.getNodeOfType(ASTFactory.Type.ISFOUND);
+        } else {
+            fnd = ASTFactory.getNodeOfType(ASTFactory.Type.ISNOTFOUND);
+        }
+        //3rd is the child - lookup
+        fnd.addChildIfNotNull(visit(ctx.getChild(2)));
+        return fnd;
+     }
+  
+  
 
     public ExtractBaseAST visitADataSource(GenevaERSParser.ADataSourceContext ctx) {
         return this.visitChildren(ctx);
@@ -387,6 +404,25 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         }
         return ec; 
     }
+
+    @Override public ExtractBaseAST visitLookup(GenevaERSParser.LookupContext ctx) {
+        LookupPathRefAST lkRef = (LookupPathRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPREF);
+   		String fullName = ctx.getText();
+        int braceNdx = fullName.indexOf("{");
+        int endNdx = fullName.indexOf("}");
+        String strippedName = fullName.substring(braceNdx+1, endNdx);
+        LookupPath lookup =  Repository.getLookups().get(strippedName);
+		if(lookup != null) {
+            lkRef.setLookup(lookup);
+		} else {
+            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+            err.addError("Unkown Lookup " + fullName);
+            lkRef.addChildIfNotNull(err);
+        }		
+
+        return lkRef;
+     }
+  
 
 	@Override public ExtractBaseAST visitLookupField(GenevaERSParser.LookupFieldContext ctx) { 
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPFIELDREF);

@@ -1,5 +1,9 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.repository.components.LookupPath;
+
+import com.google.common.flogger.FluentLogger;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -19,5 +23,13 @@ package org.genevaers.compilers.extract.astnodes;
 
 
 public class LookupPathRefAST extends LookupPathAST {
-    
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    public LookupPathRefAST() {
+        type = ASTFactory.Type.LOOKUPREF;
+    }
+
+    public void setLookup(LookupPath lookup) {
+        this.lookup = lookup;
+    }
 }

@@ -31,4 +31,7 @@ public class ExtractFilterAST extends ExtractBaseAST implements EmittableASTNode
         emitChildNodes();
     }
 
+    public String getLogicText() {
+        return ((ViewSourceAstNode)parent).getViewSource().getExtractFilter();
+    }
 }
