@@ -20,6 +20,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 import java.util.Iterator;
 
+import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
@@ -84,12 +85,35 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
 
     public void emitEffectiveDate() {
-        //Need to add types
-        emitDefaultLKDC();
+        String val = "";
+        if(getNumberOfChildren() > 0) {
+            val = getEffDateValueIfSet();
+        }
+        emitLKDC(val);
     }
 
 
-    private void emitDefaultLKDC() {
+    private String getEffDateValueIfSet() {
+        Iterator<ASTBase> ci = getChildIterator();
+        String val = "";
+        while (ci.hasNext()) {
+            ExtractBaseAST c = (ExtractBaseAST)ci.next();
+            if(c.getType() == ASTFactory.Type.EFFDATEVALUE) {
+                ExtractBaseAST vNode = (ExtractBaseAST)c.getChildIterator().next();
+                if(vNode.getType() == ASTFactory.Type.DATEFUNC) {
+                    val = ((DateFunc)vNode).getValue();
+                } else if(vNode.getType() == ASTFactory.Type.STRINGATOM) {
+                    val = ((StringAtomAST)vNode).getValue();
+                } else {
+                    int bang = 1;
+                }
+            }
+        }
+        return val;
+    }
+
+
+    private void emitLKDC(String val) {
 
         LogicTableF1 lkd = new LogicTableF1();
         lkd.setRecordType(LtRecordType.F1);
@@ -101,8 +125,13 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg.setFieldLength((short)4);
         arg.setFieldFormat(DataType.BINARY);
         arg.setJustifyId(JustifyId.NONE);
-        EmitterArgHelper.setArgValueFrom(arg, 0);
-        arg.setValueLength(-1);  //TODO make enum for the cookie values
+        if(val.length() == 0) {
+            EmitterArgHelper.setArgValueFrom(arg, 0);
+            arg.setValueLength(-1);  //TODO make enum for the cookie values
+        } else {
+            arg.setValue(val);
+            arg.setValueLength(val.length());
+        }
         lkd.setArg(arg);
         lkd.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkd);

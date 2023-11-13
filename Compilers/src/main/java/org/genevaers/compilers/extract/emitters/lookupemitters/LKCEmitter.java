@@ -36,4 +36,5 @@ public class LKCEmitter extends LookupEmitter {
         lkc.setCompareType(LtCompareType.EQ);
         return lkc;
     }
+    
 }

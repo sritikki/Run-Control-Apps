@@ -209,7 +209,6 @@ public class LookupEmitter extends CodeEmitter {
             //must be a constant
             LogicTableF1 lkc = lkce.emit(key);
             ExtractBaseAST.getLtEmitter().addToLogicTable(lkc);
-        
         }
         addKey(key);
     }
