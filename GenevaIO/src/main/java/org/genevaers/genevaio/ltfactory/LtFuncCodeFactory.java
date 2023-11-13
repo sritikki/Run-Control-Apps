@@ -958,8 +958,12 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getLKC(String v) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 lkc = new LogicTableF1();
+        lkc.setRecordType(LtRecordType.F1);
+        lkc.setFunctionCode("LKC");
+        LogicTableArg arg = new LogicTableArg();
+        lkc.setArg(arg);
+        return lkc;
     }
 
     @Override
@@ -1754,7 +1758,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
-        arg.setValueLength(0);
+        if(key.getValueLength() > 0) {
+            arg.setValue(key.getValue());
+        }
+        arg.setValueLength(key.getValueLength());
         arg.setPadding2("");  //This seems a little silly
     }
 

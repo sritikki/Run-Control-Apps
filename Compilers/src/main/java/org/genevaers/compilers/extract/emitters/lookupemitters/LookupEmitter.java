@@ -58,6 +58,9 @@ public class LookupEmitter extends CodeEmitter {
     private LogicTableRE lusm;
     private LogicTableRE luex;
     private LogicTableF1 kslk;
+    private LKCEmitter lkce;
+    private LKSEmitter lkse;
+    private LKFieldEmitter lkfe;
     List<LogicTableRE> lusms;
 
     public LogicTableF1 emitJoin(LookupPathAST lookupAST, boolean skt) {
@@ -65,9 +68,9 @@ public class LookupEmitter extends CodeEmitter {
         // Then itereate through the steps to emit the key codes
         // and finally the lookup function
         // and don't forget the default for not found
-        LKCEmitter lkce = new LKCEmitter();
-        LKSEmitter lkse = new LKSEmitter();
-        LKFieldEmitter lkfe = new LKFieldEmitter();
+        lkce = new LKCEmitter();
+        lkse = new LKSEmitter();
+        lkfe = new LKFieldEmitter();
         parentAST = lookupAST;
         lusms = new ArrayList<>();
 
@@ -96,7 +99,7 @@ public class LookupEmitter extends CodeEmitter {
             }
             Iterator<LookupPathKey> ki = step.getKeyIterator();
             while(ki.hasNext()) {
-                emitKey(lookupAST, lkse, lkfe, lookup, ki);
+                emitKey(lookupAST, lookup, ki);
             }
             emitEffectiveDateForStepIfNeeded(lookupAST, step);
             if(parentAST.getType() == Type.SORTTITLE) {
@@ -153,7 +156,7 @@ public class LookupEmitter extends CodeEmitter {
         return luex;
     }
 
-    private void emitKey(LookupPathAST lookupAST, LKSEmitter lkse, LKFieldEmitter lkfe, LookupPath lookup,
+    private void emitKey(LookupPathAST lookupAST, LookupPath lookup,
             Iterator<LookupPathKey> ki) {
         LookupPathKey key = ki.next();
         //C++ uses LPSourceKeyAST Nodes 
@@ -202,6 +205,11 @@ public class LookupEmitter extends CodeEmitter {
                 //  then at end show the unused?
             }
             ExtractBaseAST.getLtEmitter().addToLogicTable(lks);
+        } else {
+            //must be a constant
+            LogicTableF1 lkc = lkce.emit(key);
+            ExtractBaseAST.getLtEmitter().addToLogicTable(lkc);
+        
         }
         addKey(key);
     }

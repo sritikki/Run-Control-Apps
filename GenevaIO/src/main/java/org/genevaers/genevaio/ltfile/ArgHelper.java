@@ -22,6 +22,7 @@ import java.lang.reflect.Array;
 
 import java.nio.ByteBuffer;
 
+import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
@@ -91,6 +92,28 @@ public class ArgHelper {
         arg.setPadding2("");
         return arg;
     }
+
+    public static void populateArgFromKeyTarget(LogicTableArg arg, LookupPathKey key) {
+        arg.setDecimalCount(key.getDecimalCount());
+        if(key.getDateTimeFormat() == null)
+            arg.setFieldContentId(DateCode.NONE);
+        else
+            arg.setFieldContentId(key.getDateTimeFormat());
+        arg.setFieldFormat(key.getDatatype());
+        arg.setFieldId(key.getFieldId());
+        arg.setLogfileId(key.getTargetlfid());
+        arg.setLrId(key.getSourceLrId());
+        //TODO the start pos is dependent on extract type
+        arg.setStartPosition(key.getStartPosition());
+        arg.setFieldLength(key.getFieldLength());
+        arg.setJustifyId(key.getJustification());
+        if(key.getValue().length() > 0) {
+            arg.setValue(key.getValue());
+        }
+        arg.setValueLength(key.getValue().length());
+        arg.setPadding2("");  //This seems a little silly
+    }
+
 
 
 }
