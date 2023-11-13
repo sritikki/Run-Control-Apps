@@ -261,8 +261,10 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
             goto1 = compF;
             goto2 = compT;
         } else {
-            ((LTRecord)ltfo).setGotoRow1(compT);
-            ((LTRecord)ltfo).setGotoRow2(compF);
+            if(ltfo != null) {
+                ((LTRecord)ltfo).setGotoRow1(compT);
+                ((LTRecord)ltfo).setGotoRow2(compF);
+            }
         }
 
         // resolve children

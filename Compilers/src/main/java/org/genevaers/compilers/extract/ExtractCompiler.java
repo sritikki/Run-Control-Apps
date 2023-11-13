@@ -42,13 +42,13 @@ public class ExtractCompiler {
 
     private ParseErrorListener errorListener;
     private ViewColumnSource vcs;
-    private ViewSource vs;
+    protected ViewSource vs;
 
     public ExtractCompiler() {
     }
 
-    public ASTBase processLogic(String text, BuildGenevaASTVisitor.ExtractContext exContext) throws IOException {
-        CodePointCharStream stream = CharStreams.fromString(text);
+    public void processLogicAndAddNodesToParent(ExtractBaseAST parent, String logic, BuildGenevaASTVisitor.ExtractContext exContext) throws IOException {
+        CodePointCharStream stream = CharStreams.fromString(logic);
         ASTBase astTree = null;
 
         GenevaERSLexer lexer = new GenevaERSLexer(stream);
@@ -60,6 +60,7 @@ public class ExtractCompiler {
         GoalContext tree = parser.goal(); // parse
         if (parser.getNumberOfSyntaxErrors() == 0) {
             BuildGenevaASTVisitor astBuilder = new BuildGenevaASTVisitor(exContext);
+            astBuilder.setParent(parent);
             if(exContext == ExtractContext.COLUMN) {
                 astBuilder.setViewColumnSource(vcs);
             } else {
@@ -91,7 +92,7 @@ public class ExtractCompiler {
         } else {
             logger.atInfo().log("Null AST Tree generated");
         }
-        return astTree;
+        //parent.addChildIfNotNull(astTree);
     }
 
     public boolean hasErrors() {

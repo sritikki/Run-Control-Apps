@@ -27,6 +27,8 @@ public class ASTFactory {
         LF("Logical File"), 
         VIEWSOURCE("View Source"), 
         VIEWCOLUMNSOURCE("View Column Source"), 
+        STATEMENTLIST("StatementList"),
+        STATEMENT("Statement"),
         PF("Physical File"), 
         COLUMNASSIGNMENT("Column Assignment"), 
         NUMATOM("Number"), 
@@ -92,7 +94,7 @@ public class ASTFactory {
         LEFT("Left"),
         SUBSTR("Substring"), 
         ISFOUND("Is Found"),
-        ISNOTFOUND("Is Not Found")
+        ISNOTFOUND("Is Not Found"), 
         ;
 
         private String name;
@@ -238,6 +240,10 @@ public class ASTFactory {
                 return new IsFoundAST();
             case ISNOTFOUND:
                 return new IsNotFoundAST();
+            case STATEMENTLIST:
+                return new StatementList();
+            case STATEMENT:
+                return new Statement();
             default:
                 return null;
         }

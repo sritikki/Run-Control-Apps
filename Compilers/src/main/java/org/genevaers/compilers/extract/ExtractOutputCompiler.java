@@ -3,6 +3,7 @@ package org.genevaers.compilers.extract;
 import java.io.IOException;
 
 import org.genevaers.compilers.base.ASTBase;
+import org.genevaers.compilers.extract.astnodes.ExtractOutputAST;
 import org.genevaers.compilers.extract.astnodes.ViewSourceAstNode;
 import org.genevaers.repository.Repository;
 
@@ -30,9 +31,8 @@ public class ExtractOutputCompiler extends ExtractCompiler{
         super();
     }
 
-    public ASTBase processLogic(ViewSourceAstNode vsnode) throws IOException {
-        setViewSource(vsnode.getViewSource());
-        return processLogic(vsnode.getViewSource().getExtractOutputLogic(), BuildGenevaASTVisitor.ExtractContext.OUTPUT);
+    public void processLogicAndAddNodes(ExtractOutputAST eo) throws IOException {
+        processLogicAndAddNodesToParent(eo, vs.getExtractOutputLogic(), BuildGenevaASTVisitor.ExtractContext.OUTPUT);
     }
     
 }

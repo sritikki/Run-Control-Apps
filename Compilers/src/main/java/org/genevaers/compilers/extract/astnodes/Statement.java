@@ -1,10 +1,8 @@
-package org.genevaers.compilers.extract;
+package org.genevaers.compilers.extract.astnodes;
 
-import java.io.IOException;
-
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.genevaers.compilers.base.ASTBase;
-import org.genevaers.compilers.extract.astnodes.ViewSourceAstNode;
-import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.enums.DataType;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -24,15 +22,10 @@ import org.genevaers.repository.Repository;
  */
 
 
-public class ExtractFilterCompiler extends ExtractCompiler{
+public class Statement extends ExtractBaseAST {
 
-    public ExtractFilterCompiler() {
-        super();
+    public Statement() {
+        type = ASTFactory.Type.STATEMENT;
     }
 
-    public void processLogic(ViewSourceAstNode vsnode) throws IOException {
-        setViewSource(vsnode.getViewSource());
-        processLogicAndAddNodesToParent(vsnode, vsnode.getViewSource().getExtractFilter(), BuildGenevaASTVisitor.ExtractContext.FILTER);
-    }
-    
 }

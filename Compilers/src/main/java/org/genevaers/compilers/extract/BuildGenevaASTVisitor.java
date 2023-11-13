@@ -53,6 +53,8 @@ import org.genevaers.compilers.extract.astnodes.SelectIfAST;
 import org.genevaers.compilers.extract.astnodes.SetterAST;
 import org.genevaers.compilers.extract.astnodes.SkipIfAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
+import org.genevaers.compilers.extract.astnodes.Statement;
+import org.genevaers.compilers.extract.astnodes.StatementList;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
 import org.genevaers.compilers.extract.astnodes.StringComparisonAST;
 import org.genevaers.compilers.extract.astnodes.StringConcatinationAST;
@@ -69,8 +71,11 @@ import org.genevaers.compilers.extract.astnodes.WriteSourceArg;
 import org.genevaers.compilers.extract.astnodes.WriteSourceNode;
 import org.genevaers.grammar.GenevaERSBaseVisitor;
 import org.genevaers.grammar.GenevaERSParser;
+import org.genevaers.grammar.GenevaERSParser.EffDateContext;
 import org.genevaers.grammar.GenevaERSParser.ExprArithFactorContext;
 import org.genevaers.grammar.GenevaERSParser.ExprArithTermContext;
+import org.genevaers.grammar.GenevaERSParser.StmtContext;
+import org.genevaers.grammar.GenevaERSParser.SymbollistContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
@@ -87,6 +92,8 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     private ViewSource viewSource;
     private ExtractContext extractContext;
 
+    private ExtractBaseAST parent;
+
     public enum ExtractContext {
         FILTER,
         COLUMN,
@@ -100,8 +107,24 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     @Override public ExtractBaseAST visitGoal(GenevaERSParser.GoalContext ctx) { 
         ExtractBaseAST tree = visit(ctx.stmtList());
         shouldVisitNextChild(ctx.getRuleContext(), tree);
+        parent.addChildIfNotNull(tree);
         return tree;
     }
+
+    @Override public ExtractBaseAST visitStmtList(GenevaERSParser.StmtListContext ctx) {
+        StatementList stmnts = (StatementList)ASTFactory.getNodeOfType(ASTFactory.Type.STATEMENTLIST);
+        for (StmtContext s : ctx.stmt()) {
+            stmnts.addChildIfNotNull(visitChildren(s));
+        }
+        return stmnts;          
+    }
+        
+    @Override public ExtractBaseAST visitStmt(GenevaERSParser.StmtContext ctx) {
+        Statement stmnt = (Statement)ASTFactory.getNodeOfType(ASTFactory.Type.STATEMENT);
+        stmnt.addChildIfNotNull(visit(ctx.getChild(2)));
+        return stmnt; 
+    }
+
     
     @Override public ExtractBaseAST visitSelectIf(GenevaERSParser.SelectIfContext ctx) { 
         SelectIfAST sfn = (SelectIfAST)ASTFactory.getNodeOfType(ASTFactory.Type.SELECTIF);
@@ -407,24 +430,39 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitLookup(GenevaERSParser.LookupContext ctx) {
         LookupPathRefAST lkRef = (LookupPathRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPREF);
-   		String fullName = ctx.getText();
-        int braceNdx = fullName.indexOf("{");
-        int endNdx = fullName.indexOf("}");
-        String strippedName = fullName.substring(braceNdx+1, endNdx);
-        LookupPath lookup =  Repository.getLookups().get(strippedName);
-		if(lookup != null) {
-            lkRef.setLookup(lookup);
-		} else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unkown Lookup " + fullName);
-            lkRef.addChildIfNotNull(err);
-        }		
-
+        if(ctx.getChildCount() == 1) {
+            String lkname = ctx.getText();
+            int braceNdx = lkname.indexOf("{");
+            int endNdx = lkname.indexOf("}");
+            String strippedName = lkname.substring(braceNdx+1, endNdx);
+            addLookupReferencetoNode(lkRef, strippedName);
+        } else if(ctx.getChildCount() == 4) {
+            addLookupReferencetoNode(lkRef, ctx.getChild(1).getText());
+            SymbollistContext symList = ctx.symbollist();
+            if(symList != null) {
+                lkRef.addChildIfNotNull(visitSymbollist(symList));
+            }
+            EffDateContext effData = ctx.effDate();
+            if(effData != null) {
+                lkRef.addChildIfNotNull(visitEffDate(effData));
+            }
+        }
         return lkRef;
      }
   
 
-	@Override public ExtractBaseAST visitLookupField(GenevaERSParser.LookupFieldContext ctx) { 
+	private void addLookupReferencetoNode(LookupPathRefAST lkRef, String lkname) {
+        LookupPath lookup =  Repository.getLookups().get(lkname);
+		if(lookup != null) {
+            lkRef.setLookup(lookup);
+		} else {
+            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+            err.addError("Unkown Lookup " + lkname);
+            lkRef.addChildIfNotNull(err);
+        }		
+    }
+
+    @Override public ExtractBaseAST visitLookupField(GenevaERSParser.LookupFieldContext ctx) { 
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPFIELDREF);
 		String fullName = ctx.getChild(1).getText();
 		String[] parts = fullName.split("\\.");
@@ -739,6 +777,10 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     public void setViewSource(ViewSource viewSource) {
         this.viewSource = viewSource;
+    }
+
+    public void setParent(ExtractBaseAST parent) {
+        this.parent = parent;
     }
 
     
