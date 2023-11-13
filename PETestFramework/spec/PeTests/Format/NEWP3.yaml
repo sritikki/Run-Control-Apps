@@ -15,7 +15,7 @@ tests:
   fiscaldateoverride: "1:20080303"
   timeout: "120"
   xmlfiles:
-  - name: "PASS03_for_OpenSource[1000010].xml"
+  - name: "NEWP3CutDown.xml"
   reffiles:
   - ddname: "TYPEBIN"
     dummy: ""
