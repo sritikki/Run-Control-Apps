@@ -277,8 +277,9 @@ public class RepositoryCompiler {
 		ExtractFilterAST ef = (ExtractFilterAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRFILTER);
 		vsnode.addChildIfNotNull(ef);
 		ExtractFilterCompiler efc = new ExtractFilterCompiler();
+		efc.setViewSource(vsnode.getViewSource());
 		try {
-			efc.processLogic(vsnode);
+			efc.processLogicAndAddNodes(ef);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

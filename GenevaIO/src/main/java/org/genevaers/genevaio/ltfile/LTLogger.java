@@ -95,6 +95,7 @@ public class LTLogger {
 	private static final String CTASSIGNMENT = "%-68s <-  %s";
 	private static final String ACCUMASSIGNMENT = "%s %-47s  =  %s";
 	private static final String ACCUMAOP = "%s %s %s %s";
+	private static final String FNCC = "%s %s %s %s -> %s";
 	private static final String WRSU = "%s Dest=%s, Buffered records=%d, Partition ID=%d, Prog ID = %d, Param = '%s'";
 	private static final String WRDT = "%s Dest=%s, Partition ID=%d, Prog ID = %d, Param = '%s'";
 	private static final String FILEID = "%s %d";
@@ -234,6 +235,9 @@ public class LTLogger {
 			case "SKC":
 				LogicTableF1 dtc = (LogicTableF1) ltr;
 				return(String.format(CONSTASSIGNMENT, leadin, getArgConst(dtc.getArg()), getArgDetails(dtc.getArg())));
+			case "FNCC":
+				LogicTableNameF2 nf2 = (LogicTableNameF2) ltr;
+				return(String.format(FNCC, leadin, nf2.getArg1().getValue(), nf2.getArg1().getValue(), "DaysBetween", nf2.getAccumulatorName()));
 			default: {
 				switch (ltr.getRecordType()) {
 					case RE:

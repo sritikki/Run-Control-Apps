@@ -740,9 +740,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableNameF2 fncc = new LogicTableNameF2();
         fncc.setRecordType(LtRecordType.NAMEF2);
         fncc.setFunctionCode("FNCC");
-        fncc.setCompareType(LtCompareType.EQ);
+        fncc.setCompareType(LtCompareType.DAYSBETWEEN);
         fncc.setArg1(arg1);
         fncc.setArg2(arg2);
+        fncc.setAccumulatorName(accum);
         return fncc;
     }
 
