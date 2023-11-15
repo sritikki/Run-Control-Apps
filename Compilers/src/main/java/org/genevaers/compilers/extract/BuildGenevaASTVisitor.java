@@ -474,20 +474,30 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             err.addError("Unkown Lookup " + parts[0]);
             lkfieldRef.addChildIfNotNull(err);
         }		
+        SymbollistContext symList = ctx.symbollist();
+        if(symList != null) {
+            lkfieldRef.setSymbols((SymbolList)visitSymbollist(symList));
+            lkfieldRef.addChildIfNotNull(visitSymbollist(symList));
+        }
+        EffDateContext effData = ctx.effDate();
+        if(effData != null) {
+            lkfieldRef.setEffDateValue((EffDateValue)visitEffDate(effData));
+            lkfieldRef.addChildIfNotNull(visitEffDate(effData));
+        }
 
-        // If we know the child type we can add the correct Node to the 
-        // LookupFieldRefAST - this will aid processing at emit time
-        if(ctx.getChildCount() == 4) {
-            if(ctx.getChild(2).getChild(0).getText().equals(",")) {
-                lkfieldRef.setEffDateValue((EffDateValue)visit(ctx.children.get(2)));
-            } else {
-                lkfieldRef.setSymbols((SymbolList)visit(ctx.children.get(2)));
-            }
-        }
-        if(ctx.getChildCount() > 4) {
-            lkfieldRef.setEffDateValue((EffDateValue)visit(ctx.children.get(2)));
-            lkfieldRef.setSymbols((SymbolList)visit(ctx.children.get(3)));
-        }
+        // // If we know the child type we can add the correct Node to the 
+        // // LookupFieldRefAST - this will aid processing at emit time
+        // if(ctx.getChildCount() == 4) {
+        //     if(ctx.getChild(2).getChild(0).getText().equals(",")) {
+        //         lkfieldRef.setEffDateValue((EffDateValue)visit(ctx.children.get(2)));
+        //     } else {
+        //         lkfieldRef.setSymbols((SymbolList)visit(ctx.children.get(2)));
+        //     }
+        // }
+        // if(ctx.getChildCount() > 4) {
+        //     lkfieldRef.setEffDateValue((EffDateValue)visit(ctx.children.get(2)));
+        //     lkfieldRef.setSymbols((SymbolList)visit(ctx.children.get(3)));
+        // }
         return lkfieldRef;
     }
 

@@ -25,8 +25,10 @@ import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.compilers.extract.emitters.lookupemitters.LookupEmitter;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.DateCode;
@@ -85,16 +87,19 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
 
     public void emitEffectiveDate() {
-        String val = "";
-        if(getNumberOfChildren() > 0) {
-            val = getEffDateValueIfSet();
+        boolean defaultRequired = true;
+        if(effDateValue != null) {
+            defaultRequired = getEffDateValueIfSet();
         }
-        emitLKDC(val);
+        if(defaultRequired) {
+            emitLKDC("");
+        }
     }
 
 
-    private String getEffDateValueIfSet() {
-        Iterator<ASTBase> ci = getChildIterator();
+    private boolean getEffDateValueIfSet() {
+        boolean defaultRequired = true;
+        Iterator<ASTBase> ci = effDateValue.getChildIterator();
         String val = "";
         while (ci.hasNext()) {
             ExtractBaseAST c = (ExtractBaseAST)ci.next();
@@ -107,10 +112,45 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
                 } else {
                     int bang = 1;
                 }
+                emitLKDC(val);
+                defaultRequired = false;
+            } else if(c.getType() == ASTFactory.Type.LRFIELD) {
+                //need to emit an LKDE
+                emitLKDE((FieldReferenceAST) c);
+                defaultRequired = false;
+            } else {
+                int bang = 1;               
             }
         }
-        return val;
+        return  defaultRequired;
     }
+
+
+    private void emitLKDE(FieldReferenceAST f) {
+        //Need to change the generation of this... needs the fields and key part
+        //LtFactoryHolder.getLtFunctionCodeFactory().getLKDE(null);
+        LogicTableF2 lkde = new LogicTableF2();
+        lkde.setRecordType(LtRecordType.F2);
+        lkde.setFunctionCode("LKDE");
+
+        LogicTableArg arg1 = new LogicTableArg();
+        arg1.setStartPosition((short)f.getRef().getStartPosition());
+        arg1.setFieldContentId(f.getDateCode());
+        arg1.setFieldLength(f.getRef().getLength());
+        arg1.setFieldFormat(f.getDataType());
+        arg1.setJustifyId(JustifyId.NONE);
+        lkde.setArg1(arg1);
+
+        LogicTableArg arg2 = new LogicTableArg();
+        arg2.setStartPosition((short)1);
+        arg2.setFieldContentId(DateCode.CCYYMMDD);
+        arg2.setFieldLength((short)4);
+        arg2.setFieldFormat(DataType.BINARY);
+        arg2.setJustifyId(JustifyId.NONE);
+        lkde.setArg2(arg2);
+        lkde.setCompareType(LtCompareType.EQ);
+        ExtractBaseAST.getLtEmitter().addToLogicTable(lkde);
+}
 
 
     private void emitLKDC(String val) {
