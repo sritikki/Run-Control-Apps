@@ -36,7 +36,7 @@ public class LKDEmitter extends LookupEmitter {
 
         LogicTableF1 lkd = new LogicTableF1();
         lkd.setRecordType(LtRecordType.F1);
-        lkd.setFunctionCode("LKDC");
+        lkd.setFunctionCode("LKDE");
 
         //TODO We need to check the conversion details
         //key source field format -> target field format

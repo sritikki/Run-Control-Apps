@@ -107,18 +107,15 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         String val = "";
         while (ci.hasNext()) {
             ExtractBaseAST c = (ExtractBaseAST)ci.next();
-            if(c.getType() == ASTFactory.Type.EFFDATEVALUE) {
-                ExtractBaseAST vNode = (ExtractBaseAST)c.getChildIterator().next();
-                if(vNode.getType() == ASTFactory.Type.DATEFUNC) {
-                    val = ((DateFunc)vNode).getValue();
-                } else if(vNode.getType() == ASTFactory.Type.STRINGATOM) {
-                    val = ((StringAtomAST)vNode).getValue();
-                } else {
-                    int bang = 1;
-                }
+            if(c.getType() == ASTFactory.Type.DATEFUNC) {
+                val = ((DateFunc)c).getNormalisedDate();
                 emitLKDC(val);
                 defaultRequired = false;
-            } else if(c.getType() == ASTFactory.Type.LRFIELD) {
+            } else if(c.getType() == ASTFactory.Type.STRINGATOM) {
+                val = ((StringAtomAST)c).getValue();
+                emitLKDC(val);
+                defaultRequired = false;
+            } if(c.getType() == ASTFactory.Type.LRFIELD) {
                 //need to emit an LKDE
                 emitLKDE((FieldReferenceAST) c);
                 defaultRequired = false;
