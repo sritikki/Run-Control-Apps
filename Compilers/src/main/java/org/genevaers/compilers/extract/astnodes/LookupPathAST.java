@@ -35,6 +35,8 @@ import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
+import org.genevaers.repository.jltviews.UniqueKeyData;
+import org.genevaers.repository.jltviews.UniqueKeys;
 
 public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
@@ -42,9 +44,11 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
     protected LookupEmitter lkEmitter = new LookupEmitter();
     protected Integer goto1 = Integer.valueOf(0);
     protected Integer goto2 = Integer.valueOf(0);
+    protected int newJoinId;
 
     protected SymbolList symbols;
     protected EffDateValue effDateValue;
+    private String uniqueKey;
 
     @Override
     public void emit() {
@@ -193,5 +197,28 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
     public DateCode getDateCode() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+
+    /* 
+     * Lookups are considered unique based on the combination of
+     * Effective date values and symbols
+     * So at MR95 runtime they each have their own lookup buffer
+     * Therefore we renumber the lookups based on the uniquness.
+     */
+    public void makeUnique() {
+        uniqueKey = lookup.getID() + "_";
+        uniqueKey += effDateValue != null ? effDateValue.getUniqueKey() : "";
+        uniqueKey += symbols != null ? symbols.getUniqueKey() : "";
+        UniqueKeyData uk = UniqueKeys.getOrMakeUniuUniqueKeyData(uniqueKey, lookup.getID());
+        newJoinId = uk.getNewJoinId();
+    }
+
+    public int getNewJoinId() {
+        return newJoinId;
+    }
+
+    public String getUniqueKey() {
+        return uniqueKey;
     }
 }

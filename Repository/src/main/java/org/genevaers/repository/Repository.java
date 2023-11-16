@@ -42,7 +42,7 @@ import org.genevaers.repository.components.enums.LrStatus;
 import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
-import org.genevaers.repository.jltviews.UniqueKey;
+import org.genevaers.repository.jltviews.UniqueKeys;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -92,7 +92,7 @@ public class Repository {
 		formatViews = new ComponentCollection<ViewNode>();
 		jvm = new JoinViewsManager();	
 
-		UniqueKey.reset();
+		UniqueKeys.reset();
 
 		currentlp = null;
 		currentLookupPathStep = null;

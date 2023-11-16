@@ -89,7 +89,7 @@ public class LookupEmitter extends CodeEmitter {
         while (si.hasNext()) {
             LookupPathStep step = si.next();
             if (step.getStepNum() == 1 && optimizable && parentAST.getType() != Type.SORTTITLE) {
-                retEntry = addJOIN(lookup, skt);
+                retEntry = addJOIN(lookup, skt, lookupAST.getNewJoinId());
                 retEntry.setSuffixSeqNbr(ExtractBaseAST.getCurrentColumnNumber());
                 firstLookupRecord = retEntry;
                 ExtractBaseAST.getLtEmitter().addToLogicTable(firstLookupRecord);
@@ -287,13 +287,13 @@ public class LookupEmitter extends CodeEmitter {
         return lklr;
     }
 
-    private LogicTableF1 addJOIN(LookupPath lookup, boolean skt) {
+    private LogicTableF1 addJOIN(LookupPath lookup, boolean skt, int newJoinId) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         //TODO pr.set column ID is set as a place holder to old Join ID
         //remember JoinIDs are all juggled BEFORE the extract is emitted
-
+        String idStr = Integer.toString(newJoinId);
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lookup, skt);
-        LogicTableF1 join = (LogicTableF1) ltFact.getJOIN(jv.getUniqueKey());
+        LogicTableF1 join = (LogicTableF1) ltFact.getJOIN(idStr);
 
         LogicTableArg arg = join.getArg();
         //CPP version writes the LF and LR from the target of the first step
@@ -306,7 +306,8 @@ public class LookupEmitter extends CodeEmitter {
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
-        ArgHelper.setArgValueFrom(arg, jv.getUniqueKey());
+        arg.setValue(idStr);
+        arg.setValueLength(idStr.length());
 
         //TODO There is still magic to do with the gotos
         join.setGotoRow1(parentAST.getGoto1());

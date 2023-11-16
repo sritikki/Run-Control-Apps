@@ -44,6 +44,7 @@ import org.genevaers.compilers.extract.astnodes.IsFoundAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
+import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.LookupPathRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RepeatAST;
@@ -435,23 +436,28 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             int braceNdx = lkname.indexOf("{");
             int endNdx = lkname.indexOf("}");
             String strippedName = lkname.substring(braceNdx+1, endNdx);
-            addLookupReferencetoNode(lkRef, strippedName);
+            addLookupReferenceToNode(lkRef, strippedName);
         } else if(ctx.getChildCount() == 4) {
-            addLookupReferencetoNode(lkRef, ctx.getChild(1).getText());
-            SymbollistContext symList = ctx.symbollist();
-            if(symList != null) {
-                lkRef.addChildIfNotNull(visitSymbollist(symList));
-            }
-            EffDateContext effData = ctx.effDate();
-            if(effData != null) {
-                lkRef.addChildIfNotNull(visitEffDate(effData));
-            }
+            addLookupReferenceToNode(lkRef, ctx.getChild(1).getText());
+            parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkRef);
         }
         return lkRef;
      }
+
+    private void parseEffectiveDataAndSymbols(EffDateContext effData, SymbollistContext symList, LookupPathAST lkPath) {
+        if(symList != null) {
+            lkPath.addChildIfNotNull(visitSymbollist(symList));
+            lkPath.setSymbols((SymbolList) visitSymbollist(symList));
+        }
+        if(effData != null) {
+            lkPath.addChildIfNotNull(visitEffDate(effData));
+            lkPath.setEffDateValue((EffDateValue) visitEffDate(effData));
+        }
+        lkPath.makeUnique();
+    }
   
 
-	private void addLookupReferencetoNode(LookupPathRefAST lkRef, String lkname) {
+	private void addLookupReferenceToNode(LookupPathRefAST lkRef, String lkname) {
         LookupPath lookup =  Repository.getLookups().get(lkname);
 		if(lookup != null) {
             lkRef.setLookup(lookup);
@@ -470,35 +476,16 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 		if(lookup != null) {
             lkfieldRef.resolveField(lookup, parts[1]);
 		} else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unkown Lookup " + parts[0]);
-            lkfieldRef.addChildIfNotNull(err);
+            addErrorNode(lkfieldRef, "Unkown Lookup " + parts[0]);
         }		
-        SymbollistContext symList = ctx.symbollist();
-        if(symList != null) {
-            lkfieldRef.setSymbols((SymbolList)visitSymbollist(symList));
-            lkfieldRef.addChildIfNotNull(visitSymbollist(symList));
-        }
-        EffDateContext effData = ctx.effDate();
-        if(effData != null) {
-            lkfieldRef.setEffDateValue((EffDateValue)visitEffDate(effData));
-            lkfieldRef.addChildIfNotNull(visitEffDate(effData));
-        }
-
-        // // If we know the child type we can add the correct Node to the 
-        // // LookupFieldRefAST - this will aid processing at emit time
-        // if(ctx.getChildCount() == 4) {
-        //     if(ctx.getChild(2).getChild(0).getText().equals(",")) {
-        //         lkfieldRef.setEffDateValue((EffDateValue)visit(ctx.children.get(2)));
-        //     } else {
-        //         lkfieldRef.setSymbols((SymbolList)visit(ctx.children.get(2)));
-        //     }
-        // }
-        // if(ctx.getChildCount() > 4) {
-        //     lkfieldRef.setEffDateValue((EffDateValue)visit(ctx.children.get(2)));
-        //     lkfieldRef.setSymbols((SymbolList)visit(ctx.children.get(3)));
-        // }
+        parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkfieldRef);
         return lkfieldRef;
+    }
+
+    private void addErrorNode(ExtractBaseAST node, String msg) {
+        ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+        err.addError(msg);
+        node.addChildIfNotNull(err);
     }
 
 	@Override public ExtractBaseAST visitExprStringAtom(GenevaERSParser.ExprStringAtomContext ctx) { 

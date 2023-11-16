@@ -1,5 +1,6 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 
 /*
@@ -28,7 +29,10 @@ import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
+import com.google.common.flogger.FluentLogger;
+
 public class EffDateValue extends ExtractBaseAST implements EmittableASTNode{
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     EffDateValue() {
         type = ASTFactory.Type.EFFDATEVALUE;
@@ -68,6 +72,24 @@ public class EffDateValue extends ExtractBaseAST implements EmittableASTNode{
 
         lkd.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkd);
+    }
+
+    public String getUniqueKey() {
+        String key = "";
+        if(getNumberOfChildren() > 0) {
+            //There will only be one
+            ExtractBaseAST c = (ExtractBaseAST) getChildIterator().next();
+            if(c.getType() == ASTFactory.Type.LRFIELD) {
+                key = "FLD_" + ((FieldReferenceAST)c).getRef().getComponentId();
+            } else if(c.getType() == ASTFactory.Type.DATEFUNC) {
+                key = "DTF_" + ((DateFunc)c).getValueString();
+            } else if(c.getType() == ASTFactory.Type.STRINGATOM) {
+                key = "STR_" + ((DateFunc)c).getValueString();
+            } else {
+                logger.atSevere().log("Unexpected Effective Date type " + c.getType());
+            }
+        }
+        return key;
     }
 
 }

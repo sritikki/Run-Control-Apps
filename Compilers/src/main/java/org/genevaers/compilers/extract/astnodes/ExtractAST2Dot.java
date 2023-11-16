@@ -45,6 +45,7 @@ public class ExtractAST2Dot {
     private static final String LIGHTGREY = "lightgrey";
     private static final String FRAME = "lightgrey";
     private static final String DATASOURCE = "deepskyblue";
+    private static final String LKDATASOURCE = "limegreen";
     private static final String COMPARISON = "lightgreen";
     private static final String ASSIGNMENT = "violet";
     private static final String EXTACT_FILTER = "lightpink";
@@ -472,8 +473,8 @@ public class ExtractAST2Dot {
 
     private static void dotLookupFieldNode(ExtractBaseAST node) {
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) node;
-        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName();
-        colour = DATASOURCE;
+        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName() + "\n" + lkfieldRef.getUniqueKey() + " -> " + lkfieldRef.getNewJoinId();;
+        colour = LKDATASOURCE;
         idString = "Field_" + nodeNum++;
         reverseArrow = true;
     }
@@ -481,11 +482,11 @@ public class ExtractAST2Dot {
     private static void dotLookupNode(ExtractBaseAST node) {
         LookupPathRefAST lkRef = (LookupPathRefAST) node;
         if(lkRef.getLookup() != null) {
-            label = lkRef.getLookup().getName();
+            label = lkRef.getLookup().getName() + "\n" + lkRef.getUniqueKey() + " -> " + lkRef.getNewJoinId();
         } else {
             label = "NULL Lookup";
         }
-        colour = DATASOURCE;
+        colour = LKDATASOURCE;
         idString = "LK_" + nodeNum++;
         reverseArrow = true;
     }

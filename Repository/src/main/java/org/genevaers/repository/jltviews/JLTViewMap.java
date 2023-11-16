@@ -58,20 +58,20 @@ public class JLTViewMap<T> {
             case NORMAL:
                 jltv = new ReferenceJoin(lr, join);
                 jltv.setLookupType(LookupType.NORMAL);
-                jltv.setUniqueKey(UniqueKey.getUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
                 break;
             case EXIT:
                 jltv = new ExitJoin(lr, join);
-                jltv.setUniqueKey(UniqueKey.getUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
                 break;
             case EXTERNAL:
                 jltv = new ExternalJoin(lr, join);
-                jltv.setUniqueKey(UniqueKey.getUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
                 break;
             case SKT:
                 jltv = new ReferenceJoin(lr, join);
                 jltv.setLookupType(LookupType.SKT);
-                jltv.setUniqueKey(UniqueKey.getSktUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getSktUniqueKey());
                 break;
             default:
                 logger.atSevere().log("JLTView tyoe %s not handled", type.toString());
