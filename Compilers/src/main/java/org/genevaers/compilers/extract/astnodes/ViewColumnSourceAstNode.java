@@ -9,6 +9,7 @@ import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.repository.components.ViewSortKey;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -78,25 +79,26 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
         }
      }
 
-    private void accumulateAreaLengths() {
-        switch(currentViewColumn.getExtractArea()) {
-            case SORTKEY:
-            ((ViewSourceAstNode)getParent()).getAreaValues().addSkLen(currentViewColumn.getFieldLength());
-            break;
-            case SORTKEYTITLE:
-            break;
-            case AREADATA:
-            ((ViewSourceAstNode)getParent()).getAreaValues().addDtLen(currentViewColumn.getFieldLength());
-            break;
-            case AREACALC:
-            ((ViewSourceAstNode)getParent()).getAreaValues().addCtLen((short)1);
-            break;
-        default:
-            break;
-        }
-    }
+     private void accumulateAreaLengths() {
+         switch (currentViewColumn.getExtractArea()) {
+             case SORTKEY:
+                 ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+                 ((ViewSourceAstNode) getParent()).getAreaValues().addSkLen(sk.getSkFieldLength());
+                 break;
+             case SORTKEYTITLE:
+                 break;
+             case AREADATA:
+                 ((ViewSourceAstNode) getParent()).getAreaValues().addDtLen(currentViewColumn.getFieldLength());
+                 break;
+             case AREACALC:
+                 ((ViewSourceAstNode) getParent()).getAreaValues().addCtLen((short) 1);
+                 break;
+             default:
+                 break;
+         }
+     }
 
-    private void emitSortTitleLookup(int i) {
+     private void emitSortTitleLookup(int i) {
     }
 
 }
