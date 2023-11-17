@@ -35,6 +35,7 @@ import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.jltviews.JoinViewsManager;
 import org.genevaers.repository.jltviews.ReferenceJoin;
 
@@ -104,6 +105,23 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             LogicTableArg arg2 = dtl.getArg2();
             flipDataTypeIfFieldAlphanumeric(arg1, arg2);
             ltEmitter.addToLogicTable((LTRecord)dtl);
+        }else if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
+            LogicTableF1 ctl = (LogicTableF1) fcf.getCTL(redField, currentViewColumn);
+            ctl.setColumnId(currentViewColumn.getComponentId());
+            LogicTableArg arg1 = new LogicTableArg();
+            ctl.setArg(arg1);
+            arg1.setLogfileId(lookup.getTargetLFID());
+            arg1.setLrId(lookup.getTargetLRID());
+            arg1.setFieldId(ref.getComponentId());
+            arg1.setFieldFormat(getDataType());
+            arg1.setFieldContentId(getDateCode());
+            arg1.setFieldFormat(redField.getDatatype());
+            arg1.setStartPosition(redField.getStartPosition());
+            arg1.setFieldLength(redField.getLength());
+            arg1.setDecimalCount(redField.getNumDecimalPlaces());
+            arg1.setOrdinalPosition(currentViewColumn.getOrdinalOffset());
+            arg1.setJustifyId(JustifyId.RIGHT);
+            ltEmitter.addToLogicTable((LTRecord)ctl);
         } else {
             LogicTableF2 skl = (LogicTableF2) fcf.getSKL(redField, currentViewColumn);
             skl.getArg1().setLogfileId(lookup.getTargetLFID());
@@ -113,8 +131,8 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setFieldId(ref.getComponentId());
             arg1.setFieldFormat(getDataType());
             arg1.setFieldContentId(getDateCode());
-            LogicTableArg arg2 = skl.getArg2();
-            flipDataTypeIfFieldAlphanumeric(arg1, arg2);
+            LogicTableArg skarg2 = skl.getArg2();
+            flipDataTypeIfFieldAlphanumeric(arg1, skarg2);
             ltEmitter.addToLogicTable((LTRecord)skl);
         }
         return null;

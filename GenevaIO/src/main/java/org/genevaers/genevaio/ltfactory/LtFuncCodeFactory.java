@@ -519,9 +519,12 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCTL(LRField f, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCTL(LRField f, ViewColumn vc) {
+        LogicTableF1 ctl = new LogicTableF1();
+        ctl.setFunctionCode("CTL");
+        ctl.setRecordType(LtRecordType.F1);
+        ctl.setCompareType(LtCompareType.EQ);
+        return ctl;
     }
 
     @Override
