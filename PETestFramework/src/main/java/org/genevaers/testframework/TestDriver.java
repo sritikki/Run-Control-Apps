@@ -741,6 +741,8 @@ public class TestDriver {
 					}
 					if(diffFound){
 						System.out.println(Menu.RED + "ERROR differences found for " + outFilePath.toString() + Menu.RESET);
+					} else {
+						System.out.println(Menu.GREEN + "PASS for " + outFilePath.toString() + Menu.RESET);
 					}
 			} catch (IOException e) {
 					// TODO Auto-generated catch block
