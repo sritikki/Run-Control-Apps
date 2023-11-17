@@ -106,6 +106,7 @@ public class RepositoryCompiler {
 				Iterator<ASTBase> fi = formatRoot.getChildIterator();
 				while(fi.hasNext()) {
 					FormatBaseAST fn = (FormatBaseAST)fi.next();
+					FormatBaseAST.resetOffset()	;
 					fn.emit(true);
 				}
 			}
