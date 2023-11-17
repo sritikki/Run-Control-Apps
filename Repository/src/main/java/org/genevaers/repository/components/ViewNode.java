@@ -45,6 +45,7 @@ public class ViewNode extends ComponentNode{
 	private Map<Integer, ViewColumn> columns = new TreeMap<Integer, ViewColumn>();
 	private Map<Integer, ViewColumn> columnsByID = new TreeMap<Integer, ViewColumn>();
 	private Map<Short, ViewSortKey> sortKeys = new TreeMap<Short, ViewSortKey>();
+	private Map<Integer, ViewSortKey> sortKeysByColumnID = new TreeMap<Integer, ViewSortKey>();
 	private Map<Short, ViewSource> viewSources = new TreeMap<Short, ViewSource>();
 	private Map<Integer, ViewSource> viewSourcesByID = new TreeMap<Integer, ViewSource>();
 	private List<ReportHeader> reportHeaders = new ArrayList<>();
@@ -82,6 +83,7 @@ public class ViewNode extends ComponentNode{
 
 	public void addViewSortKey(ViewSortKey vsk) {
 		sortKeys.put(vsk.getSequenceNumber(), vsk);
+		sortKeysByColumnID.put(vsk.getColumnId(), vsk);
 	}
 
 	/*
@@ -91,6 +93,11 @@ public class ViewNode extends ComponentNode{
 	public ViewSortKey getViewSortKey(short id) {
 		return sortKeys.get(id);
 	}
+
+	public ViewSortKey getViewSortKeyFromColumnId(int id) {
+		return sortKeysByColumnID.get(id);
+	}
+	
 
 	public int getNumberOfViewSources() {
 		return viewSources.size();

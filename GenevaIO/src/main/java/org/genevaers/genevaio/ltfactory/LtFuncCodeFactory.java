@@ -33,9 +33,11 @@ import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.genevaio.ltfile.LogicTableNameF2;
 import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
@@ -1415,6 +1417,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getSKE(LRField f, ViewColumn vc) {
         LogicTableF2 ske = makeF2FromFieldAndColumn(f, vc);
         ske.setFunctionCode("SKE");
+        ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
+        ske.getArg2().setFieldLength(sk.getSkFieldLength());
         return ske;
     }
 
