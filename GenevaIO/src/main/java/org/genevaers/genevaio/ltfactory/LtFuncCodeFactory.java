@@ -1418,7 +1418,9 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableF2 ske = makeF2FromFieldAndColumn(f, vc);
         ske.setFunctionCode("SKE");
         ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
-        ske.getArg2().setFieldLength(sk.getSkFieldLength());
+        LogicTableArg arg2 = ske.getArg2();
+        arg2.setFieldLength(sk.getSkFieldLength());
+        arg2.setFieldFormat(sk.getSortKeyDataType());
         return ske;
     }
 
