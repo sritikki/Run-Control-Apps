@@ -95,7 +95,7 @@ public class LookupEmitter extends CodeEmitter {
                 ExtractBaseAST.getLtEmitter().addToLogicTable(firstLookupRecord);
             } else {
                 // An LKLR does not have gotos really
-                retEntry = addLKLR(lookup, step, skt);
+                retEntry = addLKLR(lookup, step, skt, lookupAST.getNewJoinId());
             }
             Iterator<LookupPathKey> ki = step.getKeyIterator();
             while(ki.hasNext()) {
@@ -266,21 +266,23 @@ public class LookupEmitter extends CodeEmitter {
         //What type of key field is this
     }
 
-    private LogicTableF1  addLKLR(LookupPath lookup, LookupPathStep step, boolean skt) {
+    private LogicTableF1  addLKLR(LookupPath lookup, LookupPathStep step, boolean skt, int newJoinId) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         //we need to know if this is an skt case or not
+        String idStr = Integer.toString(newJoinId);
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lookup, skt);
-        LogicTableF1 lklr = (LogicTableF1) ltFact.getLKLR(jv.getUniqueKey());
+        LogicTableF1 lklr = (LogicTableF1) ltFact.getLKLR(idStr);
         LogicTableArg arg = lklr.getArg();
         arg.setFieldId(lookup.getTargetLRIndexID());
         arg.setLogfileId(step.getTargetLF());
         arg.setLrId(step.getTargetLR());
-        ArgHelper.setArgValueFrom(arg, jv.getUniqueKey());
         lklr.setArg(arg);
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
         arg.setOrdinalPosition((short)step.getStepNum());
+        arg.setValue(idStr);
+        arg.setValueLength(idStr.length());
         lklr.setColumnId(lookup.getID());
 
         ExtractBaseAST.getLtEmitter().addToLogicTable(lklr);
