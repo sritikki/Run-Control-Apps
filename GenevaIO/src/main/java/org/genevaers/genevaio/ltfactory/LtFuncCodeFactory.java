@@ -509,7 +509,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableF1 cte = new LogicTableF1();
         cte.setRecordType(LtRecordType.F1);
         LogicTableArg arg = getArgFromField(f);
-        arg.setFieldLength((short)12);
+        arg.setFieldLength(f.getLength());
         cte.setArg(arg);
         cte.setFunctionCode("CTE");
         cte.setColumnId(v.getComponentId());
