@@ -47,7 +47,7 @@ public class OrOP extends FormatBaseAST {
         //Need an invert flag to control the logic of the branch
         //
         CalcStackIntegerEntry lastLhsEntry = (CalcStackIntegerEntry) lhs.emit(false);
-
+        currentOffset += lastLhsEntry.length();
         CalcStackIntegerEntry lastRhsEntry = (CalcStackIntegerEntry) rhs.emit(invert);
 
         lastLhsEntry.setValue(currentOffset+lastRhsEntry.length());
