@@ -19,9 +19,18 @@ package org.genevaers.compilers.format.astnodes;
 
 
 import org.genevaers.compilers.format.astnodes.FormatASTFactory.Type;
+import org.genevaers.repository.calculationstack.CalcStackEntry;
 
 public class NotOP extends FormatBaseAST implements EmittableFormatASTNode{
     NotOP() {
         type= Type.NOTOP;
+    }
+
+
+    @Override
+    public CalcStackEntry emit(boolean invert) {
+        inverted = !invert;
+        FormatBaseAST c = (FormatBaseAST)getChildIterator().next();
+        return c.emit(inverted);
     }
 }

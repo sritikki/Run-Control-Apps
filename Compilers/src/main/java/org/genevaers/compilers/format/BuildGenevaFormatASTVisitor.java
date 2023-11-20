@@ -2,6 +2,7 @@ package org.genevaers.compilers.format;
 
 import org.genevaers.compilers.format.astnodes.AndOp;
 import org.genevaers.compilers.format.astnodes.ColRef;
+import org.genevaers.compilers.format.astnodes.EmittableFormatASTNode;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory.Type;
 import org.genevaers.grammar.GenevaFormatBaseVisitor;
@@ -29,6 +30,8 @@ import org.genevaers.grammar.GenevaFormatParser.ExprArithMulDivContext;
 
 
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
+import org.genevaers.compilers.format.astnodes.FormatErrorAST;
+import org.genevaers.compilers.format.astnodes.NotOP;
 import org.genevaers.compilers.format.astnodes.NumConst;
 import org.genevaers.compilers.format.astnodes.OrOP;
 import org.genevaers.repository.Repository;
@@ -151,11 +154,22 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
   
   
 
-    @Override public FormatBaseAST visitExprBoolUnary(GenevaFormatParser.ExprBoolUnaryContext ctx) { 
-        //If there are two children may be a NOT
-        //So probably need an node here to manage
-        return visitChildren(ctx); 
-    }
+     @Override
+     public FormatBaseAST visitExprBoolUnary(GenevaFormatParser.ExprBoolUnaryContext ctx) {
+         // If there are two children may be a NOT
+         // So probably need an node here to manage
+         if (ctx.getChildCount() == 1) {
+             return visitChildren(ctx);
+         } else if (ctx.getChild(0).getText().equalsIgnoreCase("NOT")) {
+             NotOP notop = (NotOP) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.NOTOP);
+             notop.addChildIfNotNull(visit(ctx.getChild(1)));
+             return notop;
+         } else {
+             FormatErrorAST errs = (FormatErrorAST) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ERRORS);
+             errs.setErrors(null);
+            return errs;
+         }
+     }
 
     @Override
     public FormatBaseAST visitExprArithAddSub(ExprArithAddSubContext ctx) {

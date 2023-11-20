@@ -38,4 +38,8 @@ public class FormatErrorAST extends FormatBaseAST{
         return errors;
     }
 
+    public void addError(String msg) {
+        errors.add(msg);
+    }
+
 }
