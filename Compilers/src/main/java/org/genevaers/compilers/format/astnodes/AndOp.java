@@ -47,12 +47,10 @@ public class AndOp extends FormatBaseAST{
         //Need an invert flag to control the logic of the branch
         //
         CalcStackIntegerEntry lastLhsEntry = (CalcStackIntegerEntry) lhs.emit(true);
-
+        currentOffset += lastLhsEntry.length();
         CalcStackIntegerEntry lastRhsEntry = (CalcStackIntegerEntry) rhs.emit(true);
 
-        //At this point in time we don't know where the end is
-        //The true and false branches of the parent if have not been emitted
-        //lastLhsEntry.setValue(currentOffset+lastRhsEntry.length());
+        lastLhsEntry.setValue(currentOffset+lastRhsEntry.length());
 
         return lastRhsEntry;
     }
