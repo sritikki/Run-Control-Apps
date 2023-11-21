@@ -201,7 +201,8 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
             }
             return arithNode; 
         } else {
-            return visitChildren(ctx); 
+            FormatBaseAST n = visitChildren(ctx); 
+            return n;
         }
     }
 
@@ -230,7 +231,8 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
             comp.addChildIfNotNull(visit(ctx.getChild(2)));
             return comp;
         } else {
-            return visitChildren(ctx); 
+            FormatBaseAST n = visitChildren(ctx); 
+            return n; 
         }
     }
 
@@ -261,7 +263,11 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
         //if were here and the only child node is as terminal it must be a string const
 
         //Can also be brackets around the beast - strip off matching sets
-        return visitChildren(ctx); 
+        if(ctx.getChildCount() == 3) {
+            return visit(ctx.getChild(1)); 
+        } else {
+            return visitChildren(ctx); 
+        }
     }
 
 
