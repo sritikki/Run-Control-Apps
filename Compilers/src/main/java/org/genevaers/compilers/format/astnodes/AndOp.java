@@ -1,6 +1,8 @@
 package org.genevaers.compilers.format.astnodes;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.genevaers.compilers.base.ASTBase;
 
@@ -28,6 +30,8 @@ import org.genevaers.repository.calculationstack.CalcStackIntegerEntry;
 
 public class AndOp extends FormatBaseAST{
 
+    private List<CalcStackIntegerEntry> nodeEntries = new ArrayList<>();
+
     AndOp() {
         type = Type.ANDOP;
     }
@@ -35,23 +39,42 @@ public class AndOp extends FormatBaseAST{
     @Override
     public CalcStackEntry emit(boolean invert) {
         //An and does not emit anything
-        //It has two branches
+        //It has two or more branches
         //Each of which is a conditional operation
-        //After we emit the LHS and RHS 
-        //we should have the information for the branch
+        //As we emit each branch we know the offset for the previous.
+        //In a cascade ... each case jumps to the end if it fails
         //The Not of the world may mess that up but...
+
+
+        CalcStackIntegerEntry lastNodeEntry = null;
         Iterator<ASTBase> ci = getChildIterator();
-        FormatBaseAST lhs = (FormatBaseAST) ci.next();
-        FormatBaseAST rhs = (FormatBaseAST) ci.next();
+        while (ci.hasNext()) {
+            FormatBaseAST term = (FormatBaseAST) ci.next();
+            if(ci.hasNext()) {
+                lastNodeEntry = (CalcStackIntegerEntry) term.emit(invert);
+                currentOffset += lastNodeEntry.length();
+            } else {
+                //last entry is treated differently
+                lastNodeEntry = (CalcStackIntegerEntry) term.emit(invert);
+                if(term.getType() != FormatASTFactory.Type.OROP) {
+                    currentOffset += lastNodeEntry.length();
+                }
+            }
+            nodeEntries.add(lastNodeEntry);
+        }
+         return lastNodeEntry;
+    }
 
-        //Need an invert flag to control the logic of the branch
-        //
-        CalcStackIntegerEntry lastLhsEntry = (CalcStackIntegerEntry) lhs.emit(true);
-        currentOffset += lastLhsEntry.length();
-        CalcStackIntegerEntry lastRhsEntry = (CalcStackIntegerEntry) rhs.emit(true);
-
-        lastLhsEntry.setValue(currentOffset+lastRhsEntry.length());
-
-        return lastRhsEntry;
+    public void doFixups(int thenIndex, int elseIndex) {
+        Iterator<CalcStackIntegerEntry> ni = nodeEntries.iterator();
+        while(ni.hasNext()) {
+            CalcStackIntegerEntry ne = ni.next();
+            ne.setValue(elseIndex);
+        }
+        Iterator<ASTBase> ci = getChildIterator();
+        while (ci.hasNext()) {
+            FormatBaseAST c = (FormatBaseAST) ci.next();
+            doFixups(c, thenIndex, elseIndex);
+        }
     }
 }

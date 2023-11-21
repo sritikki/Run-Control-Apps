@@ -43,7 +43,7 @@ public class SkipIf extends FormatBaseAST{
         inverted = invert;
 
         CalcStackIntegerEntry predEntry = (CalcStackIntegerEntry) predicate.emit(invert);
-        currentOffset += predEntry.length();
+        //currentOffset += predEntry.length();
 
         CalcStackEntry trueEntry = trueBranch.emit(invert);
         currentOffset += trueEntry.length();

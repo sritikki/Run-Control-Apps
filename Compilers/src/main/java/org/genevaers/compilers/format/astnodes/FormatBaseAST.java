@@ -100,20 +100,17 @@ public abstract class FormatBaseAST extends ASTBase{
      * An IF may not have an ELSE section.
      */
     protected void doFixups (FormatBaseAST ast, int thenIndex, int elseIndex) {
-    Iterator<ASTBase> ci = ast.getChildIterator();
     switch (ast.getType())
     {
         case ANDOP:
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
+            ((AndOp)ast).doFixups(thenIndex, elseIndex);
             break;
         case OROP:
-            assert (ast.getNumberOfChildren () == 2);
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
+            ((OrOP)ast).doFixups(thenIndex, elseIndex);
             break;
         case NOTOP:
             assert (ast.getNumberOfChildren () == 1);
+            Iterator<ASTBase> ci = ast.getChildIterator();
             doFixups ((FormatBaseAST)ci.next(), elseIndex, thenIndex);
             break;
 

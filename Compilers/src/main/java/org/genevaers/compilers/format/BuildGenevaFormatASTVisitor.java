@@ -133,14 +133,18 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
     }
 
     @Override public FormatBaseAST visitExprBoolOr(GenevaFormatParser.ExprBoolOrContext ctx) { 
-        //Should only have  1 or 3 children and middle is termial OR
-        if(ctx.getChildCount() == 3) {
-            OrOP orOp = (OrOP) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.OROP);
-            orOp.addChildIfNotNull(visit(ctx.getChild(0)));
-            orOp.addChildIfNotNull(visit(ctx.getChild(2)));
-            return orOp;
-        } else {
+        if(ctx.getChildCount() == 1) {
             return visitChildren(ctx); 
+        } else {
+            // Iterate through the nodes.
+            // Should be in pattern N And N And N And N....
+            int childNum = 0;
+            OrOP orOp = (OrOP) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.OROP);
+            while(childNum < ctx.getChildCount()) {
+                orOp.addChildIfNotNull(visit(ctx.getChild(childNum)));
+                childNum+=2;
+            }
+            return orOp;
         }
     }
 
@@ -203,15 +207,19 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
 
  
 	@Override public FormatBaseAST visitExprBoolAnd(GenevaFormatParser.ExprBoolAndContext ctx) { 
-        //Should only have 1 or 3 children and middle is termial AND
-        //visit 0 and 2
-        if(ctx.getChildCount() == 3) {
-            AndOp andOp = (AndOp) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ANDOP);
-            andOp.addChildIfNotNull(visit(ctx.getChild(0)));
-            andOp.addChildIfNotNull(visit(ctx.getChild(2)));
-            return andOp;
-        } else {
+
+        if(ctx.getChildCount() == 1) {
             return visitChildren(ctx); 
+        } else {
+            // Iterate through the nodes.
+            // Should be in pattern N And N And N And N....
+            int childNum = 0;
+            AndOp andOp = (AndOp) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ANDOP);
+            while(childNum < ctx.getChildCount()) {
+                andOp.addChildIfNotNull(visit(ctx.getChild(childNum)));
+                childNum+=2;
+            }
+            return andOp;
         }
     }
 
