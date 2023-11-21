@@ -45,11 +45,11 @@ public abstract class FormatBaseAST extends ASTBase{
         while(fi.hasNext()) {
             FormatBaseAST f = (FormatBaseAST) fi.next();
             cse = f.emit(invert);
-            if(cse != null) {
-                currentOffset += cse.length();
-            } else {
-                int wtf = 1;
-            }
+            // if(cse != null) {
+            //     currentOffset += cse.length();
+            // } else {
+            //     int wtf = 1;
+            // }
         }
         return cse;
     }
@@ -57,24 +57,28 @@ public abstract class FormatBaseAST extends ASTBase{
     public CalcStackEntry emitSingleCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 
     public CalcStackEntry emitIntegerCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackIntegerEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 
     public CalcStackEntry emitShortStringCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackShortStringEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 
     public CalcStackEntry emitLongStringCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackLongStringEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 

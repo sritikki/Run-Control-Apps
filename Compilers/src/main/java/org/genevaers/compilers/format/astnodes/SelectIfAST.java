@@ -46,16 +46,12 @@ public class SelectIfAST extends FormatBaseAST{
         inverted = invert;
 
         CalcStackIntegerEntry predEntry = (CalcStackIntegerEntry) predicate.emit(invert);
-//        currentOffset += predEntry.length();
 
         CalcStackEntry trueEntry = trueBranch.emit(invert);
-        currentOffset += trueEntry.length();
 
         CalcStackIntegerEntry ba = (CalcStackIntegerEntry) emitIntegerCodeEntry(CalcStackOpcode.CalcStackBranchAlways, null);
-        currentOffset += ba.length();
 
         CalcStackEntry fbEntry = falseBranch.emit(invert);
-        currentOffset += fbEntry.length();
 
         int end = fbEntry.getOffset() + fbEntry.length();
 
