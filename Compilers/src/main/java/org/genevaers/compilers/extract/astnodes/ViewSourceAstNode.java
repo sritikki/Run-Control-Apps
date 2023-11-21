@@ -119,6 +119,10 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
         if(sfn != null) {
             ((SelectIfAST)sfn).setNextViewPosition(nextViewPosition);;
         }
+        ASTBase skipn = getFirstNodeOfType(ASTFactory.Type.SKIPIF);
+        if(skipn != null) {
+            ((SkipIfAST)skipn).setNextViewPosition(nextViewPosition);;
+        }
     }
 
     public Integer getNextViewPosition() {

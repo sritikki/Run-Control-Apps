@@ -48,27 +48,12 @@ public class SkipIfAST extends ExtractBaseAST implements EmittableASTNode {
         Iterator<ASTBase> ci = children.iterator();
         while(ci.hasNext()) {
             ExtractBaseAST c = (ExtractBaseAST) ci.next();
-            if (c.getType().ordinal() == GenevaERSParser.SKIPIF) {
-                c.resolveGotos(nextViewPosition, getEndOfLogic(), null, getEndOfLogic());
-            }
-            else {
-                c.resolveGotos(getEndOfLogic(), nextViewPosition, null, nextViewPosition);
-            }
+            c.resolveGotos(nextViewPosition, getEndOfLogic(), null, getEndOfLogic());
         }
     }   
 
     public void setNextViewPosition(Integer nextViewPosition) {
         this.nextViewPosition = nextViewPosition.intValue();
-        Iterator<ASTBase> ci = children.iterator();
-        while(ci.hasNext()) {
-            ExtractBaseAST c = (ExtractBaseAST) ci.next();
-            if (c.getType().ordinal() == GenevaERSParser.SKIPIF) {
-                c.resolveGotos(nextViewPosition, getEndOfLogic(), null, getEndOfLogic());
-            }
-            else {
-                c.resolveGotos(getEndOfLogic(), nextViewPosition, null, nextViewPosition);
-            }
-        }
     }
 
 }
