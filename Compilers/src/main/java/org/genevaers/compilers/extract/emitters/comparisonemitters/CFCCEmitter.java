@@ -1,5 +1,6 @@
 package org.genevaers.compilers.extract.emitters.comparisonemitters;
 
+import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
 /*
@@ -21,6 +22,8 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
 
 import org.genevaers.compilers.extract.astnodes.GenevaERSValue;
+import org.genevaers.compilers.extract.astnodes.RundateAST;
+import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -32,6 +35,18 @@ public class CFCCEmitter extends ComparisonEmitter{
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableCC cfcc = (LogicTableCC) ltFact.getCFCC(((GenevaERSValue)lhs).getValueString(), ((GenevaERSValue)rhs).getValueString(), op);
+        if(lhs.getType() == ASTFactory.Type.RUNDATE) {
+            RundateAST rd = ((RundateAST)lhs);
+            cfcc.setValue1Length(rd.rawDateValue());
+            cfcc.setValue1(rd.getValueBinaryString());
+            cfcc.setFieldContentCode(rd.getDateCode());
+        }
+        if(rhs.getType() == ASTFactory.Type.RUNDATE) {
+            RundateAST rd = ((RundateAST)lhs);
+            cfcc.setValue2Length(((RundateAST)lhs).rawDateValue());
+            cfcc.setValue2(rd.getValueBinaryString());
+            cfcc.setFieldContentCode(rd.getDateCode());
+        }
         return cfcc;
     }
 
