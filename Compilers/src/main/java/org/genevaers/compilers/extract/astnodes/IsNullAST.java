@@ -5,6 +5,8 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
+
 import com.google.common.flogger.FluentLogger;
 
 public class IsNullAST extends ExtractBaseAST implements EmittableASTNode{
@@ -68,6 +70,7 @@ public class IsNullAST extends ExtractBaseAST implements EmittableASTNode{
         lkf.getLkEmitter().emitJoin(lkf, false);
         
         ltfo = fcf.getCXL(lkf.getRef());
+        ((LogicTableF1)ltfo).getArg().setLogfileId(lkf.getLookup().getTargetLFID());
         addToLogicTableAndInitialiseGotos(ltfo);
     }
 
