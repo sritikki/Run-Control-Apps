@@ -25,6 +25,7 @@ import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.extract.astnodes.BetweenFunc;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.astnodes.BooleanAndAST;
+import org.genevaers.compilers.extract.astnodes.BooleanNotAST;
 import org.genevaers.compilers.extract.astnodes.BooleanOrAST;
 import org.genevaers.compilers.extract.astnodes.CalculationAST;
 import org.genevaers.compilers.extract.astnodes.CastAST;
@@ -241,11 +242,24 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         }
     }
 
+    @Override public ExtractBaseAST visitExprBoolUnary(GenevaERSParser.ExprBoolUnaryContext ctx) {
+        if(ctx.NOT() != null) {
+            BooleanNotAST boolNot = (BooleanNotAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLNOT);
+            boolNot.addChildIfNotNull(visit(ctx.children.get(1)));
+            return boolNot;
+
+        } else {
+            return this.visitChildren(ctx);
+        }
+    }
+  
+  
+
     @Override public ExtractBaseAST visitExprBoolAtom(GenevaERSParser.ExprBoolAtomContext ctx) {
         //Account for term in parenthesis
         if(ctx.getChildCount() > 1) {
             //assuming 3 for the moment
-            return visit(ctx.children.get(01));
+            return visit(ctx.children.get(1));
         } else {
             return this.visitChildren(ctx);
         }

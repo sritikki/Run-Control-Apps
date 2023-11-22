@@ -49,6 +49,7 @@ public class ASTFactory {
         IFNODE("If"), 
         BOOLAND("And"),
         BOOLOR("Or"), 
+        BOOLNOT( "Not"),
         NUMACC("Numeric Accumulator"), 
         LOOKUPREF("Lookup"),
         LOOKUPFIELDREF("Lookup Field"), 
@@ -94,7 +95,7 @@ public class ASTFactory {
         LEFT("Left"),
         SUBSTR("Substring"), 
         ISFOUND("Is Found"),
-        ISNOTFOUND("Is Not Found"), 
+        ISNOTFOUND("Is Not Found")  
         ;
 
         private String name;
@@ -156,6 +157,8 @@ public class ASTFactory {
                 return new BooleanAndAST();
             case BOOLOR:
                 return new BooleanOrAST();
+            case BOOLNOT:
+                return new BooleanNotAST();
             case NUMACC:
                 return new NumericAccumulator();
             case LOOKUPREF:
