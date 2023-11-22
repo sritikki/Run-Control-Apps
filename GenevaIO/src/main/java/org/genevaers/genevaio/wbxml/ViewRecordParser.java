@@ -116,6 +116,7 @@ public class ViewRecordParser extends RecordParser {
 					break;
 				case "DELIMHEADERROWIND":
 					vd.setGenerateDelimitedHeader(text.equals("0") ? false : true);
+					break;
 				case "FORMATFILTLOGIC":
 					vn.setFormatFilterLogic(removeBRLineEndings(text));
 					break;
