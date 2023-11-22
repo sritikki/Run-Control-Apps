@@ -72,6 +72,7 @@ public class WBXMLSaxIterator {
         // prevent xxe
         xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
 
         try {
             //reader = xmlInputFactory.createXMLStreamReader(inputStream);
