@@ -361,10 +361,10 @@ public class LookupEmitter extends CodeEmitter {
     }
 
     public void resolveGotos(Integer joinT, Integer joinF) {
-        // if(joinT != null) {
-        //     firstLookupRecord.setGotoRow1(joinT);
-        //     lusm.setGotoRow1(joinT);
-        // }
+        if(joinT != null) {
+            firstLookupRecord.setGotoRow1(joinT);
+            lusm.setGotoRow1(joinT);
+        }
         if(joinF != null) {
             firstLookupRecord.setGotoRow2(joinF);
             lusm.setGotoRow2(joinF);
