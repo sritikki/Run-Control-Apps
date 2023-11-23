@@ -84,7 +84,7 @@ public class EffDateValue extends ExtractBaseAST implements EmittableASTNode{
             } else if(c.getType() == ASTFactory.Type.DATEFUNC) {
                 key = "DTF_" + ((DateFunc)c).getValueString();
             } else if(c.getType() == ASTFactory.Type.STRINGATOM) {
-                key = "STR_" + ((DateFunc)c).getValueString();
+                key = "STR_" + ((StringAtomAST)c).getValueString();
             } else {
                 logger.atSevere().log("Unexpected Effective Date type " + c.getType());
             }
