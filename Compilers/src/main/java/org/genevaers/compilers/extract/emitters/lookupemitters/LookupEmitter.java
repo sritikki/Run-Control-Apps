@@ -360,25 +360,14 @@ public class LookupEmitter extends CodeEmitter {
         arg.setPadding2("");  //This seems a little silly
     }
 
-    public void resolveGotos(Integer joinT, Integer joinF, boolean isNot) {
-        if(isNot) {
-            if(joinF != null) {
-                firstLookupRecord.setGotoRow1(joinF);
-                lusm.setGotoRow1(joinF);
-            }
-            if(joinT != null) {
-                firstLookupRecord.setGotoRow2(joinT);
-                lusm.setGotoRow2(joinT);
-            }
-        } else {
-            if(joinT != null) {
-                firstLookupRecord.setGotoRow1(joinT);
-                lusm.setGotoRow1(joinT);
-            }
-            if(joinF != null) {
-                firstLookupRecord.setGotoRow2(joinF);
-                lusm.setGotoRow2(joinF);
-            }
+    public void resolveGotos(Integer joinT, Integer joinF) {
+        // if(joinT != null) {
+        //     firstLookupRecord.setGotoRow1(joinT);
+        //     lusm.setGotoRow1(joinT);
+        // }
+        if(joinF != null) {
+            firstLookupRecord.setGotoRow2(joinF);
+            lusm.setGotoRow2(joinF);
         }
     }
 

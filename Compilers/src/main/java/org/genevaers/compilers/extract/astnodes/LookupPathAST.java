@@ -70,7 +70,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
     @Override
     public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        lkEmitter.resolveGotos(joinT, joinF, isNot);
+        lkEmitter.resolveGotos(joinT, joinF);
     }
 
     public String getSymbolValue(String symbolicName) {

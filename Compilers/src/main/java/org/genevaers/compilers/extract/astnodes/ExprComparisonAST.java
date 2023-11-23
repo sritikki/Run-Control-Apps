@@ -257,27 +257,18 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
 
     @Override
     public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        if (isNot) {
-            goto1 = compF;
-            goto2 = compT;
-        } else {
-            if(ltfo != null) {
-                ((LTRecord)ltfo).setGotoRow1(compT);
-                ((LTRecord)ltfo).setGotoRow2(compF);
-            }
+        if(ltfo != null) {
+            ((LTRecord)ltfo).setGotoRow1(compT);
+            ((LTRecord)ltfo).setGotoRow2(compF);
         }
-
+        //Do we need this - case in point LHS is a LookupFieldRef?
+        //emitterToUse.resolveGotos(compT, compF, joinT, compF);
         // resolve children
         ExtractBaseAST lhs = (ExtractBaseAST) children.get(0);
         ExtractBaseAST rhs = (ExtractBaseAST) children.get(1);
         if (lhs != null && rhs != null) {
-            if (isNot) {
-                lhs.resolveGotos(compT, compF, joinT, getEndOfLogic());
-                rhs.resolveGotos(compT, compF, joinT, getEndOfLogic());
-            } else {
-                lhs.resolveGotos(compT, compF, joinT, joinF);
-                rhs.resolveGotos(compT, compF, joinT, joinF);
-            }
+            lhs.resolveGotos(compT, compF, joinT, compF);
+            rhs.resolveGotos(compT, compF, joinT, compF);
         }
     }
 
