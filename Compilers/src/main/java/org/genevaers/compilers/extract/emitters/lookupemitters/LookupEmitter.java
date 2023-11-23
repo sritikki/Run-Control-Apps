@@ -366,14 +366,17 @@ public class LookupEmitter extends CodeEmitter {
             lusm.setGotoRow1(joinT);
         }
         if(joinF != null) {
-            firstLookupRecord.setGotoRow2(joinF);
-            lusm.setGotoRow2(joinF);
+            setFalseGotos(joinF);
         }
     }
 
-    public void setFalseGotos() {
-        //Naughty hard coding... should be done after assigment or whatever
-        int falsePos = ExtractBaseAST.getLtEmitter().getLogicTable().getLastEntry().getRowNbr();
+    public void setFalseGotos(Integer pos) {
+        int falsePos;
+        if(pos != null) {
+            falsePos = pos;
+        } else {
+            falsePos = ExtractBaseAST.getLtEmitter().getLogicTable().getLastEntry().getRowNbr();
+        }
         if(firstLookupRecord != null) {
             firstLookupRecord.setGotoRow2(falsePos);
         }

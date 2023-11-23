@@ -234,7 +234,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         }
         ltgoto.setGotoRow1(ltEmitter.getNumberOfRecords());
         //Can now set the lkEmitter gotos
-        lkEmitter.setFalseGotos();
+        lkEmitter.setFalseGotos(null);
     }
 
     @Override
