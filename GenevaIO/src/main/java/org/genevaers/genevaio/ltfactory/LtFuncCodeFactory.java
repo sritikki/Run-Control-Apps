@@ -1768,6 +1768,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
+        arg.setSignedInd(key.isSigned());
         if(key.getValueLength() > 0) {
             arg.setValue(key.getValue());
         }
