@@ -453,8 +453,8 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             addLookupReferenceToNode(lkRef, strippedName);
         } else if(ctx.getChildCount() == 4) {
             addLookupReferenceToNode(lkRef, ctx.getChild(1).getText());
-            parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkRef);
         }
+        parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkRef);
         return lkRef;
      }
 
