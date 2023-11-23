@@ -16,7 +16,7 @@ public class IsFoundAST extends ExtractBaseAST implements EmittableASTNode{
     @Override
     public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
         ExtractBaseAST source = (ExtractBaseAST) children.get(0);
-        source.resolveGotos(compT, compF, compT, compF);
+        source.resolveGotos(compT, compF, null, compF);
     }
 
 }

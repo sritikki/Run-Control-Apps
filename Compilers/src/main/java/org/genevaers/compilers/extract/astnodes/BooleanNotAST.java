@@ -13,7 +13,7 @@ public class BooleanNotAST extends ExtractBaseAST implements EmittableASTNode{
 
     @Override
     public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        ((ExtractBaseAST)getChildIterator().next()).resolveGotos(compF, compT, compT, compF);
+        ((ExtractBaseAST)getChildIterator().next()).resolveGotos(compF, compT, joinT, compF);
     }
 
     @Override
