@@ -4,6 +4,8 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
@@ -139,9 +141,16 @@ RunDateASTNode::getLength() const
         } else {
             fc = (LTRecord) fcf.getSKC(String.valueOf(value), currentViewColumn);
         }
+        expandArgCookieValue((LogicTableF1)fc);
         fc.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords() + 1));
         ltEmitter.addToLogicTable((LTRecord)fc);
         return null;
+    }
+
+    private void expandArgCookieValue(LogicTableF1 f) {
+        LogicTableArg arg = f.getArg();
+        arg.setValueLength(rawDateValue());
+        arg.setValue(getValueBinaryString());
     }
 
 }
