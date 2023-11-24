@@ -51,11 +51,11 @@ public class RepeatAST extends FormattedASTNode implements GenevaERSValue, Assig
     public LTFileObject getAssignmentEntry(ColumnAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(value, currentViewColumn));
+            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(getRepeatString(), currentViewColumn));
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(value, currentViewColumn));
+            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(getRepeatString(), currentViewColumn));
         } else {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(value, currentViewColumn));
+            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(getRepeatString(), currentViewColumn));
         }
         return null;
     }
@@ -68,6 +68,17 @@ public class RepeatAST extends FormattedASTNode implements GenevaERSValue, Assig
     @Override
     public DateCode getDateCode() {
         return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
+    }
+
+    public String getRepeatString() {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<Integer.parseInt(value); i++) {
+            StringAtomAST sa = (StringAtomAST)getChildIterator().next();
+            if(sa != null) {
+                sb.append(sa.getValueString());
+            }
+        }
+        return sb.toString();
     }
 
 }
