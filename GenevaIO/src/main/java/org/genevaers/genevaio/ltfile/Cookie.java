@@ -2,6 +2,8 @@ package org.genevaers.genevaio.ltfile;
 
 import java.nio.ByteBuffer;
 
+import org.genevaers.repository.components.enums.DateCode;
+
 public class Cookie {
     public static final int LTDateRunDay                = 0xffffffff;
     public static final int LTDateRunMonth              = 0xfffffffe;
@@ -60,5 +62,19 @@ public class Cookie {
 
     public void setIntegerData(String value) {
     }
+
+    public DateCode getDateCode() {
+        switch (length) {
+        case LTDateRunDay:
+            return DateCode.CCYYMMDD;
+        case LTDateRunMonth:
+            return DateCode.CYM;
+        case LTDateRunYear:
+            return DateCode.CCYY;
+        default:
+            return DateCode.NONE;
+        }
+    }
+
     
 }

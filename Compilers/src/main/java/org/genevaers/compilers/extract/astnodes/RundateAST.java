@@ -152,7 +152,9 @@ RunDateASTNode::getLength() const
         if(getNumberOfChildren() > 0) {
             ui = (UnaryInt) getChildIterator().next(); //only one child
         }
-        arg.setValue(new Cookie(rawDateValue(), ui.getValue()));
+        Cookie c = new Cookie(rawDateValue(), ui.getValue());
+        arg.setValue(c);
+        arg.setFieldContentId(rawDateCode());
     }
 
 }
