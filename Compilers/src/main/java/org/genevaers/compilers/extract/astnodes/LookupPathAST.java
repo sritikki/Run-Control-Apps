@@ -26,6 +26,7 @@ import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.compilers.extract.emitters.lookupemitters.LookupEmitter;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
@@ -168,10 +169,9 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg.setJustifyId(JustifyId.NONE);
         if(val.length() == 0) {
             EmitterArgHelper.setArgValueFrom(arg, 0);
-            arg.setValueLength(-1);  //TODO make enum for the cookie values
+            arg.setValue(new Cookie(Cookie.LTDateRunDay, "0"));  
         } else {
-            arg.setValue(val);
-            arg.setValueLength(val.length());
+            arg.setValue(new Cookie(val));
         }
         lkd.setArg(arg);
         lkd.setCompareType(LtCompareType.EQ);

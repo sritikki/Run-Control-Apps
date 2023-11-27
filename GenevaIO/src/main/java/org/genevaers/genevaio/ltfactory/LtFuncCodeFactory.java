@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.genevaers.genevaio.ltfile.ArgHelper;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableCC;
@@ -227,8 +228,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfcx.setRecordType(LtRecordType.F1);
         cfcx.setArg(getColumnArg(vc));
         cfcx.setFunctionCode("CFCX");
-        cfcx.getArg().setValue(v);
-        cfcx.getArg().setValueLength(v.length());
+        cfcx.getArg().setValue(new Cookie(""));
         cfcx.setCompareType(getCompareType(op));
         return cfcx;
     }
@@ -283,8 +283,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cflc.setRecordType(LtRecordType.F1);
         cflc.setFunctionCode("CFLC");
         LogicTableArg arg = getArgFromField(f);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         cflc.setArg(arg);
         cflc.setCompareType(getCompareType(op));
         return cflc;
@@ -328,8 +327,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfec.setFunctionCode("CFPC");
         LogicTableArg arg = getArgFromField(f);
         cfec.setArg(arg);
-        arg.setValue(v2);
-        arg.setValueLength(v2.length());
+        arg.setValue(new Cookie(v2));
         cfec.setCompareType(getCompareType(op));
         return cfec;
     }
@@ -374,8 +372,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfxc.setRecordType(LtRecordType.F1);
         cfxc.setArg(getColumnArg(c));
         cfxc.setFunctionCode("CFXC");
-        cfxc.getArg().setValue(v);
-        cfxc.getArg().setValueLength(v.length());
+        cfxc.getArg().setValue(new Cookie(""));
         cfxc.setCompareType(getCompareType(op));
         return cfxc;
     }
@@ -942,8 +939,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         join.setFunctionCode("JOIN");
         join.setFileId(0);
         LogicTableArg arg = new LogicTableArg();
-        arg.setValue(val);
-        arg.setValueLength(val.length());
+        arg.setValue(new Cookie(val));
         join.setArg(arg);
         join.setCompareType(LtCompareType.EQ);
         return join;
@@ -1035,8 +1031,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         join.setFunctionCode("LKLR");
         join.setFileId(0);
         LogicTableArg arg = new LogicTableArg();
-        arg.setValue(val);
-        arg.setValueLength(val.length());
+        arg.setValue(new Cookie(val));
         join.setArg(arg);
         join.setCompareType(LtCompareType.EQ);
         return join;
@@ -1198,8 +1193,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfce.setFunctionCode("SFCE");
         LogicTableArg arg = getArgFromField(f);
         sfce.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         sfce.setCompareType(LtCompareType.CONTAINS);
         return sfce;
     }
@@ -1211,8 +1205,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfcl.setFunctionCode("SFCL");
         LogicTableArg arg = getArgFromField(f);
         sfcl.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         sfcl.setCompareType(LtCompareType.CONTAINS);
         return sfcl;
     }
@@ -1224,8 +1217,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfcp.setFunctionCode("SFCP");
         LogicTableArg arg = getArgFromField(f);
         sfcp.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         sfcp.setCompareType(LtCompareType.CONTAINS);
         return sfcp;
     }
@@ -1236,8 +1228,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfcx.setRecordType(LtRecordType.F1);
         sfcx.setArg(getColumnArg(c2));
         sfcx.setFunctionCode("SFCX");
-        sfcx.getArg().setValue(v);
-        sfcx.getArg().setValueLength(v.length());
+        sfcx.getArg().setValue(new Cookie(""));
         sfcx.setCompareType(LtCompareType.CONTAINS);
         return sfcx;
     }
@@ -1249,8 +1240,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfec.setFunctionCode("SFEC");
         LogicTableArg arg = getArgFromField(f);
         sfec.setArg(arg);
-        arg.setValue(v2);
-        arg.setValueLength(v2.length());
+        arg.setValue(new Cookie(v2));
         sfec.setCompareType(LtCompareType.CONTAINS);
         return sfec;
     }
@@ -1316,8 +1306,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfpc.setFunctionCode("SFPC");
         LogicTableArg arg = getArgFromField(f);
         sfpc.setArg(arg);
-        arg.setValue(v2);
-        arg.setValueLength(v2.length());
+        arg.setValue(new Cookie(v2));
         sfpc.setCompareType(LtCompareType.CONTAINS);
         return sfpc;
     }
@@ -1351,8 +1340,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfxc.setRecordType(LtRecordType.F1);
         sfxc.setArg(getColumnArg(c));
         sfxc.setFunctionCode("SFXC");
-        sfxc.getArg().setValue(v);
-        sfxc.getArg().setValueLength(v.length());
+        sfxc.getArg().setValue(new Cookie(""));
         sfxc.setCompareType(LtCompareType.CONTAINS);
         return sfxc;
     }
@@ -1533,8 +1521,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfcp.setFunctionCode(fcName);
         LogicTableArg arg = getArgFromField(f);
         cfcp.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         cfcp.setCompareType(getCompareType(op));
         return cfcp;
     }
@@ -1555,7 +1542,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setFieldLength(f.getLength());
         arg.setJustifyId(f.getJustification());
         arg.setSignedInd(f.isSigned());
-        arg.setValueLength(0);
+        arg.setValue(new Cookie(""));
 
         arg.setLogfileId(logFileId);
         return arg;
@@ -1577,7 +1564,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         }
         colarg.setJustifyId(vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
-        colarg.setValueLength(0);
+        colarg.setValue(new Cookie(""));
         colarg.setPadding2("");  //This seems a little silly
         return colarg;
     }
@@ -1638,8 +1625,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     private LogicTableArg getArgFromValueAndColumn(String v, ViewColumn vc) {
         LogicTableArg arg = getColumnArg(vc);;
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         arg.setLogfileId(logFileId);
         arg.setOrdinalPosition(vc.getOrdinalPosition());
         if(vc.getDataType() == DataType.ALPHANUMERIC) {
@@ -1769,10 +1755,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
         arg.setSignedInd(key.isSigned());
-        if(key.getValueLength() > 0) {
-            arg.setValue(key.getValue());
-        }
-        arg.setValueLength(key.getValueLength());
+        arg.setValue(new Cookie(key.getValue()));
         arg.setPadding2("");  //This seems a little silly
     }
 
@@ -1838,7 +1821,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         }
         colarg.setJustifyId(vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
-        colarg.setValueLength(0);
+        colarg.setValue(new Cookie(""));
         colarg.setPadding2("");  //This seems a little silly
         return colarg;
     }

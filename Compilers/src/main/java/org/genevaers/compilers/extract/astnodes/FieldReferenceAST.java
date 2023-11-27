@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 
@@ -104,7 +105,7 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
             arg1.setFieldLength(ref.getLength());
             arg1.setJustifyId(ref.getJustification());
             arg1.setSignedInd(ref.isSigned());
-            arg1.setValueLength(0);
+            arg1.setValue(new Cookie(0, ""));
             arg1.setPadding2("");  //This seems a little silly
         }
     }

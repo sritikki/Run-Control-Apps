@@ -30,29 +30,6 @@ import com.google.common.flogger.StackSize;
 public class LTLogger {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	private static final int LTDateRunDay = 0xffffffff;
-	private static final int LTDateRunMonth = 0xfffffffe;
-	private static final int LTDateRunYear = 0xfffffffd;
-	private static final int LTDateFirstOfQuarter = 0xfffffffc;
-	private static final int LTDateLastOfQuarter = 0xfffffffb;
-	private static final int LTDateFirstOfQ1 = 0xfffffffa;
-	private static final int LTDateFirstOfQ2 = 0xfffffff9;
-	private static final int LTDateFirstOfQ3 = 0xfffffff8;
-	private static final int LTDateFirstOfQ4 = 0xfffffff7;
-	private static final int LTDateLastOfQ1 = 0xfffffff6;
-	private static final int LTDateLastOfQ2 = 0xfffffff5;
-	private static final int LTDateLastOfQ3 = 0xfffffff4;
-	private static final int LTDateLastOfQ4 = 0xfffffff3;
-	private static final int LTDateRunPeriod = 0xfffffff2;
-	private static final int LTDateTimeStamp = 0xfffffff1;
-	private static final int LTDateFiscalDay = 0xfffffff0;
-	private static final int LTDateFiscalMonth = 0xffffffef;
-	private static final int LTDateFiscalYear = 0xffffffee;
-	private static final int LTDateFiscalPeriod = 0xffffffed;
-	private static final int LTDateFiscalFirstOfQuarter = 0xffffffec;
-	private static final int LTDateFiscalLastOfQuarter = 0xffffffeb;
-	private static final int LTFillField = 0xfff0fff0;
-
 	private static final String LEAD_IN = " %7d %5d %-4s";
 	private static final String NV_FORMAT = " %s  LR=%s SKA=%s, STA=%s, DTA=%s, CTC=%s Source Number=%s";
 	private static final String GEN_FORMAT = "%s  Text %s\n"
@@ -307,16 +284,16 @@ public class LTLogger {
 
 	private static String getArgValue(LogicTableF1 f1) {
 		LogicTableArg arg = f1.getArg();
-		int al = arg.getValueLength();
+		int al = arg.getValue().length();
 		if (al < 0) {
 			// Cookie time
 			// Needs to use the value too
 			switch (al) {
-				case LTDateRunDay:
+				case Cookie.LTDateRunDay:
 					return "RUNDAY";
-				case LTDateRunMonth:
+				case Cookie.LTDateRunMonth:
 					return "RUNMONTH";
-				case LTDateRunYear:
+				case Cookie.LTDateRunYear:
 					return "RUNYEAR";
 			}
 			return "COOKIE";
@@ -324,7 +301,7 @@ public class LTLogger {
 			if (al == 0) {
 				return " ";
 			} else {
-				return arg.getValue();
+				return arg.getValue().getString();
 			}
 		}
 	}

@@ -40,4 +40,31 @@ public abstract class LTFileObject {
 		LTFileObject.spaces = spaces;
 	}
 
+	protected Cookie cookieReader(int valueLength, LTRecordReader reader, FileRecord rec) throws Exception {
+		Cookie c = new Cookie("");
+        if(valueLength < 0) {
+            byte[] bytes = new byte[256];
+            rec.bytes.get(bytes, 0, 256);
+            StringBuilder result = new StringBuilder();
+            for (int i=0; i< Integer.BYTES; i++) {
+                result.append(String.format("%02X", bytes[i]));
+            }
+            //return result.toString();
+          } else {
+            rec.bytes.get(reader.getCleanStringBuffer(256), 0, 256);
+//            return reader.convertStringIfNeeded(reader.getStringBuffer(), 256).trim();
+        }
+           return c;
+	}
+
+	protected void cookieWriter(Cookie value, RecordFileReaderWriter readerWriter, FileRecord buffer) {
+        buffer.bytes.putInt(value.length());
+        if(value.length() < 0) {
+            buffer.bytes.put(value.getBytes(), 0, 256);
+        } else {
+            buffer.bytes.put(readerWriter.convertOutputIfNeeded(value.getString()));
+            buffer.bytes.put(spaces.getBytes(), 0, (256 - value.length()));
+        }
+	}
+
 }

@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
@@ -31,9 +32,6 @@ import org.genevaers.repository.components.enums.ExtractArea;
 public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assignable{
 
     private String value;
-    private static final int LTDateRunDay                = 0xffffffff;
-    private static final int LTDateRunMonth              = 0xfffffffe;
-    private static final int LTDateRunYear               = 0xfffffffd;
 
     public RundateAST() {
         type = ASTFactory.Type.RUNDATE;
@@ -79,13 +77,13 @@ public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assi
         //or is it the 
         switch (value) {
         case "RUNDAY":
-            return LTDateRunDay;
+            return Cookie.LTDateRunDay;
         case "RUNMONTH":
-            return LTDateRunMonth;
+            return Cookie.LTDateRunMonth;
         case "RUNYEAR":
-            return LTDateRunYear;
+            return Cookie.LTDateRunYear;
         default:
-            return LTDateRunDay;
+            return Cookie.LTDateRunDay;
         }
     }
 
@@ -149,8 +147,12 @@ RunDateASTNode::getLength() const
 
     private void expandArgCookieValue(LogicTableF1 f) {
         LogicTableArg arg = f.getArg();
-        arg.setValueLength(rawDateValue());
-        arg.setValue(getValueBinaryString());
+        UnaryInt ui = new UnaryInt();
+        ui.setValue("0");
+        if(getNumberOfChildren() > 0) {
+            ui = (UnaryInt) getChildIterator().next(); //only one child
+        }
+        arg.setValue(new Cookie(rawDateValue(), ui.getValue()));
     }
 
 }

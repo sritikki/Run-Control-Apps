@@ -31,6 +31,7 @@ import ComponentGenerator.model.NameUtils;
         @JsonSubTypes.Type(value = IntegerField.class, name = "integer"),
         @JsonSubTypes.Type(value = ShortField.class, name = "short"),
         @JsonSubTypes.Type(value = StringField.class, name = "string"),
+        @JsonSubTypes.Type(value = CookieField.class, name = "cookie"),
         @JsonSubTypes.Type(value = VarStringField.class, name = "varstring"),
         @JsonSubTypes.Type(value = EnumField.class, name = "enum"),
         @JsonSubTypes.Type(value = BooleanField.class, name = "boolean"),

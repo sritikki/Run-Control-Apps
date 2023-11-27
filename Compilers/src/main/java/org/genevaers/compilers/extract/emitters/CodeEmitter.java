@@ -1,6 +1,7 @@
 package org.genevaers.compilers.extract.emitters;
 
 
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewSource;
@@ -55,7 +56,7 @@ public class CodeEmitter {
         arg1.setStartPosition((short) 0);
         arg1.setFieldLength((short) 0);
         arg1.setJustifyId(JustifyId.NONE);
-        arg1.setValueLength(0);
+        arg1.setValue(new Cookie(""));
         arg1.setPadding2("");  //This seems a little silly
     }
 }

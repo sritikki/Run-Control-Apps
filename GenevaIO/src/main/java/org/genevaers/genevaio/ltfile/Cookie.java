@@ -1,0 +1,64 @@
+package org.genevaers.genevaio.ltfile;
+
+import java.nio.ByteBuffer;
+
+public class Cookie {
+    public static final int LTDateRunDay                = 0xffffffff;
+    public static final int LTDateRunMonth              = 0xfffffffe;
+    public static final int LTDateRunYear               = 0xfffffffd;
+    public static final int LTDateFirstOfQuarter        = 0xfffffffc;
+    public static final int LTDateLastOfQuarter         = 0xfffffffb;
+    public static final int LTDateFirstOfQ1             = 0xfffffffa;
+    public static final int LTDateFirstOfQ2             = 0xfffffff9;
+    public static final int LTDateFirstOfQ3             = 0xfffffff8;
+    public static final int LTDateFirstOfQ4             = 0xfffffff7;
+    public static final int LTDateLastOfQ1              = 0xfffffff6;
+    public static final int LTDateLastOfQ2              = 0xfffffff5;
+    public static final int LTDateLastOfQ3              = 0xfffffff4;
+    public static final int LTDateLastOfQ4              = 0xfffffff3;
+    public static final int LTDateRunPeriod             = 0xfffffff2;
+    public static final int LTDateTimeStamp             = 0xfffffff1;
+    public static final int LTDateFiscalDay             = 0xfffffff0;
+    public static final int LTDateFiscalMonth           = 0xffffffef;
+    public static final int LTDateFiscalYear            = 0xffffffee;
+    public static final int LTDateFiscalPeriod          = 0xffffffed;
+    public static final int LTDateFiscalFirstOfQuarter  = 0xffffffec;
+    public static final int LTDateFiscalLastOfQuarter   = 0xffffffeb;
+    public static final int LTFillField                 = 0xfff0fff0;
+
+    private int length;
+    private String vaString;
+
+    public Cookie(String value) {
+        vaString = value;
+        length = value.length();
+    }
+
+    public Cookie(int len, String value) {
+    }
+
+    public Cookie(int val) {
+        ByteBuffer bb = ByteBuffer.allocate(4);
+        bb.putInt(val);
+        vaString = new String(bb.array());
+}
+
+    public int length() {
+        return length;
+    }
+
+    public byte[] getBytes() {
+        return null;
+    }
+
+    public String getString() {
+        return vaString;
+    }
+
+    public void setValueLength(int rawDateValue) {
+    }
+
+    public void setIntegerData(String value) {
+    }
+    
+}
