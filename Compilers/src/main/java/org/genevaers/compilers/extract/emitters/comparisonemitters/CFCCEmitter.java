@@ -42,8 +42,8 @@ public class CFCCEmitter extends ComparisonEmitter{
             cfcc.setFieldContentCode(rd.getDateCode());
         }
         if(rhs.getType() == ASTFactory.Type.RUNDATE) {
-            RundateAST rd = ((RundateAST)lhs);
-            cfcc.setValue2Length(((RundateAST)lhs).rawDateValue());
+            RundateAST rd = ((RundateAST)rhs);
+            cfcc.setValue2Length(((RundateAST)rhs).rawDateValue());
             cfcc.setValue2(rd.getValueBinaryString());
             cfcc.setFieldContentCode(rd.getDateCode());
         }
