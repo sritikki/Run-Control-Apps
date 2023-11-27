@@ -1,5 +1,9 @@
 package ComponentGenerator.model.segments.record.fields;
 
+import org.apache.commons.lang3.StringUtils;
+
+import ComponentGenerator.model.NameUtils;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -41,8 +45,10 @@ public class CookieField extends Field {
 
     @Override
     public String getReadEntry() {
+        String ccName = NameUtils.getCamelCaseName(name, false);
+        String ucName = StringUtils.capitalize(ccName);
         StringBuilder readEntry = new StringBuilder();
-        readEntry.append(DBLINDENT + "setValue(cookieReader(rec.bytes.getInt(), reader, rec));");
+        readEntry.append(DBLINDENT + "set" + ucName + "(cookieReader(rec.bytes.getInt(), reader, rec));");
         return readEntry.toString();
     }
 
@@ -58,8 +64,9 @@ public class CookieField extends Field {
 
     @Override
     public String getFillTheWriteBufferEntry() {
+        String ccName = NameUtils.getCamelCaseName(name, false);
         StringBuilder fillEntry = new StringBuilder();
-        fillEntry.append(DBLINDENT + "cookieWriter(value, readerWriter, buffer);");
+        fillEntry.append(DBLINDENT + "cookieWriter(" + ccName + ", readerWriter, buffer);");
         return fillEntry.toString();
     }
 
@@ -70,6 +77,7 @@ public class CookieField extends Field {
 
     @Override
     public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
-        return  "rn.add(new StringFieldNode(\"value\", value.getString()), compare);";
+        String ccName = NameUtils.getCamelCaseName(name, false);
+        return  "rn.add(new StringFieldNode(\"value\", "+ ccName + ".getString()), compare);";
     }
 }

@@ -23,9 +23,9 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
 import org.genevaers.compilers.extract.astnodes.GenevaERSValue;
 import org.genevaers.compilers.extract.astnodes.RundateAST;
-import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableCC;
 
@@ -37,14 +37,12 @@ public class CFCCEmitter extends ComparisonEmitter{
         LogicTableCC cfcc = (LogicTableCC) ltFact.getCFCC(((GenevaERSValue)lhs).getValueString(), ((GenevaERSValue)rhs).getValueString(), op);
         if(lhs.getType() == ASTFactory.Type.RUNDATE) {
             RundateAST rd = ((RundateAST)lhs);
-            cfcc.setValue1Length(rd.rawDateValue());
-            cfcc.setValue1(rd.getValueBinaryString());
+            cfcc.setValue1(new Cookie(rd.getCookieCode(), rd.getValue()));
             cfcc.setFieldContentCode(rd.getDateCode());
         }
         if(rhs.getType() == ASTFactory.Type.RUNDATE) {
             RundateAST rd = ((RundateAST)rhs);
-            cfcc.setValue2Length(((RundateAST)rhs).rawDateValue());
-            cfcc.setValue2(rd.getValueBinaryString());
+            cfcc.setValue2(new Cookie(rd.getCookieCode(), rd.getValue()));
             cfcc.setFieldContentCode(rd.getDateCode());
         }
         return cfcc;

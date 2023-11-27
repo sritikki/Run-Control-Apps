@@ -5,8 +5,6 @@ import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
-import org.genevaers.genevaio.ltfile.LogicTableArg;
-import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
@@ -42,10 +40,12 @@ public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assi
     }
 
     public String getValue() {
-        //map from the string to the magic code
-        //Also there may be a child node here...
-        //Keep as a node or just parse the ()?
-        return value;
+        UnaryInt ui = new UnaryInt();
+        ui.setValue("0");
+        if(getNumberOfChildren() > 0) {
+            ui = (UnaryInt) getChildIterator().next(); //only one child
+        }
+        return ui.getValue();
     }
 
     @Override
@@ -73,8 +73,7 @@ public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assi
         }
     }
 
-    public int rawDateValue() {
-        //or is it the 
+    public int getCookieCode() {
         switch (value) {
         case "RUNDAY":
             return Cookie.LTDateRunDay;
@@ -139,22 +138,22 @@ RunDateASTNode::getLength() const
         } else {
             fc = (LTRecord) fcf.getSKC(String.valueOf(value), currentViewColumn);
         }
-        expandArgCookieValue((LogicTableF1)fc);
+        //expandArgCookieValue((LogicTableF1)fc);
         fc.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords() + 1));
         ltEmitter.addToLogicTable((LTRecord)fc);
         return null;
     }
 
-    private void expandArgCookieValue(LogicTableF1 f) {
-        LogicTableArg arg = f.getArg();
-        UnaryInt ui = new UnaryInt();
-        ui.setValue("0");
-        if(getNumberOfChildren() > 0) {
-            ui = (UnaryInt) getChildIterator().next(); //only one child
-        }
-        Cookie c = new Cookie(rawDateValue(), ui.getValue());
-        arg.setValue(c);
-        arg.setFieldContentId(rawDateCode());
-    }
+    // private void expandArgCookieValue(LogicTableF1 f) {
+    //     LogicTableArg arg = f.getArg();
+    //     UnaryInt ui = new UnaryInt();
+    //     ui.setValue("0");
+    //     if(getNumberOfChildren() > 0) {
+    //         ui = (UnaryInt) getChildIterator().next(); //only one child
+    //     }
+    //     Cookie c = new Cookie(rawDateValue(), ui.getValue());
+    //     arg.setValue(c);
+    //     arg.setFieldContentId(rawDateCode());
+    // }
 
 }

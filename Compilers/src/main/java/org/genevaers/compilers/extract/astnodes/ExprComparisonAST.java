@@ -319,6 +319,11 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
                 if(rhs.getType() == ASTFactory.Type.DATEFUNC) {
                     ds = ((DateFunc)rhs).getNormalisedDate();
                     rhsDate = ((DateFunc)rhs).getDateCode();
+                } else if(rhs.getType() == ASTFactory.Type.FISCALDATE) {
+                    //rhsDate = ((FiscaldateAST)rhs).getDateCode();
+                    rhsDate = DateCode.HHMMSS; //Frig to leave code as it is
+                } else if(rhs.getType() ==  ASTFactory.Type.RUNDATE) {
+                    rhsDate = ((RundateAST)rhs).getDateCode();
                 }
             } else if(((LTRecord)ltfo).getFunctionCode().equals("CFCE") ) {
                 fld = ((FieldReferenceAST) rhs);

@@ -38,10 +38,6 @@ public class EmitterArgHelper {
         ArgHelper.setArgValueFrom(arg, valStr);
     }
 
-    public static void setArgValueFrom(LogicTableArg arg, int val) {
-        ArgHelper.setArgValueFrom(arg, val);
-    }
-
     public static void setArgValueFrom(LogicTableArg arg, RundateAST rhs) {
         //This is where we need some magic to map the constant
         Cookie cookie;
@@ -78,17 +74,21 @@ public class EmitterArgHelper {
         arg.setValue(cookie);
     }
 
-    public static void setArgVal(ExtractBaseAST rhs, LogicTableArg arg) {
-        if(rhs.getType() == Type.NUMATOM) {
-            setArgValueFrom(arg, ((NumAtomAST)rhs).getValueString());
-        } else if(rhs.getType() == Type.DATEFUNC) {
-            setArgValueFrom(arg, ((DateFunc)rhs).getValue());
-        } else if(rhs.getType() == Type.FISCALDATE) {
-            setArgValueFrom(arg, ((FiscaldateAST)rhs).getValue());
-        } else if(rhs.getType() == Type.RUNDATE) {
-            setArgValueFrom(arg, (RundateAST)rhs);
+    public static void setArgVal(ExtractBaseAST node, LogicTableArg arg) {
+        if(node.getType() == Type.NUMATOM) {
+            arg.setValue(new Cookie(((NumAtomAST)node).getValueString()));
+        } else if(node.getType() == Type.DATEFUNC) {
+            arg.setValue(new Cookie(((DateFunc)node).getValue()));
+        } else if(node.getType() == Type.FISCALDATE) {
+            FiscaldateAST fn = ((FiscaldateAST)node);
+            arg.setValue(new Cookie(fn.getCookieCode(), fn.getValue()));
+            arg.setFieldContentId(fn.getDateCode());
+        } else if(node.getType() == Type.RUNDATE) {
+            RundateAST rd = ((RundateAST)node);
+            arg.setValue(new Cookie(rd.getCookieCode(), rd.getValue()));
+            arg.setFieldContentId(rd.getDateCode());
         } else {
-            setArgValueFrom(arg, ((StringAtomAST)rhs).getValue());
+            arg.setValue(new Cookie(((StringAtomAST)node).getValue()));
         }
     }
 
@@ -105,10 +105,6 @@ public class EmitterArgHelper {
         } else {
             return ((StringAtomAST)rhs).getValue();
         }
-    }
-
-    public static String getArgString(LogicTableArg arg) {
-        return ArgHelper.getArgString(arg);
     }
 
 }

@@ -51,7 +51,7 @@ public class JoinDotWriter extends DotWriter {
 				logger.atFine().log("Build DOT string for lookup %s", lkup.getName());
 				// Want to map lookup ID to Join ID
 				// Lookup Gen record?
-				String joinNumber = ArgHelper.getArgString(joinRec.getArg());
+				String joinNumber = joinRec.getArg().getValue().getString();
 				String Jsource = "J" + joinNumber + "_" + jsource;
 				// vdp.getLookupTargetSet().
 

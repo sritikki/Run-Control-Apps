@@ -67,4 +67,8 @@ public class DateFunc extends FormattedASTNode implements GenevaERSValue{
     public String getNormalisedDate() {
         return NormalisedDate.get(value, getDateCode());
     }
+
+    public int getCookieCode() {
+        return 0;
+    }
 }

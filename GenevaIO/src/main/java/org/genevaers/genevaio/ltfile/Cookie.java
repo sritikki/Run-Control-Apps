@@ -41,12 +41,6 @@ public class Cookie {
         vaString = value;
     }
 
-    public Cookie(int val) {
-        ByteBuffer bb = ByteBuffer.allocate(4);
-        bb.putInt(val);
-        vaString = new String(bb.array());
-}
-
     public int length() {
         return length;
     }
@@ -77,15 +71,17 @@ public class Cookie {
     public DateCode getDateCode() {
         switch (length) {
         case LTDateRunDay:
+        case LTDateFiscalDay:
             return DateCode.CCYYMMDD;
         case LTDateRunMonth:
+        case LTDateFiscalMonth:
             return DateCode.CYM;
         case LTDateRunYear:
+        case LTDateFiscalYear:
             return DateCode.CCYY;
         default:
             return DateCode.NONE;
         }
     }
 
-    
 }

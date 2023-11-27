@@ -198,10 +198,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableCC cfcc = new LogicTableCC();
         cfcc.setRecordType(LtRecordType.CC);
         cfcc.setFunctionCode("CFCC");
-        cfcc.setValue1(c1);
-        cfcc.setValue1Length(c1.length());
-        cfcc.setValue2(c2);
-        cfcc.setValue2Length(c2.length());
+        cfcc.setValue1(new Cookie(c1));
+        cfcc.setValue2(new Cookie(c2));
         cfcc.setCompareType(getCompareType(op));
         cfcc.setFieldContentCode(DateCode.NONE);
         return cfcc;
@@ -1571,52 +1569,6 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     public static void setArgValueFrom(LogicTableArg arg, String valStr) {
         ArgHelper.setArgValueFrom(arg, valStr);
-    }
-
-    public static void setArgValueFrom(LogicTableArg arg, int val) {
-        ArgHelper.setArgValueFrom(arg, val);
-    }
-
-    // public static void setArgValueFrom(LogicTableArg arg, RundateAST rhs) {
-    //     //This is where we need some magic to map the constant
-    //     switch(rhs.getValue()) {
-    //         case "RUNDAY":
-    //         arg.setValueLength(LTDateRunDay);
-    //         break;
-    //         case "RUNMONTH":
-    //         arg.setValueLength(LTDateRunMonth);
-    //         break;
-    //         case "RUNYEAR":
-    //         arg.setValueLength(LTDateRunYear);
-    //         break;
-    //         default:
-    //         //Error time
-    //         break;
-    //     }
-    //     if(rhs.getNumberOfChildren() > 0) {
-    //         UnaryInt ui = (UnaryInt) rhs.getChildIterator().next(); //only one child
-    //         byte[] val = new byte[256];
-    //         ByteBuffer bb = ByteBuffer.wrap(val);
-    //         int v = Integer.parseInt(ui.getValue());
-    //         ArgHelper.setArgValueFrom(arg, v);
-    //          System.out.println("Arg Int value " + v + " from bytes " + val[0] + " " + val[1] + " "+ val[2] + " "+ val[3] + " " );
-    //     }
-    // }
-
-    // public static void setArgVal(ASTBase rhs, LogicTableArg arg) {
-    //     if(rhs.getType() == Type.NUMATOM) {
-    //         setArgValueFrom(arg, ((NumAtomAST)rhs).getValue());
-    //     } else if(rhs.getType() == Type.DATEFUNC) {
-    //         setArgValueFrom(arg, ((DateFunc)rhs).getValue());
-    //     } else if(rhs.getType() == Type.RUNDATE) {
-    //         setArgValueFrom(arg, (RundateAST)rhs);
-    //     } else {
-    //         setArgValueFrom(arg, ((StringAtomAST)rhs).getValue());
-    //     }
-    // }
-
-    public static String getArgString(LogicTableArg arg) {
-        return ArgHelper.getArgString(arg);
     }
 
     public void setLogFileId(int logFileId) {

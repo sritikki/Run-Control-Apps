@@ -36,16 +36,6 @@ public class ArgHelper {
         arg.setValue(new Cookie(valStr));
     }
 
-    public static void setArgValueFrom(LogicTableArg arg, int val) {
-        arg.setValue(new Cookie(val));
-        //arg.setValueLength(valStr.length());
-    }
-
-
-    public static String getArgString(LogicTableArg arg) {
-        return arg.getValue().getString();        
-    }
-
     public static void setValBuffer(LogicTableArg arg, byte[] in) {
         arg.setValue(new Cookie(new String(in)));
     }
@@ -61,7 +51,7 @@ public class ArgHelper {
         arg.setFieldLength((short)0);
         arg.setJustifyId(JustifyId.NONE);
         arg.setSignedInd(false);
-        arg.setValue(new Cookie(0));
+        arg.setValue(new Cookie("0"));
         arg.setPadding2("");
         return arg;
     }
@@ -83,7 +73,5 @@ public class ArgHelper {
         arg.setValue(new Cookie(key.getValue()));
         arg.setPadding2("");  //This seems a little silly
     }
-
-
 
 }

@@ -168,7 +168,6 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg.setFieldFormat(DataType.BINARY);
         arg.setJustifyId(JustifyId.NONE);
         if(val.length() == 0) {
-            EmitterArgHelper.setArgValueFrom(arg, 0);
             arg.setValue(new Cookie(Cookie.LTDateRunDay, "0"));  
         } else {
             arg.setValue(new Cookie(val));
