@@ -32,6 +32,7 @@ import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.ArgHelper;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
@@ -281,8 +282,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
         arg.setOrdinalPosition((short)step.getStepNum());
-        arg.setValue(idStr);
-        arg.setValueLength(idStr.length());
+        arg.setValue(new Cookie(idStr));
         lklr.setColumnId(lookup.getID());
 
         ExtractBaseAST.getLtEmitter().addToLogicTable(lklr);
@@ -308,8 +308,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
-        arg.setValue(idStr);
-        arg.setValueLength(idStr.length());
+        arg.setValue(new Cookie(idStr));
 
         //TODO There is still magic to do with the gotos
         join.setGotoRow1(parentAST.getGoto1());
@@ -335,7 +334,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setStartPosition(fld.getStartPosition());
         arg.setFieldLength(fld.getLength());
         arg.setJustifyId(fld.getJustification());
-        arg.setValueLength(0);
+        arg.setValue(new Cookie("0"));
         arg.setPadding2("");  //This seems a little silly
     }
 
@@ -352,10 +351,11 @@ public class LookupEmitter extends CodeEmitter {
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
         if(key.getValue().length() > 0) {
-            arg.setValue(key.getValue());
-            arg.setValueLength(key.getValue().length());
+            arg.setValue(new Cookie(key.getValue()));
         } else {
-            arg.setValueLength(key.getFieldLength());
+            Cookie c = new Cookie("");
+            c.setValueLength(key.getFieldLength());
+            arg.setValue(c);
         }
         arg.setPadding2("");  //This seems a little silly
     }
