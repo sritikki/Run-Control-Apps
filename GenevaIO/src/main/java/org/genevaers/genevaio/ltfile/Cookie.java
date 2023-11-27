@@ -37,6 +37,8 @@ public class Cookie {
     }
 
     public Cookie(int len, String value) {
+        length = len;
+        vaString = value;
     }
 
     public Cookie(int val) {
@@ -50,7 +52,14 @@ public class Cookie {
     }
 
     public byte[] getBytes() {
-        return null;
+        int v = Integer.parseInt(vaString);
+        byte[] bytes = new byte[256];
+        int intLen = Integer.BYTES;
+        for (int i = 0; i < intLen; i++) {
+            bytes[intLen - i - 1] = (byte) (v & 0xFF);
+            v >>= 8;
+        }
+        return bytes;
     }
 
     public String getString() {
@@ -58,9 +67,11 @@ public class Cookie {
     }
 
     public void setValueLength(int rawDateValue) {
+        length = rawDateValue;
     }
 
     public void setIntegerData(String value) {
+        vaString = value;
     }
 
     public DateCode getDateCode() {

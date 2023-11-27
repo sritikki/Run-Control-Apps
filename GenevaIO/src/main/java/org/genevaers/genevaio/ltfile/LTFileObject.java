@@ -49,10 +49,10 @@ public abstract class LTFileObject {
             for (int i=0; i< Integer.BYTES; i++) {
                 result.append(String.format("%02X", bytes[i]));
             }
-            //return result.toString();
+            c.setIntegerData(result.toString());
           } else {
             rec.bytes.get(reader.getCleanStringBuffer(256), 0, 256);
-//            return reader.convertStringIfNeeded(reader.getStringBuffer(), 256).trim();
+            c.setIntegerData(reader.convertStringIfNeeded(reader.getStringBuffer(), 256).trim());
         }
            return c;
 	}
