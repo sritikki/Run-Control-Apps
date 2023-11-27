@@ -61,6 +61,7 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXLEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXPEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXXEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonEmitter;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
@@ -114,6 +115,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
     private ExtractBaseAST lhs;
     private ExtractBaseAST rhs;
     private DataType lhsCastTo;
+    private DataType rhsCastTo;
 
     public ExprComparisonAST() {
         type = ASTFactory.Type.EXPRCOMP;
@@ -227,6 +229,13 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
             lhs = (ExtractBaseAST) cast.decast();
             lhsCastTo = ((DataTypeAST)cast.getChildIterator().next()).getDatatype();
         }
+        if(rhsin.getType() == Type.CAST){
+            //add a decast to the node
+            //note we need to change the formatID of the datasource
+            CastAST cast = (CastAST) rhsin;
+            rhs = (ExtractBaseAST) cast.decast();
+            rhsCastTo = ((DataTypeAST)cast.getChildIterator().next()).getDatatype();
+        }
         return emitters.get(new ComparisonKey(lhs.getType(), rhs.getType()));
     }
 
@@ -280,6 +289,11 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
                 ((LogicTableF1)ltfo).getArg().setFieldFormat(lhsCastTo);
             }
         }
+        if( rhsCastTo != null) {
+            if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
+                ((LogicTableF1)ltfo).getArg().setFieldFormat(rhsCastTo);
+            }
+        }
         FormattedASTNode frmtLhs = ((FormattedASTNode) lhs);
         FormattedASTNode frmtRhs = ((FormattedASTNode) rhs);
         if(((LTRecord)ltfo).getRecordType() == LtRecordType.F2) {
@@ -317,8 +331,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
             if(lhsDate == rhsDate || lhsDate == DateCode.NONE || rhsDate == DateCode.NONE) {
                 ((LogicTableF1)ltfo).getArg().setFieldContentId(DateCode.NONE);
             } else if(ds.length() > 0) {
-                ((LogicTableF1)ltfo).getArg().setValue(ds);
-                ((LogicTableF1)ltfo).getArg().setValueLength(ds.length());
+                ((LogicTableF1)ltfo).getArg().setValue(new Cookie(ds.length(), ds));
             }
         }
     }
