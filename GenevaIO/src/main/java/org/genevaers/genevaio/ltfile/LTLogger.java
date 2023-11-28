@@ -132,7 +132,7 @@ public class LTLogger {
 				LogicTableF1 j = (LogicTableF1) ltr;
 				LogicTableArg arg = j.getArg();
 				return(String.format(LEAD2GOTOS,
-										leadin + String.format(JOIN, j.getColumnId(), arg.getValue()),
+										leadin + String.format(JOIN, j.getColumnId(), arg.getValue().getString()),
 										getGotos(ltr)));
 			case "LUSM":
 				return(String.format(LEAD2GOTOS, leadin, getGotos(ltr)));
@@ -243,7 +243,7 @@ public class LTLogger {
 	}
 
 	private static Object getArgConst(LogicTableArg arg) {
-		return "\"" + arg.getValue() + "\"";
+		return "\"" + arg.getValue().getString() + "\"";
 	}
 
 	private static String getWrDest(LogicTableWR wr) {

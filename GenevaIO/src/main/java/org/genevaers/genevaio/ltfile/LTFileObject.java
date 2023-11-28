@@ -54,7 +54,7 @@ public abstract class LTFileObject {
             rec.bytes.get(reader.getCleanStringBuffer(256), 0, 256);
             c.setIntegerData(reader.convertStringIfNeeded(reader.getStringBuffer(), 256).trim());
         }
-           return c;
+        return c;
 	}
 
 	protected void cookieWriter(Cookie value, RecordFileReaderWriter readerWriter, FileRecord buffer) {

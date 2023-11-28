@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+import org.apache.commons.lang.StringUtils;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
@@ -353,8 +354,7 @@ public class LookupEmitter extends CodeEmitter {
         if(key.getValue().length() > 0) {
             arg.setValue(new Cookie(key.getValue()));
         } else {
-            Cookie c = new Cookie("");
-            c.setValueLength(key.getFieldLength());
+            Cookie c = new Cookie(StringUtils.repeat(" ", key.getFieldLength()));
             arg.setValue(c);
         }
         arg.setPadding2("");  //This seems a little silly
