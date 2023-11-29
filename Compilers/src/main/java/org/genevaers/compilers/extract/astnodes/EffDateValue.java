@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
+import org.genevaers.genevaio.ltfile.Cookie;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -61,6 +62,7 @@ public class EffDateValue extends ExtractBaseAST implements EmittableASTNode{
         fld.populateArg(arg);
         lkd.setArg1(arg);
         arg.setLogfileId(ltEmitter.getFileId());
+        arg.setValue(new Cookie(""));
 
         LogicTableArg arg2 = new LogicTableArg();
         arg2.setFieldContentId(DateCode.CCYYMMDD);
@@ -68,6 +70,7 @@ public class EffDateValue extends ExtractBaseAST implements EmittableASTNode{
         arg2.setStartPosition((short)1);
         arg2.setFieldLength((short)4);
         arg2.setJustifyId(JustifyId.NONE);
+        arg2.setValue(new Cookie(""));
         lkd.setArg2(arg2);
 
         lkd.setCompareType(LtCompareType.EQ);

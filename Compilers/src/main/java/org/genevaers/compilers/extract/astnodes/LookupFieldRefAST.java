@@ -122,6 +122,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setDecimalCount(redField.getNumDecimalPlaces());
             arg1.setOrdinalPosition(currentViewColumn.getOrdinalOffset());
             arg1.setJustifyId(JustifyId.RIGHT);
+            arg1.setValue(new Cookie(""));
             ltEmitter.addToLogicTable((LTRecord)ctl);
         } else {
             LogicTableF2 skl = (LogicTableF2) fcf.getSKL(redField, currentViewColumn);

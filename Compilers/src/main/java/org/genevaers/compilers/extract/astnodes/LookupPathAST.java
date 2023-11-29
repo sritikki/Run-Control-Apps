@@ -141,6 +141,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg1.setFieldLength(f.getRef().getLength());
         arg1.setFieldFormat(f.getDataType());
         arg1.setJustifyId(JustifyId.NONE);
+        arg1.setValue(new Cookie(""));
         lkde.setArg1(arg1);
 
         LogicTableArg arg2 = new LogicTableArg();
@@ -149,6 +150,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg2.setFieldLength((short)4);
         arg2.setFieldFormat(DataType.BINARY);
         arg2.setJustifyId(JustifyId.NONE);
+        arg2.setValue(new Cookie(""));
         lkde.setArg2(arg2);
         lkde.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkde);
