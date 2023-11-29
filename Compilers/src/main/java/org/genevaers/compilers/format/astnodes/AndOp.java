@@ -52,13 +52,9 @@ public class AndOp extends FormatBaseAST{
             FormatBaseAST term = (FormatBaseAST) ci.next();
             if(ci.hasNext()) {
                 lastNodeEntry = (CalcStackIntegerEntry) term.emit(invert);
-                currentOffset += lastNodeEntry.length();
             } else {
                 //last entry is treated differently
                 lastNodeEntry = (CalcStackIntegerEntry) term.emit(invert);
-                if(term.getType() != FormatASTFactory.Type.OROP) {
-                    currentOffset += lastNodeEntry.length();
-                }
             }
             nodeEntries.add(lastNodeEntry);
         }

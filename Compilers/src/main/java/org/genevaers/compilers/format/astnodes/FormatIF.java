@@ -43,14 +43,12 @@ public class FormatIF extends FormatBaseAST implements EmittableFormatASTNode{
         inverted = invert;
 
         CalcStackIntegerEntry predEntry = (CalcStackIntegerEntry) predicate.emit(invert);
-        currentOffset += predEntry.length();
 
         CalcStackEntry trueEntry = trueBranch.emit(invert);
         //currentOffset += trueEntry.length();
 
         if(falseBranch != null) {
             CalcStackIntegerEntry ba = (CalcStackIntegerEntry) emitIntegerCodeEntry(CalcStackOpcode.CalcStackBranchAlways, null);
-            currentOffset += ba.length();
 
             int fbStart = currentOffset;
             falseBranch.emit(invert);
