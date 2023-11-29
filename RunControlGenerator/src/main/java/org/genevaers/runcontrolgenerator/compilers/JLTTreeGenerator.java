@@ -84,7 +84,6 @@ public class JLTTreeGenerator {
             while (refi.hasNext()) {
                 Entry<Integer, JLTViewMap<ReferenceJoin>> refEntry = refi.next();
                 buildJoinsForLF(refEntry);
-                joinNumber++;
             }
     }
 
@@ -105,6 +104,7 @@ public class JLTTreeGenerator {
             headerEntries.add(refJoin);
             LookupType lkt = refJoin.getLookupType();
             Repository.getJoinViews().addJoinTarget((byte)(lkt == LookupType.SKT ? 2 : 1), lfNode.getLogicalFile().getID(), lfNode.getName());
+            joinNumber++;
         }
         jvGenerator.addRecordCountIncrement(currentViewNode);
         jvGenerator.addEndofSet(currentViewNode);
