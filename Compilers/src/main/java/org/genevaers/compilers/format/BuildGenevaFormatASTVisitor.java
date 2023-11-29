@@ -1,5 +1,6 @@
 package org.genevaers.compilers.format;
 
+import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.format.astnodes.AndOp;
 import org.genevaers.compilers.format.astnodes.ColRef;
 import org.genevaers.compilers.format.astnodes.EmittableFormatASTNode;
@@ -255,7 +256,17 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
         //So probably need an node here to manage - or add and attribute to the child?
         //Does not make sense for a string
         //NOTE Parser does not tread -"fred" as an error
-        return visitChildren(ctx); 
+        FormatBaseAST atom;
+        if(ctx.getChildCount() > 1) {
+            atom = visit(ctx.getChild(1));
+            if(ctx.getChild(0).getText().equals("-")) {
+                atom.setNegative();
+            }
+
+        } else {
+            atom = visit(ctx.getChild(0));
+        }        
+        return atom;
     }
 
 

@@ -34,6 +34,7 @@ public abstract class FormatBaseAST extends ASTBase{
     protected static int currentOffset = 0;
     protected boolean inverted = false;
     protected CalcStackEntry calcStackEntry;
+    protected boolean negative;
 
     public FormatASTFactory.Type getType() {
         return type;
@@ -152,6 +153,10 @@ public abstract class FormatBaseAST extends ASTBase{
 
     public static void resetOffset() {
         currentOffset = 0;
+    }
+
+    public void setNegative() {
+        negative = true;
     }
 
 }
