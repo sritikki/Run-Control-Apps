@@ -50,33 +50,14 @@ public class OrOP extends FormatBaseAST {
             FormatBaseAST term = (FormatBaseAST) ci.next();
             if(ci.hasNext()) {
                 lastNodeEntry = (CalcStackIntegerEntry) term.emit(!invert);
-                currentOffset += lastNodeEntry.length();
             } else {
                 //last entry is treated differently
                 lastNodeEntry = (CalcStackIntegerEntry) term.emit(invert);
-                if(term.getType() != FormatASTFactory.Type.ANDOP) {
-                    currentOffset += lastNodeEntry.length();
-                }
             }
             nodeEntries.add(lastNodeEntry);
         }
          return lastNodeEntry;
     }
-
-        // Iterator<ASTBase> ci = getChildIterator();
-        // FormatBaseAST lhs = (FormatBaseAST) ci.next();
-        // FormatBaseAST rhs = (FormatBaseAST) ci.next();
-
-        // //Need an invert flag to control the logic of the branch
-        // //
-        // CalcStackIntegerEntry lastLhsEntry = (CalcStackIntegerEntry) lhs.emit(false);
-        // currentOffset += lastLhsEntry.length();
-        // CalcStackIntegerEntry lastRhsEntry = (CalcStackIntegerEntry) rhs.emit(invert);
-
-        // lastLhsEntry.setValue(currentOffset+lastRhsEntry.length());
-
-    //     return lastNodeEntry;
-    // }
 
     public void doFixups(int thenIndex, int elseIndex) {
         Iterator<CalcStackIntegerEntry> ni = nodeEntries.iterator();

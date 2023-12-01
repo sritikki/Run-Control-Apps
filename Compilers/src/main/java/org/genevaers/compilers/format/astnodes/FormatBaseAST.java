@@ -46,11 +46,6 @@ public abstract class FormatBaseAST extends ASTBase{
         while(fi.hasNext()) {
             FormatBaseAST f = (FormatBaseAST) fi.next();
             cse = f.emit(invert);
-            // if(cse != null) {
-            //     currentOffset += cse.length();
-            // } else {
-            //     int wtf = 1;
-            // }
         }
         return cse;
     }
@@ -86,9 +81,6 @@ public abstract class FormatBaseAST extends ASTBase{
     private void addStackEntryRelativeToLast(CalcStackEntry cse, CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         cse.setOpCode(opCode);
         calcStack.add(cse);
-        if(lastChildEntry != null) {
-            currentOffset = lastChildEntry.getOffset() + lastChildEntry.length();
-        }
         cse.setOffset(currentOffset);
     }
 

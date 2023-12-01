@@ -46,7 +46,7 @@ public class SelectIfAST extends FormatBaseAST{
         inverted = invert;
 
         CalcStackIntegerEntry predEntry = (CalcStackIntegerEntry) predicate.emit(invert);
-
+        int trueEntryOffset = currentOffset;
         CalcStackEntry trueEntry = trueBranch.emit(invert);
 
         CalcStackIntegerEntry ba = (CalcStackIntegerEntry) emitIntegerCodeEntry(CalcStackOpcode.CalcStackBranchAlways, null);
@@ -56,7 +56,7 @@ public class SelectIfAST extends FormatBaseAST{
         int end = fbEntry.getOffset() + fbEntry.length();
 
         //Only now can we set the internal condition gotos
-        doFixups(predicate, trueBranch.getOffset(), fbEntry.getOffset());
+        doFixups(predicate, predEntry.getOffset(), fbEntry.getOffset());
 
         ba.setValue(end);
 
