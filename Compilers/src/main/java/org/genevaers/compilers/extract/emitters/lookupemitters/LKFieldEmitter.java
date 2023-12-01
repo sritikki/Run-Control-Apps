@@ -45,7 +45,7 @@ public class LKFieldEmitter extends LookupEmitter {
             LRField redfld = jltv.getRedFieldFromLookupField(key.getFieldId());
             lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(key.getFieldId()), key);
             if(redfld != null)
-                lk.getArg1().setStartPosition(redfld.getStartPosition()); // Remap to RED LR position
+                lk.getArg1().setStartPosition((short)(redfld.getStartPosition() - jltv.getKeyLength())); // Remap to RED LR position
         }
         return lk;
     }
