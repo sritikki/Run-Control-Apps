@@ -23,10 +23,13 @@ import org.genevaers.repository.components.LRField;
 
 
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.enums.DateCode;
 
 public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNode{
 
     protected ViewColumn vc;
+    private DateCode workingCode;
+    private DateCode originalCode;
 
     public ColumnAST() {
     }
@@ -59,6 +62,21 @@ public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNo
 
     public LTFileObject getConstLtEntry(String string) {
         return null;
+    }
+
+    public void setWorkingCode(DateCode workingCode) {
+        originalCode = vc.getDateCode();
+        this.workingCode = workingCode;
+    }
+
+    public DateCode getWorkingCode() {
+        return workingCode;
+    }
+
+    public void restoreDateCode() {
+        if(workingCode != null) {
+            vc.setDateCode(originalCode);
+        }
     }
 
 }

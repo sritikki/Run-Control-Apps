@@ -105,6 +105,7 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
             }
 
             col.emit(); // In case there is a sort title emit
+            col.restoreDateCode();
         } else {
             int workToDo = 1;
         }
