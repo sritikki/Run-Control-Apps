@@ -108,6 +108,9 @@ public class ViewSortKeyRecordParser extends RecordParser {
 						currentViewId = viewId;
 					}
 					break;
+				case "SORTKEYLABEL":
+					vsk.setLabel(text.trim());
+					break;
 				case "KEYSEQNBR":
 					short s = (short) Integer.parseInt(text);
 					vsk.setSequenceNumber(s);
