@@ -37,6 +37,7 @@ import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.JustifyId;
+import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
 import org.genevaers.repository.jltviews.ReferenceJoin;
 
@@ -56,7 +57,10 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         LRField fld = targLR.findFromFieldsByName(fieldName);
         if(fld != null) {       
             ref = fld;
-            Repository.getJoinViews().addJLTViewField(lookup, fld);
+            JLTView jv = Repository.getJoinViews().addJLTViewField(lookup, fld);
+            if(currentViewColumnSource != null) {
+                jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
+            }
         } else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
             err.addError("Unkown field " + fieldName);

@@ -199,6 +199,7 @@ public class RepositoryCompiler {
 		JLTTreeGenerator jltgen = new JLTTreeGenerator(jltEmitter);
 		ExtractBaseAST.setLogicTableEmitter(jltEmitter);
 		joinsRoot = jltgen.buildJoinViews();
+		Repository.getJoinViews().logdata();
 		writeJltDotIfEnabled();
 		jltgen.emit();
 	}

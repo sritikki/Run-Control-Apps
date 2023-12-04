@@ -30,22 +30,23 @@ public class LKFieldEmitter extends LookupEmitter {
 
     private int srcLFID;
 
-    public LogicTableF2 emit(LookupPathKey key) {
+    public LogicTableF2 emit(LookupPathKey lkpkey) {
         // There should be a valid converson check done
 
 
         LtFuncCodeFactory ltfact = LtFactoryHolder.getLtFunctionCodeFactory();
         //Can be an LKE or and LKL
         LogicTableF2 lk;
-        if(key.getStepNumber() == 1) {
-            lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(key.getFieldId()), key);
+        if(lkpkey.getStepNumber() == 1) {
+            lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
         } else {
             //we need the the mapped field not the original
-            JLTView jltv = Repository.getJoinViews().getStepJLTViewFromKey(key);
-            LRField redfld = jltv.getRedFieldFromLookupField(key.getFieldId());
-            lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(key.getFieldId()), key);
+            JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId());
+            LRField redfld = jltvOfTargetSourceStep.getRedFieldFromLookupField(lkpkey.getFieldId());
+            lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
             if(redfld != null)
-                lk.getArg1().setStartPosition((short)(redfld.getStartPosition() - jltv.getKeyLength())); // Remap to RED LR position
+                //lk.getArg1().setStartPosition((short)(redfld.getStartPosition() - jltv.getKeyLength())); // Remap to RED LR position
+                lk.getArg1().setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
         }
         return lk;
     }

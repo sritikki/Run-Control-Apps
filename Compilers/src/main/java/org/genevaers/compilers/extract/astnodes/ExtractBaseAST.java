@@ -27,6 +27,7 @@ import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
 
 /**
@@ -48,6 +49,7 @@ public abstract class ExtractBaseAST extends ASTBase{
     protected Set<String> accumNames = new HashSet<>();
     protected static ViewSource currentViewSource;
     protected static ViewColumn currentViewColumn;
+    protected static ViewColumnSource currentViewColumnSource;
 
     protected ASTFactory.Type type = null;
     private boolean negative = false;

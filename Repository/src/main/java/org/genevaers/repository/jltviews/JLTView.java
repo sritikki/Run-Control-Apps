@@ -92,6 +92,23 @@ public class JLTView {
         }
     }
 
+    public class Reason {
+    
+        public String key;
+        public int lookupId;
+        public int fieldId;
+        public int viewID;
+        public int columnNumber;
+
+        public Reason(String key, int lookupId, int fieldId) {
+            this.key = key;
+            this.lookupId = lookupId;
+            this.fieldId = fieldId;
+        }
+
+        
+    }
+
 
     private int lrid;
     private int originalLookupId;
@@ -124,6 +141,8 @@ public class JLTView {
 
     protected LookupType lookupType;
     private int ddNum;
+
+    private List<Reason> reasons = new ArrayList<>();
 
     public JLTView(int lr, int lkup) {
         lrid = lr;
@@ -493,6 +512,24 @@ public class JLTView {
 
     public LogicalRecord getRedLR() {
         return redLR;
+    }
+
+    public int getRefViewNum() {
+        return refViewNum;
+    }
+
+    public void addReason(String key, int lkid, int fldid) {
+        reasons.add(new Reason(key, lkid, fldid));
+    }
+
+    public List<Reason> getReasons() {
+        return reasons;
+    }
+
+    public void updateLastReason(int viewId, int columnNumber) {
+        Reason last = reasons.get(reasons.size() - 1);
+        last.viewID = viewId;
+        last.columnNumber = columnNumber;
     }
     
 }

@@ -42,6 +42,7 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
 
     public void setViewColumnSource(ViewColumnSource vcs) {
         this.vcs = vcs;
+        currentViewColumnSource = vcs;
     }
 
     public ViewColumnSource getViewColumnSource() {
