@@ -56,6 +56,10 @@ ${readerEntry}
         rn.setName(recordType + "_" + lrId + "_" + fieldName);
 <#elseif record.recordId == 2000>
         rn.setName(viewId + "_" + recordType + "_" + columnId);
+<#elseif record.recordId == 2201 || record.recordId == 2210>
+        rn.setName(viewId + "_" + columnId);
+<#elseif record.recordId == 1210>
+        rn.setName(viewId + "_" + sequenceNbr);
 <#else>
         rn.setName(recordType + "_" + recordId + "_" + sequenceNbr);
 </#if>

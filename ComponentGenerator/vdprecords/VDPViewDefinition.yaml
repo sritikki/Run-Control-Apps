@@ -72,8 +72,10 @@ fields:
   component_field: none
 - name: output_page_size_max
   type: short
+  component_field: outputPageSizeMax
 - name: output_line_size_max
   type: short
+  component_field: outputLineSizeMax
 - name: output_col_hdr_lns_max
   type: short
 - name: output_nbr_of_copies
