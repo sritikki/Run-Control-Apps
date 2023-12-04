@@ -80,10 +80,11 @@ public class ViewRecordParser extends RecordParser {
 					break;
 
 				case "PAGESIZE":
+					vd.setOutputPageSizeMax((short)Integer.parseInt(text.trim()));
 					break;
-				// // fieldValue = parseField("LINESIZE", record);
-				// // trans.setLineSize(fieldToInteger("LINESIZE", fieldValue));
-
+				case "LINESIZE":
+					vd.setOutputLineSizeMax((short)Integer.parseInt(text.trim()));
+					break;
 				case "ZEROSUPPRESSIND":
 					vd.setZeroValueRecordSuppression(text.equals("0") ? false : true);
 					break;

@@ -68,3 +68,7 @@ members:
 - name: controlRecordId
   type: integer
   vdp_source: controlId
+- name: outputPageSizeMax
+  type: short
+- name: outputLineSizeMax
+  type: short
