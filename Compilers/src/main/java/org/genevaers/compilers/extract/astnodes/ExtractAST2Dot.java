@@ -380,7 +380,7 @@ public class ExtractAST2Dot {
     private static void dotRundate(ExtractBaseAST node) {
         idString = "UN_" + nodeNum++;
         RundateAST rd = (RundateAST) node;
-        label = rd.getValue();
+        label = rd.getValueString();
         colour = DATECONST;
         reverseArrow = true;
     }
