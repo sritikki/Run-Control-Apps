@@ -56,7 +56,7 @@ public class SelectIfAST extends FormatBaseAST{
         int end = fbEntry.getOffset() + fbEntry.length();
 
         //Only now can we set the internal condition gotos
-        doFixups(predicate, predEntry.getOffset(), fbEntry.getOffset());
+        doFixups(predicate, trueEntryOffset, fbEntry.getOffset());
 
         ba.setValue(end);
 

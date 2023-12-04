@@ -43,6 +43,7 @@ public class SkipIf extends FormatBaseAST{
         inverted = invert;
 
         CalcStackIntegerEntry predEntry = (CalcStackIntegerEntry) predicate.emit(invert);
+        int trueEntryOffset = currentOffset;
 
         CalcStackEntry trueEntry = trueBranch.emit(invert);
 
@@ -53,7 +54,7 @@ public class SkipIf extends FormatBaseAST{
         int end = fbEntry.getOffset() + fbEntry.length();
 
         //Only now can we set the internal condition gotos
-        doFixups(predicate, trueBranch.getOffset(), fbEntry.getOffset());
+        doFixups(predicate, trueEntryOffset, fbEntry.getOffset());
 
         ba.setValue(end);
 
