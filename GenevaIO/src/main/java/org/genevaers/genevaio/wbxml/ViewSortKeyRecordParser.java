@@ -155,9 +155,9 @@ public class ViewSortKeyRecordParser extends RecordParser {
 					int breakMask = 0x0002;
 					re = sbi & breakMask;
 					if (re > 0) {
-						vsk.setPerformBreakLogic(PerformBreakLogic.BREAK);
-					} else {
 						vsk.setPerformBreakLogic(PerformBreakLogic.NOBREAK);
+					} else {
+						vsk.setPerformBreakLogic(PerformBreakLogic.BREAK);
 					}
 					break;
 				case "PAGEBRKIND":
