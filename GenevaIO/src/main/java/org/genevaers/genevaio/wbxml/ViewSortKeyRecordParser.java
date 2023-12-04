@@ -70,7 +70,7 @@ public class ViewSortKeyRecordParser extends RecordParser {
 
 	private void setDefault(ViewSortKey vsk) {
 		vsk.setDescDateCode(DateCode.NONE);
-		vsk.setDescDataType(DataType.INVALID);
+		vsk.setDescDataType(DataType.ALPHANUMERIC);
 		vsk.setDescJustifyId(JustifyId.NONE);
 		vsk.setLabel("");
 		vsk.setSkJustifyId(JustifyId.NONE);
