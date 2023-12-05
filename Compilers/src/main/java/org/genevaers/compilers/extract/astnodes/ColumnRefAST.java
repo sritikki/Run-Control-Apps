@@ -12,6 +12,7 @@ import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -94,7 +95,22 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
             ltEmitter.addToLogicTable((LTRecord)fcf.getCTX(vc, currentViewColumn));
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTX(vc, currentViewColumn));
+            LogicTableF2 dtx = (LogicTableF2) fcf.getDTX(vc, currentViewColumn);
+            ltEmitter.addToLogicTable((LTRecord)dtx);
+            ColumnRefAST cr = (ColumnRefAST) rhs;
+            LogicTableArg arg1 = ((LogicTableF2)dtx).getArg1();
+            if(cr.getViewColumn().getExtractArea() == ExtractArea.AREACALC) {
+                arg1.setStartPosition((short)2); //bonkers hard coding for the moment
+                arg1.setFieldFormat(DataType.PACKED);
+                arg1.setDecimalCount((short)8); //Realy depends on number fromat
+                arg1.setJustifyId(JustifyId.LEFT);
+
+            } else {
+                arg1.setStartPosition(cr.getViewColumn().getStartPosition());
+                arg1.setFieldFormat(cr.getViewColumn().getDataType());
+                arg1.setDecimalCount(cr.getViewColumn().getDecimalCount());
+                arg1.setJustifyId(cr.getViewColumn().getJustifyId());
+            }
         } else {
             ltEmitter.addToLogicTable((LTRecord)fcf.getSKX(vc, currentViewColumn));
         }
