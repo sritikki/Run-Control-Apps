@@ -70,7 +70,7 @@ public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNo
     }
 
     public DateCode getWorkingCode() {
-        return workingCode;
+        return workingCode != null ? workingCode : vc.getDateCode();
     }
 
     public void restoreDateCode() {
