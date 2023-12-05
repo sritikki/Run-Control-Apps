@@ -210,11 +210,16 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         // we could let the fcf auto correc the DT type base on the column?
         switch (currentViewColumn.getExtractArea()) {
             case AREADATA:
+                LogicTableF1 dtc;
                 if (currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                    ltEmitter.addToLogicTable((LTRecord) fcf.getDTC(" ", currentViewColumn));
+                    dtc = (LogicTableF1)fcf.getDTC(" ", currentViewColumn);
                 } else {
-                    ltEmitter.addToLogicTable((LTRecord) fcf.getDTC("0", currentViewColumn));
+                    dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
                 }
+                if(currentViewColumn.getDateCode() == ref.getDateTimeFormat()) {
+                    dtc.getArg().setFieldContentId(DateCode.NONE);
+                } 
+                ltEmitter.addToLogicTable((LTRecord)dtc );
                 break;
 
             case AREACALC:
