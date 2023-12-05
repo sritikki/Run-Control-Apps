@@ -100,7 +100,7 @@ public class ViewHeaderFooterParser extends RecordParser {
 		rf.setColumn((short) col);
 		rf.setRow((short) row);
 		rf.setFooterLength((short) length);
-		rf.setText(itemText);
+		rf.setText(itemText != null ? itemText : "");
 		Repository.getViews().get(viewid).addReportFooter(rf);
 	}
 
