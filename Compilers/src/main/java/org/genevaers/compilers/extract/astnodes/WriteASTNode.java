@@ -98,7 +98,11 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
         if(wrSource != null && wrSource.getFunctionCode().equals("WRXT") ) {
             wr.setDestType(0); //0 extract 1 = File 2 = token
         } else {
-            wr.setDestType(1); //0 extract 1 = File 2 = token
+            if(en != null) {
+                wr.setDestType(0); //0 extract 1 = File 2 = token
+            } else {
+                wr.setDestType(1); //0 extract 1 = File 2 = token
+            }
         }
         getPFFromChildNode();
         if(pf != null) {
