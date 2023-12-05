@@ -75,11 +75,11 @@ public class LogicGroup implements Comparable<LogicGroup> {
     @Override
     public int compareTo(LogicGroup lfin) {
         if(lf.isToken() && lfin.lf.isNotToken() ) {
-            return 1;
+            return -1;
         } else if(lf.isToken() && lfin.lf.isToken()) {
                 return idCompare(lfin);
         } else if(lf.isNotToken() && lfin.lf.isToken()) {
-            return -1;
+            return 1;
         } else {
             return idCompare(lfin);
         }
