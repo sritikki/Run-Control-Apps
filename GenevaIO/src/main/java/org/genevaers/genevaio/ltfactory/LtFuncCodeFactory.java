@@ -226,7 +226,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfcx.setRecordType(LtRecordType.F1);
         cfcx.setArg(getColumnArg(vc));
         cfcx.setFunctionCode("CFCX");
-        cfcx.getArg().setValue(new Cookie(""));
+        cfcx.getArg().setValue(new Cookie(v));
         cfcx.setCompareType(getCompareType(op));
         return cfcx;
     }
@@ -370,7 +370,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfxc.setRecordType(LtRecordType.F1);
         cfxc.setArg(getColumnArg(c));
         cfxc.setFunctionCode("CFXC");
-        cfxc.getArg().setValue(new Cookie(""));
+        cfxc.getArg().setValue(new Cookie(v));
         cfxc.setCompareType(getCompareType(op));
         return cfxc;
     }
@@ -1226,7 +1226,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfcx.setRecordType(LtRecordType.F1);
         sfcx.setArg(getColumnArg(c2));
         sfcx.setFunctionCode("SFCX");
-        sfcx.getArg().setValue(new Cookie(""));
+        sfcx.getArg().setValue(new Cookie(v));
         sfcx.setCompareType(LtCompareType.CONTAINS);
         return sfcx;
     }
@@ -1338,7 +1338,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfxc.setRecordType(LtRecordType.F1);
         sfxc.setArg(getColumnArg(c));
         sfxc.setFunctionCode("SFXC");
-        sfxc.getArg().setValue(new Cookie(""));
+        sfxc.getArg().setValue(new Cookie(v));
         sfxc.setCompareType(LtCompareType.CONTAINS);
         return sfxc;
     }
