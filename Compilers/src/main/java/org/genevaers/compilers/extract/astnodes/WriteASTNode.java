@@ -48,6 +48,7 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
 
     @Override
     public void emit() {
+        boolean extractWrite = true;
         //The correct function code to generate comes from the Source
         //Yeah, the source...
         //So we should find the child Source node and figure out what to generate
@@ -61,6 +62,8 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
             //then we can generate the 801 record
             if(vs.getViewId() < 9000000) {
                 Repository.addExtractFileNumber((short)en.getFileNumber());
+            } else {
+                extractWrite = false;
             }
         } else {
             //We need to know the view type
@@ -98,8 +101,8 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
         if(wrSource != null && wrSource.getFunctionCode().equals("WRXT") ) {
             wr.setDestType(0); //0 extract 1 = File 2 = token
         } else {
-            if(en != null) {
-                wr.setDestType(0); //0 extract 1 = File 2 = token
+            if(extractWrite && en != null) {
+                 wr.setDestType(0); //0 extract 1 = File 2 = token
             } else {
                 wr.setDestType(1); //0 extract 1 = File 2 = token
             }
