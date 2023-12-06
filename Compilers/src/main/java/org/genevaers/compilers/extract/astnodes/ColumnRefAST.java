@@ -105,12 +105,6 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
                 arg1.setFieldFormat(DataType.PACKED);
                 arg1.setDecimalCount((short)8); //Realy depends on number fromat
                 arg1.setJustifyId(JustifyId.LEFT);
-
-            } else {
-                arg1.setStartPosition(cr.getViewColumn().getStartPosition());
-                arg1.setFieldFormat(cr.getViewColumn().getDataType());
-                arg1.setDecimalCount(cr.getViewColumn().getDecimalCount());
-                arg1.setJustifyId(cr.getViewColumn().getJustifyId());
             }
         } else {
             ltEmitter.addToLogicTable((LTRecord)fcf.getSKX(vc, currentViewColumn));
