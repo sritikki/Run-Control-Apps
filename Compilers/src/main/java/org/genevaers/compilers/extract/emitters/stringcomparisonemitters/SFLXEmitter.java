@@ -41,8 +41,8 @@ public class SFLXEmitter extends StringComparisonEmitter{
 
         lkf.getLkEmitter().emitJoin(lkf, false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
-        LogicTableF2 cflx = (LogicTableF2) ltFact.getSFLX(((LookupFieldRefAST) lhs).getRef(), ((ColumnRefAST) rhs).getViewColumn());
-        LogicTableArg arg = cflx.getArg1();
+        LogicTableF2 sflx = (LogicTableF2) ltFact.getSFLX(((LookupFieldRefAST) lhs).getRef(), ((ColumnRefAST) rhs).getViewColumn());
+        LogicTableArg arg = sflx.getArg1();
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);
         LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());
         arg.setLogfileId(lkf.getLookup().getTargetLFID());
@@ -50,8 +50,11 @@ public class SFLXEmitter extends StringComparisonEmitter{
         arg.setFieldId(lkf.getRef().getComponentId());
         arg.setStartPosition(redFld.getStartPosition());
         arg.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
-        cflx.setArg1(arg);
-        return cflx;
+        sflx.setArg1(arg);
+        LogicTableArg arg2 = sflx.getArg2();
+        arg2.setFieldId(((ColumnRefAST) rhs).getViewColumn().getColumnNumber());
+        arg2.setLogfileId(((ColumnRefAST) rhs).getViewColumn().getExtractArea().ordinal());
+        return sflx;
     }
 
 }

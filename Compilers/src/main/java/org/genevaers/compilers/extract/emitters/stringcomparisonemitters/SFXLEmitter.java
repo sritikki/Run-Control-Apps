@@ -41,17 +41,22 @@ public class SFXLEmitter extends StringComparisonEmitter{
 
         lkf.getLkEmitter().emitJoin(lkf, false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
-        LogicTableF2 cfxl = (LogicTableF2) ltFact.getSFXL(((ColumnRefAST) lhs).getViewColumn(), ((LookupFieldRefAST) rhs).getRef());
-        LogicTableArg arg = cfxl.getArg1();
+        LogicTableF2 sfxl = (LogicTableF2) ltFact.getSFXL(((ColumnRefAST) lhs).getViewColumn(), ((LookupFieldRefAST) rhs).getRef());
+        LogicTableArg arg1 = sfxl.getArg1();
+        arg1.setFieldId(((ColumnRefAST) lhs).getViewColumn().getColumnNumber());
+        arg1.setLogfileId(((ColumnRefAST) lhs).getViewColumn().getExtractArea().ordinal());
+        
+
+        LogicTableArg arg2 = sfxl.getArg2();
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);
         LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());
-        arg.setLogfileId(lkf.getLookup().getTargetLFID());
-        arg.setLrId(lkf.getRef().getLrID());
-        arg.setFieldId(lkf.getRef().getComponentId());
-        arg.setStartPosition(redFld.getStartPosition());
-        arg.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
-        cfxl.setArg1(arg);
-        return cfxl;
+        arg2.setLogfileId(lkf.getLookup().getTargetLFID());
+        arg2.setLrId(lkf.getRef().getLrID());
+        arg2.setFieldId(lkf.getRef().getComponentId());
+        arg2.setStartPosition(redFld.getStartPosition());
+        arg2.setFieldContentId(DateCode.NONE);
+        arg2.setLogfileId(lkf.getLookup().getTargetLFID());
+        return sfxl;
     }
 
 }

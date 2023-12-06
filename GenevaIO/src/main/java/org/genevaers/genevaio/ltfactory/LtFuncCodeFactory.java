@@ -1250,8 +1250,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFEL(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+        return  makeF2FromFieldAndField(f, f2, "CONTAINS", "SFEL");
     }
 
     @Override
@@ -1269,14 +1268,19 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFLC(LRField f, String v2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 sflc = new LogicTableF1();
+        sflc.setRecordType(LtRecordType.F1);
+        sflc.setFunctionCode("SFLC");
+        LogicTableArg arg = getArgFromField(f);
+        arg.setValue(new Cookie(v2));
+        sflc.setArg(arg);
+        sflc.setCompareType(LtCompareType.CONTAINS);
+        return sflc;
     }
 
     @Override
     public LTFileObject getSFLE(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+         return makeF2FromFieldAndField(f, f2, "CONTAINS", "SFLE");
     }
 
     @Override

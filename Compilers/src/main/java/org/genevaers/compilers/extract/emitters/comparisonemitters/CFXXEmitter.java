@@ -41,6 +41,8 @@ public class CFXXEmitter extends ComparisonEmitter{
         LogicTableArg arg2 = cfxx.getArg2();
         arg2.setFieldId(((ColumnRefAST) rhs).getViewColumn().getColumnNumber());
         arg2.setLogfileId(((ColumnRefAST) rhs).getViewColumn().getExtractArea().ordinal());
+        arg2.setStartPosition(((ColumnRefAST) rhs).getViewColumn().getExtractAreaPosition());
+        arg2.setFieldLength(((ColumnRefAST) rhs).getViewColumn().getFieldLength());
         return cfxx;
     }
 
