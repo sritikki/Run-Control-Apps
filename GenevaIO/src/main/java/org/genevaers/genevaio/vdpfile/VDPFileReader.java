@@ -307,7 +307,7 @@ public class VDPFileReader{
 		CalcStack cs = new CalcStack(bb, 0, 0);
 		cs.buildEntriesArrayFromTheBuffer();
 		col.setColumnCalculationStack(cs);
-		return null;
+		return ccs;
 	}
 
 	private VDPFileObject makeAndStoreFormatStack(VDPFileRecordReader recordReader, FileRecord rec) throws Exception {
@@ -320,7 +320,7 @@ public class VDPFileReader{
 		CalcStack cs = new CalcStack(bb, 0, 0);
 		cs.buildEntriesArrayFromTheBuffer();
 		currentView.setCalcStack(cs);
-		return null;
+		return ffs;
 	}
 
 	private void writeCSVIfNeeded( VDPFileObject vdpObject) throws IOException {

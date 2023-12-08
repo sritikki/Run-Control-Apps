@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.genevaers.genevaio.ltfile.ArgHelper;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableCC;
@@ -33,12 +34,16 @@ import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.genevaio.ltfile.LogicTableNameF2;
 import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
@@ -112,20 +117,25 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getADDP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 adde = makeNameF1FromAccumAndField(accumName, f);
+        adde.setFunctionCode("ADDP");
+        adde.setCompareType(LtCompareType.EQ);
+        return adde;
     }
 
     @Override
-    public LTFileObject getADDX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getADDX(String accum, ViewColumn vc) {
+        LogicTableNameF1 addx = getNameF1FromAccumAndColumn(accumName, vc);
+        addx.setFunctionCode("ADDX");
+        addx.setAccumulatorName(accumName);
+        return addx;
     }
 
     @Override
     public LTFileObject getCFAA(String accum, String rhsAccum, String op) {
         LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAA");
         cfac.setValue(rhsAccum);
+        cfac.setValueLength(rhsAccum.length());
         cfac.setTableName(accum);
         cfac.setCompareType(getCompareType(op));
         return cfac; 
@@ -135,6 +145,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getCFAC(String accum, String rhs, String op) {
         LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAC");
         cfac.setValue(rhs);
+        cfac.setValueLength(rhs.length());
         cfac.setTableName(accum);
         cfac.setCompareType(getCompareType(op));
         return cfac; 
@@ -176,6 +187,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getCFCA(String accum, String val, String op) {
         LogicTableNameValue cfca = makeNameValueFromAccum(accum, "CFCA");
         cfca.setValue(val);
+        cfca.setValueLength(val.length());
         cfca.setTableName(accum);
         cfca.setCompareType(getCompareType(op));
         return cfca; 
@@ -186,10 +198,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableCC cfcc = new LogicTableCC();
         cfcc.setRecordType(LtRecordType.CC);
         cfcc.setFunctionCode("CFCC");
-        cfcc.setValue1(c1);
-        cfcc.setValue1Length(c1.length());
-        cfcc.setValue2(c2);
-        cfcc.setValue2Length(c2.length());
+        cfcc.setValue1(new Cookie(c1));
+        cfcc.setValue2(new Cookie(c2));
         cfcc.setCompareType(getCompareType(op));
         cfcc.setFieldContentCode(DateCode.NONE);
         return cfcc;
@@ -216,8 +226,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfcx.setRecordType(LtRecordType.F1);
         cfcx.setArg(getColumnArg(vc));
         cfcx.setFunctionCode("CFCX");
-        cfcx.getArg().setValue(v);
-        cfcx.getArg().setValueLength(v.length());
+        cfcx.getArg().setValue(new Cookie(v));
         cfcx.setCompareType(getCompareType(op));
         return cfcx;
     }
@@ -272,8 +281,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cflc.setRecordType(LtRecordType.F1);
         cflc.setFunctionCode("CFLC");
         LogicTableArg arg = getArgFromField(f);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         cflc.setArg(arg);
         cflc.setCompareType(getCompareType(op));
         return cflc;
@@ -317,8 +325,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfec.setFunctionCode("CFPC");
         LogicTableArg arg = getArgFromField(f);
         cfec.setArg(arg);
-        arg.setValue(v2);
-        arg.setValueLength(v2.length());
+        arg.setValue(new Cookie(v2));
         cfec.setCompareType(getCompareType(op));
         return cfec;
     }
@@ -363,8 +370,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfxc.setRecordType(LtRecordType.F1);
         cfxc.setArg(getColumnArg(c));
         cfxc.setFunctionCode("CFXC");
-        cfxc.getArg().setValue(v);
-        cfxc.getArg().setValueLength(v.length());
+        cfxc.getArg().setValue(new Cookie(v));
         cfxc.setCompareType(getCompareType(op));
         return cfxc;
     }
@@ -498,7 +504,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableF1 cte = new LogicTableF1();
         cte.setRecordType(LtRecordType.F1);
         LogicTableArg arg = getArgFromField(f);
-        arg.setFieldLength((short)12);
+        arg.setFieldLength(f.getLength());
         cte.setArg(arg);
         cte.setFunctionCode("CTE");
         cte.setColumnId(v.getComponentId());
@@ -508,15 +514,26 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getCTL(LRField f, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getCTL(LRField f, ViewColumn vc) {
+        LogicTableF1 ctl = new LogicTableF1();
+        ctl.setFunctionCode("CTL");
+        ctl.setRecordType(LtRecordType.F1);
+        ctl.setCompareType(LtCompareType.EQ);
+        return ctl;
     }
 
     @Override
     public LTFileObject getCTP(LRField f, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 ctp = new LogicTableF1();
+        ctp.setRecordType(LtRecordType.F1);
+        LogicTableArg arg = getArgFromField(f);
+        arg.setFieldLength((short)12);
+        ctp.setArg(arg);
+        ctp.setFunctionCode("CTP");
+        ctp.setColumnId(v.getComponentId());
+        ctp.setSuffixSeqNbr((short)v.getColumnNumber());
+        ctp.setCompareType(LtCompareType.EQ);
+        return ctp;
     }
 
     @Override
@@ -634,14 +651,18 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getDIVP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 divp = makeNameF1FromAccumAndField(accumName, f);
+        divp.setFunctionCode("DIVP");
+        divp.setCompareType(LtCompareType.EQ);
+        return divp;
     }
 
     @Override
-    public LTFileObject getDIVX(String accum, LRField f) {
-        // TODO Auto-generated method stubL
-        return null;
+    public LTFileObject getDIVX(String accum, ViewColumn vc) {
+        LogicTableNameF1 divx = getNameF1FromAccumAndColumn(accumName, vc);
+        divx.setFunctionCode("DIVX");
+        divx.setAccumulatorName(accumName);
+        return divx;
     }
 
     @Override
@@ -684,9 +705,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getDTP(LRField f, ViewColumn v) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getDTP(LRField f, ViewColumn vc) {
+        LogicTableF2 dtp = makeF2FromFieldAndColumn(f, vc);
+        dtp.setFunctionCode("DTP");
+        return dtp;
     }
 
     @Override
@@ -718,9 +740,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableNameF2 fncc = new LogicTableNameF2();
         fncc.setRecordType(LtRecordType.NAMEF2);
         fncc.setFunctionCode("FNCC");
-        fncc.setCompareType(LtCompareType.EQ);
+        fncc.setCompareType(LtCompareType.DAYSBETWEEN);
         fncc.setArg1(arg1);
         fncc.setArg2(arg2);
+        fncc.setAccumulatorName(accum);
         return fncc;
     }
 
@@ -914,8 +937,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         join.setFunctionCode("JOIN");
         join.setFileId(0);
         LogicTableArg arg = new LogicTableArg();
-        arg.setValue(val);
-        arg.setValueLength(val.length());
+        arg.setValue(new Cookie(val));
         join.setArg(arg);
         join.setCompareType(LtCompareType.EQ);
         return join;
@@ -936,8 +958,12 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getLKC(String v) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 lkc = new LogicTableF1();
+        lkc.setRecordType(LtRecordType.F1);
+        lkc.setFunctionCode("LKC");
+        LogicTableArg arg = new LogicTableArg();
+        lkc.setArg(arg);
+        return lkc;
     }
 
     @Override
@@ -1003,8 +1029,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         join.setFunctionCode("LKLR");
         join.setFileId(0);
         LogicTableArg arg = new LogicTableArg();
-        arg.setValue(val);
-        arg.setValueLength(val.length());
+        arg.setValue(new Cookie(val));
         join.setArg(arg);
         join.setCompareType(LtCompareType.EQ);
         return join;
@@ -1012,8 +1037,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getLKS() {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 lks = new LogicTableF1();
+        lks.setRecordType(LtRecordType.F1);
+        lks.setFunctionCode("LKS");
+        return lks;
     }
 
     @Override
@@ -1064,8 +1091,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getMULP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 mulp = makeNameF1FromAccumAndField(accumName, f);
+        mulp.setFunctionCode("MULP");
+        mulp.setCompareType(LtCompareType.EQ);
+        return mulp;
     }
 
     @Override
@@ -1076,9 +1105,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getMULX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getMULX(String accum, ViewColumn vc) {
+        LogicTableNameF1 mulx = getNameF1FromAccumAndColumn(accumName, vc);
+        mulx.setFunctionCode("MULX");
+        mulx.setAccumulatorName(accumName);
+        return mulx;
     }
 
     @Override
@@ -1146,9 +1177,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSETX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSETX(String accum, ViewColumn vc) {
+        LogicTableNameF1 setx = getNameF1FromAccumAndColumn(accum, vc);
+        setx.setFunctionCode("SETX");
+        setx.setAccumulatorName(accumName);
+        return setx;
     }
 
     @Override
@@ -1158,8 +1191,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfce.setFunctionCode("SFCE");
         LogicTableArg arg = getArgFromField(f);
         sfce.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         sfce.setCompareType(LtCompareType.CONTAINS);
         return sfce;
     }
@@ -1171,8 +1203,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfcl.setFunctionCode("SFCL");
         LogicTableArg arg = getArgFromField(f);
         sfcl.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         sfcl.setCompareType(LtCompareType.CONTAINS);
         return sfcl;
     }
@@ -1184,8 +1215,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfcp.setFunctionCode("SFCP");
         LogicTableArg arg = getArgFromField(f);
         sfcp.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         sfcp.setCompareType(LtCompareType.CONTAINS);
         return sfcp;
     }
@@ -1196,8 +1226,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfcx.setRecordType(LtRecordType.F1);
         sfcx.setArg(getColumnArg(c2));
         sfcx.setFunctionCode("SFCX");
-        sfcx.getArg().setValue(v);
-        sfcx.getArg().setValueLength(v.length());
+        sfcx.getArg().setValue(new Cookie(v));
         sfcx.setCompareType(LtCompareType.CONTAINS);
         return sfcx;
     }
@@ -1209,8 +1238,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfec.setFunctionCode("SFEC");
         LogicTableArg arg = getArgFromField(f);
         sfec.setArg(arg);
-        arg.setValue(v2);
-        arg.setValueLength(v2.length());
+        arg.setValue(new Cookie(v2));
         sfec.setCompareType(LtCompareType.CONTAINS);
         return sfec;
     }
@@ -1222,8 +1250,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFEL(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+        return  makeF2FromFieldAndField(f, f2, "CONTAINS", "SFEL");
     }
 
     @Override
@@ -1241,14 +1268,19 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFLC(LRField f, String v2) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableF1 sflc = new LogicTableF1();
+        sflc.setRecordType(LtRecordType.F1);
+        sflc.setFunctionCode("SFLC");
+        LogicTableArg arg = getArgFromField(f);
+        arg.setValue(new Cookie(v2));
+        sflc.setArg(arg);
+        sflc.setCompareType(LtCompareType.CONTAINS);
+        return sflc;
     }
 
     @Override
     public LTFileObject getSFLE(LRField f, LRField f2) {
-        // TODO Auto-generated method stub
-        return null;
+         return makeF2FromFieldAndField(f, f2, "CONTAINS", "SFLE");
     }
 
     @Override
@@ -1276,8 +1308,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfpc.setFunctionCode("SFPC");
         LogicTableArg arg = getArgFromField(f);
         sfpc.setArg(arg);
-        arg.setValue(v2);
-        arg.setValueLength(v2.length());
+        arg.setValue(new Cookie(v2));
         sfpc.setCompareType(LtCompareType.CONTAINS);
         return sfpc;
     }
@@ -1311,8 +1342,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         sfxc.setRecordType(LtRecordType.F1);
         sfxc.setArg(getColumnArg(c));
         sfxc.setFunctionCode("SFXC");
-        sfxc.getArg().setValue(v);
-        sfxc.getArg().setValueLength(v.length());
+        sfxc.getArg().setValue(new Cookie(v));
         sfxc.setCompareType(LtCompareType.CONTAINS);
         return sfxc;
     }
@@ -1380,6 +1410,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public LTFileObject getSKE(LRField f, ViewColumn vc) {
         LogicTableF2 ske = makeF2FromFieldAndColumn(f, vc);
         ske.setFunctionCode("SKE");
+        ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
+        LogicTableArg arg2 = ske.getArg2();
+        arg2.setFieldLength(sk.getSkFieldLength());
+        arg2.setFieldFormat(sk.getSortKeyDataType());
         return ske;
     }
 
@@ -1393,7 +1427,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     @Override
     public LTFileObject getSKP(LRField f, ViewColumn vc) {
         LogicTableF2 skp = makeF2FromFieldAndColumn(f, vc);
-        skp.setFunctionCode("SKE");
+        skp.setFunctionCode("SKP");
         return skp;
     }
 
@@ -1439,14 +1473,18 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSUBP(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+        LogicTableNameF1 subp = makeNameF1FromAccumAndField(accumName, f);
+        subp.setFunctionCode("SUBP");
+        subp.setCompareType(LtCompareType.EQ);
+        return subp;
     }
 
     @Override
-    public LTFileObject getSUBX(String accum, LRField f) {
-        // TODO Auto-generated method stub
-        return null;
+    public LTFileObject getSUBX(String accum, ViewColumn vc) {
+        LogicTableNameF1 subx = getNameF1FromAccumAndColumn(accumName, vc);
+        subx.setFunctionCode("SUBX");
+        subx.setAccumulatorName(accumName);
+        return subx;
     }
 
     @Override
@@ -1485,8 +1523,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         cfcp.setFunctionCode(fcName);
         LogicTableArg arg = getArgFromField(f);
         cfcp.setArg(arg);
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
         cfcp.setCompareType(getCompareType(op));
         return cfcp;
     }
@@ -1507,7 +1544,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setFieldLength(f.getLength());
         arg.setJustifyId(f.getJustification());
         arg.setSignedInd(f.isSigned());
-        arg.setValueLength(0);
+        arg.setValue(new Cookie(""));
 
         arg.setLogfileId(logFileId);
         return arg;
@@ -1521,6 +1558,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         colarg.setFieldId(0);
         //TODO the start pos is dependent on extract type
         colarg.setStartPosition(vc.getExtractAreaPosition());
+        colarg.setOrdinalPosition(vc.getOrdinalPosition());
         if(vc.getExtractArea() == ExtractArea.AREACALC) {
             colarg.setFieldLength((short)12);
         } else {
@@ -1528,7 +1566,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         }
         colarg.setJustifyId(vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
-        colarg.setValueLength(0);
+        colarg.setValue(new Cookie(""));
         colarg.setPadding2("");  //This seems a little silly
         return colarg;
     }
@@ -1537,60 +1575,18 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         ArgHelper.setArgValueFrom(arg, valStr);
     }
 
-    public static void setArgValueFrom(LogicTableArg arg, int val) {
-        ArgHelper.setArgValueFrom(arg, val);
-    }
-
-    // public static void setArgValueFrom(LogicTableArg arg, RundateAST rhs) {
-    //     //This is where we need some magic to map the constant
-    //     switch(rhs.getValue()) {
-    //         case "RUNDAY":
-    //         arg.setValueLength(LTDateRunDay);
-    //         break;
-    //         case "RUNMONTH":
-    //         arg.setValueLength(LTDateRunMonth);
-    //         break;
-    //         case "RUNYEAR":
-    //         arg.setValueLength(LTDateRunYear);
-    //         break;
-    //         default:
-    //         //Error time
-    //         break;
-    //     }
-    //     if(rhs.getNumberOfChildren() > 0) {
-    //         UnaryInt ui = (UnaryInt) rhs.getChildIterator().next(); //only one child
-    //         byte[] val = new byte[256];
-    //         ByteBuffer bb = ByteBuffer.wrap(val);
-    //         int v = Integer.parseInt(ui.getValue());
-    //         ArgHelper.setArgValueFrom(arg, v);
-    //          System.out.println("Arg Int value " + v + " from bytes " + val[0] + " " + val[1] + " "+ val[2] + " "+ val[3] + " " );
-    //     }
-    // }
-
-    // public static void setArgVal(ASTBase rhs, LogicTableArg arg) {
-    //     if(rhs.getType() == Type.NUMATOM) {
-    //         setArgValueFrom(arg, ((NumAtomAST)rhs).getValue());
-    //     } else if(rhs.getType() == Type.DATEFUNC) {
-    //         setArgValueFrom(arg, ((DateFunc)rhs).getValue());
-    //     } else if(rhs.getType() == Type.RUNDATE) {
-    //         setArgValueFrom(arg, (RundateAST)rhs);
-    //     } else {
-    //         setArgValueFrom(arg, ((StringAtomAST)rhs).getValue());
-    //     }
-    // }
-
-    public static String getArgString(LogicTableArg arg) {
-        return ArgHelper.getArgString(arg);
-    }
-
     public void setLogFileId(int logFileId) {
         this.logFileId = logFileId;
     }
 
     private LogicTableArg getArgFromValueAndColumn(String v, ViewColumn vc) {
         LogicTableArg arg = getColumnArg(vc);;
-        arg.setValue(v);
-        arg.setValueLength(v.length());
+        arg.setValue(new Cookie(v));
+        arg.setLogfileId(logFileId);
+        arg.setOrdinalPosition(vc.getOrdinalPosition());
+        if(vc.getDataType() == DataType.ALPHANUMERIC) {
+            arg.setJustifyId(JustifyId.LEFT);
+        }
         return arg;
     }
 
@@ -1707,12 +1703,15 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         else
             arg.setFieldContentId(key.getDateTimeFormat());
         arg.setFieldFormat(key.getDatatype());
-        arg.setFieldId(key.getComponentId());
+        arg.setFieldId(key.getFieldId());
+        arg.setLogfileId(key.getTargetlfid());
+        arg.setLrId(key.getSourceLrId());
         //TODO the start pos is dependent on extract type
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
-        arg.setValueLength(0);
+        arg.setSignedInd(key.isSigned());
+        arg.setValue(new Cookie(key.getValue()));
         arg.setPadding2("");  //This seems a little silly
     }
 
@@ -1778,7 +1777,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         }
         colarg.setJustifyId(vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
-        colarg.setValueLength(0);
+        colarg.setValue(new Cookie(""));
         colarg.setPadding2("");  //This seems a little silly
         return colarg;
     }

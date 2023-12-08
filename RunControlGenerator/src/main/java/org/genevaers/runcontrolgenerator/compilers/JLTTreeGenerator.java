@@ -56,7 +56,7 @@ public class JLTTreeGenerator {
     private RTHHeader rthHeader;
     private ExtractBaseAST joinsRoot;
     private List<JLTView> headerEntries = new ArrayList<>();
-    private int ddnum = 1;
+    private int joinNumber = 1;
 
     public JLTTreeGenerator(LogicTableEmitter ltEmitter) {
         jltEmitter = ltEmitter;
@@ -99,12 +99,12 @@ public class JLTTreeGenerator {
         ViewSourceAstNode currentViewNode = null;
         while(ri.hasNext()) {
             ReferenceJoin refJoin = ri.next();
-            refJoin.setDDNumber(ddnum);
-            currentViewNode = jvGenerator.addViewToLFNode(refJoin, lfNode);
+            refJoin.setDDNumber(joinNumber);
+            currentViewNode = jvGenerator.addViewToLFNode(refJoin, lfNode, joinNumber);
             headerEntries.add(refJoin);
-            ddnum++;
             LookupType lkt = refJoin.getLookupType();
             Repository.getJoinViews().addJoinTarget((byte)(lkt == LookupType.SKT ? 2 : 1), lfNode.getLogicalFile().getID(), lfNode.getName());
+            joinNumber++;
         }
         jvGenerator.addRecordCountIncrement(currentViewNode);
         jvGenerator.addEndofSet(currentViewNode);
@@ -176,11 +176,13 @@ public class JLTTreeGenerator {
         hdrPf.setReadExitIDParm("");
         hdrPf.setDatabaseRowFormat(DbmsRowFmtOptId.NONE);
         hdrPf.setInputDDName("");
-        hdrPf.setFieldDelimiter(FieldDelimiter.INVALID);
-        hdrPf.setRecordDelimiter(RecordDelimiter.FIXED);
+        hdrPf.setFieldDelimiter(FieldDelimiter.FIXEDWIDTH);
+        hdrPf.setRecordDelimiter(RecordDelimiter.VARIABLE_EXCLUSIVE);
         hdrPf.setTextDelimiter(TextDelimiter.INVALID);
         hdrPf.setAccessMethod(AccessMethod.SEQUENTIAL);
-        hdrPf.setRecfm(FileRecfm.FB);
+        hdrPf.setRecfm(FileRecfm.VB);
+        hdrPf.setLrecl((short)4144);
+        hdrPf.setDatabaseRowFormat(DbmsRowFmtOptId.SQL);
         Repository.getPhysicalFiles().add(hdrPf, viewNum);
         LogicalFile lf = new LogicalFile();
         lf.setID(viewNum);

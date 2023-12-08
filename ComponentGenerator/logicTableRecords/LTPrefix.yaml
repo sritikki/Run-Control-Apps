@@ -6,6 +6,7 @@ fields:
   type: short
 - name: version
   type: short
+  default: 4
 - name: file_id
   type: integer
 - name: row_nbr

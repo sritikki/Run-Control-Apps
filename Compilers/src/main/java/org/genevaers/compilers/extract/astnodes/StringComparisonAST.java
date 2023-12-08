@@ -214,25 +214,15 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
 
     @Override
     public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        if (isNot) {
-            goto1 = compF;
-            goto2 = compT;
-        } else {
-            ((LTRecord)ltfo).setGotoRow1(compT);
-            ((LTRecord)ltfo).setGotoRow2(compF);
-        }
+        ((LTRecord)ltfo).setGotoRow1(compT);
+        ((LTRecord)ltfo).setGotoRow2(compF);
 
         // resolve children
         ExtractBaseAST lhs = (ExtractBaseAST) children.get(0);
         ExtractBaseAST rhs = (ExtractBaseAST) children.get(1);
         if (lhs != null && rhs != null) {
-            if (isNot) {
-                lhs.resolveGotos(compT, compF, joinT, getEndOfLogic());
-                rhs.resolveGotos(compT, compF, joinT, getEndOfLogic());
-            } else {
-                lhs.resolveGotos(compT, compF, joinT, joinF);
-                rhs.resolveGotos(compT, compF, joinT, joinF);
-            }
+            lhs.resolveGotos(compT, compF, joinT, joinF);
+            rhs.resolveGotos(compT, compF, joinT, joinF);
         }
     }
 

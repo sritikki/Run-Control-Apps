@@ -5,6 +5,7 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -67,6 +68,7 @@ public class IsNumericAST extends ExtractBaseAST implements  EmittableASTNode{
         lkf.getLkEmitter().emitJoin(lkf, false);
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         ltfo = fcf.getCNL(((LookupFieldRefAST)lkp).getRef());
+        ((LogicTableF1)ltfo).getArg().setLogfileId(lkf.getLookup().getTargetLFID());
         addToLogicTableAndInitialiseGotos(ltfo);
     }
 
@@ -98,16 +100,9 @@ public class IsNumericAST extends ExtractBaseAST implements  EmittableASTNode{
         ExtractBaseAST source = (ExtractBaseAST) children.get(0);
 
         if (source != null) {
-                if (isNot) {
-                    ((LTRecord)ltfo).setGotoRow1(compF);
-                    ((LTRecord)ltfo).setGotoRow2(compT);
-                    source.resolveGotos(compF, compT, joinT, joinF);
-                }
-                else {
-                    ((LTRecord)ltfo).setGotoRow1(compT);
-                    ((LTRecord)ltfo).setGotoRow2( compF );
-                    source.resolveGotos(compT, compF, joinT, joinF);
-               }
+            ((LTRecord)ltfo).setGotoRow1(compT);
+            ((LTRecord)ltfo).setGotoRow2( compF );
+            source.resolveGotos(compT, compF, joinT, joinF);
         }
     }
 

@@ -77,7 +77,7 @@ public class LTRecordGenerator extends GeneratorBase{
 		// build lists of the strings to be written
 		FreemarkerFieldEntries freeMarkerEntries = new FreemarkerFieldEntries(); 
 		if(record.getRecordName().equals("LogicTableArg")) {
-			freeMarkerEntries.addEntriesFrom(arg);
+			freeMarkerEntries.addEntriesFrom(arg, false);
 		} else {
 			freeMarkerEntries.addEntriesFrom(prefix, arg, record);
 		}

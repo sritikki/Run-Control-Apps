@@ -28,6 +28,8 @@ import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
 
+import difflib.StringUtills;
+
 public class ViewRecordParser extends RecordParser {
 
 	private ViewDefinition vd;
@@ -45,10 +47,6 @@ public class ViewRecordParser extends RecordParser {
 					componentID = Integer.parseInt(id);
 					vd = new ViewDefinition();
 					vd.setComponentId(componentID);
-					vd.setProcessAsofDate("");
-					vd.setLookupAsofDate("");
-					vd.setFillErrorValue("###########################");
-					vd.setFillTruncationValue("********************************");
 					vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 					break;
 
@@ -82,10 +80,11 @@ public class ViewRecordParser extends RecordParser {
 					break;
 
 				case "PAGESIZE":
+					vd.setOutputPageSizeMax((short)Integer.parseInt(text.trim()));
 					break;
-				// // fieldValue = parseField("LINESIZE", record);
-				// // trans.setLineSize(fieldToInteger("LINESIZE", fieldValue));
-
+				case "LINESIZE":
+					vd.setOutputLineSizeMax((short)Integer.parseInt(text.trim()));
+					break;
 				case "ZEROSUPPRESSIND":
 					vd.setZeroValueRecordSuppression(text.equals("0") ? false : true);
 					break;
@@ -118,10 +117,15 @@ public class ViewRecordParser extends RecordParser {
 					break;
 				case "DELIMHEADERROWIND":
 					vd.setGenerateDelimitedHeader(text.equals("0") ? false : true);
+					break;
 				case "FORMATFILTLOGIC":
 					vn.setFormatFilterLogic(removeBRLineEndings(text));
 					break;
-
+				case "CREATEDUSERID":
+				case "LASTMODUSERID": //Last will overwrite the created if set
+					vd.setOwnerUser(text);
+					break;
+				
 				default:
 					// logger.atInfo().log(reader.getText());
 					break;

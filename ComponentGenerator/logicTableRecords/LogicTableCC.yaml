@@ -8,19 +8,13 @@ fields:
 - name: value1_area  
   type: dsect_operand
   value: 0CL260            
-- name: value1_length  
-  type: integer
-- name: value1  
-  type: string
-  maxlength: 256
+- name: value1
+  type: cookie
 - name: value2_area  
   type: dsect_operand
   value: 0CL260
-- name: value2_length  
-  type: integer
-- name: value2  
-  type: string
-  maxlength: 256
+- name: value2
+  type: cookie
 - name: compare_type  
   type: enum
   existing_java_type: org.genevaers.repository.components.enums.LtCompareType            

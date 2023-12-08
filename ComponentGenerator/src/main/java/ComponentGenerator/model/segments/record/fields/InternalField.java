@@ -77,7 +77,7 @@ public class InternalField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry() {
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
         StringBuilder strB = new StringBuilder();
         strB.append(DBLINDENT + "RecordPartNode " + name + "n = new RecordPartNode();\n");
         strB.append(DBLINDENT + name +"n.setName(recordType + \"_\" + rowNbr + \"_" + name + "\");\n");

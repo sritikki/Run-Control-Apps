@@ -29,7 +29,7 @@ public class FormatASTFactory {
         FORMATROOT("Format Root"), 
         COLREF("Column Ref"), 
         NUMCONST("Number"), 
-        SKIPIF("SkipId"), 
+        SKIPIF("SkipIf"), 
         OROP("Or"), 
         ANDOP("And"),
         NOTOP("Not"), 

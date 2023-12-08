@@ -120,8 +120,8 @@ public class ViewDotFile {
 
 	//The Join should be part of the Event set cluster?
 	public JoinDotWriter addJoin(LogicTableF1 join, boolean joinDetailed, short currentViewSource) {
-		logger.atInfo().log("Add Join %s to view %d", ArgHelper.getArgString(join.getArg()), viewID);
-		String val =  ArgHelper.getArgString(join.getArg());
+		logger.atInfo().log("Add Join %s to view %d", join.getArg().getValue().getString(), viewID);
+		String val = join.getArg().getValue().getString();
 		String joinPerSource = val + "_" + currentViewSource;
 
 		JoinDotWriter jdw = joinWriters.get(joinPerSource);

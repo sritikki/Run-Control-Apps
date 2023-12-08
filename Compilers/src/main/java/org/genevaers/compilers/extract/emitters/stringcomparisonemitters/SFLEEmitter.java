@@ -41,7 +41,7 @@ public class SFLEEmitter extends StringComparisonEmitter{
 
         lkf.getLkEmitter().emitJoin(lkf, false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
-        LogicTableF2 cfle = (LogicTableF2) ltFact.getCFLE(((LookupFieldRefAST) lhs).getRef(), ((FieldReferenceAST)rhs).getRef(), op);
+        LogicTableF2 cfle = (LogicTableF2) ltFact.getSFLE(((LookupFieldRefAST) lhs).getRef(), ((FieldReferenceAST)rhs).getRef());
         LogicTableArg arg = cfle.getArg1();
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);
         LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());

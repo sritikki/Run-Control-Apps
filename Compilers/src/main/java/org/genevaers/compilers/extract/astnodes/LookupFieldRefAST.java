@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 
@@ -27,6 +28,7 @@ import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF0;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
+import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalRecord;
@@ -34,6 +36,10 @@ import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
+import org.genevaers.repository.jltviews.JLTView;
+import org.genevaers.repository.jltviews.JoinViewsManager;
+import org.genevaers.repository.jltviews.ReferenceJoin;
 
 public class LookupFieldRefAST extends LookupPathAST implements Assignable, CalculationSource, Concatable{
 
@@ -42,7 +48,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     public LookupFieldRefAST() {
         type = ASTFactory.Type.LOOKUPFIELDREF;
     }
-
  
     public void resolveField(LookupPath lk, String fieldName) {
         //get the targer LR
@@ -52,7 +57,10 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         LRField fld = targLR.findFromFieldsByName(fieldName);
         if(fld != null) {       
             ref = fld;
-            Repository.getJoinViews().addJLTViewField(lookup, fld);
+            JLTView jv = Repository.getJoinViews().addJLTViewField(lookup, fld);
+            if(currentViewColumnSource != null) {
+                jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
+            }
         } else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
             err.addError("Unkown field " + fieldName);
@@ -74,13 +82,12 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         arg1.setFieldLength(ref.getLength());
         arg1.setJustifyId(ref.getJustification());
         arg1.setSignedInd(ref.isSigned());
-        arg1.setValueLength(0);
+        arg1.setValue(new Cookie(0, ""));
         arg1.setPadding2("");  //This seems a little silly
     }
 
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST lhs, ExtractBaseAST rhs) {
-        getLkEmitter().emitJoin(this, false);
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         //An issue here is that the original ref field has been mapped to a generated field
         //That is within the RED LR
@@ -103,6 +110,24 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             LogicTableArg arg2 = dtl.getArg2();
             flipDataTypeIfFieldAlphanumeric(arg1, arg2);
             ltEmitter.addToLogicTable((LTRecord)dtl);
+        }else if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
+            LogicTableF1 ctl = (LogicTableF1) fcf.getCTL(redField, currentViewColumn);
+            ctl.setColumnId(currentViewColumn.getComponentId());
+            LogicTableArg arg1 = new LogicTableArg();
+            ctl.setArg(arg1);
+            arg1.setLogfileId(lookup.getTargetLFID());
+            arg1.setLrId(lookup.getTargetLRID());
+            arg1.setFieldId(ref.getComponentId());
+            arg1.setFieldFormat(getDataType());
+            arg1.setFieldContentId(getDateCode());
+            arg1.setFieldFormat(redField.getDatatype());
+            arg1.setStartPosition(redField.getStartPosition());
+            arg1.setFieldLength(redField.getLength());
+            arg1.setDecimalCount(redField.getNumDecimalPlaces());
+            arg1.setOrdinalPosition(currentViewColumn.getOrdinalOffset());
+            arg1.setJustifyId(JustifyId.RIGHT);
+            arg1.setValue(new Cookie(""));
+            ltEmitter.addToLogicTable((LTRecord)ctl);
         } else {
             LogicTableF2 skl = (LogicTableF2) fcf.getSKL(redField, currentViewColumn);
             skl.getArg1().setLogfileId(lookup.getTargetLFID());
@@ -112,87 +137,115 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setFieldId(ref.getComponentId());
             arg1.setFieldFormat(getDataType());
             arg1.setFieldContentId(getDateCode());
-            LogicTableArg arg2 = skl.getArg2();
-            flipDataTypeIfFieldAlphanumeric(arg1, arg2);
+            LogicTableArg skarg2 = skl.getArg2();
+            flipDataTypeIfFieldAlphanumeric(arg1, skarg2);
             ltEmitter.addToLogicTable((LTRecord)skl);
         }
-        emitLookupDefault();
         return null;
     }
 
     @Override
     public LTFileObject emitSetFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getSETL("", ref));
+        //The ref field should now be replaced by the gen lr field.
+        //How do we get to it?
+        LogicTableNameF1 setl = (LogicTableNameF1) fcf.getSETL("", ref);
+        LogicTableArg arg = setl.getArg();
+        argFixup(arg);
+        ltEmitter.addToLogicTable((LTRecord)setl);
         return null;
+    }
+
+    private void argFixup(LogicTableArg arg) {
+        ReferenceJoin refJoin = Repository.getJoinViews().getReferenceJLTViews().getJLTView(ref.getLrID(), false);
+        LRField redField = refJoin.getRedLR().findFromFieldsByName(ref.getName());
+        JoinViewsManager jvm = Repository.getJoinViews();
+        arg.setStartPosition(redField.getStartPosition());
+        arg.setLogfileId(lookup.getTargetLFID());
+        arg.setOrdinalPosition(ref.getOrdinalPosition());
     }
 
     @Override
     public LTFileObject emitAddFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getADDL("", ref));
+        LogicTableNameF1 addl = (LogicTableNameF1) fcf.getADDL("", ref);
+        argFixup(addl.getArg());
+        ltEmitter.addToLogicTable((LTRecord)addl);
         return null;
     }
 
     @Override
     public LTFileObject emitSubFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getSUBL("", ref));
+        LogicTableNameF1 subl = (LogicTableNameF1) fcf.getSUBL("", ref);
+        argFixup(subl.getArg());
+        ltEmitter.addToLogicTable((LTRecord)subl);
         return null;
     }
 
     @Override
     public LTFileObject emitMulFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getMULL("", ref));
+        LogicTableNameF1 mull = (LogicTableNameF1) fcf.getMULL("", ref);
+        argFixup(mull.getArg());
+        ltEmitter.addToLogicTable((LTRecord)mull);
         return null;
     }
 
     @Override
     public LTFileObject emitDivFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getDIVL("", ref));
+        LogicTableNameF1 divl = (LogicTableNameF1) fcf.getMULL("", ref);
+        argFixup(divl.getArg());
+        ltEmitter.addToLogicTable((LTRecord)divl);
         return null;
     }
 
-    private void emitLookupDefault() {
+    public void emitLookupDefault() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        //Emit goto followed by correct DTC
+        // Emit goto followed by correct DTC
         LogicTableF0 ltgoto = (LogicTableF0) fcf.getGOTO();
-        ltEmitter.addToLogicTable((LTRecord)ltgoto);
+        ltEmitter.addToLogicTable((LTRecord) ltgoto);
 
-        //we could let the fcf auto correc the DT type base on the column?
-        switch(currentViewColumn.getExtractArea()) {
+        // we could let the fcf auto correc the DT type base on the column?
+        switch (currentViewColumn.getExtractArea()) {
             case AREADATA:
-            if(currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getDTC("", currentViewColumn));
-            } else {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getDTC("0", currentViewColumn));
-            }
-            break;
-            
+                LogicTableF1 dtc;
+                if (currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
+                    dtc = (LogicTableF1)fcf.getDTC(" ", currentViewColumn);
+                } else {
+                    dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
+                }
+                if(currentViewColumn.getDateCode() == ref.getDateTimeFormat()) {
+                    dtc.getArg().setFieldContentId(DateCode.NONE);
+                } 
+                ltEmitter.addToLogicTable((LTRecord)dtc );
+                break;
+
             case AREACALC:
-            if(currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getCTC("", currentViewColumn));
-            } else {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getCTC("0", currentViewColumn));
-            }
+                if (currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
+                    ltEmitter.addToLogicTable((LTRecord) fcf.getCTC(" ", currentViewColumn));
+                } else {
+                    ltEmitter.addToLogicTable((LTRecord) fcf.getCTC("0", currentViewColumn));
+                }
                 break;
             case INVALID:
                 break;
             case SORTKEY:
-            if(currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getSKC("", currentViewColumn));
-            } else {
-                ltEmitter.addToLogicTable((LTRecord)fcf.getSKC("0", currentViewColumn));
-            }
+                if (currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
+                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC(" ", currentViewColumn));
+                } else {
+                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC("0", currentViewColumn));
+                }
                 break;
             case SORTKEYTITLE:
                 break;
             default:
                 break;
-    }
+        }
         ltgoto.setGotoRow1(ltEmitter.getNumberOfRecords());
+        //Can now set the lkEmitter gotos
+        lkEmitter.setFalseGotos(null);
     }
 
     @Override
@@ -214,7 +267,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg2.setFieldFormat(DataType.ZONED);
         }
     }
-
 
     @Override
     public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
@@ -245,7 +297,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         return arg1.getFieldLength();
     }
 
-
     @Override
     public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
         getAssignmentEntry(col, rhs);
@@ -261,7 +312,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         }
         return length;
     }
-
 
     @Override
     public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
@@ -280,7 +330,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         return length;
     }
 
-
     @Override
     public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length) {
         getAssignmentEntry(col, rhs);
@@ -296,5 +345,10 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             //Error 
         }
         return length;
+    }
+
+    public void fixupGotos() {
+        //
+        goto2 = ltEmitter.getNumberOfRecords();
     }
 }

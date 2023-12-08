@@ -45,8 +45,10 @@ public class ExtractAST2Dot {
     private static final String LIGHTGREY = "lightgrey";
     private static final String FRAME = "lightgrey";
     private static final String DATASOURCE = "deepskyblue";
+    private static final String LKDATASOURCE = "limegreen";
     private static final String COMPARISON = "lightgreen";
     private static final String ASSIGNMENT = "violet";
+    private static final String EXTACT_FILTER = "lightpink";
     private static final String CAST = "red";
     private static final String STRINGCONST = "springgreen";
     private static final String NUMCONST = "springgreen";
@@ -203,8 +205,12 @@ public class ExtractAST2Dot {
                 case ERRORS:
                     dotErrorNode(node);
                     break;
+                case SELECTIF:
+                case SKIPIF:
                 case IFNODE:
                 case BOOLAND:
+                case ISFOUND:
+                case ISNOTFOUND:
                     dotFrameworkNode(node);
                     break;
                 case ISNULL:
@@ -254,8 +260,17 @@ public class ExtractAST2Dot {
                 case EOS:
                     doEOS(node);
                     break;
+                case LOOKUPREF:
+                    dotLookupNode(node);
+                    break;
                 case LOOKUPFIELDREF:
                     dotLookupFieldNode(node);
+                    break;
+                case DATEFUNC:
+                    doDateFunc(node);
+                    break;
+                case EXTRFILTER:
+                    doExtractFilter(node);
                     break;
                 default:
                     dotDefaultNode(node);
@@ -267,6 +282,21 @@ public class ExtractAST2Dot {
             }
         }
         return idString;
+    }
+
+    private static void doExtractFilter(ExtractBaseAST node) {
+        idString = "UN_" + nodeNum++;
+        ExtractFilterAST ef = (ExtractFilterAST) node;
+        label =  dotEscape(node.getType().toString() + "\n" + ef.getLogicText());
+        colour = EXTACT_FILTER;
+    }
+
+    private static void doDateFunc(ExtractBaseAST node) {
+       idString = "UN_" + nodeNum++;
+        DateFunc df = (DateFunc) node;
+        label =  "DATE(" + df.getValue() + "," + df.getDateCodeStr() + ")";
+        colour = DATECONST;
+        reverseArrow = true;
     }
 
     private static void doFunctionNode(ExtractBaseAST node) {
@@ -350,7 +380,7 @@ public class ExtractAST2Dot {
     private static void dotRundate(ExtractBaseAST node) {
         idString = "UN_" + nodeNum++;
         RundateAST rd = (RundateAST) node;
-        label = rd.getValue();
+        label = rd.getValueString();
         colour = DATECONST;
         reverseArrow = true;
     }
@@ -443,9 +473,21 @@ public class ExtractAST2Dot {
 
     private static void dotLookupFieldNode(ExtractBaseAST node) {
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) node;
-        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName();
-        colour = DATASOURCE;
+        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName() + "\n" + lkfieldRef.getUniqueKey() + " -> " + lkfieldRef.getNewJoinId();;
+        colour = LKDATASOURCE;
         idString = "Field_" + nodeNum++;
+        reverseArrow = true;
+    }
+
+    private static void dotLookupNode(ExtractBaseAST node) {
+        LookupPathRefAST lkRef = (LookupPathRefAST) node;
+        if(lkRef.getLookup() != null) {
+            label = lkRef.getLookup().getName() + "\n" + lkRef.getUniqueKey() + " -> " + lkRef.getNewJoinId();
+        } else {
+            label = "NULL Lookup";
+        }
+        colour = LKDATASOURCE;
+        idString = "LK_" + nodeNum++;
         reverseArrow = true;
     }
 
@@ -533,8 +575,7 @@ public class ExtractAST2Dot {
             nodeEnabled = Arrays.stream(views).anyMatch(Integer.toString(vs.getViewId())::equals);
         }
         idString = lf_id + "_VS_" + vs.getViewId() + "_" + vs.getSequenceNumber();
-        label = dotEscape(
-                "View " + vs.getViewId() + " Source " + vs.getSequenceNumber() + "\n" + vs.getExtractFilter());
+        label = dotEscape("View " + vs.getViewId() + " Source " + vs.getSequenceNumber());
         colour = "PaleGreen";
     }
 

@@ -25,6 +25,7 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 
 public class CFXCEmitter extends ComparisonEmitter{
@@ -33,6 +34,9 @@ public class CFXCEmitter extends ComparisonEmitter{
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF1 cfxc = (LogicTableF1) ltFact.getCFXC(((ColumnRefAST) lhs).getViewColumn(), ((GenevaERSValue)rhs).getValueString(), op);
+        LogicTableArg arg1 = cfxc.getArg();
+        arg1.setFieldId(((ColumnRefAST) lhs).getViewColumn().getColumnNumber());
+        arg1.setLogfileId(((ColumnRefAST) lhs).getViewColumn().getExtractArea().ordinal());
         return cfxc;
     }
 

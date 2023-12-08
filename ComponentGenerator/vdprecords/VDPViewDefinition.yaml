@@ -41,7 +41,7 @@ fields:
 - name: owner_user
   type: string
   maxlength: 8
-  component_field: none
+  component_field: ownerUser
 - name: output_media
   type: enum
   existing_java_type: org.genevaers.repository.components.enums.OutputMedia
@@ -72,13 +72,12 @@ fields:
   component_field: none
 - name: output_page_size_max
   type: short
-  component_field: none
+  component_field: outputPageSizeMax
 - name: output_line_size_max
   type: short
-  component_field: none
+  component_field: outputLineSizeMax
 - name: output_col_hdr_lns_max
   type: short
-  component_field: none
 - name: output_nbr_of_copies
   type: short
   component_field: none
@@ -106,11 +105,11 @@ fields:
 - name: process_asof_date
   type: string
   maxlength: 8
-  component_field: processAsofDate
+  component_field: none
 - name: lookup_asof_date
   type: string
   maxlength: 8
-  component_field: lookupAsofDate
+  component_field: none
 - name: proc_rel_period_id
   type: integer
   component_field: none
@@ -120,11 +119,9 @@ fields:
 - name: fill_error_value
   type: string
   maxlength: 256
-  component_field: fillErrorValue
 - name: fill_truncation_value
   type: string
   maxlength: 256
-  component_field: fillTruncationValue
 - name: freq_code_letters
   type: short
   component_field: none

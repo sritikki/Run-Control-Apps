@@ -61,10 +61,13 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXLEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXPEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXXEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonEmitter;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.LtRecordType;
 
 public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNode{
@@ -112,6 +115,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
     private ExtractBaseAST lhs;
     private ExtractBaseAST rhs;
     private DataType lhsCastTo;
+    private DataType rhsCastTo;
 
     public ExprComparisonAST() {
         type = ASTFactory.Type.EXPRCOMP;
@@ -225,6 +229,13 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
             lhs = (ExtractBaseAST) cast.decast();
             lhsCastTo = ((DataTypeAST)cast.getChildIterator().next()).getDatatype();
         }
+        if(rhsin.getType() == Type.CAST){
+            //add a decast to the node
+            //note we need to change the formatID of the datasource
+            CastAST cast = (CastAST) rhsin;
+            rhs = (ExtractBaseAST) cast.decast();
+            rhsCastTo = ((DataTypeAST)cast.getChildIterator().next()).getDatatype();
+        }
         return emitters.get(new ComparisonKey(lhs.getType(), rhs.getType()));
     }
 
@@ -255,25 +266,18 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
 
     @Override
     public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        if (isNot) {
-            goto1 = compF;
-            goto2 = compT;
-        } else {
+        if(ltfo != null) {
             ((LTRecord)ltfo).setGotoRow1(compT);
             ((LTRecord)ltfo).setGotoRow2(compF);
         }
-
+        //Do we need this - case in point LHS is a LookupFieldRef?
+        //emitterToUse.resolveGotos(compT, compF, joinT, compF);
         // resolve children
         ExtractBaseAST lhs = (ExtractBaseAST) children.get(0);
         ExtractBaseAST rhs = (ExtractBaseAST) children.get(1);
         if (lhs != null && rhs != null) {
-            if (isNot) {
-                lhs.resolveGotos(compT, compF, joinT, getEndOfLogic());
-                rhs.resolveGotos(compT, compF, joinT, getEndOfLogic());
-            } else {
-                lhs.resolveGotos(compT, compF, joinT, joinF);
-                rhs.resolveGotos(compT, compF, joinT, joinF);
-            }
+            lhs.resolveGotos(compT, compF, joinT, compF);
+            rhs.resolveGotos(compT, compF, joinT, compF);
         }
     }
 
@@ -283,6 +287,56 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         if( lhsCastTo != null) {
             if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
                 ((LogicTableF1)ltfo).getArg().setFieldFormat(lhsCastTo);
+            }
+        }
+        if( rhsCastTo != null) {
+            if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
+                ((LogicTableF1)ltfo).getArg().setFieldFormat(rhsCastTo);
+            }
+        }
+        FormattedASTNode frmtLhs = ((FormattedASTNode) lhs);
+        FormattedASTNode frmtRhs = ((FormattedASTNode) rhs);
+        if(((LTRecord)ltfo).getRecordType() == LtRecordType.F2) {
+            if(frmtLhs.getDataType() == DataType.ALPHANUMERIC && frmtRhs.isNumeric()) {
+                //flip LHS to Zoned
+                //TODO Generate Warning
+                ((LogicTableF2)ltfo).getArg1().setFieldFormat(DataType.ZONED);
+            } else if(frmtLhs.isNumeric() && frmtRhs.getDataType() == DataType.ALPHANUMERIC) {
+                ((LogicTableF2)ltfo).getArg2().setFieldFormat(DataType.ZONED);
+                //flip RHS to Zoned
+            }
+        }
+        //Date mamangement
+        //Strip off if equal or only one sided
+        if(((LTRecord)ltfo).getRecordType() == LtRecordType.F1) {
+            FieldReferenceAST fld = null;
+            DateCode lhsDate = DateCode.NONE;
+            DateCode rhsDate = DateCode.NONE;
+            String ds = "";
+            if(((LTRecord)ltfo).getFunctionCode().equals("CFEC") ) {
+                fld = ((FieldReferenceAST) lhs);
+                lhsDate = fld.getDateCode();
+                if(rhs.getType() == ASTFactory.Type.DATEFUNC) {
+                    ds = ((DateFunc)rhs).getNormalisedDate();
+                    rhsDate = ((DateFunc)rhs).getDateCode();
+                } else if(rhs.getType() == ASTFactory.Type.FISCALDATE) {
+                    //rhsDate = ((FiscaldateAST)rhs).getDateCode();
+                    rhsDate = DateCode.HHMMSS; //Frig to leave code as it is
+                } else if(rhs.getType() ==  ASTFactory.Type.RUNDATE) {
+                    rhsDate = ((RundateAST)rhs).getDateCode();
+                }
+            } else if(((LTRecord)ltfo).getFunctionCode().equals("CFCE") ) {
+                fld = ((FieldReferenceAST) rhs);
+                rhsDate = fld.getDateCode();
+                if(lhs.getType() == ASTFactory.Type.DATEFUNC) {
+                    ds = ((DateFunc)lhs).getNormalisedDate();
+                    lhsDate = ((DateFunc)lhs).getDateCode();
+                }
+            }
+            if(lhsDate == rhsDate || lhsDate == DateCode.NONE || rhsDate == DateCode.NONE) {
+                ((LogicTableF1)ltfo).getArg().setFieldContentId(DateCode.NONE);
+            } else if(ds.length() > 0) {
+                ((LogicTableF1)ltfo).getArg().setValue(new Cookie(ds.length(), ds));
             }
         }
     }

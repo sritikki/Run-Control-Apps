@@ -69,35 +69,35 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
     @Override
     public LTFileObject emitSetFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getSETC(((CalculationAST)parent.getParent()).getAccName(), String.valueOf(value)));
+        ltEmitter.addToLogicTable((LTRecord)fcf.getSETC(((CalculationAST)parent.getParent()).getAccName(), numStr));
         return null;
     }
 
     @Override
     public LTFileObject emitAddFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getADDC(((CalculationAST)parent.getParent()).getAccName(), String.valueOf(value)));
+        ltEmitter.addToLogicTable((LTRecord)fcf.getADDC(((CalculationAST)parent.getParent()).getAccName(), numStr));
         return null;
     }
 
     @Override
     public LTFileObject emitSubFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getSUBC("", String.valueOf(value)));
+        ltEmitter.addToLogicTable((LTRecord)fcf.getSUBC(((CalculationAST)parent.getParent()).getAccName(), numStr));
         return null;
     }
 
     @Override
     public LTFileObject emitMulFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getMULC("", String.valueOf(value)));
+        ltEmitter.addToLogicTable((LTRecord)fcf.getMULC(((CalculationAST)parent.getParent()).getAccName(), numStr));
         return null;
     }
 
     @Override
     public LTFileObject emitDivFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        ltEmitter.addToLogicTable((LTRecord)fcf.getDIVC("", String.valueOf(value)));
+        ltEmitter.addToLogicTable((LTRecord)fcf.getDIVC(((CalculationAST)parent.getParent()).getAccName(), numStr));
         return null;
     }
 

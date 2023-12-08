@@ -36,13 +36,13 @@ public class NumConst extends FormatBaseAST{
     }
 
     public String getValue() {
-        return value;
+        return negative ? "-" + value : value;
     }
 
     @Override
     public CalcStackEntry emit(boolean invert) {
         CalcStackShortStringEntry se = (CalcStackShortStringEntry) emitShortStringCodeEntry(CalcStackOpcode.CalcStackPushNumber, null);
-        se.setValue(value);
+        se.setValue(negative ? "-" + value : value);
         return se;
     }
 }

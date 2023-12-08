@@ -69,7 +69,7 @@ public class DsectOperandField extends Field{
     }
 
     @Override
-    public String getFieldNodeEntry() {
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
         return null;    }
     
 }

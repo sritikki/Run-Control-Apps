@@ -24,5 +24,8 @@ public class ReferenceJoin extends JLTView {
         super(lr, lkup);
     }
 
+    public void setEffectiveDateLrid(int lrid) {
+    }
+
 
 }

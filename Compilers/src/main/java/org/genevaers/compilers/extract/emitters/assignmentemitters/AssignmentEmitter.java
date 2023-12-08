@@ -21,6 +21,7 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.emitters.CodeEmitter;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.repository.components.ViewColumn;
@@ -85,7 +86,7 @@ public abstract class AssignmentEmitter extends CodeEmitter {
         colarg.setFieldLength(vc.getFieldLength());
         colarg.setJustifyId(vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
-        colarg.setValueLength(0);
+        colarg.setValue(new Cookie(""));
         colarg.setPadding2("");  //This seems a little silly
         return colarg;
     }

@@ -48,7 +48,7 @@ public class AssignmentDataCheckerFactory {
             // }
             if (vc.getDateCode() == frhs.getDateCode()) {
                 frhs.overrideDateCode(DateCode.NONE);
-                vc.setDateCode(DateCode.NONE);
+                column.setWorkingCode(DateCode.NONE);
                 // Stip off the content codes.
                 // But in a copy not the original - or use an override type
                 // Which is where the TypeASTNode should come in...

@@ -1,5 +1,6 @@
 package org.genevaers.genevaio.wbxml;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.TreeMap;
@@ -45,14 +46,10 @@ import com.google.common.flogger.FluentLogger;
 public class WBXMLSaxIterator {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private InputStream inputStream;
     private XMLStreamReader reader;
+    private BufferedInputStream inputBuffer;
 
     private TreeMap<String, CatalogEntry> catalog = new TreeMap<>();
-
-    public void inputFrom(InputStream is) {
-        inputStream = is;
-    }
 
     public void addToRepsitory() {
         initXMLFactories();
@@ -75,9 +72,11 @@ public class WBXMLSaxIterator {
         // prevent xxe
         xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
 
         try {
-            reader = xmlInputFactory.createXMLStreamReader(inputStream);
+            //reader = xmlInputFactory.createXMLStreamReader(inputStream);
+            reader = xmlInputFactory.createXMLStreamReader(inputBuffer);
         } catch (XMLStreamException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -126,7 +125,7 @@ public class WBXMLSaxIterator {
                         parseRecordsForElementWithParser(elementName, new ViewSourceRecordParser());
                         break;
                     case "View-Column-Source":
-                        logger.atFine().log("Parsing View-Column-Sourc");
+                        logger.atFine().log("Parsing View-Column-Source");
                         parseRecordsForElementWithParser(elementName, new ViewColumnSourceRecordParser());
                         break;
                     case "View-SortKey":
@@ -262,6 +261,10 @@ public class WBXMLSaxIterator {
 
     public Collection<CatalogEntry> getCatalogEntries() {
         return catalog.values();
+    }
+
+    public void setInputBuffer(BufferedInputStream ib) {
+        inputBuffer = ib;
     }
 
 }

@@ -13,7 +13,9 @@ public class FieldNodeBase {
         METADATA("Metadata"), 
         VIEW("View"), 
         ROOT("Root"), 
-        RECORDPART("RecordPart")
+        RECORDPART("RecordPart"), 
+        NOCOMPONENT("No Component"), 
+        FUNCCODE("FunctionCode")
          ;
 
         private String name;
@@ -71,26 +73,44 @@ public class FieldNodeBase {
     }
 
     public FieldNodeBase add(FieldNodeBase rn, boolean compare) {
-        FieldNodeBase useThidOne = rn;
-        rn.setParent(this);
+        FieldNodeBase useThisOne;
         if(compare) {
-            FieldNodeBase originalNode = childrenByName.get(rn.getName());
-            if(originalNode != null) {
-                boolean result = originalNode.compareTo(rn);
-                if(result == false) {
-                    this.setState(ComparisonState.DIFF);
-                }
-                useThidOne = originalNode;
-            } else {
-                rn.setState(ComparisonState.NEW);
-                children.add(rn);
-                childrenByName.put(rn.getName(), rn);                
-            }
+            useThisOne = compareChildNode(rn);
         } else {
-            children.add(rn);
-            childrenByName.put(rn.getName(), rn);
+            useThisOne = childrenByName.computeIfAbsent(rn.getName(), cname -> addNewChild(rn));
         }
-        return useThidOne;
+        return useThisOne;
+    }
+
+    private FieldNodeBase compareChildNode(FieldNodeBase rn) {
+        FieldNodeBase comparedNode = childrenByName.computeIfPresent(rn.getName(), (cname, cmpNode) -> comparedChild(cmpNode,rn));
+        if(comparedNode == null) {
+            comparedNode = childrenByName.computeIfAbsent(rn.getName(), cname -> addComparedChild(rn));
+        }
+        return comparedNode;
+    }
+
+    private FieldNodeBase comparedChild(FieldNodeBase cmpNode, FieldNodeBase rn) {
+        if(cmpNode.compareTo(rn)) {
+            cmpNode.setState(ComparisonState.INSTANCE);
+        } else {
+            cmpNode.setState(ComparisonState.DIFF);
+            cmpNode.getParent().setState(ComparisonState.DIFF);
+        }
+        return cmpNode;
+    }
+
+    private FieldNodeBase addComparedChild(FieldNodeBase cmpNode) {
+        cmpNode.setParent(this);
+        children.add(cmpNode);
+        cmpNode.setState(ComparisonState.NEW);
+        return cmpNode;
+    }
+
+    private FieldNodeBase addNewChild(FieldNodeBase rn) {
+        rn.setParent(this);
+        children.add(rn);
+        return rn;
     }
 
     public boolean compareTo(FieldNodeBase rn) {

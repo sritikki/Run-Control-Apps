@@ -207,28 +207,36 @@ public class AnalyserDriver {
 
 	private void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
 		if(jlt1Present) {
-			RecordNode recordsRoot = new RecordNode();
+			MetadataNode recordsRoot = new MetadataNode();
 			recordsRoot.setName("Root");
+			recordsRoot.setSource1(root.relativize(rc1.resolve("JLT1")).toString());
+			recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
 			fa.readXLT(rc1.resolve("JLT"), false, recordsRoot, false);
 			logger.atInfo().log("JLT Tree built from %s", rc1.toString());
 			Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
 			fa.readXLT(rc2.resolve("JLT"), false, recordsRoot, true);
 			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
 			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
-			LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "JLT.html");
+			LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+			ltrw.setIgnores();
+			ltrw.writeFromRecordNodes(root, recordsRoot, "JLT.html");
 		}
 	}
 
 	private void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
-		RecordNode recordsRoot = new RecordNode();
+		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Root");
+		recordsRoot.setSource1(root.relativize(rc1.resolve("XLT1")).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve("XLT2")).toString());
 		fa.readXLT(rc1.resolve("XLT"), false, recordsRoot, false);
 		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
 		fa.readXLT(rc2.resolve("XLT"), false, recordsRoot, true);
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
-		LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "XLT.html");
+		LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+		ltrw.setIgnores();
+		ltrw.writeFromRecordNodes(root, recordsRoot, "XLT.html");
 	}
 
 	private void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
@@ -238,11 +246,14 @@ public class AnalyserDriver {
 		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
 		fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
-		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "VDP1.html");
+		VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
+		vdprw.setIgnores();
+		vdprw.writeFromRecordNodes(root, recordsRoot, "VDP1.html");
+		Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
 		fa.readVDP(rc2.resolve("VDP"), false, recordsRoot, true);
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
-		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "VDPDiff.html");
+		vdprw.writeFromRecordNodes(root, recordsRoot, "VDPDiff.html");
 	}
 
 	private boolean runControlFilesPresent(Path root) {

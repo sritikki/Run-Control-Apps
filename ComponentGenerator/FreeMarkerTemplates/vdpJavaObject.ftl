@@ -15,6 +15,7 @@ import java.util.List;
 </#if>
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
+import org.genevaers.genevaio.fieldnodes.NoComponentNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
@@ -46,16 +47,31 @@ ${readerEntry}
 </#list>
     }
 
+<#if record.recordId gt 0>
     @Override
    	public void addRecordNodes(FieldNodeBase root, boolean compare)
     {
         RecordNode rn = new RecordNode();
-<#if record.recordId gt 0>
-        rn.setName(recordType + "_" + recordId + "_" + sequenceNbr);
+<#if record.recordId == 400>
+        rn.setName(recordType + "_" + lrId + "_" + fieldName);
+<#elseif record.recordId == 2000>
+        rn.setName(viewId + "_" + recordType + "_" + columnId);
+<#elseif record.recordId == 2201 || record.recordId == 2210>
+        rn.setName(viewId + "_" + columnId);
+<#elseif record.recordId == 1210>
+        rn.setName(viewId + "_" + sequenceNbr);
 <#else>
-        rn.setName("${statics["java.util.UUID"].randomUUID()}"); 
+        rn.setName(recordType + "_" + recordId + "_" + sequenceNbr);
 </#if>
         rn = (RecordNode) root.add(rn, compare);
+<#else>
+    @Override
+   	public void addRecordNodes(FieldNodeBase root, boolean compare)
+    {
+    }
+   	public void addRecordNodes(FieldNodeBase rn, int n, boolean compare)
+    {
+</#if>
 <#list entries.fieldNodeEntries as fieldNodeEntry>
 ${fieldNodeEntry}
 </#list>

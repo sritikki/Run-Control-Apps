@@ -75,11 +75,11 @@ public class LogicGroup implements Comparable<LogicGroup> {
     @Override
     public int compareTo(LogicGroup lfin) {
         if(lf.isToken() && lfin.lf.isNotToken() ) {
-            return 1;
+            return -1;
         } else if(lf.isToken() && lfin.lf.isToken()) {
                 return idCompare(lfin);
         } else if(lf.isNotToken() && lfin.lf.isToken()) {
-            return -1;
+            return 1;
         } else {
             return idCompare(lfin);
         }
@@ -101,6 +101,7 @@ public class LogicGroup implements Comparable<LogicGroup> {
         sb.append("\nLF " + lfID + "\nHas PFs ");
         lf.getPFs().stream().forEach(pf -> sb.append(pf.getComponentId() + " "));
         lf.getPFs().stream().forEach(pf -> pf.setRequired(true));
+        lf.setRequired(true);
         // sb.append("\nPFs cross check ");
         // pfIds.stream().forEach(pf -> sb.append(pf + " "));
         sb.append("\nRead by View Sources\n");

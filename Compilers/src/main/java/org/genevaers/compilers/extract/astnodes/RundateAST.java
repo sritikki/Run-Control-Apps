@@ -2,8 +2,11 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
@@ -39,10 +42,12 @@ public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assi
     }
 
     public String getValue() {
-        //map from the string to the magic code
-        //Also there may be a child node here...
-        //Keep as a node or just parse the ()?
-        return value;
+        UnaryInt ui = new UnaryInt();
+        ui.setValue("0");
+        if(getNumberOfChildren() > 0) {
+            ui = (UnaryInt) getChildIterator().next(); //only one child
+        }
+        return ui.getValue();
     }
 
     @Override
@@ -60,7 +65,7 @@ public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assi
         //or is it the 
         switch (value) {
         case "RUNDAY":
-            return DateCode.CYMD;
+            return DateCode.CCYYMMDD;
         case "RUNMONTH":
             return DateCode.CYM;
         case "RUNYEAR":
@@ -69,6 +74,38 @@ public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assi
             return DateCode.NONE;
         }
     }
+
+    public int getCookieCode() {
+        switch (value) {
+        case "RUNDAY":
+            return Cookie.LTDateRunDay;
+        case "RUNMONTH":
+            return Cookie.LTDateRunMonth;
+        case "RUNYEAR":
+            return Cookie.LTDateRunYear;
+        default:
+            return Cookie.LTDateRunDay;
+        }
+    }
+
+    public String getValueBinaryString() {
+        int v = 0;
+        UnaryInt ui = new UnaryInt();
+        ui.setValue("0");
+        if(getNumberOfChildren() > 0) {
+            ui = (UnaryInt) getChildIterator().next(); //only one child
+            v = Integer.parseInt(ui.getValue());
+        }
+        byte[] bytes = new byte[256];
+        int length = Integer.BYTES;
+        for (int i = 0; i < length; i++) {
+            bytes[length - i - 1] = (byte) (v & 0xFF);
+            v >>= 8;
+        }
+        String val = new String(bytes);
+        return val;
+    }
+
 /*
 
 uint16_t
@@ -95,14 +132,24 @@ RunDateASTNode::getLength() const
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LTRecord fc;
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(String.valueOf(value), currentViewColumn));
+            fc = (LTRecord) fcf.getCTC(String.valueOf(value), currentViewColumn);
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(String.valueOf(value), currentViewColumn));
+            fc = (LTRecord) fcf.getDTC(String.valueOf(value), currentViewColumn);
         } else {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(String.valueOf(value), currentViewColumn));
+            fc = (LTRecord) fcf.getSKC(String.valueOf(value), currentViewColumn);
         }
+        expandArgCookieValue((LogicTableF1)fc);
+        fc.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords() + 1));
+        ltEmitter.addToLogicTable((LTRecord)fc);
         return null;
+    }
+
+    private void expandArgCookieValue(LogicTableF1 f) {
+        LogicTableArg arg = f.getArg();
+        arg.setValue(new Cookie(getCookieCode(), getValue()));
+        arg.setFieldContentId(rawDateCode());
     }
 
 }

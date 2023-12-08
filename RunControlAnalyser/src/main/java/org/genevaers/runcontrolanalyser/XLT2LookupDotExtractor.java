@@ -87,7 +87,7 @@ public class XLT2LookupDotExtractor {
 	}
 
 	private String getArgValueString(LogicTableArg arg) {
-		return arg.getValue();
+		return arg.getValue().getString();
 	}
 
 

@@ -27,6 +27,7 @@ import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
 
 /**
@@ -43,12 +44,12 @@ public abstract class ExtractBaseAST extends ASTBase{
     protected static LogicTableEmitter ltEmitter;
     protected int endOfLogic = 0;
 
-    protected boolean isNot = false;
     protected static int currentAccumNumber = 0;
     protected static short currentColumnNumber = 0;
     protected Set<String> accumNames = new HashSet<>();
     protected static ViewSource currentViewSource;
     protected static ViewColumn currentViewColumn;
+    protected static ViewColumnSource currentViewColumnSource;
 
     protected ASTFactory.Type type = null;
     private boolean negative = false;
@@ -89,7 +90,6 @@ public abstract class ExtractBaseAST extends ASTBase{
         return endOfLogic;
     }
 
-    //Should this be here or in the ExtractBase?
     public void resolveGotos(Integer comparisonT, Integer comparisonF, Integer joinT, Integer joinfF) {
         Iterator<ASTBase> ci = children.iterator();
         while(ci.hasNext()) {

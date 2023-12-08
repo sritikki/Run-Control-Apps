@@ -1,7 +1,10 @@
 package org.genevaers.repository;
 
+import java.util.Iterator;
+
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LRIndex;
+import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.AccessMethod;
@@ -61,7 +64,7 @@ public class RepoHelper {
 
     public static void setEffDateBinaryField(LRField fld) {
         fld.setDatatype(DataType.BINARY);
-        fld.setDateTimeFormat(DateCode.CYMD);
+        fld.setDateTimeFormat(DateCode.CCYYMMDD);
         fld.setLength((short)4);
         fld.setJustification(JustifyId.NONE);
         fld.setMask("");
@@ -100,22 +103,20 @@ public class RepoHelper {
 
         vc.setSubtotalType(SubtotalType.NONE);
         vc.setExtractArea(ExtractArea.AREADATA);
-        vc.setEffectiveDate("");
-        vc.setTerminationDate("");
         vc.setDetailPrefix("");
         vc.setSubtotalPrefix("");
         vc.setSubtotalMask("");
         vc.setDefaultValue("");
-        vc.setHeaderLine1(f.getName());
+        vc.setHeaderLine1("");
         vc.setHeaderLine2("");
         vc.setHeaderLine3("");
-        vc.setHeaderJustifyId(JustifyId.NONE);
+        vc.setHeaderJustifyId(JustifyId.LEFT    );
     }
 
-    public static void setViewAlmunColumn(ViewColumn vc, short start, short len, String name) {
+    public static void setViewAlnumColumn(ViewColumn vc, short start, short len, String name) {
         vc.setDataType(DataType.ALPHANUMERIC);
         vc.setDateCode(DateCode.NONE);
-        vc.setJustifyId(JustifyId.NONE);
+        vc.setJustifyId(JustifyId.LEFT);
         vc.setStartPosition(start);
         vc.setExtractAreaPosition(start);
         vc.setFieldLength(len);
@@ -127,16 +128,14 @@ public class RepoHelper {
 
         vc.setSubtotalType(SubtotalType.NONE);
         vc.setExtractArea(ExtractArea.AREADATA);
-        vc.setEffectiveDate("");
-        vc.setTerminationDate("");
         vc.setDetailPrefix("");
         vc.setSubtotalPrefix("");
         vc.setSubtotalMask("");
         vc.setDefaultValue("");
-        vc.setHeaderLine1(name);
+        vc.setHeaderLine1("");
         vc.setHeaderLine2("");
         vc.setHeaderLine3("");
-        vc.setHeaderJustifyId(JustifyId.NONE);
+        vc.setHeaderJustifyId(JustifyId.LEFT);
     }
 
     public static void fillPF(PhysicalFile rehPF) {
@@ -156,4 +155,16 @@ public class RepoHelper {
         rehPF.setTextDelimiter(TextDelimiter.SINGLEQUOTE);        
     }
    
+    public static boolean isLrEffectiveDated(int lrid) {
+        boolean isEffectiveDated = false;
+        LogicalRecord lr = Repository.getLogicalRecords().get(lrid);
+        Iterator<LRIndex> ii = lr.getIteratorForIndexBySeq();
+        while(!isEffectiveDated && ii.hasNext()) {
+            LRIndex ndx = ii.next();
+            if(ndx.isEffectiveDateStart() || ndx.isEffectiveDateEnd()) {
+                isEffectiveDated = true;
+            }
+        }
+        return isEffectiveDated;
+    }
 }

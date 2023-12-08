@@ -50,7 +50,9 @@ public class CFLXEmitter extends ComparisonEmitter{
         arg.setFieldId(lkf.getRef().getComponentId());
         arg.setStartPosition(redFld.getStartPosition());
         arg.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
-        cflx.setArg1(arg);
+        LogicTableArg arg2 = cflx.getArg2();
+        arg2.setFieldId(((ColumnRefAST) rhs).getViewColumn().getColumnNumber());
+        arg2.setLogfileId(((ColumnRefAST) rhs).getViewColumn().getExtractArea().ordinal());
         return cflx;
     }
 

@@ -97,6 +97,7 @@ public class VDPManagementRecords {
             extractRecordFile.getExtracts().add(efn);
         }
         extractRecordFile.setNumberOfExtracts((short) extractFileNubers.size());
+        extractRecordFile.setSequenceNbr((short) 0);
     }
 
     public void makeFormatViewRecord() {

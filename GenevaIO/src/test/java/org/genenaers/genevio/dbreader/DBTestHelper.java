@@ -34,9 +34,9 @@ public class DBTestHelper {
         params.setPort("5432");
         params.setSchema("gendev");
         params.setServer("localhost");
-        params.setUsername(System.getenv("PGUSER"));
+        params.setUsername("postgres");
         //params.setPassword(System.getenv("PGPASSWD"));
-        params.setPassword(System.getenv("PGPASS"));
+        params.setPassword("postgres");
         params.setFolderIds(folders);
         params.setViewIds(views);
        return params;

@@ -34,6 +34,7 @@ public class BinRecordWriter extends RecordWriter {
     @Override
 	public void writeRecordsTo(File file) throws IOException {
 		wFile = new RandomAccessFile(file, "rw");
+		wFile.setLength(0);
 		bytesWritten = 0;
 	}
 

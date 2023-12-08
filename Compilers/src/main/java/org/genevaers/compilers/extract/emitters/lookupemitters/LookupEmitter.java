@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+import org.apache.commons.lang.StringUtils;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
@@ -31,10 +32,13 @@ import org.genevaers.compilers.extract.emitters.CodeEmitter;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.ArgHelper;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
+import org.genevaers.repository.RepoHelper;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupPath;
@@ -56,6 +60,9 @@ public class LookupEmitter extends CodeEmitter {
     private LogicTableRE lusm;
     private LogicTableRE luex;
     private LogicTableF1 kslk;
+    private LKCEmitter lkce;
+    private LKSEmitter lkse;
+    private LKFieldEmitter lkfe;
     List<LogicTableRE> lusms;
 
     public LogicTableF1 emitJoin(LookupPathAST lookupAST, boolean skt) {
@@ -63,9 +70,9 @@ public class LookupEmitter extends CodeEmitter {
         // Then itereate through the steps to emit the key codes
         // and finally the lookup function
         // and don't forget the default for not found
-        LKCEmitter lkce = new LKCEmitter();
-        LKSEmitter lkse = new LKSEmitter();
-        LKFieldEmitter lkfe = new LKFieldEmitter();
+        lkce = new LKCEmitter();
+        lkse = new LKSEmitter();
+        lkfe = new LKFieldEmitter();
         parentAST = lookupAST;
         lusms = new ArrayList<>();
 
@@ -84,19 +91,19 @@ public class LookupEmitter extends CodeEmitter {
         while (si.hasNext()) {
             LookupPathStep step = si.next();
             if (step.getStepNum() == 1 && optimizable && parentAST.getType() != Type.SORTTITLE) {
-                retEntry = addJOIN(lookup, skt);
+                retEntry = addJOIN(lookup, skt, lookupAST.getNewJoinId());
                 retEntry.setSuffixSeqNbr(ExtractBaseAST.getCurrentColumnNumber());
                 firstLookupRecord = retEntry;
                 ExtractBaseAST.getLtEmitter().addToLogicTable(firstLookupRecord);
             } else {
                 // An LKLR does not have gotos really
-                retEntry = addLKLR(lookup, skt);
+                retEntry = addLKLR(lookup, step, skt, lookupAST.getNewJoinId());
             }
             Iterator<LookupPathKey> ki = step.getKeyIterator();
             while(ki.hasNext()) {
-                emitKey(lookupAST, lkse, lkfe, lookup, ki);
+                emitKey(lookupAST, lookup, ki);
             }
-            lookupAST.emitEffectiveDate();
+            emitEffectiveDateForStepIfNeeded(lookupAST, step);
             if(parentAST.getType() == Type.SORTTITLE) {
                 kslk = ((SortTitleAST)parentAST).emitKSLK();
                 kslk.getArg().setLogfileId(lookup.getTargetLFID());
@@ -129,6 +136,12 @@ public class LookupEmitter extends CodeEmitter {
         return retEntry;
     }
 
+    private void emitEffectiveDateForStepIfNeeded(LookupPathAST lookupAST, LookupPathStep step) {
+        if(RepoHelper.isLrEffectiveDated(step.getTargetLR())) {
+            lookupAST.emitEffectiveDate();
+        }
+    }
+
     private LogicTableRE emitLUEX(LookupPathStep step, LookupPath lookup) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         luex = (LogicTableRE) ltFact.getLUEX();
@@ -145,7 +158,7 @@ public class LookupEmitter extends CodeEmitter {
         return luex;
     }
 
-    private void emitKey(LookupPathAST lookupAST, LKSEmitter lkse, LKFieldEmitter lkfe, LookupPath lookup,
+    private void emitKey(LookupPathAST lookupAST, LookupPath lookup,
             Iterator<LookupPathKey> ki) {
         LookupPathKey key = ki.next();
         //C++ uses LPSourceKeyAST Nodes 
@@ -194,6 +207,10 @@ public class LookupEmitter extends CodeEmitter {
                 //  then at end show the unused?
             }
             ExtractBaseAST.getLtEmitter().addToLogicTable(lks);
+        } else {
+            //must be a constant
+            LogicTableF1 lkc = lkce.emit(key);
+            ExtractBaseAST.getLtEmitter().addToLogicTable(lkc);
         }
         addKey(key);
     }
@@ -251,32 +268,35 @@ public class LookupEmitter extends CodeEmitter {
         //What type of key field is this
     }
 
-    private LogicTableF1  addLKLR(LookupPath lookup, boolean skt) {
+    private LogicTableF1  addLKLR(LookupPath lookup, LookupPathStep step, boolean skt, int newJoinId) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         //we need to know if this is an skt case or not
+        String idStr = Integer.toString(newJoinId);
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lookup, skt);
-        LogicTableF1 lklr = (LogicTableF1) ltFact.getLKLR(jv.getUniqueKey());
+        LogicTableF1 lklr = (LogicTableF1) ltFact.getLKLR(idStr);
         LogicTableArg arg = lklr.getArg();
         arg.setFieldId(lookup.getTargetLRIndexID());
-        arg.setLogfileId(lookup.getTargetLFID());
-        arg.setLrId(lookup.getTargetLRID());
+        arg.setLogfileId(step.getTargetLF());
+        arg.setLrId(step.getTargetLR());
         lklr.setArg(arg);
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
+        arg.setOrdinalPosition((short)step.getStepNum());
+        arg.setValue(new Cookie(idStr));
         lklr.setColumnId(lookup.getID());
 
         ExtractBaseAST.getLtEmitter().addToLogicTable(lklr);
         return lklr;
     }
 
-    private LogicTableF1 addJOIN(LookupPath lookup, boolean skt) {
+    private LogicTableF1 addJOIN(LookupPath lookup, boolean skt, int newJoinId) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         //TODO pr.set column ID is set as a place holder to old Join ID
         //remember JoinIDs are all juggled BEFORE the extract is emitted
-
+        String idStr = Integer.toString(newJoinId);
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lookup, skt);
-        LogicTableF1 join = (LogicTableF1) ltFact.getJOIN(jv.getUniqueKey());
+        LogicTableF1 join = (LogicTableF1) ltFact.getJOIN(idStr);
 
         LogicTableArg arg = join.getArg();
         //CPP version writes the LF and LR from the target of the first step
@@ -289,6 +309,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setFieldContentId(DateCode.NONE);
         arg.setFieldFormat(DataType.INVALID);
         arg.setJustifyId(JustifyId.NONE);
+        arg.setValue(new Cookie(idStr));
 
         //TODO There is still magic to do with the gotos
         join.setGotoRow1(parentAST.getGoto1());
@@ -314,7 +335,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setStartPosition(fld.getStartPosition());
         arg.setFieldLength(fld.getLength());
         arg.setJustifyId(fld.getJustification());
-        arg.setValueLength(0);
+        arg.setValue(new Cookie("0"));
         arg.setPadding2("");  //This seems a little silly
     }
 
@@ -330,31 +351,43 @@ public class LookupEmitter extends CodeEmitter {
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
-        arg.setValueLength(0);
+        if(key.getValue().length() > 0) {
+            arg.setValue(new Cookie(key.getValue()));
+        } else {
+            Cookie c = new Cookie(StringUtils.repeat(" ", key.getFieldLength()));
+            arg.setValue(c);
+        }
         arg.setPadding2("");  //This seems a little silly
     }
 
-    public void resolveGotos(Integer joinT, Integer joinF, boolean isNot) {
-        if(isNot) {
-            if(joinF != null) {
-                firstLookupRecord.setGotoRow1(joinF);
-                lusm.setGotoRow1(joinF);
-            }
-            if(joinT != null) {
-                firstLookupRecord.setGotoRow2(joinT);
-                lusm.setGotoRow2(joinT);
-            }
-        } else {
-            if(joinT != null) {
-                firstLookupRecord.setGotoRow1(joinT);
-                lusm.setGotoRow1(joinT);
-            }
-            if(joinF != null) {
-                firstLookupRecord.setGotoRow2(joinF);
-                lusm.setGotoRow2(joinF);
-            }
+    public void resolveGotos(Integer joinT, Integer joinF) {
+        if(joinT != null) {
+            firstLookupRecord.setGotoRow1(joinT);
+            lusm.setGotoRow1(joinT);
+        }
+        if(joinF != null) {
+            setFalseGotos(joinF);
         }
     }
 
+    public void setFalseGotos(Integer pos) {
+        int falsePos;
+        if(pos != null) {
+            falsePos = pos;
+        } else {
+            falsePos = ExtractBaseAST.getLtEmitter().getLogicTable().getLastEntry().getRowNbr();
+        }
+        if(firstLookupRecord != null) {
+            firstLookupRecord.setGotoRow2(falsePos);
+        }
+        if(lusm != null) {
+            //The default is that the LUSM gotos are the same as the JOIN
+            //But for the intermediate steps this is not the case
+            lusm.setGotoRow2(falsePos);
+            for (LogicTableRE intenalLUSM : lusms) {
+                intenalLUSM.setGotoRow2(falsePos);
+            }
+        }
+    }
 
 }

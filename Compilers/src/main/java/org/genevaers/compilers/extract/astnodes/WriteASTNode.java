@@ -48,6 +48,7 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
 
     @Override
     public void emit() {
+        boolean extractWrite = true;
         //The correct function code to generate comes from the Source
         //Yeah, the source...
         //So we should find the child Source node and figure out what to generate
@@ -59,7 +60,11 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
             ltEmitter.setSuffixSeqNbr((short)en.getFileNumber());
             //We need to accumulate the extract ids
             //then we can generate the 801 record
-            Repository.addExtractFileNumber((short)en.getFileNumber());
+            if(vs.getViewId() < 9000000) {
+                Repository.addExtractFileNumber((short)en.getFileNumber());
+            } else {
+                extractWrite = false;
+            }
         } else {
             //We need to know the view type
             //if there is a format phase then we use the extract number in the view defintion
@@ -96,7 +101,11 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
         if(wrSource != null && wrSource.getFunctionCode().equals("WRXT") ) {
             wr.setDestType(0); //0 extract 1 = File 2 = token
         } else {
-            wr.setDestType(1); //0 extract 1 = File 2 = token
+            if(extractWrite && en != null) {
+                 wr.setDestType(0); //0 extract 1 = File 2 = token
+            } else {
+                wr.setDestType(1); //0 extract 1 = File 2 = token
+            }
         }
         getPFFromChildNode();
         if(pf != null) {
@@ -113,6 +122,7 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
             wr.setWriteExitParms("");
             wr.setWriteExitId(0);
         }
+        wr.setSourceSeqNbr((short) ltEmitter.getLogicTable().getNumberOfRecords());
         ltEmitter.addToLogicTable(wr);
     }
 

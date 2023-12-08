@@ -13,7 +13,7 @@ public class StringFieldNode extends FieldNodeBase {
     }
 
     public String getValue() {
-        if(state == ComparisonState.DIFF) {
+        if(state == ComparisonState.DIFF || state == ComparisonState.IGNORED) {
             return value + " -> " + diffValue;
         }
         return value;

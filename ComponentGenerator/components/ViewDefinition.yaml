@@ -45,17 +45,7 @@ members:
   type: integer
 - name: outputMaxRecCount
   type: integer
-- name: processAsofDate
-  type: string
-- name: lookupAsofDate
-  type: string
-- name: procRelPeriodId
-  type: integer
-- name: lookupRelPeriodId
-  type: integer
-- name: fillErrorValue
-  type: string
-- name: fillTruncationValue
+- name: ownerUser
   type: string
 - name: extractSummarized
   type: boolean
@@ -78,3 +68,7 @@ members:
 - name: controlRecordId
   type: integer
   vdp_source: controlId
+- name: outputPageSizeMax
+  type: short
+- name: outputLineSizeMax
+  type: short

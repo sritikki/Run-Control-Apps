@@ -94,4 +94,10 @@ public class LogicalFile extends ComponentNode {
 	public PhysicalFile getPhysicalFile(String name) {
 		return pfsByName.get(name);
 	}
+
+    public void makePFsNotRequired() {
+		for(PhysicalFile pf : pfs) {
+			pf.setRequired(false);
+		}
+    }
 }

@@ -55,6 +55,12 @@ public class SKColumnAST extends ColumnAST {
     }
 
     @Override
+    public LTFileObject getPriorFieldLtEntry(LRField field) {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        return fcf.getSKP(field, vc);
+    }
+
+    @Override
     public LTFileObject getConstLtEntry(String value) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         return fcf.getSKC(value, vc);

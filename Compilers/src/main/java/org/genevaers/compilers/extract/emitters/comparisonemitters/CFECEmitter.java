@@ -38,6 +38,7 @@ public class CFECEmitter extends ComparisonEmitter{
         LogicTableArg arg = cfec.getArg();
         EmitterArgHelper.setArgVal(rhs, arg);
         arg.setLogfileId(getLtEmitter().getFileId());
+        arg.setFieldContentId(((FieldReferenceAST) lhs).getRef().getDateTimeFormat());
         return cfec;
     }
 

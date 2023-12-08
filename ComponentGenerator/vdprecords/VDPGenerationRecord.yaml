@@ -67,7 +67,7 @@ fields:
   maxlength: 10
 - name: padding3
   type: byte
-  padding : true
+  default: 32
 - name: time
   type: string
   maxlength: 8

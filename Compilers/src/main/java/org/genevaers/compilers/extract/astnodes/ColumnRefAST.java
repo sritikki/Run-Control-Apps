@@ -7,10 +7,12 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
+import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -39,26 +41,51 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
 
      @Override
     public LTFileObject emitSetFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 setx = (LogicTableNameF1) fcf.getSETX("", vc);
+        setx.getArg().setFieldId(vc.getColumnNumber());
+        setx.getArg().setLogfileId(vc.getExtractArea().ordinal());
+        ltEmitter.addToLogicTable((LTRecord)setx);
         return null;
     }
 
     @Override
     public LTFileObject emitAddFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 addx = (LogicTableNameF1) fcf.getADDX("", vc);
+        addx.getArg().setFieldId(vc.getColumnNumber());
+        addx.getArg().setLogfileId(vc.getExtractArea().ordinal());
+        ltEmitter.addToLogicTable((LTRecord)addx);
         return null;
     }
 
     @Override
     public LTFileObject emitSubFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 subx = (LogicTableNameF1) fcf.getSUBX("", vc);
+        subx.getArg().setFieldId(vc.getColumnNumber());
+        subx.getArg().setLogfileId(vc.getExtractArea().ordinal());
+        ltEmitter.addToLogicTable((LTRecord)subx);
         return null;
     }
 
     @Override
     public LTFileObject emitMulFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 mulx = (LogicTableNameF1) fcf.getMULX("", vc);
+        mulx.getArg().setFieldId(vc.getColumnNumber());
+        mulx.getArg().setLogfileId(vc.getExtractArea().ordinal());
+        ltEmitter.addToLogicTable((LTRecord)mulx);
         return null;
     }
 
     @Override
     public LTFileObject emitDivFunctionCode() {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableNameF1 divx = (LogicTableNameF1) fcf.getDIVX("", vc);
+        divx.getArg().setFieldId(vc.getColumnNumber());
+        divx.getArg().setLogfileId(vc.getExtractArea().ordinal());
+        ltEmitter.addToLogicTable((LTRecord)divx);
         return null;
     }
 
@@ -68,7 +95,17 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
             ltEmitter.addToLogicTable((LTRecord)fcf.getCTX(vc, currentViewColumn));
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTX(vc, currentViewColumn));
+            LogicTableF2 dtx = (LogicTableF2) fcf.getDTX(vc, currentViewColumn);
+            ltEmitter.addToLogicTable((LTRecord)dtx);
+            ColumnRefAST cr = (ColumnRefAST) rhs;
+            LogicTableArg arg1 = ((LogicTableF2)dtx).getArg1();
+            if(cr.getViewColumn().getExtractArea() == ExtractArea.AREACALC) {
+                short sp = (short) ((vc.getExtractAreaPosition() == 1 ? 0 :  vc.getExtractAreaPosition()) + 2);
+                arg1.setStartPosition(sp); //bonkers hard coding for the moment
+                arg1.setFieldFormat(DataType.PACKED);
+                arg1.setDecimalCount((short)8); //Realy depends on number fromat
+                arg1.setJustifyId(JustifyId.LEFT);
+            }
         } else {
             ltEmitter.addToLogicTable((LTRecord)fcf.getSKX(vc, currentViewColumn));
         }

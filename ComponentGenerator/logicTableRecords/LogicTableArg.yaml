@@ -4,12 +4,8 @@ fields:
 - name: value_area
   type: dsect_operand
   value: 0CL260
-- name: value_length
-  type: integer
 - name: value
-  type: string
-  default: ""
-  maxlength: 256
+  type: cookie
 - name: logfile_id
   dsect_name: field_file_id
   type: integer

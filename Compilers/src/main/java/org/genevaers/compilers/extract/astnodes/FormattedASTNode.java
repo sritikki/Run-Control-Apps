@@ -55,4 +55,9 @@ public abstract class FormattedASTNode extends ExtractBaseAST {
         overriddenSigned = overSigned;
     }
 
+    public boolean isNumeric() {
+        return getDataType().ordinal() > DataType.ALPHA.ordinal() && getDataType().ordinal() < DataType.CONSTSTRING.ordinal();
+    }
+
+
 }

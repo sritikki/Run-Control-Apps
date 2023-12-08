@@ -36,13 +36,13 @@ public class CFLAEmitter extends ComparisonEmitter{
 
     @Override
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
-        CalculationAST calcNode = ((CalculationAST) rhs);
-        calcNode.emit();
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
-        
 
         lkf.getLkEmitter().emitJoin(lkf, false);
+        CalculationAST calcNode = ((CalculationAST) rhs);
+        calcNode.emit();
+
         LogicTableNameF1 cfla = (LogicTableNameF1) ltFact.getCFLA(calcNode.getAccName(), lkf.getRef(), op);
         LogicTableArg arg = cfla.getArg();
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);

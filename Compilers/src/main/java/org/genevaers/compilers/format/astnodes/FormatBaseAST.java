@@ -34,6 +34,7 @@ public abstract class FormatBaseAST extends ASTBase{
     protected static int currentOffset = 0;
     protected boolean inverted = false;
     protected CalcStackEntry calcStackEntry;
+    protected boolean negative;
 
     public FormatASTFactory.Type getType() {
         return type;
@@ -45,11 +46,6 @@ public abstract class FormatBaseAST extends ASTBase{
         while(fi.hasNext()) {
             FormatBaseAST f = (FormatBaseAST) fi.next();
             cse = f.emit(invert);
-            if(cse != null) {
-                currentOffset += cse.length();
-            } else {
-                int wtf = 1;
-            }
         }
         return cse;
     }
@@ -57,33 +53,34 @@ public abstract class FormatBaseAST extends ASTBase{
     public CalcStackEntry emitSingleCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 
     public CalcStackEntry emitIntegerCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackIntegerEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 
     public CalcStackEntry emitShortStringCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackShortStringEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 
     public CalcStackEntry emitLongStringCodeEntry(CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         calcStackEntry = new CalcStackLongStringEntry();
         addStackEntryRelativeToLast(calcStackEntry, opCode, lastChildEntry);
+        currentOffset += calcStackEntry.length();
         return calcStackEntry;
     }
 
     private void addStackEntryRelativeToLast(CalcStackEntry cse, CalcStackOpcode opCode, CalcStackEntry lastChildEntry) {
         cse.setOpCode(opCode);
         calcStack.add(cse);
-        if(lastChildEntry != null) {
-            currentOffset = lastChildEntry.getOffset() + lastChildEntry.length();
-        }
         cse.setOffset(currentOffset);
     }
 
@@ -100,20 +97,17 @@ public abstract class FormatBaseAST extends ASTBase{
      * An IF may not have an ELSE section.
      */
     protected void doFixups (FormatBaseAST ast, int thenIndex, int elseIndex) {
-    Iterator<ASTBase> ci = ast.getChildIterator();
     switch (ast.getType())
     {
         case ANDOP:
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
+            ((AndOp)ast).doFixups(thenIndex, elseIndex);
             break;
         case OROP:
-            assert (ast.getNumberOfChildren () == 2);
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
-            doFixups ((FormatBaseAST)ci.next(), thenIndex, elseIndex);
+            ((OrOP)ast).doFixups(thenIndex, elseIndex);
             break;
         case NOTOP:
             assert (ast.getNumberOfChildren () == 1);
+            Iterator<ASTBase> ci = ast.getChildIterator();
             doFixups ((FormatBaseAST)ci.next(), elseIndex, thenIndex);
             break;
 
@@ -151,6 +145,10 @@ public abstract class FormatBaseAST extends ASTBase{
 
     public static void resetOffset() {
         currentOffset = 0;
+    }
+
+    public void setNegative() {
+        negative = true;
     }
 
 }

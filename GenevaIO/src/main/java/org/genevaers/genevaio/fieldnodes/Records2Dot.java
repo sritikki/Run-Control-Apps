@@ -94,6 +94,8 @@ public class Records2Dot {
                 idString = "str" + nodeNum++;
                 break;
             default:
+                label = node.getName();
+                idString = "def" + nodeNum++;
                 break;
             
         }

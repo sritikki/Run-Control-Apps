@@ -46,16 +46,9 @@ public class IsNotSpacesAST extends IsSpacesAST {
         ExtractBaseAST source = (ExtractBaseAST) children.get(0);
 
         if (source != null) {
-                if (isNot) {
-                    ((LTRecord)ltfo).setGotoRow1(compT);
-                    ((LTRecord)ltfo).setGotoRow2(compF);
-                    source.resolveGotos(compT, compF, joinT, joinF);
-                }
-                else {
-                    ((LTRecord)ltfo).setGotoRow1(compF);
-                    ((LTRecord)ltfo).setGotoRow2( compT );
-                    source.resolveGotos(compF, compT, joinT, joinF);
-               }
+            ((LTRecord)ltfo).setGotoRow1(compF);
+            ((LTRecord)ltfo).setGotoRow2( compT );
+            source.resolveGotos(compF, compT, joinT, joinF);
         }
     }
 

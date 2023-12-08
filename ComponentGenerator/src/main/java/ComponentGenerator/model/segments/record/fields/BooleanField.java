@@ -34,9 +34,11 @@ public class BooleanField extends Field {
     @Override
     public String getFieldEntry() {
         String entry = defaultFieldEntryForType(TYPE);
-        if(getComponentField().equals("none")) { 
+        if(getDefault() != null) {
+            entry += " = " + getDefault();
+        } else if(getComponentField().equals("none")) { 
             entry += " = false";
-        } 
+        }
         entry += ";";
         return entry;
     }
@@ -115,17 +117,25 @@ public class BooleanField extends Field {
     }
 
     @Override
-    public String getFieldNodeEntry() {
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
         StringBuilder fieldNodeEntry = new StringBuilder();
         String ccName = NameUtils.getCamelCaseName(name, false);
-        fieldNodeEntry.append(DBLINDENT + "String " + ccName + "val;\n");
-        fieldNodeEntry.append(DBLINDENT + "if (" + ccName + ") {\n");
-        fieldNodeEntry.append(DBLINDENT + "     "+ ccName + "val = \"True\";\n");
-        fieldNodeEntry.append(DBLINDENT + "} else {\n");
-        fieldNodeEntry.append(DBLINDENT + "     "+ ccName + "val = \"False\";\n");
-        fieldNodeEntry.append(DBLINDENT + "}\n");
-        fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\", "+ ccName + "val ), compare);");  
-        return fieldNodeEntry.toString();
+        if (getRawComponentField() != null && getRawComponentField().equals("none") && prefix==false) {
+            return  DBLINDENT + "rn.add(new NoComponentNode(\"" + ccName +"\"), compare);";  
+        } else {
+            fieldNodeEntry.append(DBLINDENT + "String " + ccName + "val;\n");
+            fieldNodeEntry.append(DBLINDENT + "if (" + ccName + ") {\n");
+            fieldNodeEntry.append(DBLINDENT + "     "+ ccName + "val = \"True\";\n");
+            fieldNodeEntry.append(DBLINDENT + "} else {\n");
+            fieldNodeEntry.append(DBLINDENT + "     "+ ccName + "val = \"False\";\n");
+            fieldNodeEntry.append(DBLINDENT + "}\n");
+            if(arrayValue) {
+                fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\" + n, "+ ccName + "val ), compare);");  
+            } else {
+                fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\", "+ ccName + "val ), compare);");  
+            }
+            return fieldNodeEntry.toString();
+        }
     }
 
 }
