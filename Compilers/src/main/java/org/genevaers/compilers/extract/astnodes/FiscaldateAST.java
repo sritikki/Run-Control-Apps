@@ -1,5 +1,9 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.genevaio.ltfile.Cookie;
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -18,7 +22,7 @@ package org.genevaers.compilers.extract.astnodes;
  */
 
 
-public class FiscaldateAST extends ExtractBaseAST implements GenevaERSValue{
+public class FiscaldateAST extends FormattedASTNode implements GenevaERSValue{
 
     private String value;
 
@@ -31,15 +35,54 @@ public class FiscaldateAST extends ExtractBaseAST implements GenevaERSValue{
     }
 
     public String getValue() {
-        //map from the string to the magic code
-        //Also there may be a child node here...
-        //Keep as a node or just parse the ()?
-        return value;
+        UnaryInt ui = new UnaryInt();
+        ui.setValue("0");
+        if(getNumberOfChildren() > 0) {
+            ui = (UnaryInt) getChildIterator().next(); //only one child
+        }
+        return ui.getValue();
+    }
+
+    public int getCookieCode() {
+        switch (value) {
+        case "FISCALDAY":
+            return Cookie.LTDateFiscalDay;
+        case "FISCALMONTH":
+            return Cookie.LTDateFiscalMonth;
+        case "FISCALYEAR":
+            return Cookie.LTDateFiscalYear;
+        default:
+            return Cookie.LTDateFiscalDay;
+        }
+    }
+
+    private DateCode rawDateCode() {
+        //or is it the 
+        switch (value) {
+        case "FISCALDAY":
+            return DateCode.CCYYMMDD;
+        case "FISCALMONTH":
+            return DateCode.CYM;
+        case "FISCALYEAR":
+            return DateCode.CCYY;
+        default:
+            return DateCode.NONE;
+        }
     }
 
     @Override
     public String getValueString() {
         return value;
+    }
+
+    @Override
+    public DataType getDataType() {
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.ALPHANUMERIC;
+    }
+
+    @Override
+    public DateCode getDateCode() {
+        return (overriddenDateCode != null) ? overriddenDateCode : rawDateCode();
     }
 
 }

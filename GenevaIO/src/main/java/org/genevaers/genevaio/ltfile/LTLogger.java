@@ -30,29 +30,6 @@ import com.google.common.flogger.StackSize;
 public class LTLogger {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	private static final int LTDateRunDay = 0xffffffff;
-	private static final int LTDateRunMonth = 0xfffffffe;
-	private static final int LTDateRunYear = 0xfffffffd;
-	private static final int LTDateFirstOfQuarter = 0xfffffffc;
-	private static final int LTDateLastOfQuarter = 0xfffffffb;
-	private static final int LTDateFirstOfQ1 = 0xfffffffa;
-	private static final int LTDateFirstOfQ2 = 0xfffffff9;
-	private static final int LTDateFirstOfQ3 = 0xfffffff8;
-	private static final int LTDateFirstOfQ4 = 0xfffffff7;
-	private static final int LTDateLastOfQ1 = 0xfffffff6;
-	private static final int LTDateLastOfQ2 = 0xfffffff5;
-	private static final int LTDateLastOfQ3 = 0xfffffff4;
-	private static final int LTDateLastOfQ4 = 0xfffffff3;
-	private static final int LTDateRunPeriod = 0xfffffff2;
-	private static final int LTDateTimeStamp = 0xfffffff1;
-	private static final int LTDateFiscalDay = 0xfffffff0;
-	private static final int LTDateFiscalMonth = 0xffffffef;
-	private static final int LTDateFiscalYear = 0xffffffee;
-	private static final int LTDateFiscalPeriod = 0xffffffed;
-	private static final int LTDateFiscalFirstOfQuarter = 0xffffffec;
-	private static final int LTDateFiscalLastOfQuarter = 0xffffffeb;
-	private static final int LTFillField = 0xfff0fff0;
-
 	private static final String LEAD_IN = " %7d %5d %-4s";
 	private static final String NV_FORMAT = " %s  LR=%s SKA=%s, STA=%s, DTA=%s, CTC=%s Source Number=%s";
 	private static final String GEN_FORMAT = "%s  Text %s\n"
@@ -95,6 +72,7 @@ public class LTLogger {
 	private static final String CTASSIGNMENT = "%-68s <-  %s";
 	private static final String ACCUMASSIGNMENT = "%s %-47s  =  %s";
 	private static final String ACCUMAOP = "%s %s %s %s";
+	private static final String FNCC = "%s %s %s %s -> %s";
 	private static final String WRSU = "%s Dest=%s, Buffered records=%d, Partition ID=%d, Prog ID = %d, Param = '%s'";
 	private static final String WRDT = "%s Dest=%s, Partition ID=%d, Prog ID = %d, Param = '%s'";
 	private static final String FILEID = "%s %d";
@@ -154,7 +132,7 @@ public class LTLogger {
 				LogicTableF1 j = (LogicTableF1) ltr;
 				LogicTableArg arg = j.getArg();
 				return(String.format(LEAD2GOTOS,
-										leadin + String.format(JOIN, j.getColumnId(), arg.getValue()),
+										leadin + String.format(JOIN, j.getColumnId(), arg.getValue().getString()),
 										getGotos(ltr)));
 			case "LUSM":
 				return(String.format(LEAD2GOTOS, leadin, getGotos(ltr)));
@@ -189,6 +167,12 @@ public class LTLogger {
 			case "DIVC":
 				LogicTableNameValue setc = (LogicTableNameValue) ltr;
 				return(String.format(ACCUMASSIGNMENT, leadin, setc.getTableName(), setc.getValue()));
+			case "SETA":
+				LogicTableNameValue seta = (LogicTableNameValue) ltr;
+				return(String.format(ACCUMAOP, leadin, seta.getTableName(), "<-", seta.getValue()));
+			case "ADDA":
+				LogicTableNameValue adda = (LogicTableNameValue) ltr;
+				return(String.format(ACCUMAOP, leadin, adda.getTableName(), "/", adda.getValue()));
 			case "DIVA":
 				LogicTableNameValue diva = (LogicTableNameValue) ltr;
 				return(String.format(ACCUMAOP, leadin, diva.getTableName(), "/", diva.getValue()));
@@ -228,6 +212,9 @@ public class LTLogger {
 			case "SKC":
 				LogicTableF1 dtc = (LogicTableF1) ltr;
 				return(String.format(CONSTASSIGNMENT, leadin, getArgConst(dtc.getArg()), getArgDetails(dtc.getArg())));
+			case "FNCC":
+				LogicTableNameF2 nf2 = (LogicTableNameF2) ltr;
+				return(String.format(FNCC, leadin, nf2.getArg1().getValue(), nf2.getArg1().getValue(), "DaysBetween", nf2.getAccumulatorName()));
 			default: {
 				switch (ltr.getRecordType()) {
 					case RE:
@@ -256,7 +243,7 @@ public class LTLogger {
 	}
 
 	private static Object getArgConst(LogicTableArg arg) {
-		return "\"" + arg.getValue() + "\"";
+		return "\"" + arg.getValue().getString() + "\"";
 	}
 
 	private static String getWrDest(LogicTableWR wr) {
@@ -297,16 +284,16 @@ public class LTLogger {
 
 	private static String getArgValue(LogicTableF1 f1) {
 		LogicTableArg arg = f1.getArg();
-		int al = arg.getValueLength();
+		int al = arg.getValue().length();
 		if (al < 0) {
 			// Cookie time
 			// Needs to use the value too
 			switch (al) {
-				case LTDateRunDay:
+				case Cookie.LTDateRunDay:
 					return "RUNDAY";
-				case LTDateRunMonth:
+				case Cookie.LTDateRunMonth:
 					return "RUNMONTH";
-				case LTDateRunYear:
+				case Cookie.LTDateRunYear:
 					return "RUNYEAR";
 			}
 			return "COOKIE";
@@ -314,7 +301,7 @@ public class LTLogger {
 			if (al == 0) {
 				return " ";
 			} else {
-				return arg.getValue();
+				return arg.getValue().getString();
 			}
 		}
 	}

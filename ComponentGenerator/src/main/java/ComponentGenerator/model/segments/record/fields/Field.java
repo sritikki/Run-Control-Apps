@@ -31,6 +31,7 @@ import ComponentGenerator.model.NameUtils;
         @JsonSubTypes.Type(value = IntegerField.class, name = "integer"),
         @JsonSubTypes.Type(value = ShortField.class, name = "short"),
         @JsonSubTypes.Type(value = StringField.class, name = "string"),
+        @JsonSubTypes.Type(value = CookieField.class, name = "cookie"),
         @JsonSubTypes.Type(value = VarStringField.class, name = "varstring"),
         @JsonSubTypes.Type(value = EnumField.class, name = "enum"),
         @JsonSubTypes.Type(value = BooleanField.class, name = "boolean"),
@@ -87,6 +88,10 @@ public abstract class Field implements FieldGenerator {
 
     public String getComponentField() {
         return componentField != null ? componentField : "none";
+    }
+
+    public String getRawComponentField() {
+        return componentField;
     }
 
     public void setComponentField(String componentField) {
@@ -159,6 +164,30 @@ public abstract class Field implements FieldGenerator {
         String ccName = NameUtils.getCamelCaseName(name, false);
         csvHeader = DBLINDENT + "fw.write(\"" + ccName + "\"+\",\");";
         return csvHeader;
+    }
+
+    public String defaultNumericNodeEntry(boolean prefix, boolean arrayValue) {
+        if (getRawComponentField() != null && getRawComponentField().equals("none") && prefix==false) {
+            return  DBLINDENT + "rn.add(new NoComponentNode(\"" + NameUtils.getCamelCaseName(name, false) +"\"), compare);";  
+        } else {
+            if(arrayValue) {
+                return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\" + n," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            } else {
+                return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            }
+        }
+    }
+
+    public String defaultStringNodeEntry(boolean prefix, boolean arrayValue) {
+        if (getRawComponentField() != null && getRawComponentField().equals("none") && prefix==false) {
+            return  DBLINDENT + "rn.add(new NoComponentNode(\"" + NameUtils.getCamelCaseName(name, false) +"\"), compare);";  
+        } else {
+            if(arrayValue) {
+                return  DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\" + n," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+            } else {
+               return  DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";                  
+            }
+        }
     }
 
     @Override

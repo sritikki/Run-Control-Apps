@@ -73,6 +73,7 @@ public class RunControlWriter {
         try {
             vdpw.writeVDPFrom(vmrs);
             vdpw.close();
+            logger.atInfo().log("VDP Written");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -103,17 +104,42 @@ public class RunControlWriter {
         VDPGenerationRecord gen = new VDPGenerationRecord();
         gen.setRecordType(VDPRecord.VDP_GENERATION);
         gen.setAsciiInd(System.getProperty("os.name").startsWith("z") ? false : true);
+        gen.setBigEndianInd(true);
         DateFormat dateFormat1 = new SimpleDateFormat("YYYYMMdd");
         Date dt = Repository.getGenerationTime();
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-        DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         gen.setDate(dateFormat.format(dt));
         gen.setRunDate(dateFormat1.format(dt));
         gen.setTime(timeFormat.format(dt));
-        gen.setDescription("Java MR91");
+        gen.setDescription("Java MR91 via " + rcc.getInputType());
         gen.setPadding4("");
         gen.setPadding5("");
+        setNumberNode(gen);
+        setRecordNumbers(gen);
         return gen;
+    }
+
+
+    private void setRecordNumbers(VDPGenerationRecord gen) {
+        gen.setInputFileCount(Repository.getNumberOfRequiredPhysicalFiles());
+        gen.setPgmFileCount(Repository.getUserExits().size());
+        gen.setLrCount(Repository.getLogicalRecords().size());
+        gen.setLrFieldCount(Repository.getFields().size());
+        gen.setLrIndexFieldCount(Repository.getIndexes().size());
+        gen.setJoinStepCount(Repository.getLookups().size());
+        gen.setViewCount(Repository.getViews().size());
+        //Still need number of records and byte count.
+    }
+
+    private void setNumberNode(VDPGenerationRecord gen) {
+        if(rcc.isNumberModeStandard()) {
+            gen.setMaxDecimalDigits((byte)23);
+            gen.setMaxDecimalPlaces((byte)8);
+        } else {
+            gen.setMaxDecimalDigits((byte)23);
+            gen.setMaxDecimalPlaces((byte)3);
+        }
     }
 
     public void setExtractLogicTable(LogicTable lt) {

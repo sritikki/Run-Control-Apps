@@ -43,13 +43,8 @@ public class BooleanAndAST extends ExtractBaseAST implements EmittableASTNode{
         ExtractBaseAST lhs = (ExtractBaseAST) children.get(0);
         ExtractBaseAST rhs = (ExtractBaseAST) children.get(1);
         if (lhs != null && rhs != null) {
-            if (isNot) {
-                lhs.resolveGotos(andEnd, compT, joinT, compT);
-                rhs.resolveGotos(compF, compT, joinT, compT);
-            } else {
-                lhs.resolveGotos(andEnd, compF, joinT, joinF);
-                rhs.resolveGotos(compT, compF, joinT, joinF);
-            }
+            lhs.resolveGotos(andEnd, compF, joinT, joinF);
+            rhs.resolveGotos(compT, compF, joinT, joinF);
         }
     }
 

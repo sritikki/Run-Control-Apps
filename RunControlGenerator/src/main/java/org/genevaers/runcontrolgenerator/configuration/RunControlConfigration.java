@@ -93,6 +93,7 @@ public class RunControlConfigration {
     public static final String VDP_FILE = "VDP";
     private static final String DOT_FORMAT = "DOT_FORMAT";
 
+    private static final String NUMBER_MODE = "NUMBER_MODE";
     // Configuration is just a map of parm names to values
     // Make it a TreeMap so it is sorted
     Map<String, ConfigEntry> parmToValue = new TreeMap<>();
@@ -134,6 +135,7 @@ public class RunControlConfigration {
 
         parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
 
+        parmToValue.put(NUMBER_MODE, new ConfigEntry("STANDARD", false )); //Could be LARGE
     }
 
 	public String getInputType() {
@@ -194,6 +196,8 @@ public class RunControlConfigration {
             case "VDPXML":
             break;
             case "DB2":
+            break;
+            case "PG":
             break;
             default:
                 valid = false;
@@ -349,6 +353,10 @@ public class RunControlConfigration {
 
     public boolean isFormatDotEnabled() {
         return parmToValue.get(DOT_FORMAT).getValue().equalsIgnoreCase("Y");
+    }
+
+    public boolean isNumberModeStandard() {
+        return parmToValue.get(NUMBER_MODE).getValue().equalsIgnoreCase("STANDARD");      
     }
 
 }

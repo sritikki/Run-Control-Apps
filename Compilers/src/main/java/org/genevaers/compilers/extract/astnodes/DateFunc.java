@@ -1,6 +1,9 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.data.NormalisedDate;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -20,9 +23,11 @@ import org.antlr.v4.runtime.tree.ParseTree;
  */
 
 
-public class DateFunc extends ExtractBaseAST implements GenevaERSValue{
+public class DateFunc extends FormattedASTNode implements GenevaERSValue{
 
     private String value;
+    private String dateCodeStr;
+    private DateCode dateCode;
 
     public DateFunc() {
         type = ASTFactory.Type.DATEFUNC;
@@ -35,7 +40,9 @@ public class DateFunc extends ExtractBaseAST implements GenevaERSValue{
     public void resolve(String dateStr, String format) {
         //TODO We need to think about this some more 
         //Check the string matches the format etc
-        value = dateStr.replace("\"", "");;
+        value = dateStr.replace("\"", "");
+        dateCodeStr = format.replace("\"", "");
+        dateCode = DateCode.fromValue(format);
     }
 
     @Override
@@ -43,4 +50,25 @@ public class DateFunc extends ExtractBaseAST implements GenevaERSValue{
         return value;
     }
 
+    @Override
+    public DataType getDataType() {
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.ALPHANUMERIC;
+    }
+
+    @Override
+    public DateCode getDateCode() {
+        return (overriddenDateCode != null) ? overriddenDateCode : dateCode;
+    }
+
+    public String getDateCodeStr() {
+        return dateCodeStr;
+    }
+
+    public String getNormalisedDate() {
+        return NormalisedDate.get(value, getDateCode());
+    }
+
+    public int getCookieCode() {
+        return 0;
+    }
 }

@@ -75,3 +75,4 @@ fields:
 - name: padding
   type: string
   maxlength: 95
+  component_field: none

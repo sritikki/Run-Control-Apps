@@ -97,10 +97,12 @@ public class VDPManagementRecords {
             extractRecordFile.getExtracts().add(efn);
         }
         extractRecordFile.setNumberOfExtracts((short) extractFileNubers.size());
+        extractRecordFile.setSequenceNbr((short) 0);
     }
 
     public void makeFormatViewRecord() {
         formatViews = new VDPFormatViews();
+        formatViews.setSequenceNbr((short)0);
         formatViews.setRecordType(VDPRecord.VDP_FORMAT_VIEWS);
         formatViews.setRecordId(VDPRecord.VDP_FORMAT_VIEWS);
         int totalFormatDTColumns = 0; // Note this is just column count

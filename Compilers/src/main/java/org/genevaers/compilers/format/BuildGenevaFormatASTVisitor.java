@@ -1,7 +1,9 @@
 package org.genevaers.compilers.format;
 
+import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.format.astnodes.AndOp;
 import org.genevaers.compilers.format.astnodes.ColRef;
+import org.genevaers.compilers.format.astnodes.EmittableFormatASTNode;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory.Type;
 import org.genevaers.grammar.GenevaFormatBaseVisitor;
@@ -29,6 +31,8 @@ import org.genevaers.grammar.GenevaFormatParser.ExprArithMulDivContext;
 
 
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
+import org.genevaers.compilers.format.astnodes.FormatErrorAST;
+import org.genevaers.compilers.format.astnodes.NotOP;
 import org.genevaers.compilers.format.astnodes.NumConst;
 import org.genevaers.compilers.format.astnodes.OrOP;
 import org.genevaers.repository.Repository;
@@ -130,14 +134,18 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
     }
 
     @Override public FormatBaseAST visitExprBoolOr(GenevaFormatParser.ExprBoolOrContext ctx) { 
-        //Should only have  1 or 3 children and middle is termial OR
-        if(ctx.getChildCount() == 3) {
-            OrOP orOp = (OrOP) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.OROP);
-            orOp.addChildIfNotNull(visit(ctx.getChild(0)));
-            orOp.addChildIfNotNull(visit(ctx.getChild(2)));
-            return orOp;
-        } else {
+        if(ctx.getChildCount() == 1) {
             return visitChildren(ctx); 
+        } else {
+            // Iterate through the nodes.
+            // Should be in pattern N And N And N And N....
+            int childNum = 0;
+            OrOP orOp = (OrOP) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.OROP);
+            while(childNum < ctx.getChildCount()) {
+                orOp.addChildIfNotNull(visit(ctx.getChild(childNum)));
+                childNum+=2;
+            }
+            return orOp;
         }
     }
 
@@ -151,11 +159,22 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
   
   
 
-    @Override public FormatBaseAST visitExprBoolUnary(GenevaFormatParser.ExprBoolUnaryContext ctx) { 
-        //If there are two children may be a NOT
-        //So probably need an node here to manage
-        return visitChildren(ctx); 
-    }
+     @Override
+     public FormatBaseAST visitExprBoolUnary(GenevaFormatParser.ExprBoolUnaryContext ctx) {
+         // If there are two children may be a NOT
+         // So probably need an node here to manage
+         if (ctx.getChildCount() == 1) {
+             return visitChildren(ctx);
+         } else if (ctx.getChild(0).getText().equalsIgnoreCase("NOT")) {
+             NotOP notop = (NotOP) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.NOTOP);
+             notop.addChildIfNotNull(visit(ctx.getChild(1)));
+             return notop;
+         } else {
+             FormatErrorAST errs = (FormatErrorAST) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ERRORS);
+             errs.setErrors(null);
+            return errs;
+         }
+     }
 
     @Override
     public FormatBaseAST visitExprArithAddSub(ExprArithAddSubContext ctx) {
@@ -183,21 +202,26 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
             }
             return arithNode; 
         } else {
-            return visitChildren(ctx); 
+            FormatBaseAST n = visitChildren(ctx); 
+            return n;
         }
     }
 
  
 	@Override public FormatBaseAST visitExprBoolAnd(GenevaFormatParser.ExprBoolAndContext ctx) { 
-        //Should only have 1 or 3 children and middle is termial AND
-        //visit 0 and 2
-        if(ctx.getChildCount() == 3) {
-            AndOp andOp = (AndOp) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ANDOP);
-            andOp.addChildIfNotNull(visit(ctx.getChild(0)));
-            andOp.addChildIfNotNull(visit(ctx.getChild(2)));
-            return andOp;
-        } else {
+
+        if(ctx.getChildCount() == 1) {
             return visitChildren(ctx); 
+        } else {
+            // Iterate through the nodes.
+            // Should be in pattern N And N And N And N....
+            int childNum = 0;
+            AndOp andOp = (AndOp) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ANDOP);
+            while(childNum < ctx.getChildCount()) {
+                andOp.addChildIfNotNull(visit(ctx.getChild(childNum)));
+                childNum+=2;
+            }
+            return andOp;
         }
     }
 
@@ -208,7 +232,8 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
             comp.addChildIfNotNull(visit(ctx.getChild(2)));
             return comp;
         } else {
-            return visitChildren(ctx); 
+            FormatBaseAST n = visitChildren(ctx); 
+            return n; 
         }
     }
 
@@ -231,7 +256,17 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
         //So probably need an node here to manage - or add and attribute to the child?
         //Does not make sense for a string
         //NOTE Parser does not tread -"fred" as an error
-        return visitChildren(ctx); 
+        FormatBaseAST atom;
+        if(ctx.getChildCount() > 1) {
+            atom = visit(ctx.getChild(1));
+            if(ctx.getChild(0).getText().equals("-")) {
+                atom.setNegative();
+            }
+
+        } else {
+            atom = visit(ctx.getChild(0));
+        }        
+        return atom;
     }
 
 
@@ -239,7 +274,11 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
         //if were here and the only child node is as terminal it must be a string const
 
         //Can also be brackets around the beast - strip off matching sets
-        return visitChildren(ctx); 
+        if(ctx.getChildCount() == 3) {
+            return visit(ctx.getChild(1)); 
+        } else {
+            return visitChildren(ctx); 
+        }
     }
 
 

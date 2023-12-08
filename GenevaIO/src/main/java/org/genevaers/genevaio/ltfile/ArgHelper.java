@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.ltfile;
 
+import java.lang.reflect.Array;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -19,58 +21,23 @@ package org.genevaers.genevaio.ltfile;
 
 
 import java.nio.ByteBuffer;
-import java.util.List;
 
+import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
 
+
 public class ArgHelper {
-    
-    private static final int LTDateRunDay                = 0xffffffff;
-    private static final int LTDateRunMonth              = 0xfffffffe;
-    private static final int LTDateRunYear               = 0xfffffffd;
-    private static final int LTDateFirstOfQuarter        = 0xfffffffc;
-    private static final int LTDateLastOfQuarter         = 0xfffffffb;
-    private static final int LTDateFirstOfQ1             = 0xfffffffa;
-    private static final int LTDateFirstOfQ2             = 0xfffffff9;
-    private static final int LTDateFirstOfQ3             = 0xfffffff8;
-    private static final int LTDateFirstOfQ4             = 0xfffffff7;
-    private static final int LTDateLastOfQ1              = 0xfffffff6;
-    private static final int LTDateLastOfQ2              = 0xfffffff5;
-    private static final int LTDateLastOfQ3              = 0xfffffff4;
-    private static final int LTDateLastOfQ4              = 0xfffffff3;
-    private static final int LTDateRunPeriod             = 0xfffffff2;
-    private static final int LTDateTimeStamp             = 0xfffffff1;
-    private static final int LTDateFiscalDay             = 0xfffffff0;
-    private static final int LTDateFiscalMonth           = 0xffffffef;
-    private static final int LTDateFiscalYear            = 0xffffffee;
-    private static final int LTDateFiscalPeriod          = 0xffffffed;
-    private static final int LTDateFiscalFirstOfQuarter  = 0xffffffec;
-    private static final int LTDateFiscalLastOfQuarter   = 0xffffffeb;
-    private static final int LTFillField                 = 0xfff0fff0;
     
     private ArgHelper() { }
 
     public static void setArgValueFrom(LogicTableArg arg, String valStr) {
-        setValBuffer(arg, valStr.getBytes());
-        arg.setValueLength(valStr.length());
-    }
-
-    public static void setArgValueFrom(LogicTableArg arg, int val) {
-        String valStr = Integer.toString(val);
-        setValBuffer(arg, valStr.getBytes());
-        //arg.setValueLength(valStr.length());
-    }
-
-
-    public static String getArgString(LogicTableArg arg) {
-        return arg.getValue();        
+        arg.setValue(new Cookie(valStr));
     }
 
     public static void setValBuffer(LogicTableArg arg, byte[] in) {
-        String val = new String(in);
-        arg.setValue(val);
+        arg.setValue(new Cookie(new String(in)));
     }
 
     public static LogicTableArg makeDefaultArg() {
@@ -84,10 +51,27 @@ public class ArgHelper {
         arg.setFieldLength((short)0);
         arg.setJustifyId(JustifyId.NONE);
         arg.setSignedInd(false);
-        arg.setValueLength((short)0);
+        arg.setValue(new Cookie("0"));
         arg.setPadding2("");
         return arg;
     }
 
+    public static void populateArgFromKeyTarget(LogicTableArg arg, LookupPathKey key) {
+        arg.setDecimalCount(key.getDecimalCount());
+        if(key.getDateTimeFormat() == null)
+            arg.setFieldContentId(DateCode.NONE);
+        else
+            arg.setFieldContentId(key.getDateTimeFormat());
+        arg.setFieldFormat(key.getDatatype());
+        arg.setFieldId(key.getFieldId());
+        arg.setLogfileId(key.getTargetlfid());
+        arg.setLrId(key.getSourceLrId());
+        //TODO the start pos is dependent on extract type
+        arg.setStartPosition(key.getStartPosition());
+        arg.setFieldLength(key.getFieldLength());
+        arg.setJustifyId(key.getJustification());
+        arg.setValue(new Cookie(key.getValue()));
+        arg.setPadding2("");  //This seems a little silly
+    }
 
 }

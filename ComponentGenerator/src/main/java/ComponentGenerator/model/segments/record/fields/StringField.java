@@ -93,4 +93,8 @@ public class StringField extends Field {
         return "CL" + maxlength;
     }
 
+    @Override
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
+        return defaultStringNodeEntry(prefix, arrayValue);
+    }
 }

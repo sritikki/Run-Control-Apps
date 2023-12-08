@@ -25,6 +25,7 @@ import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 
 public class SFXPEmitter extends StringComparisonEmitter{
@@ -33,8 +34,11 @@ public class SFXPEmitter extends StringComparisonEmitter{
     public LTFileObject getLTEntry(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         ltFact.setLogFileId(getLtEmitter().getFileId());
-        LogicTableF2 cfxp = (LogicTableF2) ltFact.getSFXP(((ColumnRefAST) lhs).getViewColumn(), ((FieldReferenceAST) rhs).getRef());
-        return cfxp;
+        LogicTableF2 sfxp = (LogicTableF2) ltFact.getSFXP(((ColumnRefAST) lhs).getViewColumn(), ((FieldReferenceAST) rhs).getRef());
+        LogicTableArg arg1 = sfxp.getArg1();
+        arg1.setFieldId(((ColumnRefAST) lhs).getViewColumn().getColumnNumber());
+        arg1.setLogfileId(((ColumnRefAST) lhs).getViewColumn().getExtractArea().ordinal());
+        return sfxp;
     }
 
 }

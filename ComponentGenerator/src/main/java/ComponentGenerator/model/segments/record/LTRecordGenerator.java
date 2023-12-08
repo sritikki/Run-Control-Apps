@@ -25,11 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.flogger.FluentLogger;
 
 import ComponentGenerator.model.generators.GeneratorBase;
-import ComponentGenerator.model.segments.ModelSegment;
 import ComponentGenerator.model.segments.record.fields.FreemarkerFieldEntries;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -79,7 +77,7 @@ public class LTRecordGenerator extends GeneratorBase{
 		// build lists of the strings to be written
 		FreemarkerFieldEntries freeMarkerEntries = new FreemarkerFieldEntries(); 
 		if(record.getRecordName().equals("LogicTableArg")) {
-			freeMarkerEntries.addEntriesFrom(arg);
+			freeMarkerEntries.addEntriesFrom(arg, false);
 		} else {
 			freeMarkerEntries.addEntriesFrom(prefix, arg, record);
 		}

@@ -119,6 +119,10 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
         if(sfn != null) {
             ((SelectIfAST)sfn).setNextViewPosition(nextViewPosition);;
         }
+        ASTBase skipn = getFirstNodeOfType(ASTFactory.Type.SKIPIF);
+        if(skipn != null) {
+            ((SkipIfAST)skipn).setNextViewPosition(nextViewPosition);;
+        }
     }
 
     public Integer getNextViewPosition() {
@@ -126,7 +130,7 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
     }
 
     public boolean hasExtractFilterText() {
-        return vs.getExtractFilter().length() > 0;
+        return vs.getExtractFilter() != null && vs.getExtractFilter().length() > 0;
     }
 
     public ViewAreaValues getAreaValues() {

@@ -27,6 +27,8 @@ public class ASTFactory {
         LF("Logical File"), 
         VIEWSOURCE("View Source"), 
         VIEWCOLUMNSOURCE("View Column Source"), 
+        STATEMENTLIST("StatementList"),
+        STATEMENT("Statement"),
         PF("Physical File"), 
         COLUMNASSIGNMENT("Column Assignment"), 
         NUMATOM("Number"), 
@@ -47,7 +49,9 @@ public class ASTFactory {
         IFNODE("If"), 
         BOOLAND("And"),
         BOOLOR("Or"), 
+        BOOLNOT( "Not"),
         NUMACC("Numeric Accumulator"), 
+        LOOKUPREF("Lookup"),
         LOOKUPFIELDREF("Lookup Field"), 
         SYMBOLLIST("Symbol list"), 
         SYMBOL("Symbol"), 
@@ -89,8 +93,10 @@ public class ASTFactory {
         STRINGCONCAT("Concatination"), 
         RIGHT("Right"),
         LEFT("Left"),
-        SUBSTR("Substring")
-         ;
+        SUBSTR("Substring"), 
+        ISFOUND("Is Found"),
+        ISNOTFOUND("Is Not Found")  
+        ;
 
         private String name;
         private Type(String n) {
@@ -151,8 +157,12 @@ public class ASTFactory {
                 return new BooleanAndAST();
             case BOOLOR:
                 return new BooleanOrAST();
+            case BOOLNOT:
+                return new BooleanNotAST();
             case NUMACC:
                 return new NumericAccumulator();
+            case LOOKUPREF:
+                return new LookupPathRefAST();
             case LOOKUPFIELDREF:
                 return new LookupFieldRefAST();
             case SYMBOLLIST:
@@ -229,6 +239,14 @@ public class ASTFactory {
                 return new BetweenFunc();
             case REPEAT:
                 return new RepeatAST();
+            case ISFOUND:
+                return new IsFoundAST();
+            case ISNOTFOUND:
+                return new IsNotFoundAST();
+            case STATEMENTLIST:
+                return new StatementList();
+            case STATEMENT:
+                return new Statement();
             default:
                 return null;
         }

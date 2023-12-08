@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
@@ -168,6 +169,8 @@ public class JoinViewsManager {
 	private Map<Integer, Integer> lr2lf = new HashMap<>();
 	int totalNumberOfJoins = 0;
 
+	private Map<Integer, JLTView> keyFieldsToJoin = new TreeMap<>();
+
 	private List<JoinTargetEntry> joinTargets = new ArrayList<>();
 
     //The way C++ does this is to keep 3 maps for
@@ -198,12 +201,14 @@ public class JoinViewsManager {
 	// 	jltv.addRefField(fld);
 	// }
 
-	public void addJLTViewField(LookupPath lookup, LRField refField) {
+	public JLTView addJLTViewField(LookupPath lookup, LRField refField) {
 		JLTView jltv = getOrMakeJLTView(lookup);
+		jltv.addReason("Ref", lookup.getID(), refField.getComponentId());
 		//Need any internal source steps too
 		resolveLookupSourceKeys(lookup, false);
 		jltv.addRefField(refField);
 		//if the ref field is not from the target is must be from an internal step
+		return jltv;
 	}
 
 	public void addSortKeyJLTViewField(LookupPath lookup, LRField refField) {
@@ -221,7 +226,6 @@ public class JoinViewsManager {
 	}
 
 	private JLTViewMap<ReferenceJoin> makeReferenceJoinMap(LookupType skt, int lfid) {
-
 		return new JLTViewMap<ReferenceJoin>();
 	}
 
@@ -294,8 +298,9 @@ public class JoinViewsManager {
 			Iterator<LookupPathStep> si = lookup.getStepIterator();
 			while(si.hasNext()) {
 				LookupPathStep step = si.next();
+				int lrid = step.getTargetLR();
+				ReferenceJoin normJoin = null;
 				if(step.getStepNum() <= lookup.getNumberOfSteps()) { //This is an internal step 
-					int lrid = step.getTargetLR();
 					int lfid = step.getTargetLF();
 					lr2lf.put(lrid, lfid);
 					if(Repository.getLogicalRecords().get(step.getTargetLR()).getLookupExit() == null) {
@@ -304,7 +309,8 @@ public class JoinViewsManager {
 							referenceJoins.getOrAddJoinifAbsent(LookupType.SKT, step.getTargetLR(), lookup.getID());
 						} else {
 							referenceJoins = referenceDataSet.computeIfAbsent(lfid, k -> makeReferenceJoinMap(LookupType.NORMAL, lfid));							
-							referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
+							normJoin = referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
+							normJoin.addReason("SrcKeyStep" + step.getStepNum(), lookup.getID(), 0);
 						}
 					} else {
 						exitJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
@@ -337,6 +343,8 @@ public class JoinViewsManager {
 					if(Repository.getLogicalRecords().get(step.getTargetLR()).getLookupExit() == null) {
 						referenceJoins = referenceDataSet.computeIfAbsent(keyLf, k -> makeReferenceJoinMap(LookupType.NORMAL, keyLf));
 						jltv = referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, keyLrId, lookup.getID());
+						jltv.addReason("KeyField", lookup.getID(), keyfldID);
+						keyFieldsToJoin.put(keyfldID, jltv);
 					} else {
 						jltv = exitJoins.getOrAddJoinifAbsent(LookupType.EXIT, keyLrId, lookup.getID());
 					}
@@ -374,12 +382,18 @@ public class JoinViewsManager {
     }
 
     public void logdata() {
-		logger.atInfo().log("Lookup data");
-		System.out.print("Lookup data\n");
-		System.out.print("Normal Joins\n");
-		referenceJoins.log();
-		System.out.print("Exit Joins\n");
-		exitJoins.log();
+		logger.atFine().log("Lookup data");
+		Iterator<Entry<Integer, JLTViewMap<ReferenceJoin>>> refdi = referenceDataSet.entrySet().iterator();
+		while(refdi.hasNext()) {
+			Entry<Integer, JLTViewMap<ReferenceJoin>> refd = refdi.next();
+			refd.getValue().log(refd.getKey());
+		}
+		Iterator<Entry<Integer, JLTView>> k2ji = keyFieldsToJoin.entrySet().iterator();
+		logger.atFine().log("Key fields to Join View");
+		while (k2ji.hasNext()) {
+			Entry<Integer, JLTView> k2j = k2ji.next();
+			logger.atFine().log("%d -> %d", k2j.getKey(), k2j.getValue().getRefViewNum());
+		}
     }
 
     public int getREHViewNumber() {
@@ -414,5 +428,13 @@ public class JoinViewsManager {
 
 	public Iterator<JoinTargetEntry> getJoinTargetsIterator() {
 		return joinTargets.iterator();
+	}
+
+	public int getLfidFromJoinLR(int lrid) {
+		return lr2lf.get(lrid);
+	}
+
+	public JLTView getJltViewFromKeyField(int keyfld) {
+		return keyFieldsToJoin.get(keyfld);
 	}
 }

@@ -7,6 +7,7 @@ import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 
@@ -68,11 +69,18 @@ public class BetweenFunc extends FormattedASTNode implements Assignable, Calcula
         StringAtomAST c1 = (StringAtomAST) children.get(0);
         StringAtomAST c2 = (StringAtomAST) children.get(1);
         LogicTableArg arg1 = ArgHelper.makeDefaultArg();
+        arg1.setFieldFormat(getDataType());
         ArgHelper.setArgValueFrom(arg1, c1.getValue());
         LogicTableArg arg2 = ArgHelper.makeDefaultArg();
+        arg2.setFieldFormat(getDataType());
         ArgHelper.setArgValueFrom(arg2, c2.getValue());
-        LTFileObject fncc = LtFactoryHolder.getLtFunctionCodeFactory().getFNCC(function, arg1, arg2);
-        return fncc;
+        LTFileObject fncc = LtFactoryHolder.getLtFunctionCodeFactory().getFNCC(accName, arg1, arg2);
+        
+        ltEmitter.addToLogicTable((LTRecord)fncc);
+        LogicTableNameF1 dta = (LogicTableNameF1) LtFactoryHolder.getLtFunctionCodeFactory().getDTA(accName, col.getViewColumn());
+        dta.getArg().setLogfileId(ltEmitter.getFileId());
+        ltEmitter.addToLogicTable((LTRecord)dta);
+        return null;
     }
 
     @Override
@@ -82,6 +90,18 @@ public class BetweenFunc extends FormattedASTNode implements Assignable, Calcula
             ltEmitter.addToLogicTable((LTRecord)LtFactoryHolder.getLtFunctionCodeFactory().getDIMN());
         }
         emitChildNodes();
+        if(((ExtractBaseAST)parent).getType() != ASTFactory.Type.COLUMNASSIGNMENT) {
+            StringAtomAST c1 = (StringAtomAST) children.get(0);
+            StringAtomAST c2 = (StringAtomAST) children.get(1);
+            LogicTableArg arg1 = ArgHelper.makeDefaultArg();
+            arg1.setFieldFormat(getDataType());
+            ArgHelper.setArgValueFrom(arg1, c1.getValue());
+            LogicTableArg arg2 = ArgHelper.makeDefaultArg();
+            arg2.setFieldFormat(getDataType());
+            ArgHelper.setArgValueFrom(arg2, c2.getValue());
+            LTFileObject fncc = LtFactoryHolder.getLtFunctionCodeFactory().getFNCC(accName, arg1, arg2);
+            ltEmitter.addToLogicTable((LTRecord)fncc);
+        }
     }
 
     @Override
@@ -120,13 +140,18 @@ public class BetweenFunc extends FormattedASTNode implements Assignable, Calcula
 
     //Make common in a base?
     private void generateAccumulatorName() {
-        if(accName == null)
-            accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(currentViewSource, currentViewColumn.getColumnNumber());
+        if(accName == null) {
+            if(currentViewColumn != null) {
+                accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(currentViewSource, currentViewColumn.getColumnNumber());
+            } else {
+                accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(currentViewSource, 0);
+            }
+        }
     }
 
     @Override
     public DataType getDataType() {
-        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.GENEVANUMBER;
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : DataType.ALPHANUMERIC;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.genevaers.genevaio.wbxml;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.TreeMap;
@@ -45,14 +46,10 @@ import com.google.common.flogger.FluentLogger;
 public class WBXMLSaxIterator {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private InputStream inputStream;
     private XMLStreamReader reader;
+    private BufferedInputStream inputBuffer;
 
     private TreeMap<String, CatalogEntry> catalog = new TreeMap<>();
-
-    public void inputFrom(InputStream is) {
-        inputStream = is;
-    }
 
     public void addToRepsitory() {
         initXMLFactories();
@@ -75,9 +72,11 @@ public class WBXMLSaxIterator {
         // prevent xxe
         xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         xmlInputFactory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
 
         try {
-            reader = xmlInputFactory.createXMLStreamReader(inputStream);
+            //reader = xmlInputFactory.createXMLStreamReader(inputStream);
+            reader = xmlInputFactory.createXMLStreamReader(inputBuffer);
         } catch (XMLStreamException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -110,66 +109,87 @@ public class WBXMLSaxIterator {
                     case "safrxml":
                         break;
                     case "Generation":
+                        logger.atFine().log("Parsing Generation");
                         parseRecordsForElementWithParser(elementName, new GenerationParser());
                         break;
                     case "View":
+                        logger.atFine().log("Parsing View");
                         parseRecordsForElementWithParser(elementName, new ViewRecordParser());
                         break;
                     case "View-Column":
+                        logger.atFine().log("Parsing View-Column");
                         parseRecordsForElementWithParser(elementName, new ViewColumnRecordParser());
                         break;
                     case "View-Source":
+                        logger.atFine().log("Parsing View-Source");
                         parseRecordsForElementWithParser(elementName, new ViewSourceRecordParser());
                         break;
                     case "View-Column-Source":
+                        logger.atFine().log("Parsing View-Column-Source");
                         parseRecordsForElementWithParser(elementName, new ViewColumnSourceRecordParser());
                         break;
                     case "View-SortKey":
+                        logger.atFine().log("Parsing View-SortKey");
                         parseRecordsForElementWithParser(elementName, new ViewSortKeyRecordParser());
                         break;
                     case "View-HeaderFooter":
+                        logger.atFine().log("Parsing View-HeaderFooter");
                         parseRecordsForElementWithParser(elementName, new ViewHeaderFooterParser());
                         break;
                     case "Lookup":
+                        logger.atFine().log("Parsing Lookup");
                         parseRecordsForElementWithParser(elementName, new LookupRecordParser());
                         break;
                     case "Lookup-Source-Key":
+                        logger.atFine().log("Parsing Lookup-Source-Key");
                         parseRecordsForElementWithParser(elementName, new LookupSourceKeyRecordParser());
                         break;
                     case "Lookup-Step":
+                        logger.atFine().log("Parsing Lookup-Step");
                         parseRecordsForElementWithParser(elementName, new LookupStepRecordParser());
                         break;
                     case "LogicalRecord":
+                        logger.atFine().log("Parsing LogicalRecord");
                         parseRecordsForElementWithParser(elementName, new LRRecordParser());
                         break;
                     case "LRField":
+                        logger.atFine().log("Parsing LRField");
                         parseRecordsForElementWithParser(elementName, new LRFieldRecordParser());
                         break;
                     case "LR-Field-Attribute":
+                        logger.atFine().log("Parsing LR-Field-Attribute");
                         parseRecordsForElementWithParser(elementName, new LRFieldAttributeRecordParser());
                         break;
                     case "LR-Index":
+                        logger.atFine().log("Parsing LR-Index");
                         parseRecordsForElementWithParser(elementName, new LRIndexRecordParser());
                         break;
                     case "LR-LF-Association":
+                        logger.atFine().log("Parsing LR-LF-Association");
                         parseRecordsForElementWithParser(elementName, new LRLFAssocRecordParser());
                         break;
                     case "LR-IndexField":
+                        logger.atFine().log("Parsing LR-IndexFiel");
                         parseRecordsForElementWithParser(elementName, new LRIndexFieldRecordParser());
                         break;
                     case "LogicalFile":
+                        logger.atFine().log("Parsing LogicalFile");
                         parseRecordsForElementWithParser(elementName, new LogicalFileRecordParser());
                         break;
                     case "LF-PF-Association":
+                        logger.atFine().log("Parsing LF-PF-Association");
                         parseRecordsForElementWithParser(elementName, new LFPFAssocRecordParser());
                         break;
                     case "PhysicalFile":
+                        logger.atFine().log("Parsing PhysicalFile");
                         parseRecordsForElementWithParser(elementName, new PhysicalFileRecordParser());
                         break;
                     case "Exit":
+                        logger.atFine().log("Parsing Exit");
                         parseRecordsForElementWithParser(elementName, new ExitRecordParser());
                         break;
                     case "ControlRecord":
+                        logger.atFine().log("Parsing ControlRecord");
                         parseRecordsForElementWithParser(elementName, new CRRecordParser());
                         break;
                 }
@@ -241,6 +261,10 @@ public class WBXMLSaxIterator {
 
     public Collection<CatalogEntry> getCatalogEntries() {
         return catalog.values();
+    }
+
+    public void setInputBuffer(BufferedInputStream ib) {
+        inputBuffer = ib;
     }
 
 }

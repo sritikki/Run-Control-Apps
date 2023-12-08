@@ -3,6 +3,7 @@ package org.genevaers.compilers.extract.emitters.comparisonemitters;
 import org.genevaers.compilers.extract.astnodes.CalculationAST;
 import org.genevaers.compilers.extract.astnodes.ColumnRefAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 
 /*
@@ -25,6 +26,7 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 
 public class CFAXEmitter extends ComparisonEmitter{
@@ -35,6 +37,9 @@ public class CFAXEmitter extends ComparisonEmitter{
         calcNode.emit();
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableNameF1 cfax = (LogicTableNameF1) ltFact.getCFAX(calcNode.getAccName(), ((ColumnRefAST) rhs).getViewColumn(), op);
+        LogicTableArg arg = cfax.getArg();
+        arg.setFieldId(((ColumnRefAST) rhs).getViewColumn().getColumnNumber());
+        arg.setLogfileId(((ColumnRefAST) rhs).getViewColumn().getExtractArea().ordinal());
         return cfax;
     }
 

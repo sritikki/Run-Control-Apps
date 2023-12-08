@@ -51,6 +51,7 @@ import org.genevaers.repository.components.enums.DbmsRowFmtOptId;
 import org.genevaers.repository.components.enums.FieldDelimiter;
 import org.genevaers.repository.components.enums.FileRecfm;
 import org.genevaers.repository.components.enums.FileType;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.TextDelimiter;
@@ -87,15 +88,11 @@ public class REHHeader {
         vd.setViewType(ViewType.EXTRACT);
         vd.setExtractSummarized(false);
         vd.setStatus(ViewStatus.ACTIVE);
-        vd.setProcessAsofDate("");
-        vd.setLookupAsofDate("");
-        vd.setFillErrorValue("");
-        vd.setFillTruncationValue("");
         vd.setWriteExitParams("");
         vd.setFormatExitParams("");
         vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 
-        makeHeaderLR();
+        makeHeaderLR(rehViewNum);
 
         addColumns();
 
@@ -132,8 +129,8 @@ public class REHHeader {
         Repository.getLogicalFiles().add(lf, viewNum, NAME +"_LF");
     }
 
-    protected void makeHeaderLR() {
-        hdrLR = Repository.makeLR("Ref Header LR");
+    protected void makeHeaderLR(int rehLRNum) {
+        hdrLR = Repository.makeLR("Ref Header LR", rehLRNum);
         startPos = 1;
         short dwordLen = 4;
         short wordLen = 2;
@@ -161,12 +158,13 @@ public class REHHeader {
         while(fldIt.hasNext()) {
             LRField fld = fldIt.next();
             ViewColumn vc = new ViewColumn();
-            int colID = ComponentNode.getMaxColumnID() + 1;
-            vc.setComponentId(colID);
+            vc.setComponentId(columnNumber);
             vc.setViewId(rehViewNum);
             vc.setName(fld.getName());
+            vc.setOrdinalPosition((short)columnNumber);
             vc.setColumnNumber(columnNumber++);
             RepoHelper.setViewColumnFromLRField(vc, fld);
+            vc.setJustifyId(JustifyId.LEFT);
             vn.addViewColumn(vc);
         }
     }
@@ -188,6 +186,7 @@ public class REHHeader {
         vn.getOutputFile().setOutputDDName(Repository.getPhysicalFiles().get(rehViewNum).getOutputDDName());
         vsnode.setViewSource(vs);
         lfNode.getLogicalFile().getPFIterator().next().setRequired(true); //There should be only one
+        lfNode.getLogicalFile().setRequired(true);
         lfNode.addChildIfNotNull(vsnode);
         addViewColumnSourceNodes(vsnode);
         addWriteNode(vsnode, rehViewNum);

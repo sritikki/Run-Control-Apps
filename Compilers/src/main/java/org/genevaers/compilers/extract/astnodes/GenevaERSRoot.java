@@ -61,10 +61,10 @@ public class GenevaERSRoot extends ExtractBaseAST implements EmittableASTNode{
         hd.setFunctionCode("HD");
 
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        DateFormat timeFormat = new SimpleDateFormat("hhmmss");
+        DateFormat timeFormat = new SimpleDateFormat("HHmmss");
         Date dt = Calendar.getInstance().getTime();
         hd.setDate(dateFormat.format(dt));
-        hd.setTime(timeFormat.format(dt));
+        hd.setTime(timeFormat.format(dt) + "00");
         ltEmitter.addToLogicTable(hd);
     }
 
@@ -76,7 +76,7 @@ public class GenevaERSRoot extends ExtractBaseAST implements EmittableASTNode{
         gen.setIsAscii(System.getProperty("os.name").startsWith("z") ? false : true);
         gen.setDesc("Java MR91");
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        DateFormat timeFormat = new SimpleDateFormat("hhmmss");
+        DateFormat timeFormat = new SimpleDateFormat("HHmmss");
         Date dt = Repository.getGenerationTime();
         String date = dateFormat.format(dt);
         gen.setDateCc(date.substring(0,2));
@@ -96,6 +96,7 @@ public class GenevaERSRoot extends ExtractBaseAST implements EmittableASTNode{
         LogicTableF0 en = new LogicTableF0();
         en.setRecordType(LtRecordType.F0);
         en.setFunctionCode("EN");
+        en.setViewId(0);
         ltEmitter.addToLogicTable(en);
     }
 

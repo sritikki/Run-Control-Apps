@@ -49,6 +49,12 @@ public class CTColumnAST extends ColumnAST {
     }
 
     @Override
+    public LTFileObject getPriorFieldLtEntry(LRField field) {
+        LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
+        return fcf.getCTP(field, vc);
+    }
+
+    @Override
     public LTFileObject getConstLtEntry(String value) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         return fcf.getCTC(value, vc);

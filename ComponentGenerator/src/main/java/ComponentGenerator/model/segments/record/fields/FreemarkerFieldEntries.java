@@ -30,6 +30,7 @@ public class FreemarkerFieldEntries {
     private List<String> fieldEntries = new ArrayList<>();
     private List<String> gettersAndSetters = new ArrayList<>();
     private List<String> readers = new ArrayList<>();
+    private List<String> fieldNodeEntries = new ArrayList<>();
     private List<String> csvEntries = new ArrayList<>();
     private List<String> csvHeaders = new ArrayList<>();
     private List<String> componentEntries = new ArrayList<>();
@@ -109,20 +110,28 @@ public class FreemarkerFieldEntries {
         this.dsectEntries = dsectEntries;
     }
 
-    public void addEntriesFrom(Record record) {
-		addRecordEntries(record);
+    public List<String> getFieldNodeEntries() {
+        return fieldNodeEntries;
+    }
+
+    public void setFieldNodeEntries(List<String> fieldNodeEntries) {
+        this.fieldNodeEntries = fieldNodeEntries;
+    }
+
+    public void addEntriesFrom(Record record, boolean arrayValue) {
+		addRecordEntries(record, false, arrayValue);
     }
 
     public void addEntriesFrom(Record prefix, Record record) {
         addComment(Field.INDENT + "//Prefix entries");
-		addRecordEntries(prefix);
+		addRecordEntries(prefix, true, false);
         addComment(Field.INDENT + "//Record entries");
-		addRecordEntries(record);
+		addRecordEntries(record, false, false);
     }
 
     public void addEntriesFrom(Record prefix, Record arg, Record record) {
         addComment(Field.INDENT + "//Prefix entries");
-		addRecordEntries(prefix);
+		addRecordEntries(prefix, true, false);
         addComment(Field.INDENT + "//Field entries");
 		addRecordEntries(record, arg);
     }
@@ -141,7 +150,7 @@ public class FreemarkerFieldEntries {
                 }
                 addArgDsectEntries(arg, argNum);
             }
-            addFieldEntries(f);
+            addFieldEntries(f, false, false);
         }
     }
 
@@ -166,22 +175,28 @@ public class FreemarkerFieldEntries {
 		}
     }
 
-    private void addRecordEntries(Record rec) {
+    private void addRecordEntries(Record rec, boolean prefix, boolean arrayValue) {
         for(Field f : rec.getFields()) {
-			addFieldEntries(f);
+			addFieldEntries(f, prefix, arrayValue);
 		}
     }
 
-    private void addFieldEntries(Field f) {
+    private void addFieldEntries(Field f, boolean prefix, boolean arrayValue) {
         addFieldEntryIfNotNull(f.getFieldEntry());
         addGetAndSetEntryIfNotNull(f.getGetAndSetEntry());
         addReaderEntryIfNotNull(f.getReadEntry());
+        addFieldNodes(f.getFieldNodeEntry(prefix, arrayValue));
         addCsvEntryIfNotNull(f.getCsvEntry());
         addCsvHeaderEntryIfNotNull(f.getCsvHeaderEntry());
         addComponentEntryIfNotNull(f.getComponentEntry());
         addFillFromComponentEntryIfNotNull(f.getFillFromComponentEntry());
         addFillWriteBufferEntryIfNotNull(f.getFillTheWriteBufferEntry());
         addDsectEntryIfNotNull(f, "");
+    }
+
+    private void addFieldNodes(String fieldNodeEntry) {
+        if(fieldNodeEntry != null)
+        	fieldNodeEntries.add(fieldNodeEntry);
     }
 
     private void addDsectEntryIfNotNull(Field f, String useName) {

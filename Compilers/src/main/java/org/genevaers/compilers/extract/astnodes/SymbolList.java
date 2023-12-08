@@ -42,4 +42,8 @@ public class SymbolList extends ExtractBaseAST {
         return val;
     }
 
+    public String getUniqueKey() {
+        return null;
+    }
+
 }

@@ -91,7 +91,7 @@ public class RecordFileReaderWriter {
 			long offset = rFile.getFilePointer();
 			if (offset < filelen) {
 				record.length = rFile.readShort();
-				if (record.bytes.hasArray()) {
+				if (record.length > 0 && record.bytes.hasArray()) {
 					if (record.length < record.bytes.limit()) {
 						rFile.readFully(record.bytes.array(), 0, record.length - 2);
 						numRecordsRead++;

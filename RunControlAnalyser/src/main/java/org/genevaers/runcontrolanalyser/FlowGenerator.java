@@ -447,7 +447,7 @@ public class FlowGenerator {
 
 	private void addJoinToCurrentView( LTRecord xtr) throws IOException {
 		LogicTableF1 join = (LogicTableF1)xtr;
-		currentJoinNumber = ArgHelper.getArgString(join.getArg());
+		currentJoinNumber = join.getArg().getValue().getString();
 		JoinDotWriter jdw = currentVdf.addJoin(join, isJoinDetailed(), currentViewSource);
 		LogicalRecord lr = Repository.getLogicalRecords().get(join.getArg().getLrId());
 		jdw.setRefLR(lr);

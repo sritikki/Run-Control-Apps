@@ -117,7 +117,7 @@ public class DBViewsReader extends DBReaderBase {
 
     private void addViewsToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String viewsQuery = queryBase + " from " + params.getSchema() + ".View v " 
-        + "INNER JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
+        + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
         + "where viewid IN(" + viewIds + ") and v.environid = " + params.getEnvironmenID() + ";";
 
         executeAndWriteToRepo(dbConnection, viewsQuery);
@@ -161,10 +161,8 @@ public class DBViewsReader extends DBReaderBase {
         vd.setControlRecordId(rs.getInt("CONTROLRECID"));
 
         //These probably should not be here
-        vd.setProcessAsofDate("");
-		vd.setLookupAsofDate("");
-		vd.setFillErrorValue("###########################");
-		vd.setFillTruncationValue("********************************");
+        vd.setOwnerUser(rs.getString("CREATEDUSERID"));
+        vd.setOwnerUser(rs.getString("LASTMODUSERID"));
 
         currentViewNode = Repository.getViewNodeMakeIfDoesNotExist(vd);
         currentViewNode.setFormatFilterLogic(rs.getString("FORMATFILTLOGIC"));

@@ -203,6 +203,8 @@ public class FunctionCodeGenerator  extends GeneratorBase {
             } else {        
                 return getFunctionName(c) + "(String accum, LRField f, String op)";
             }
+        } else if(fc.endsWith("X")) {
+            return getFunctionName(c) + "(String accum, ViewColumn vc)";
         } else {
             return getFunctionName(c) + "(String accum, LRField f)";
         }

@@ -50,12 +50,9 @@ public class ViewColumnRecordParser extends RecordParser {
 					vc.setComponentId(Integer.parseInt(text.trim()));
 					vc.setName("");
 					vc.setFieldName("");
-					vc.setEffectiveDate("");
-					vc.setTerminationDate("");
 					vc.setDetailPrefix("");
 					vc.setSubtotalMask("");
 					vc.setDateCode(DateCode.NONE);
-					vc.setJustifyId(JustifyId.NONE);
 					vc.setSubtotalType(SubtotalType.NONE);
 					vc.setHeaderJustifyId(JustifyId.CENTER);
 					break;
@@ -74,6 +71,11 @@ public class ViewColumnRecordParser extends RecordParser {
 					break;
 				case "FLDFMTCD":
 					vc.setDataType(DataType.fromdbcode(text.trim()));
+					if(vc.getDataType() == DataType.ALPHANUMERIC) {
+						vc.setJustifyId(JustifyId.LEFT);
+					} else {
+						vc.setJustifyId(JustifyId.RIGHT);
+					}
 					break;
 				case "SIGNEDIND":
 					vc.setSigned(text.equals("1") ? true : false);
@@ -135,7 +137,6 @@ public class ViewColumnRecordParser extends RecordParser {
 					break;
 				case "HDRLINE1":
 					vc.setHeaderLine1(text);
-					vc.setName(text.trim());
 					break;
 				case "HDRLINE2":
 					vc.setHeaderLine2(text);

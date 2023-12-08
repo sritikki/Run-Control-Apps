@@ -602,7 +602,7 @@ codes:
   - function_code: SETX
     lt_record_type: NAMEF1
     category: Arithmetic
-    description: Set an accumulator from a prior event field
+    description: Set an accumulator from a previous column
     
   - function_code: SFCE
     lt_record_type: F1

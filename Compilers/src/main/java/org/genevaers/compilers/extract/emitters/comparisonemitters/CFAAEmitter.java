@@ -35,7 +35,7 @@ public class CFAAEmitter extends ComparisonEmitter{
         CalculationAST rhscalcNode = ((CalculationAST) rhs);
         rhscalcNode.emit();
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableNameValue cfac = (LogicTableNameValue) ltFact.getCFAA(lhscalcNode.getAccName(), lhscalcNode.getAccName(), op);
+        LogicTableNameValue cfac = (LogicTableNameValue) ltFact.getCFAA(lhscalcNode.getAccName(), rhscalcNode.getAccName(), op);
         return cfac;
     }
 

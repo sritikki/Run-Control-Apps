@@ -170,7 +170,7 @@ public class VDPFileWriter {
 			vof.setComponentId(view.getID());
 			String ddname = String.format("F%07d", view.getID());
 			vof.setOutputDDName(ddname);
-			vof.setName("MR91 generated for " + ddname);
+			vof.setName("Auto-generated Name for Extract Phase Output ");
 	}
 
 	private void writeTheOutputFile(ViewNode view) {
@@ -188,10 +188,12 @@ public class VDPFileWriter {
 			ff.setRecordType(VDPRecord.VDP_FORMAT_OUTPUT_FILE);
 			ff.setViewId(view.getID());
 			ff.setSequenceNbr((short) 1);
-			ff.setRecordId(view.getID());
+			ff.setRecordId(0);
 			ff.setInputFileId(0);
 
 			//Keep the writer happy
+			ff.setServerId(1);
+			ff.setDbmsRowFmtOptId(1);
 			ff.setAllocFileType(FileType.DISK);
 			ff.setFieldDelimId(FieldDelimiter.INVALID);
 			ff.setRecordDelimId(RecordDelimiter.INVALID);
@@ -199,6 +201,20 @@ public class VDPFileWriter {
 			ff.setAccessMethodId(AccessMethod.SEQUENTIAL);
 			ff.setAllocLrecl((short) 400);
 			ff.setAllocRecfm(FileRecfm.FB);
+			ff.setExpirationDate("00000000");
+			ff.setCodesetId(2);
+			ff.setEndianId(1);
+			ff.setFieldDelimId(FieldDelimiter.FIXEDWIDTH);
+			ff.setRecordDelimId(RecordDelimiter.CR);
+			ff.setAllocDsorg(1);
+			ff.setAllocVsamorg(1);
+			ff.setAllocRecfm(FileRecfm.VB);
+			ff.setAllocLrecl((short) 27994);
+			ff.setAllocReleaseInd(true);
+			ff.setControlRectypeId(1);
+			ff.setVersNbrFldFmtId(1);
+			ff.setRecCountFldFmtId(1);
+			ff.setProcessInParallel(true);
 		}
 
 		ff.fillTheWriteBuffer(VDPWriter);
@@ -272,14 +288,14 @@ public class VDPFileWriter {
 	}
 
 	private void writeOutputLogic(ViewSource vs) {
-		if (vs.getExtractOutputLogic() != null) {
+		if (vs.getExtractOutputLogic() != null && vs.getExtractOutputLogic().length() > 0) {
             logger.atFine().log("Output Logic\n%s", vs.getExtractOutputLogic());
 			String eol = vs.getExtractOutputLogic();
 			VDPExtractOutputLogic veol = new VDPExtractOutputLogic();
 
 			veol.setRecordType(VDPRecord.VDP_OUTPUT_LOGIC);
 			veol.setViewId(vs.getViewId());
-			veol.setSequenceNbr(vs.getSequenceNumber());
+			veol.setSequenceNbr((short) 0);
 			veol.setRecordId(vs.getComponentId());
 			veol.setInputFileId(vs.getComponentId());
 			veol.setLogicLength((short) eol.length());
@@ -430,7 +446,7 @@ public class VDPFileWriter {
 		vcl.setRecordType(VDPRecord.VDP_COLUMN_LOGIC);
 		vcl.setViewId(vcs.getViewId());
 		vcl.setColumnId(colNumber);
-		vcl.setSequenceNbr(vcs.getSequenceNumber());
+		vcl.setSequenceNbr((short) 0);
 		vcl.setRecordId(vcs.getComponentId());
 		vcl.setInputFileId(vcs.getComponentId());
 		vcl.setLogicLength((short) cl.length());
@@ -453,14 +469,26 @@ public class VDPFileWriter {
 		private void writeViewDefinition(ViewDefinition viewDefinition) {
 		VDPViewDefinition vvd = new VDPViewDefinition();
 		logger.atFine().log("Write View %d Definition", viewDefinition.getComponentId());
+		fillTheErrorAndTruncFields(vvd);
 		vvd.fillFromComponent(viewDefinition);
-		vvd.setOutputPageSizeMax((short)66);
-		vvd.setOutputLineSizeMax((short)250);
+		vvd.setOutputColHdrLnsMax(viewDefinition.getOutputColHdrLnsMax());
 		vvd.fillTheWriteBuffer(VDPWriter);
 		//set some defaults
 		VDPWriter.writeAndClearTheRecord();
 	}
 
+	private void fillTheErrorAndTruncFields(VDPViewDefinition vvd) {
+		vvd.setFillErrorValue(fill('*'));
+		vvd.setFillTruncationValue(fill('#'));
+	}
+
+	private String fill(char c) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<256; i++) {
+			sb.append(c);
+		}
+		return sb.toString();
+	}
 	private void writeExtractRecordFile() {
 		if (vdpMgmtRecs.getExtractRecordFile() != null) {
 		    logger.atFine().log("Write Extract Record File");
@@ -484,6 +512,7 @@ public class VDPFileWriter {
 		Iterator<JoinTargetEntry> jti = Repository.getJoinViews().getJoinTargetsIterator();
 		VDPLookupPathTargetSet lpts = new VDPLookupPathTargetSet();
 		lpts.setRecordId(650);
+		lpts.setSequenceNbr((short)0);
 		List<VDPLookupPathTargetEntry> refViews = lpts.getRefViews();
 		while(jti.hasNext()) {
 			JoinTargetEntry jt = jti.next();
@@ -619,7 +648,7 @@ public class VDPFileWriter {
 				pf.setLogicalFileId(lf.getID());
 				pf.setLogicalFilename(lf.getName());
 				VDPPhysicalFile vdppf = new VDPPhysicalFile();
-				if(pf.isRequired()) {
+				if(lf.isRequired() && pf.isRequired()) {
 			        logger.atFine().log("Write PF:%d", pf.getComponentId());
 					vdppf.fillFromComponent(pf);
 					vdppf.setSequenceNbr(seqNum++);

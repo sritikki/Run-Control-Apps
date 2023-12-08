@@ -70,4 +70,9 @@ public class IntegerField extends Field {
         return "FL4";
     }
 
+    @Override
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
+        return defaultNumericNodeEntry(prefix, arrayValue);
+    }
+
 }

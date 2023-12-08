@@ -17,7 +17,7 @@ specFileSets:
       - "PeTests/Token/TOKMU.yaml" 
       - "PeTests/PreviousColumnRefs/PRVCOL.yaml"  
       - "PeTests/RTCs/FIXES.yaml"
-      - "PeTests/Function/STRFN.yaml" 
+      - "PeTests/Function/JSTRFN.yaml" 
       - "PeTests/FormatReports/ReportZeroSuppress.yaml"
       - "PeTests/FormatReports/ReportHeaderTest.yaml"
       - "PeTests/FormatReports/NEWP2.yaml"

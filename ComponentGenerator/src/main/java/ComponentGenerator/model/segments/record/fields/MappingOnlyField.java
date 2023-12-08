@@ -66,5 +66,9 @@ public class MappingOnlyField extends Field {
         return null;
     }
 
+    @Override
+    public String getFieldNodeEntry(boolean prefix, boolean arrayValue) {
+        return null;    }
+
 
 }

@@ -44,7 +44,7 @@ public class LRIndexFieldRecordParser extends RecordParser {
 		int n = reader.next();
 		if (n == XMLEvent.CHARACTERS) {
 			String text = reader.getText();
-			LRIndex ndx;
+			LRIndex existingIndex;
 			switch (part) {
 				case "LRINDEXID":
 					ndxid = Integer.parseInt(text);
@@ -54,17 +54,26 @@ public class LRIndexFieldRecordParser extends RecordParser {
 					break;
 				case "LRFIELDID":
 					fieldID = Integer.parseInt(text);
-					LRIndex rawndx = Repository.getIndexes().get(ndxid);
-					ndx = new LRIndex();
-					currentLR = Repository.getLogicalRecords().get(rawndx.getLrId());
-					ndx.setComponentId(ndxid);
-					ndx.setFieldID(fieldID);
-					ndx.setKeyNumber((short) sequenceNumber);
-					ndx.setLrId(currentLR.getComponentId());
-					ndx.setEffectiveDateEnd(false);
-					ndx.setEffectiveDateStart(false);
-					ndx.setName("Primary");
-					currentLR.addToIndexBySeq(ndx);
+					existingIndex = Repository.getIndexes().get(ndxid);
+					if(existingIndex == null) {
+						existingIndex = new LRIndex();
+						//This should not happen!!!
+					}
+					currentLR = Repository.getLogicalRecords().get(existingIndex.getLrId());
+					LRIndex ndxToBeUpdated;
+					if(existingIndex.getKeyNumber() == sequenceNumber) {
+						ndxToBeUpdated = existingIndex;
+					} else {
+						ndxToBeUpdated = new LRIndex();
+					}
+					ndxToBeUpdated.setComponentId(ndxid);
+					ndxToBeUpdated.setFieldID(fieldID);
+					ndxToBeUpdated.setKeyNumber((short) sequenceNumber);
+					ndxToBeUpdated.setLrId(currentLR.getComponentId());
+					ndxToBeUpdated.setEffectiveDateEnd(false);
+					ndxToBeUpdated.setEffectiveDateStart(false);
+					ndxToBeUpdated.setName("Primary");
+					currentLR.addToIndexBySeq(ndxToBeUpdated);
 					break;
 				default:
 					break;

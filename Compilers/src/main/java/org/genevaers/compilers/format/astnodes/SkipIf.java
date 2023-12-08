@@ -1,5 +1,9 @@
 package org.genevaers.compilers.format.astnodes;
 
+import java.util.Iterator;
+
+import org.genevaers.compilers.base.ASTBase;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -19,6 +23,9 @@ package org.genevaers.compilers.format.astnodes;
 
 
 import org.genevaers.compilers.format.astnodes.FormatASTFactory.Type;
+import org.genevaers.repository.calculationstack.CalcStack.CalcStackOpcode;
+import org.genevaers.repository.calculationstack.CalcStackEntry;
+import org.genevaers.repository.calculationstack.CalcStackIntegerEntry;
 
 public class SkipIf extends FormatBaseAST{
 
@@ -26,4 +33,31 @@ public class SkipIf extends FormatBaseAST{
         type = Type.SKIPIF;
     }
 
+    @Override
+    public CalcStackEntry emit(boolean invert) {
+        Iterator<ASTBase> ci = getChildIterator();
+        FormatBaseAST predicate = (FormatBaseAST) ci.next();
+        //Reverse of selectif
+        NumConst falseBranch = (NumConst) ci.next();
+        NumConst trueBranch = (NumConst) ci.next();
+        inverted = invert;
+
+        CalcStackIntegerEntry predEntry = (CalcStackIntegerEntry) predicate.emit(invert);
+        int trueEntryOffset = currentOffset;
+
+        CalcStackEntry trueEntry = trueBranch.emit(invert);
+
+        CalcStackIntegerEntry ba = (CalcStackIntegerEntry) emitIntegerCodeEntry(CalcStackOpcode.CalcStackBranchAlways, null);
+
+        CalcStackEntry fbEntry = falseBranch.emit(invert);
+
+        int end = fbEntry.getOffset() + fbEntry.length();
+
+        //Only now can we set the internal condition gotos
+        doFixups(predicate, trueEntryOffset, fbEntry.getOffset());
+
+        ba.setValue(end);
+
+        return trueEntry;
+    }
 }

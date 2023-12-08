@@ -70,13 +70,13 @@ public class ViewSortKeyRecordParser extends RecordParser {
 
 	private void setDefault(ViewSortKey vsk) {
 		vsk.setDescDateCode(DateCode.NONE);
-		vsk.setDescDataType(DataType.INVALID);
-		vsk.setDescJustifyId(JustifyId.NONE);
+		vsk.setDescDataType(DataType.ALPHANUMERIC);
+		vsk.setDescJustifyId(JustifyId.LEFT);
 		vsk.setLabel("");
-		vsk.setSkJustifyId(JustifyId.NONE);
+		vsk.setSkJustifyId(JustifyId.LEFT);
 		vsk.setSktDateCode(DateCode.NONE);
 		vsk.setSktDataType(DataType.ALPHANUMERIC);
-		vsk.setSktJustifyId(JustifyId.NONE);
+		vsk.setSktJustifyId(JustifyId.LEFT);
 		vsk.setSortKeyDateTimeFormat(DateCode.NONE);
 		vsk.setSortDisplay(SortKeyDispOpt.CATEGORIZE);
 	}
@@ -107,6 +107,9 @@ public class ViewSortKeyRecordParser extends RecordParser {
 						currentViewNode = Repository.getViews().get(viewId);
 						currentViewId = viewId;
 					}
+					break;
+				case "SORTKEYLABEL":
+					vsk.setLabel(text.trim());
 					break;
 				case "KEYSEQNBR":
 					short s = (short) Integer.parseInt(text);
@@ -152,9 +155,9 @@ public class ViewSortKeyRecordParser extends RecordParser {
 					int breakMask = 0x0002;
 					re = sbi & breakMask;
 					if (re > 0) {
-						vsk.setPerformBreakLogic(PerformBreakLogic.BREAK);
-					} else {
 						vsk.setPerformBreakLogic(PerformBreakLogic.NOBREAK);
+					} else {
+						vsk.setPerformBreakLogic(PerformBreakLogic.BREAK);
 					}
 					break;
 				case "PAGEBRKIND":

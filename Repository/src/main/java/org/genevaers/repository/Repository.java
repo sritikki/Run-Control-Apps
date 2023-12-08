@@ -42,7 +42,7 @@ import org.genevaers.repository.components.enums.LrStatus;
 import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
-import org.genevaers.repository.jltviews.UniqueKey;
+import org.genevaers.repository.jltviews.UniqueKeys;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -60,7 +60,7 @@ public class Repository {
 	private static int currentLRID = 0;
 	private static LogicalRecord currentLR;
 	private static int maxViewID = 0;
-	private static int maxLRID = 0;
+	private static int maxComponentLRID = 0;
 	private static int maxFieldID = 0;
 	private static int maxIndexID = 0;
 
@@ -92,7 +92,7 @@ public class Repository {
 		formatViews = new ComponentCollection<ViewNode>();
 		jvm = new JoinViewsManager();	
 
-		UniqueKey.reset();
+		UniqueKeys.reset();
 
 		currentlp = null;
 		currentLookupPathStep = null;
@@ -102,7 +102,7 @@ public class Repository {
 		currentLRID = 0;
 		currentLR = null;
 		maxViewID = 0;
-		maxLRID = 0;
+		maxComponentLRID = 0;
 		maxFieldID = 0;
 		maxIndexID = 0;
 	
@@ -181,8 +181,8 @@ public class Repository {
 	}
 
 	public static void addLogicalRecord(LogicalRecord lr) {
-		if(maxLRID < lr.getComponentId())
-			maxLRID = lr.getComponentId();
+		if(maxComponentLRID < lr.getComponentId())
+			maxComponentLRID = lr.getComponentId();
 		lrs.add(lr, lr.getComponentId(), lr.getName());
 	}
 
@@ -210,6 +210,7 @@ public class Repository {
 		if(maxIndexID < lri.getComponentId())
 			maxIndexID = lri.getComponentId();
 		indexes.add(lri, lri.getComponentId());
+		lrs.get(lri.getLrId()).setPrimaryKey(lri.getComponentId());
 	}
 
 	public static void addLookupPathKey(LookupPathKey lpk) {
@@ -284,7 +285,7 @@ public class Repository {
     }
 
 	public static LogicalRecord makeLR(String name) {
-        int nextLRid = maxLRID + 1;
+        int nextLRid = maxComponentLRID + 1;
         LogicalRecord lr = new LogicalRecord();
         lr.setComponentId(nextLRid);
         lr.setName(name);
@@ -295,8 +296,8 @@ public class Repository {
 	}
 
     public static int getNextLRid() {
-		maxLRID++;
-		return maxLRID;
+		maxComponentLRID++;
+		return maxComponentLRID;
     }
 
     public static LRField makeNewField(LogicalRecord lr) {
@@ -334,9 +335,10 @@ public class Repository {
 		extractFileNubers.add(fileNumber);
     }
 
-    public static void allPFsNotRequired() {
-		for(PhysicalFile pf : pfs.getValues()) {
-			pf.setRequired(false);
+    public static void allLFsNotRequired() {
+		for(LogicalFile lf : lfs.getValues()) {
+			lf.setRequired(false);
+			lf.makePFsNotRequired();
 		}
     }
 
@@ -346,6 +348,46 @@ public class Repository {
 
 	public static Date getGenerationTime() {
 		return generationTime;
+	}
+
+	public static void fixupPFDDNames() {
+		for(PhysicalFile pf : pfs.getValues()) {
+			if(pf.getOutputDDName().length() == 0) {
+				pf.setOutputDDName(String.format("O%07d", pf.getComponentId()));
+			}
+			if(pf.getInputDDName().length() == 0) {
+				pf.setInputDDName(String.format("I%07d", pf.getComponentId()));
+			}
+		}
+	}
+
+    public static void fixupMaxHeaderLines() {
+		Iterator<ViewNode> vi = views.getIterator();
+		while(vi.hasNext()) {
+			ViewNode view = vi.next();
+			view.fixupMaxHeaderLines();
+		}
+    }
+
+	public static int getNumberOfRequiredPhysicalFiles() {
+		int count = 0;
+		Iterator<PhysicalFile> pfi = pfs.getIterator();
+		while(pfi.hasNext()) {
+			if(pfi.next().isRequired()) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public static LogicalRecord makeLR(String name, int lrid) {
+        LogicalRecord lr = new LogicalRecord();
+        lr.setComponentId(lrid);
+        lr.setName(name);
+        lr.setStatus(LrStatus.ACTIVE);
+        lr.setLookupExitParams("");
+		lrs.add(lr, lr.getComponentId(), lr.getName());
+		return lr;
 	}
 
 

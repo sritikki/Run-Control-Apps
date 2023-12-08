@@ -1,0 +1,191 @@
+---
+#Seven or fewer characters in the name
+#Uppercase please
+name: "LSTR"
+title: "Long field test specification"
+description: "Test functions on with field lengths > 256 \
+  \ stuff"
+#The category maps to the directory path below the Spec directory
+#Which is where the spec file should be located
+category: "PeTests/LongFields"
+cq: ""
+note: ""
+#There can be many tests.
+#note the '-' that makes an array member
+#and is required at the start of each test
+tests:
+#again 7 characters - try to make it meaningful
+#
+# next test
+#
+- name: "FMTDT"
+  header: "FMTDT"
+  description: "Test DT* functions 256+ length fields Format View"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format[12091].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012091"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1540"
+    workfile: "1"
+#
+# next test
+#
+- name: "FMTDTV"
+  header: "FMTDTV"
+  description: "Test DT* functions 256+ length fields Format View CSV delimited"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format_CSV[12093].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012093"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1550"
+    workfile: "1"
+#
+# next test
+#
+- name: "FMTDTV2"
+  header: "FMTDTV2"
+  description: "Test DT* functions 256+ length fields Format View CSV delimited with header"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format_CSV2[12095].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012095"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1550"
+    workfile: "1"
+#
+# next test
+#
+- name: "FMTDTC"
+  header: "FMTDTC"
+  description: "Test DT* functions 256+ length fields Format with centre alignment"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format_align[12096].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012096"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1630"
+    workfile: "1"
+#
+# next test
+#
+- name: "FMTDTR"
+  header: "FMTDTR"
+  description: "Test DT* functions 256+ length fields Format with right alignment"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format_align_r[12097].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012097"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1630"
+    workfile: "1"
+#
+# next test
+#
+- name: "FMTDTL"
+  header: "FMTDTL"
+  description: "Test DT* functions 256+ length fields Format with left alignment"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format_align_l[12100].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012100"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1630"
+    workfile: "1"

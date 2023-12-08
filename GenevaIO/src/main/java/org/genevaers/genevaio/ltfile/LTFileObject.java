@@ -21,15 +21,16 @@ package org.genevaers.genevaio.ltfile;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
-import org.genevaers.repository.components.enums.LtRecordType;
 
 public abstract class LTFileObject {
 
 	protected static String spaces = "";
 	
 	public abstract void readRecord(LTRecordReader reader, FileRecord rec) throws Exception;
+   	public abstract void addRecordNodes(FieldNodeBase root, boolean compare);
 
 	public abstract void writeCSV(FileWriter csvFile) throws IOException;
 	public abstract void writeCSVHeader(FileWriter csvFile) throws IOException;
@@ -37,6 +38,33 @@ public abstract class LTFileObject {
 
 	public static void setSpaces(String spaces) {
 		LTFileObject.spaces = spaces;
+	}
+
+	protected Cookie cookieReader(int valueLength, LTRecordReader reader, FileRecord rec) throws Exception {
+		Cookie c = new Cookie("");
+        if(valueLength < 0) {
+            byte[] bytes = new byte[256];
+            rec.bytes.get(bytes, 0, 256);
+            StringBuilder result = new StringBuilder();
+            for (int i=0; i< Integer.BYTES; i++) {
+                result.append(String.format("%02X", bytes[i]));
+            }
+            c.setIntegerData(result.toString());
+          } else {
+            rec.bytes.get(reader.getCleanStringBuffer(256), 0, 256);
+            c.setIntegerData(reader.convertStringIfNeeded(reader.getStringBuffer(), 256).trim());
+        }
+        return c;
+	}
+
+	protected void cookieWriter(Cookie value, RecordFileReaderWriter readerWriter, FileRecord buffer) {
+        buffer.bytes.putInt(value.length());
+        if(value.length() < 0) {
+            buffer.bytes.put(value.getBytes(), 0, 256);
+        } else {
+            buffer.bytes.put(readerWriter.convertOutputIfNeeded(value.getString()));
+            buffer.bytes.put(spaces.getBytes(), 0, (256 - value.length()));
+        }
 	}
 
 }

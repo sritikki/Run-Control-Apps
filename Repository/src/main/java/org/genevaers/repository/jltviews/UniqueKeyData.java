@@ -17,24 +17,29 @@ package org.genevaers.repository.jltviews;
  * under the License.
  */
 
+public class UniqueKeyData {
+    private int originalJoinId;
+    private int newJoinId;
 
-public class UniqueKey {
-    private static int base = 1;
-    private static int sktbase = 1;
-
-
-    public static String getUniqueKey() {
-        return Integer.toString(base++);
+    public UniqueKeyData(int oldJoin, int newJoinId) {
+        originalJoinId = oldJoin;
+        this.newJoinId = newJoinId;
     }
 
-    public static String getSktUniqueKey() {
-        return Integer.toString(sktbase++);
+    public int getOriginalJoinId() {
+        return originalJoinId;
     }
 
-    public static void reset() {
-        base = 1;
-        sktbase = 1;
+    public void setOriginalJoinId(int originalJoinId) {
+        this.originalJoinId = originalJoinId;
     }
 
+    public int getNewJoinId() {
+        return newJoinId;
+    }
+
+    public void setNewJoinId(int newJoinId) {
+        this.newJoinId = newJoinId;
+    }
 
 }

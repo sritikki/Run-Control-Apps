@@ -52,6 +52,7 @@ public class LRIndexRecordParser extends RecordParser {
 					pndx.setEffectiveDateEnd(false);
 					pndx.setEffectiveDateStart(false);
 					pndx.setLrId(lrid);
+					pndx.setKeyNumber((short)1); //This will be overwritten if needed
 					Repository.addLRIndex(pndx);
 					break;
 				case "EFFDATESTARTFLDID":

@@ -43,9 +43,9 @@ public class DBViewSourceReader extends DBReaderBase{
             + "o.LOGFILEID as lfout, "
             + "PHYFILEID "
             + "from " + params.getSchema() + ".VIEWSOURCE v "
-            + "INNER JOIN " + params.getSchema() + ".LRLFASSOC i "
+            + "LEFT JOIN " + params.getSchema() + ".LRLFASSOC i "
             + "ON v.INLRLFASSOCID = i.LRLFASSOCID and v.ENVIRONID = i.ENVIRONID "
-            + "INNER JOIN SAFRWBGD.LFPFASSOC o "
+            + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC o "
             + "ON v.OUTLFPFASSOCID = o.LFPFASSOCID and v.ENVIRONID = o.ENVIRONID "
             + "where v.ENVIRONID = " + params.getEnvironmenID() + " and VIEWID in(" + params.getViewIds() + "); ";
     

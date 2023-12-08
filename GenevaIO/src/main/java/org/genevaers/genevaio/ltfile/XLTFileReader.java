@@ -21,6 +21,8 @@ package org.genevaers.genevaio.ltfile;
 import java.io.File;
 import java.io.IOException;
 
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
+import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
 import org.genevaers.repository.components.enums.LtRecordType;
@@ -28,6 +30,8 @@ import org.genevaers.repository.components.enums.LtRecordType;
 public class XLTFileReader {
 
 	private LTRecordReader recordReader = new LTRecordReader();
+	private MetadataNode recordsRoot;
+	private boolean compare;
 	
 	private RecordFileReaderWriter rr;
 	private File ltFile;
@@ -46,6 +50,7 @@ public class XLTFileReader {
 			rec.bytes.clear();
 			rec = rr.readRecord();
 		}
+		//rr.readRecord();
 		return logicTable;
 	}
 
@@ -81,7 +86,31 @@ public class XLTFileReader {
         } else {
 
         }
-		
+		buildTreeIfNeeded();
+
+	}
+
+	private void buildTreeIfNeeded() {
+		if(recordsRoot != null) {
+			LTFileObject ltRec = (LTFileObject) logicTable.getLastEntry();
+			ltRec.addRecordNodes(recordsRoot, compare);
+		}
+	}
+
+	public void setCompare(boolean compare) {
+		this.compare = compare;
+	}
+
+	public void setRecordsRoot(MetadataNode rr) {
+		this.recordsRoot = rr;
+	}
+
+	public MetadataNode getRecordsRoot() {
+		return recordsRoot;
+	}
+
+	public boolean isCompare() {
+		return compare;
 	}
 
     private void determineCharacterSet(FileRecord rec) {

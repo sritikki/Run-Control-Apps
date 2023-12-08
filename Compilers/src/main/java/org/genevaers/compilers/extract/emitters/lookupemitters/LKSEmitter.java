@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract.emitters.lookupemitters;
 
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
+import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.Repository;
@@ -29,22 +31,15 @@ import org.genevaers.repository.components.enums.LtRecordType;
 public class LKSEmitter extends LookupEmitter {
 
     public LogicTableF1 emit(LookupPathKey key) {
-        // There should be a valid converson check done
-
-        //arg1 from the source field
-        //arg2 is the target field
-
-        LogicTableF1 lks = new LogicTableF1();
-        lks.setRecordType(LtRecordType.F1);
-        lks.setFunctionCode("LKS");
-
-        //TODO We need to check the conversion details
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableF1 lks = (LogicTableF1) ltFact.getLKS();
+         //TODO We need to check the conversion details
         //key source field format -> target field format
 
         //Let's just assume okay for the moment
         LogicTableArg arg = new LogicTableArg();
         populateArgFromKeyTarget(arg, key);
-        lks.setArg(arg);;
+        lks.setArg(arg);
 
         lks.setCompareType(LtCompareType.EQ);
         return lks;

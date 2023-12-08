@@ -273,7 +273,7 @@ class RunCompilerTest extends RunCompilerBase {
         assertEquals("CFEC", cfec.getFunctionCode());
         assertEquals(cfec.getArg().getFieldFormat(), DataType.ZONED);
         LogicTableArg arg = cfec.getArg();
-        assertEquals(-3, arg.getValueLength());
+        assertEquals(-3, arg.getValue().length());
         assertEquals(10208, arg.getLogfileId());
         LogicTableNameF1 mule = (LogicTableNameF1) xlt.getFromPosition(14);
         assertEquals("MULE", mule.getFunctionCode());

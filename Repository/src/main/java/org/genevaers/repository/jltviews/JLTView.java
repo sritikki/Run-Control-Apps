@@ -43,6 +43,7 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.ColumnSourceType;
 import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
@@ -91,6 +92,23 @@ public class JLTView {
         }
     }
 
+    public class Reason {
+    
+        public String key;
+        public int lookupId;
+        public int fieldId;
+        public int viewID;
+        public int columnNumber;
+
+        public Reason(String key, int lookupId, int fieldId) {
+            this.key = key;
+            this.lookupId = lookupId;
+            this.fieldId = fieldId;
+        }
+
+        
+    }
+
 
     private int lrid;
     private int originalLookupId;
@@ -124,6 +142,8 @@ public class JLTView {
     protected LookupType lookupType;
     private int ddNum;
 
+    private List<Reason> reasons = new ArrayList<>();
+
     public JLTView(int lr, int lkup) {
         lrid = lr;
         originalLookupId = lkup;
@@ -154,12 +174,10 @@ public class JLTView {
         vd.setViewType(ViewType.EXTRACT);
         vd.setExtractSummarized(false);
         vd.setStatus(ViewStatus.ACTIVE);
-        vd.setProcessAsofDate("");
-        vd.setLookupAsofDate("");
-        vd.setFillErrorValue("");
-        vd.setFillTruncationValue("");
         vd.setWriteExitParams("");
         vd.setFormatExitParams("");
+        vd.setOwnerUser("SAFR");
+        
         vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
 
         ViewSource vs = addViewSource(lfid);
@@ -173,8 +191,9 @@ public class JLTView {
 
     private void setupViewOutputFile(ViewNode vn, String ddname) {
         vn.getOutputFile().setComponentId(vn.getID());
-        vn.getOutputFile().setName("Generated for " + ddname);
+        vn.getOutputFile().setName("PF Generated for " + ddname);
         vn.getOutputFile().setOutputDDName(ddname);
+        vn.getOutputFile().setLogicalFilename("LF Generated for " + ddname);
     }
 
     private void addPaddingIfNeeded(short genStartPos, ViewSource vs) {
@@ -187,8 +206,8 @@ public class JLTView {
     }
 
     private void addPadToViewColumnSources(short genStartPos, int padSize, ViewSource vs) {
-        ViewColumn vc = vn.makeColumn(PADDING, colNum);
-        RepoHelper.setViewAlmunColumn(vc, genStartPos, (short)padSize, PADDING);
+        ViewColumn vc = vn.makeJLTColumn(PADDING, colNum);
+        RepoHelper.setViewAlnumColumn(vc, genStartPos, (short)padSize, PADDING);
         ViewColumnSource vcs = new ViewColumnSource();
         vcs.setColumnID(vc.getComponentId());
         vcs.setColumnNumber(colNum);
@@ -211,7 +230,7 @@ public class JLTView {
         //Probably needs a new id -> ask the repo to make it
         //It will know that the ids are - or use the view number. 
         //It will be unique and the will only be one source
-        vs.setComponentId(vn.getID());
+        vs.setComponentId(1);
         vs.setSequenceNumber((short)1);
         vs.setSourceLFID(lfid);
         vs.setSourceLRID(lrid);
@@ -227,7 +246,7 @@ public class JLTView {
         colNum = 1;
         while(fi.hasNext()) {
             LRField f = fi.next();
-            ViewColumn vc = vn.makeColumn(f.getName(), colNum);
+            ViewColumn vc = vn.makeJLTColumn(f.getName(), colNum);
             RepoHelper.setViewColumnFromLRField(vc, f);
             ViewColumnSource vcs = new ViewColumnSource();
             vcs.setColumnID(vc.getComponentId());
@@ -245,7 +264,7 @@ public class JLTView {
         }       
     }
 
-    public void buildREDLRs() {
+    public void buildREDLRs(int joinNumber) {
         // make the RED LR - the LR 
         // make the generation RED LR - the LR used to generate the ref data
         // they can be different due to redefines
@@ -254,7 +273,7 @@ public class JLTView {
         //Need to sort the fields in start position order
         //The ignore the overlapped/redefined 
         sortRefFields();
-        makeREDLR();
+        makeREDLR(joinNumber);
         makeREDGenerationLR();
         //This has to be after above since it works out the key length
 
@@ -426,8 +445,9 @@ public class JLTView {
         genFld.setName("start date");
     }
 
-    private void makeREDLR() {
-        redLR = Repository.makeLR("Ref LR for Lookup lr " + lrid);
+    private void makeREDLR(int joinNumber) {
+        //need to use LR id based BASE number
+        redLR = Repository.makeLR("Ref LR for Lookup lr " + lrid, JOINVIEWBASE + joinNumber);
     }
 
     public int getLRid() {
@@ -488,6 +508,28 @@ public class JLTView {
 
     public int getDdNum() {
         return ddNum;
+    }
+
+    public LogicalRecord getRedLR() {
+        return redLR;
+    }
+
+    public int getRefViewNum() {
+        return refViewNum;
+    }
+
+    public void addReason(String key, int lkid, int fldid) {
+        reasons.add(new Reason(key, lkid, fldid));
+    }
+
+    public List<Reason> getReasons() {
+        return reasons;
+    }
+
+    public void updateLastReason(int viewId, int columnNumber) {
+        Reason last = reasons.get(reasons.size() - 1);
+        last.viewID = viewId;
+        last.columnNumber = columnNumber;
     }
     
 }

@@ -1,5 +1,13 @@
 package org.genevaers.compilers.extract.emitters.lookupemitters;
 
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
+import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.ArgHelper;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.repository.components.LookupPathKey;
+import org.genevaers.repository.components.enums.LtCompareType;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -20,4 +28,13 @@ package org.genevaers.compilers.extract.emitters.lookupemitters;
 
 public class LKCEmitter extends LookupEmitter {
 
+    public LogicTableF1 emit(LookupPathKey key) {
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableF1 lkc = (LogicTableF1) ltFact.getLKC(key.getValue());
+        ArgHelper.populateArgFromKeyTarget(lkc.getArg(), key);
+         
+        lkc.setCompareType(LtCompareType.EQ);
+        return lkc;
+    }
+    
 }

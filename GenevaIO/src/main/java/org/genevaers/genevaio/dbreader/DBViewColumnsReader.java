@@ -53,6 +53,11 @@ public class DBViewColumnsReader extends DBReaderBase{
             vc.setViewId(rs.getInt("VIEWID"));
             vc.setColumnNumber(rs.getInt("COLUMNNUMBER"));
             vc.setDataType(DataType.fromdbcode(rs.getString("FLDFMTCD")));
+            if(vc.getDataType() == DataType.ALPHANUMERIC) {
+                vc.setJustifyId(JustifyId.LEFT);
+            } else {
+                vc.setJustifyId(JustifyId.RIGHT);
+            }
             vc.setSigned(rs.getBoolean("SIGNEDIND"));
             vc.setStartPosition(rs.getShort("STARTPOSITION"));
             vc.setFieldLength(rs.getShort("MAXLEN"));
@@ -60,7 +65,10 @@ public class DBViewColumnsReader extends DBReaderBase{
             vc.setDecimalCount(rs.getShort("DECIMALCNT"));
             vc.setRounding(rs.getShort("ROUNDING"));
             vc.setDateCode(DateCode.fromdbcode(getDefaultedString(rs.getString("FLDCONTENTCD"), "NONE")));
-            vc.setJustifyId(JustifyId.fromdbcode(getDefaultedString(rs.getString("JUSTIFYCD"), "NONE")));
+            String jfy = rs.getString("JUSTIFYCD");
+            if(jfy != null) {
+                vc.setJustifyId(JustifyId.fromdbcode(jfy));
+            }
             vc.setHidden(!rs.getBoolean("VISIBLE"));
             vc.setSubtotalType(SubtotalType.fromdbcode(getDefaultedString(rs.getString("SUBTOTALTYPECD"), "NONE")));
             vc.setSpacesBeforeColumn(rs.getShort("SPACESBEFORECOLUMN"));
@@ -68,17 +76,15 @@ public class DBViewColumnsReader extends DBReaderBase{
             vc.setExtractAreaPosition(rs.getShort("EXTRAREAPOSITION"));
             vc.setSubtotalPrefix(getDefaultedString(rs.getString("SUBTLABEL"), ""));
             vc.setReportMask(getDefaultedString(rs.getString("RPTMASK"), ""));
-            vc.setHeaderJustifyId(JustifyId.fromdbcode(getDefaultedString(rs.getString("HDRJUSTIFYCD"), "NONE")));
+            vc.setHeaderJustifyId(JustifyId.fromdbcode(getDefaultedString(rs.getString("HDRJUSTIFYCD"), "CNTER")));
             vc.setHeaderLine1(getDefaultedString(rs.getString("HDRLINE1"), ""));
             vc.setHeaderLine2(getDefaultedString(rs.getString("HDRLINE2"), ""));
             vc.setHeaderLine3(getDefaultedString(rs.getString("HDRLINE3"), ""));
             vc.setColumnCalculation(getDefaultedString(rs.getString("FORMATCALCLOGIC"), ""));
 
+            vc.setName("Column Number " + vc.getColumnNumber());
             //Candidates for removal?
-            vc.setName("");
             vc.setFieldName("");
-            vc.setEffectiveDate("");
-            vc.setTerminationDate("");
             vc.setDetailPrefix("");
             vc.setSubtotalMask("");
             vc.setDefaultValue("");

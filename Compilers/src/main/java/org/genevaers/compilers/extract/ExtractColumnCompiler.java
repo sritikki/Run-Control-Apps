@@ -20,7 +20,6 @@ package org.genevaers.compilers.extract;
 
 import java.io.IOException;
 
-import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.extract.astnodes.ViewColumnSourceAstNode;
 
 public class ExtractColumnCompiler extends ExtractCompiler{
@@ -29,9 +28,9 @@ public class ExtractColumnCompiler extends ExtractCompiler{
         super();
     }
 
-    public ASTBase processLogic(ViewColumnSourceAstNode vcsn) throws IOException {
+    public void processLogicAndAddNodes(ViewColumnSourceAstNode vcsn) throws IOException {
         setViewColumnSource(vcsn.getViewColumnSource());
-        return processLogic(vcsn.getViewColumnSource().getLogicText(), BuildGenevaASTVisitor.ExtractContext.COLUMN);
+        processLogicAndAddNodesToParent(vcsn, vcsn.getViewColumnSource().getLogicText(), BuildGenevaASTVisitor.ExtractContext.COLUMN);
     }
 
 }

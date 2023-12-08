@@ -106,6 +106,7 @@ public class RepositoryCompiler {
 				Iterator<ASTBase> fi = formatRoot.getChildIterator();
 				while(fi.hasNext()) {
 					FormatBaseAST fn = (FormatBaseAST)fi.next();
+					FormatBaseAST.resetOffset()	;
 					fn.emit(true);
 				}
 			}
@@ -198,6 +199,7 @@ public class RepositoryCompiler {
 		JLTTreeGenerator jltgen = new JLTTreeGenerator(jltEmitter);
 		ExtractBaseAST.setLogicTableEmitter(jltEmitter);
 		joinsRoot = jltgen.buildJoinViews();
+		Repository.getJoinViews().logdata();
 		writeJltDotIfEnabled();
 		jltgen.emit();
 	}
@@ -277,8 +279,9 @@ public class RepositoryCompiler {
 		ExtractFilterAST ef = (ExtractFilterAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRFILTER);
 		vsnode.addChildIfNotNull(ef);
 		ExtractFilterCompiler efc = new ExtractFilterCompiler();
+		efc.setViewSource(vsnode.getViewSource());
 		try {
-			ef.addChildIfNotNull(efc.processLogic(vsnode));
+			efc.processLogicAndAddNodes(ef);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -311,9 +314,9 @@ public class RepositoryCompiler {
 		ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
 		vsnode.addChildIfNotNull(eo);
 		ExtractOutputCompiler eoc = new ExtractOutputCompiler();
+		eoc.setViewSource(vsnode.getViewSource());
 		try {
-			ASTBase tree = eoc.processLogic(vsnode);
-			eo.addChildIfNotNull(tree);
+			eoc.processLogicAndAddNodes(eo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -324,8 +327,7 @@ public class RepositoryCompiler {
 		logger.atFine().log("Compiling column %d", vcsn.getViewColumnSource().getColumnNumber());
 		ExtractColumnCompiler ecc = new ExtractColumnCompiler();
 		try {
-			ASTBase tree = ecc.processLogic(vcsn);
-			vcsn.addChildIfNotNull(tree);
+			ecc.processLogicAndAddNodes(vcsn);
 			
 			if(ecc.hasErrors()) {
 				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", ASTBase.getErrorCount());

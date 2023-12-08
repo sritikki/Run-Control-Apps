@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
@@ -10,7 +11,6 @@ import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
 
-import difflib.StringUtills;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -62,6 +62,7 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         } else {
             ltr = (LTRecord)fcf.getSKC(value, currentViewColumn);
         }
+        ltr.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
         return (LTFileObject) ltr;
     }
 
@@ -80,9 +81,9 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         LogicTableF1 f1 = (LogicTableF1) getAssignmentEntry(col, rhs);
         LogicTableArg arg = f1.getArg();
         arg.setStartPosition(start);
-        arg.setFieldLength((short)arg.getValueLength());
+        arg.setFieldLength((short)arg.getValue().length());
         ltEmitter.addToLogicTable(f1);
-        return (short) arg.getValueLength();
+        return (short) arg.getValue().length();
     }
 
     @Override
@@ -91,12 +92,11 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         LogicTableArg arg = f1.getArg();
         //This is different in that we need to get the original string value and change it?
         //arg.setStartPosition(start);
-        arg.setFieldLength((short)arg.getValueLength());
+        arg.setFieldLength((short)arg.getValue().length());
         short fieldlen = arg.getFieldLength();
         if(length < fieldlen) { 
             String val = ((StringAtomAST)rhs).getValue();
-            arg.setValue(val.substring(0, length));
-            arg.setValueLength(length);
+            arg.setValue(new Cookie(val.substring(0, length)));
             ltEmitter.addToLogicTable((LTRecord)f1);
         } else {
             //Error 
@@ -113,8 +113,7 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         short fieldlen = arg.getFieldLength();
         if(length < fieldlen) { 
             String val = ((StringAtomAST)rhs).getValue();
-            arg.setValue(val.substring(val.length() - length));
-            arg.setValueLength(length);
+            arg.setValue(new Cookie(val.substring(0, length)));
             ltEmitter.addToLogicTable((LTRecord)f1);
         } else {
             //Error 
@@ -131,8 +130,7 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         short fieldlen = arg.getFieldLength();
         if(length < fieldlen) { 
             String val = ((StringAtomAST)rhs).getValue();
-            arg.setValue(val.substring(start, start + length));
-            arg.setValueLength(length);
+            arg.setValue(new Cookie(val.substring(0, length)));
             ltEmitter.addToLogicTable((LTRecord)f1);
         } else {
             //Error 

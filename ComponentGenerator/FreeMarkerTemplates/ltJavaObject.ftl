@@ -13,6 +13,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 </#if>
+import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
+import org.genevaers.genevaio.fieldnodes.FunctionCodeNode;
+import org.genevaers.genevaio.fieldnodes.NoComponentNode;
+import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.fieldnodes.RecordPartNode;
+import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.repository.components.enums.LtRecordType;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
@@ -40,6 +47,23 @@ ${getAndSetEntry}
     {
 <#list entries.readers as readerEntry>
 ${readerEntry}
+</#list>
+    }
+
+    @Override
+<#if !(record.recordType == "none")>
+   	public void addRecordNodes(FieldNodeBase root, boolean compare)
+    {
+        FunctionCodeNode rn = new FunctionCodeNode();
+        rn.setName("LT_" + rowNbr);
+        rn.setFunctionCode(functionCode);
+        rn = (FunctionCodeNode) root.add(rn, compare);
+<#else>
+   	public void addRecordNodes(FieldNodeBase rn, boolean compare)
+    {
+</#if>
+<#list entries.fieldNodeEntries as fieldNodeEntry>
+${fieldNodeEntry}
 </#list>
     }
 

@@ -32,6 +32,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.FieldDelimiter;
 import org.genevaers.repository.components.enums.FileRecfm;
 import org.genevaers.repository.components.enums.FileType;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.TextDelimiter;
 import org.genevaers.repository.components.enums.ViewType;
@@ -44,6 +45,7 @@ public class ViewNode extends ComponentNode{
 	private Map<Integer, ViewColumn> columns = new TreeMap<Integer, ViewColumn>();
 	private Map<Integer, ViewColumn> columnsByID = new TreeMap<Integer, ViewColumn>();
 	private Map<Short, ViewSortKey> sortKeys = new TreeMap<Short, ViewSortKey>();
+	private Map<Integer, ViewSortKey> sortKeysByColumnID = new TreeMap<Integer, ViewSortKey>();
 	private Map<Short, ViewSource> viewSources = new TreeMap<Short, ViewSource>();
 	private Map<Integer, ViewSource> viewSourcesByID = new TreeMap<Integer, ViewSource>();
 	private List<ReportHeader> reportHeaders = new ArrayList<>();
@@ -81,6 +83,7 @@ public class ViewNode extends ComponentNode{
 
 	public void addViewSortKey(ViewSortKey vsk) {
 		sortKeys.put(vsk.getSequenceNumber(), vsk);
+		sortKeysByColumnID.put(vsk.getColumnId(), vsk);
 	}
 
 	/*
@@ -90,6 +93,11 @@ public class ViewNode extends ComponentNode{
 	public ViewSortKey getViewSortKey(short id) {
 		return sortKeys.get(id);
 	}
+
+	public ViewSortKey getViewSortKeyFromColumnId(int id) {
+		return sortKeysByColumnID.get(id);
+	}
+	
 
 	public int getNumberOfViewSources() {
 		return viewSources.size();
@@ -166,6 +174,7 @@ public class ViewNode extends ComponentNode{
 		vcs.setSequenceNumber(vs.getSequenceNumber());
 		ViewColumn vc = getColumnByID(vcs.getColumnID());
 		vcs.setColumnNumber(vc.getColumnNumber());
+		vcs.setViewSrcLrId(vs.getSourceLRID());
 
 		//It has no view sources
 		vc.addToSourcesByID(vcs);
@@ -210,12 +219,16 @@ public class ViewNode extends ComponentNode{
         return found;
     }
 
-	public ViewColumn makeColumn(String name, int num) {
+	public ViewColumn makeJLTColumn(String name, int num) {
         int colID = ComponentNode.getMaxColumnID() + 1;
         ViewColumn vc = new ViewColumn();
 		vc.setComponentId(colID);
 		vc.setName(name);
 		vc.setColumnNumber(num);
+		vc.setOrdinalPosition((short)num);;
+		vc.setViewId(viewDef.getComponentId());
+		vc.setHeaderJustifyId(JustifyId.LEFT);
+		vc.setHeaderLine1("");
 		addViewColumn(vc);
 		return vc;
 	}
@@ -291,6 +304,26 @@ public class ViewNode extends ComponentNode{
 
 	public Iterator<ReportFooter> getFootersIterator() {
 		return reportFooters.iterator();
+	}
+
+	public void fixupMaxHeaderLines() {
+		int maxNumHeaderLines = 0;
+		Iterator<ViewColumn> ci = columns.values().iterator();
+		while(ci.hasNext()) {
+			ViewColumn col = ci.next();
+			if (maxNumHeaderLines < 3 && col.isHidden() == false) {
+				if (col.getHeaderLine3().length() > 0) {
+					maxNumHeaderLines = 3;
+				} 
+				else if (col.getHeaderLine2().length() > 0 && maxNumHeaderLines < 2) {
+					maxNumHeaderLines = 2;
+				}
+				else if (col.getHeaderLine1().length() > 0 && maxNumHeaderLines < 1) {
+					maxNumHeaderLines = 1;
+				}
+			}
+		}
+		viewDef.setOutputColHdrLnsMax((short)maxNumHeaderLines);
 	}
 
 }

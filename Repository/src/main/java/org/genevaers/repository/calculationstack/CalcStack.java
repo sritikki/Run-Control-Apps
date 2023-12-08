@@ -62,7 +62,7 @@ public class CalcStack {
                         // specified number of decimal places
         CalcStackPushPriorColumn("Prior Column"), // Followed by 4-byte unsigned long
         CalcStackPushText("Push Text"), // Followed by 256-byte ASCII blank filled text
-        CalcStackPushInternal("Interna;"), // Value following is the internal numeric
+        CalcStackPushInternal("Internal;"), // Value following is the internal numeric
                                // form for this platform. It is the result
                                // of converting in-situ CalcStackPushNumber
         CalcStackEnd("End");

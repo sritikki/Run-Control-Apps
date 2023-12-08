@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupType;
+import org.genevaers.repository.jltviews.JLTView.Reason;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -58,20 +59,20 @@ public class JLTViewMap<T> {
             case NORMAL:
                 jltv = new ReferenceJoin(lr, join);
                 jltv.setLookupType(LookupType.NORMAL);
-                jltv.setUniqueKey(UniqueKey.getUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
                 break;
             case EXIT:
                 jltv = new ExitJoin(lr, join);
-                jltv.setUniqueKey(UniqueKey.getUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
                 break;
             case EXTERNAL:
                 jltv = new ExternalJoin(lr, join);
-                jltv.setUniqueKey(UniqueKey.getUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
                 break;
             case SKT:
                 jltv = new ReferenceJoin(lr, join);
                 jltv.setLookupType(LookupType.SKT);
-                jltv.setUniqueKey(UniqueKey.getSktUniqueKey());
+                //jltv.setUniqueKey(UniqueKeys.getSktUniqueKey());
                 break;
             default:
                 logger.atSevere().log("JLTView tyoe %s not handled", type.toString());
@@ -84,12 +85,17 @@ public class JLTViewMap<T> {
     }
 
 
-    public void log() {
+    public void log(Integer sourceLF) {
         StringBuilder jltTable = new StringBuilder();
-        jltTable.append(String.format("%7s %7s %7s %7s \n","LFid", "LRid",   "LKid", "key"));
+        jltTable.append("\n");
         for(  Entry<JLTViewKey, T> jltes : jltViews.entrySet()) {
             JLTView jv = (JLTView) jltes.getValue();
-            jltTable.append(String.format("%7d %7d %7s \n", jltes.getKey().getLogicalRecordId(), jv.getOrginalLookupId(), jv.getUniqueKey()));
+            jltTable.append(String.format("UniquKey %s -> %s  \n", jv.getUniqueKey(), jv.getRefViewNum()));
+            jltTable.append(String.format("Read from LF %d LR %d -> %s with REDLR %d via genLR %s\n", sourceLF, jv.getLRid(), jv.getRefViewNum(), jv.getRedLR().getComponentId(), jv.getGenLR().getComponentId() ));
+            jltTable.append(String.format("Original LK id %d  -- would be good to know why e.g. step etc\n", jv.getOrginalLookupId()));
+            for(Reason r : jv.getReasons()) {
+                jltTable.append(String.format("Reason %s, lookup Id: %d fieldId: %d from view %d column %d\n", r.key, r.lookupId, r.fieldId, r.viewID, r.columnNumber));
+            }
             jltTable.append("     Ref to RED mapping\n");
             jltTable.append(String.format("     %7s %7s %3s %3s\n", "refID", "redID", "pos", "len"));
             Iterator<Entry<Integer, LRField>> f2ri = jv.getRefToRedIterator();
@@ -97,8 +103,15 @@ public class JLTViewMap<T> {
                 Entry<Integer, LRField> f2r = f2ri.next();
                 jltTable.append(String.format("     %7d %7d %3d %3d\n", f2r.getKey(), f2r.getValue().getComponentId(),f2r.getValue().getStartPosition(), f2r.getValue().getLength()));
             }
+            jltTable.append("     GenerationL LR\n");
+            jltTable.append(String.format("     %7s %3s %3s\n", "genID", "pos", "len"));
+            Iterator<LRField> genfldi = jv.getGenLR().getIteratorForFieldsByID();
+            while(genfldi.hasNext()) {
+                LRField gf = genfldi.next();
+                jltTable.append(String.format("     %7d %3d %3d\n", gf.getComponentId(),gf.getStartPosition(), gf.getLength()));
+            }
         }
-        System.out.println(jltTable.toString());
+        logger.atFine().log(jltTable.toString());
     }
 
     public Set<Entry<JLTViewKey, T>> getEntries() {

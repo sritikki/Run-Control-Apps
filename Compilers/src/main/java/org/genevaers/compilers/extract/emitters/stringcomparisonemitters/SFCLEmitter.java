@@ -40,8 +40,8 @@ public class SFCLEmitter extends StringComparisonEmitter{
         LookupFieldRefAST lkf = (LookupFieldRefAST) rhs;
         
         lkf.getLkEmitter().emitJoin(lkf, false);
-        LogicTableF1 cfcl = (LogicTableF1) ltFact.getCFCL(((GenevaERSValue)lhs).getValueString(), ((LookupFieldRefAST) rhs).getRef(), op);
-        LogicTableArg arg = cfcl.getArg();
+        LogicTableF1 sfcl = (LogicTableF1) ltFact.getSFCL(((GenevaERSValue)lhs).getValueString(), ((LookupFieldRefAST) rhs).getRef());
+        LogicTableArg arg = sfcl.getArg();
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);
         LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());
         arg.setLogfileId(lkf.getLookup().getTargetLFID());
@@ -49,9 +49,9 @@ public class SFCLEmitter extends StringComparisonEmitter{
         arg.setFieldId(lkf.getRef().getComponentId());
         arg.setStartPosition(redFld.getStartPosition());
         arg.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
-        cfcl.setArg(arg);
+        sfcl.setArg(arg);
 
-        return cfcl;
+        return sfcl;
     }
 
 }
