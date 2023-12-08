@@ -78,6 +78,7 @@ public class RunControlConfigration {
     private static final String REPORT_FILE = "MR91RPT";
     private static final String LOG_FILE = "MR91LOG";
     public static final String LOG_LEVEL = "LOG_LEVEL";
+    public static final String TRACE = "TRACE";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";
@@ -113,6 +114,7 @@ public class RunControlConfigration {
         parmToValue.put(DB2_DATABASE, new ConfigEntry("", false));
         parmToValue.put(DBFLDRS, new ConfigEntry("", false));
         parmToValue.put(DBVIEWS, new ConfigEntry("", false));
+        parmToValue.put(TRACE, new ConfigEntry("N", false));
 
         //Hidden defaults
         parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
@@ -133,7 +135,6 @@ public class RunControlConfigration {
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
         parmToValue.put(VDP_FILE, new ConfigEntry("VDP", true));
 
-        parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
 
         parmToValue.put(NUMBER_MODE, new ConfigEntry("STANDARD", false )); //Could be LARGE
     }
@@ -211,7 +212,7 @@ public class RunControlConfigration {
 	}
 
 	public Level getLogLevel() {
-		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("FINE")){
+		if(parmToValue.get(TRACE).getValue().equalsIgnoreCase("Y")){
             return Level.FINE;
         } else {
             return Level.INFO;

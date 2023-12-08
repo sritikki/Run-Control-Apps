@@ -57,7 +57,6 @@ public class RunControlGenerator {
 	public void runFromConfig(RunControlConfigration rcc) {
 		this.rcc = rcc;
 
-		openReportFile();
 		GenevaLog.writeHeader("Run Control Generator");
 
 		if(buildComponentRepositoryFromSelectedInput(rcc) != Status.ERROR) {
@@ -68,13 +67,8 @@ public class RunControlGenerator {
 			singlePassOptimise(rcc);
 			runCompilers(rcc);
 			writeRunControlFiles(rcc);
-
-			try {
-				reportWriter.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ReportWriter rw = new ReportWriter();
+			rw.write(rcc);
 		} else {
 			logger.atSevere().log("Failed to build the component repository");
 		}

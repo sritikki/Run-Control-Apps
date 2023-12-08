@@ -35,7 +35,7 @@
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
             "projectName": "runcontrolanalyser",
-            "cwd": "${workspaceFolder}/../../RunControlPlayPen"
+            "cwd": "${workspaceFolder}/../../RunControlPlayPen/fromKip"
         },
         {
             "type": "java",
@@ -104,6 +104,14 @@
             "mainClass": "org.genevaers.runcontrolgenerator.App",
             "projectName": "runcontrolgenerator",
             "cwd": "${workspaceFolder}../../../RunControlPlayPen/RC1"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCG from playpen RC2",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolgenerator.App",
+            "projectName": "runcontrolgenerator",
+            "cwd": "${workspaceFolder}../../../RunControlPlayPen/RC2"
         },
         {
             "type": "java",
