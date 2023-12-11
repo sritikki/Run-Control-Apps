@@ -72,6 +72,7 @@ public class ReportWriter {
             nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
             nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
             nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
+            nodeMap.put("views", Repository.getViews().getValues());
             logger.atInfo().log(rcc.getReportFileName());
             generateTemplatedOutput(template, nodeMap, rcc.getReportFileName());
         } catch (IOException e) {

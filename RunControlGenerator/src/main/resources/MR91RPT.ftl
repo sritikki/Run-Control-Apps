@@ -80,7 +80,9 @@ ${opt}
                                                            Output              >Output         ERA  ERA Buf Size  FRA
 View ID  View Name                                         Phase               >Format         On   (in Records)  On
 =======  ------------------------------------------------  ---------           >-------------  ---  ------------  ---
-      7  COMKYT                                            Format              >Fixed-Length   N                  N  
+<#list views as v>
+${v.IDStr}  ${v.name?right_pad(48)}  ${v.phase?right_pad(9)}           >${v.outputFormat?right_pad(13)}  ${v.ERAon?right_pad(3)}  ${v.ERAsize?left_pad(12)}  ${v.FRAon}
+</#list>
  
  
 ====================
