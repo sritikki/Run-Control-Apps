@@ -669,47 +669,50 @@ public class TestDriver {
 			}
 		}
 
-		test.verifyExpected();
+		if(test.getRunOnly().equals("Y")) {
+			System.out.println(Menu.PURPLE + "Run Only " + test.getName() + Menu.RESET);
+		} else {
+			test.verifyExpected();
 
 
-		// Messed up world of paths
-		// let's make them once somewhere and keep them around
+			// Messed up world of paths
+			// let's make them once somewhere and keep them around
 
-		// the testOutputPath
-		// the testBasePath
-		// And the story is a little messed up with extract or format file too
-		// Needs different prefix but we should be able to just say getOuptutFileName()
-		// and it sorts the type etc internally?
+			// the testOutputPath
+			// the testBasePath
+			// And the story is a little messed up with extract or format file too
+			// Needs different prefix but we should be able to just say getOuptutFileName()
+			// and it sorts the type etc internally?
 
-		// Not sure we need the TestResult types either?
+			// Not sure we need the TestResult types either?
 
-			Map<String, Object> nodeMap = new HashMap<>();
-			nodeMap.put("specName", test.getSpecPath());
-			nodeMap.put("testName", test.getName());
+				Map<String, Object> nodeMap = new HashMap<>();
+				nodeMap.put("specName", test.getSpecPath());
+				nodeMap.put("testName", test.getName());
 
-			try {
-				Template template = cfg.getTemplate("test/result.ftl");
-				Path resultFilePath;
-				Path resultPath = outPath.resolve(test.getFullName());
-				resultPath.toFile().mkdirs();
-				if (test.getResult().getMessage().startsWith("pass")) {
-					nodeMap.put("result", "SUCCESS");
-					logger.atInfo().log(Menu.GREEN + test.getResult().getMessage() + Menu.RESET);
-					resultFilePath = resultPath.resolve("pass.html");
-				} else {
-					nodeMap.put("result", "FAILCOMPARE");
-					logger.atSevere().log(Menu.RED + test.getResult().getMessage() + Menu.RESET);
-					resultFilePath = resultPath.resolve("fail.html");
+				try {
+					Template template = cfg.getTemplate("test/result.ftl");
+					Path resultFilePath;
+					Path resultPath = outPath.resolve(test.getFullName());
+					resultPath.toFile().mkdirs();
+					if (test.getResult().getMessage().startsWith("pass")) {
+						nodeMap.put("result", "SUCCESS");
+						logger.atInfo().log(Menu.GREEN + test.getResult().getMessage() + Menu.RESET);
+						resultFilePath = resultPath.resolve("pass.html");
+					} else {
+						nodeMap.put("result", "FAILCOMPARE");
+						logger.atSevere().log(Menu.RED + test.getResult().getMessage() + Menu.RESET);
+						resultFilePath = resultPath.resolve("fail.html");
+					}
+					nodeMap.put("outFiles", test.getFormatfiles());
+					Path cssPath = resultFilePath.relativize(outPath).resolve("w3.css");
+					nodeMap.put("cssPath", cssPath);
+					TemplateApplier.generateTestTemplatedOutput(template, nodeMap, resultFilePath);
+				} catch (IOException | TemplateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				nodeMap.put("outFiles", test.getFormatfiles());
-				Path cssPath = resultFilePath.relativize(outPath).resolve("w3.css");
-				nodeMap.put("cssPath", cssPath);
-				TemplateApplier.generateTestTemplatedOutput(template, nodeMap, resultFilePath);
-			} catch (IOException | TemplateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// checkSetResultState(result);
+		}
 	}
 
 	public static boolean compareOutFiles(Path baseFolder, GersTest test, Path outPath) {
