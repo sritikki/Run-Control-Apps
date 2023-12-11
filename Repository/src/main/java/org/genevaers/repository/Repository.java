@@ -1,5 +1,6 @@
 package org.genevaers.repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /*
@@ -21,6 +22,7 @@ import java.util.Date;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
 import java.util.Set;
@@ -40,6 +42,7 @@ import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.enums.LrStatus;
 import org.genevaers.repository.data.ComponentCollection;
+import org.genevaers.repository.data.InputReport;
 import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
 import org.genevaers.repository.jltviews.UniqueKeys;
@@ -76,6 +79,8 @@ public class Repository {
 	private static ComponentCollection<ViewNode> views = new ComponentCollection<ViewNode>();
 	private static ComponentCollection<ViewNode> formatViews = new ComponentCollection<ViewNode>();
 	private static JoinViewsManager jvm = new JoinViewsManager();
+
+	private static List<InputReport> inputReports = new ArrayList<>();
 
 	private static Date generationTime;
 
@@ -388,6 +393,14 @@ public class Repository {
         lr.setLookupExitParams("");
 		lrs.add(lr, lr.getComponentId(), lr.getName());
 		return lr;
+	}
+
+    public static void addInputReport(InputReport ir) {
+		inputReports.add(ir);
+    }
+
+	public static List<InputReport> getInputReports() {
+		return inputReports;
 	}
 
 

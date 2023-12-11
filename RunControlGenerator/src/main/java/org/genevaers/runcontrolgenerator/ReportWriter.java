@@ -1,5 +1,7 @@
 package org.genevaers.runcontrolgenerator;
 
+import java.io.File;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -24,7 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.utilities.GersEnvironment;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -36,9 +40,20 @@ import freemarker.template.TemplateExceptionHandler;
 public class ReportWriter {
 
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private final static String REPORT_TEMPLATE = "MR91RPT.ftl";
+
+    private static final String LOCALROOT = "LOCALROOT";
 	private  Configuration cfg;
 
+    private int jltRecordsWritten;
+
+    private int xltRecordsWritten;
+
+    private Object vdpRecordsWritten;
+
 	public  void write(RunControlConfigration rcc){
+		GersEnvironment.initialiseFromTheEnvironment();
 		configureFreeMarker();
         Template template;
         try {
@@ -48,9 +63,15 @@ public class ReportWriter {
             InputStream resourceStream = loader.getResourceAsStream("application.properties");
 			properties.load(resourceStream);
             version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
-            template = cfg.getTemplate("report.ftl");
+            template = cfg.getTemplate(REPORT_TEMPLATE);
             Map<String, Object> nodeMap = new HashMap<>();
             nodeMap.put("env", "stuff");
+            nodeMap.put("parmsRead", rcc.getLinesRead());
+            nodeMap.put("optsInEffect", rcc.getOptionsInEffect());
+            nodeMap.put("inputReports", Repository.getInputReports());
+            nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
+            nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
+            nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
             logger.atInfo().log(rcc.getReportFileName());
             generateTemplatedOutput(template, nodeMap, rcc.getReportFileName());
         } catch (IOException e) {
@@ -78,10 +99,24 @@ public class ReportWriter {
 
     private  void configureFreeMarker() {
 		cfg = new Configuration(Configuration.VERSION_2_3_31);
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         cfg.setClassForTemplateLoading(this.getClass(), "/");
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 	}
+
+
+    public void setNumJLTRecordsWritten(int numberOfRecords) {
+        jltRecordsWritten = numberOfRecords;
+    }
+
+
+    public void setNumXLTRecordsWritten(int numberOfRecords) {
+        xltRecordsWritten = numberOfRecords;
+    }
+
+
+    public void setNumVDPRecordsWritten(int numberOfRecords) {
+        vdpRecordsWritten = numberOfRecords;
+    }
 
 }

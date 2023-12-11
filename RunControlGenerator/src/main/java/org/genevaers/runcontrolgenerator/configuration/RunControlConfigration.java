@@ -2,6 +2,8 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -23,12 +25,15 @@ import java.nio.file.Path;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import com.google.common.flogger.FluentLogger;
 
 public class RunControlConfigration {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private List<String> linesRead = new ArrayList<>();
 
     private class ConfigEntry {
         String value = "";
@@ -358,6 +363,24 @@ public class RunControlConfigration {
 
     public boolean isNumberModeStandard() {
         return parmToValue.get(NUMBER_MODE).getValue().equalsIgnoreCase("STANDARD");      
+    }
+
+    public void setLinesRead(List<String> linesRead) {
+        this.linesRead = linesRead;
+    }
+
+    public List<String> getLinesRead() {
+        return linesRead;
+    }
+
+    public List<String> getOptionsInEffect() {
+        List<String> optsInEfect = new ArrayList<>();
+        for(Entry<String, ConfigEntry> parm : parmToValue.entrySet()) {
+            if(!parm.getValue().isHidden()) {
+                optsInEfect.add(String.format("%-33s = %s", parm.getKey(), parm.getValue().getValue()));
+            }
+        };
+        return optsInEfect;
     }
 
 }

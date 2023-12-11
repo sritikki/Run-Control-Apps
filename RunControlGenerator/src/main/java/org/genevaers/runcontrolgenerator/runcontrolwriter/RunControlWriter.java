@@ -43,6 +43,8 @@ public class RunControlWriter {
     private LogicTable joinLogicTable;
     private RunControlConfigration rcc;
 
+    private int numVDPRecords;
+
 	public RunControlWriter(RunControlConfigration rc) {
         rcc = rc;
 	}
@@ -73,6 +75,7 @@ public class RunControlWriter {
         try {
             vdpw.writeVDPFrom(vmrs);
             vdpw.close();
+            numVDPRecords = vdpw.getNumRecordsWritten();
             logger.atInfo().log("VDP Written");
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -148,6 +151,18 @@ public class RunControlWriter {
 
     public void setJoinLogicTable(LogicTable lt) {
         joinLogicTable = lt;
+    }
+
+    public int getNumVDPRecordsWritten() {
+        return numVDPRecords;
+    }
+
+    public int getNumXLTRecords() {
+        return extractLogicTable.getNumberOfRecords();
+    }
+
+    public int getNumJLTRecords() {
+        return joinLogicTable.getNumberOfRecords();
     }
 
 }

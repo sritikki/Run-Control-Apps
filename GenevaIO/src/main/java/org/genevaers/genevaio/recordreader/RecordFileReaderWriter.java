@@ -39,6 +39,7 @@ public class RecordFileReaderWriter {
 	private int numRecordsRead = 0;
 	private boolean EOFreached = false;
 	private boolean readable = false;
+	private int numRecordsWritten = 0;
 
 	public class FileRecord {
 		public short length = 0;
@@ -116,6 +117,7 @@ public class RecordFileReaderWriter {
 		//Write an ID at the end of each record "JEND"
 		rw.write(record.bytes);
 		record.bytes.clear();
+		numRecordsWritten++;
 	}
 
 	public boolean isAtFileEnd() {
@@ -175,6 +177,15 @@ public class RecordFileReaderWriter {
 	public void setLengthFromPosition() {
 		short p = (short)record.bytes.position();
 		record.bytes.putShort(0, p);
+	}
+
+	public void resetRecordCounters() {
+		numRecordsWritten = 0;
+		numRecordsRead = 0;
+	}
+
+	public int getNumRecordsWritten() {
+		return numRecordsWritten;
 	}
 
 }

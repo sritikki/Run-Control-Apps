@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.ZFile;
@@ -33,6 +35,7 @@ public class ParmReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	RunControlConfigration rcc;
+	List<String> linesRead = new ArrayList<>();
 
 	public enum PARM_RESULT {
 		OK, WARN_IGNORED, FAIL
@@ -79,6 +82,7 @@ public class ParmReader {
 			// Parse the line to extract the parm name and value
 			// set in the config - if expected
 			parse(line);
+			linesRead.add(line);
 			line = parmReader.readLine();
 		}
 	}
@@ -104,6 +108,10 @@ public class ParmReader {
 
 	public PARM_RESULT getResult() {
 		return result;
+	}
+
+	public List<String> getLinesRead() {
+		return linesRead;
 	}
 
 }
