@@ -562,7 +562,7 @@ public class TestDriver {
 
 	private static boolean getExpectedOutputs(GersTest testToRun) {
 		boolean found = true;
-		if (testToRun.getComparephase().equalsIgnoreCase("Y")) {
+		if (testToRun.getRunOnly().equals("Y") || testToRun.getComparephase().equalsIgnoreCase("Y")) {
 			found = true; //No output files to get
 		} else {
 			String outFile = null;
@@ -647,31 +647,31 @@ public class TestDriver {
 		Path rootPath = Paths.get(GersEnvironment.get(LOCALROOT));
 		Path outPath = rootPath.resolve("out");
 		Path baseFolder = rootPath.resolve("base").resolve(test.getFullName());
-		//Get actual result
-		if (test.hasComparePhase()) {
+		if(test.getRunOnly().equals("Y")) {
+			System.out.println(Menu.GREEN + "Run Only " + test.getName() + Menu.RESET);
 		} else {
-			if (heldJobs.allJobsCompleted(test.getNumExpectedJobs())) {
-				if (heldJobs.getMaxRC() > test.getExpectedresult().getRcAsInt()) {
-					test.getResult().setMessage(heldJobs.getResultRC());
-				} else {
-					if (compareOutFiles(baseFolder, test, outPath)) {
-						test.getResult().setMessage("pass");
+		//Get actual result
+			if (test.hasComparePhase()) {
+			} else {
+				if (heldJobs.allJobsCompleted(test.getNumExpectedJobs())) {
+						if (heldJobs.getMaxRC() > test.getExpectedresult().getRcAsInt()) {
+							test.getResult().setMessage(heldJobs.getResultRC());
+						} else {
+							if (compareOutFiles(baseFolder, test, outPath)) {
+								test.getResult().setMessage("pass");
+							} else {
+								test.getResult().setMessage("fail compare");
+							}
+						}
+				} else if (heldJobs.getNumJobs() < test.getNumExpectedJobs()) {
+					if (heldJobs.getMaxRC() > 8) {
+						test.getResult().setMessage(heldJobs.getResultRC());
 					} else {
-						test.getResult().setMessage("fail compare");
+						test.getResult().setMessage("fail timedout");
 					}
 				}
-			} else if (heldJobs.getNumJobs() < test.getNumExpectedJobs()) {
-				if (heldJobs.getMaxRC() > 8) {
-					test.getResult().setMessage(heldJobs.getResultRC());
-				} else {
-					test.getResult().setMessage("fail timedout");
-				}
 			}
-		}
 
-		if(test.getRunOnly().equals("Y")) {
-			System.out.println(Menu.PURPLE + "Run Only " + test.getName() + Menu.RESET);
-		} else {
 			test.verifyExpected();
 
 
@@ -686,32 +686,32 @@ public class TestDriver {
 
 			// Not sure we need the TestResult types either?
 
-				Map<String, Object> nodeMap = new HashMap<>();
-				nodeMap.put("specName", test.getSpecPath());
-				nodeMap.put("testName", test.getName());
+			Map<String, Object> nodeMap = new HashMap<>();
+			nodeMap.put("specName", test.getSpecPath());
+			nodeMap.put("testName", test.getName());
 
-				try {
-					Template template = cfg.getTemplate("test/result.ftl");
-					Path resultFilePath;
-					Path resultPath = outPath.resolve(test.getFullName());
-					resultPath.toFile().mkdirs();
-					if (test.getResult().getMessage().startsWith("pass")) {
-						nodeMap.put("result", "SUCCESS");
-						logger.atInfo().log(Menu.GREEN + test.getResult().getMessage() + Menu.RESET);
-						resultFilePath = resultPath.resolve("pass.html");
-					} else {
-						nodeMap.put("result", "FAILCOMPARE");
-						logger.atSevere().log(Menu.RED + test.getResult().getMessage() + Menu.RESET);
-						resultFilePath = resultPath.resolve("fail.html");
-					}
-					nodeMap.put("outFiles", test.getFormatfiles());
-					Path cssPath = resultFilePath.relativize(outPath).resolve("w3.css");
-					nodeMap.put("cssPath", cssPath);
-					TemplateApplier.generateTestTemplatedOutput(template, nodeMap, resultFilePath);
-				} catch (IOException | TemplateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			try {
+				Template template = cfg.getTemplate("test/result.ftl");
+				Path resultFilePath;
+				Path resultPath = outPath.resolve(test.getFullName());
+				resultPath.toFile().mkdirs();
+				if (test.getResult().getMessage().startsWith("pass")) {
+					nodeMap.put("result", "SUCCESS");
+					logger.atInfo().log(Menu.GREEN + test.getResult().getMessage() + Menu.RESET);
+					resultFilePath = resultPath.resolve("pass.html");
+				} else {
+					nodeMap.put("result", "FAILCOMPARE");
+					logger.atSevere().log(Menu.RED + test.getResult().getMessage() + Menu.RESET);
+					resultFilePath = resultPath.resolve("fail.html");
 				}
+				nodeMap.put("outFiles", test.getFormatfiles());
+				Path cssPath = resultFilePath.relativize(outPath).resolve("w3.css");
+				nodeMap.put("cssPath", cssPath);
+				TemplateApplier.generateTestTemplatedOutput(template, nodeMap, resultFilePath);
+			} catch (IOException | TemplateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
