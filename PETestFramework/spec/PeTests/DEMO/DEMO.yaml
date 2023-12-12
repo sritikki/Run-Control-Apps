@@ -24,6 +24,8 @@ tests:
   #Trying to make them all WBXML - but could be database.
   #Ask for details
   source: "WBXML"
+  # do not copy output to out directory and do not compare output
+  runOnly: "Y"
   #List of WBXML files - yes there could be more than one
   #But probably not
   #Expected to be in the xml directory of the test framework
@@ -76,6 +78,7 @@ tests:
   #Trying to make them all WBXML - but could be database.
   #Ask for details
   source: "WBXML"
+  runOnly: "Y"
   #List of WBXML files - yes there could be more than one
   #But probably not
   #Expected to be in the xml directory of the test framework
@@ -138,6 +141,7 @@ tests:
   #Trying to make them all WBXML - but could be database.
   #Ask for details
   source: "WBXML"
+  runOnly: "Y"
   #List of WBXML files - yes there could be more than one
   #But probably not
   #Expected to be in the xml directory of the test framework
