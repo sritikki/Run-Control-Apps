@@ -3,7 +3,7 @@
 #Uppercase please
 name: "DEMO"
 title: "All SAFR Demo Views"
-description: "All SAFR Demo Views"
+description: "All SAFR Demo Views in one pass"
 #The category maps to the directory path below the Spec directory
 #Which is where the spec file should be located
 category: "PeTests/DEMO"
