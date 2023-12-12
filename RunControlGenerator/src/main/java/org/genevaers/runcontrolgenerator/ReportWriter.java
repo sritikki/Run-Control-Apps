@@ -73,6 +73,9 @@ public class ReportWriter {
             nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
             nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
             nodeMap.put("views", Repository.getViews().getValues());
+            nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
+            nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getREHViewNumber()));
+            nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getRTHViewNumber()));
             logger.atInfo().log(rcc.getReportFileName());
             generateTemplatedOutput(template, nodeMap, rcc.getReportFileName());
         } catch (IOException e) {

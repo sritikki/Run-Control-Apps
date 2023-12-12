@@ -77,10 +77,10 @@ public class JLTView {
      *
      */
     private static final String PADDING = "Padding";
-    private static final int EFF_DATE_NONE = 0;
-    private static final int EFF_DATE_START = 1;
-    private static final int EFF_DATE_BOTH = 2;
-    private static final int EFF_DATE_END = 3;
+    public static final int EFF_DATE_NONE = 0;
+    public static final int EFF_DATE_START = 1;
+    public static final int EFF_DATE_BOTH = 2;
+    public static final int EFF_DATE_END = 3;
 
     public class FieldMapping {
         public LRField src;
@@ -530,6 +530,10 @@ public class JLTView {
         Reason last = reasons.get(reasons.size() - 1);
         last.viewID = viewId;
         last.columnNumber = columnNumber;
+    }
+
+    public ViewNode getView() {
+        return vn;
     }
     
 }

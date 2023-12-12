@@ -1,6 +1,7 @@
 package org.genevaers.repository.jltviews;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 /*
@@ -35,6 +36,8 @@ import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
 import org.genevaers.repository.components.LookupType;
+import org.genevaers.repository.components.PhysicalFile;
+import org.genevaers.repository.data.ReferenceReportEntry;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -396,7 +399,57 @@ public class JoinViewsManager {
 		}
     }
 
-    public int getREHViewNumber() {
+	public List<ReferenceReportEntry> getRefReportEntries() {
+		List<ReferenceReportEntry> entries = new ArrayList<>();
+		Iterator<Entry<Integer, JLTViewMap<ReferenceJoin>>> refdi = referenceDataSet.entrySet().iterator();
+		while(refdi.hasNext()) {
+			Entry<Integer, JLTViewMap<ReferenceJoin>> refd = refdi.next();
+			Collection<ReferenceJoin> refViews = refd.getValue().getValues();
+			addToEntriesForReferenceViews(entries, refd.getKey(), refViews);
+		}
+		return entries;
+	}
+
+    private void addToEntriesForReferenceViews(List<ReferenceReportEntry> entries, Integer lfid, Collection<ReferenceJoin> refViews) {
+		Iterator<ReferenceJoin> ri = refViews.iterator();
+		while (ri.hasNext()) {
+			ReferenceJoin ref = ri.next();
+			ReferenceReportEntry refEntry = new ReferenceReportEntry();
+			refEntry.setWorkDDName(String.format("REFR%03d", ref.getDdNum()));
+			refEntry.setViewID(ref.getRefViewNum());
+			refEntry.setViewName(ref.getView().getName());
+			PhysicalFile pf = Repository.getLogicalFiles().get(lfid).getPFIterator().next();
+			refEntry.setRefDDName(pf.getInputDDName());
+			refEntry.setRefPFID(pf.getComponentId());
+			refEntry.setRefPFName(pf.getName());
+			refEntry.setRefLRID(ref.getLRid());
+			refEntry.setRefLFID(lfid);
+			refEntry.setKeylen(ref.getKeyLength());
+			switch (ref.getEffDateCode()) {
+				case JLTView.EFF_DATE_BOTH:
+					refEntry.setEffStart("Y ");
+					refEntry.setEffEnd("Y ");
+					break;
+				case JLTView.EFF_DATE_START:
+					refEntry.setEffStart("Y ");
+					refEntry.setEffEnd("N ");
+					break;
+				case JLTView.EFF_DATE_END:
+					refEntry.setEffStart("N ");
+					refEntry.setEffEnd("Y ");
+					break;
+				case JLTView.EFF_DATE_NONE:
+					refEntry.setEffStart("N ");
+					refEntry.setEffEnd("N ");
+					break;
+				default:
+					break;
+			}
+			entries.add(refEntry);
+		}
+	}
+
+	public int getREHViewNumber() {
         return JLTView.JOINVIEWBASE + getNumberOfReferenceJoins() + 1;
     }
 

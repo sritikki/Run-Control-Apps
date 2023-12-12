@@ -1,5 +1,7 @@
 package org.genevaers.repository.jltviews;
 
+import java.util.Collection;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -51,6 +53,10 @@ public class JLTViewMap<T> {
 
     public  Iterator<T> getIterator() {
         return jltViews.values().iterator();
+    }
+
+    public  Collection<T> getValues() {
+        return jltViews.values();
     }
 
     private JLTView makeJTLView(LookupType type, int lr, int join) {
