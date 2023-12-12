@@ -3,8 +3,9 @@
 <#assign aTime = aDateTime?time>
 ~MR91RPT
  
-GenevaERS Reporting
------------------------------
+GenevaERS - The Single-Pass Optimization Engine
+(https://genevaers.org)
+Licensed under the Apache License, Version 2.0
 Performance Engine for z/OS - Base Product
 Release PM PM4.18.00 D
  
