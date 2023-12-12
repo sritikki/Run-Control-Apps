@@ -204,7 +204,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         if(emitter != null) {
             emitter.setLtEmitter(ltEmitter);
             ltfo = emitter.getLTEntry(op, lhs, rhs);
-            applyComparisonRules(op, lhsin, rhsin);
+            applyComparisonRules(op, lhs, rhs);
             if(ltfo != null) {
                 ltEmitter.addToLogicTable((LTRecord)ltfo);
 
