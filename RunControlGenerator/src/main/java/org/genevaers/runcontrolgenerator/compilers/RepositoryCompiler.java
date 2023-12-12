@@ -235,6 +235,7 @@ public class RepositoryCompiler {
 			LogicGroup lg = lgi.next();
 			addNodesFromLogicGroup(lg);
 		}
+		Repository.saveNumberOfExtractViews();
 		writeXLTDotIfEnabled();
 	}
 

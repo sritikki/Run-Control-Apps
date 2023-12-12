@@ -84,6 +84,8 @@ public class Repository {
 
 	private static Date generationTime;
 
+	private static int numberOfExtractViews;
+
 	public static void clearAndInitialise() {
 		crs = new ComponentCollection<ControlRecord>();
 		lfs = new ComponentCollection<LogicalFile>();
@@ -403,5 +405,17 @@ public class Repository {
 		return inputReports;
 	}
 
+	public static int getNumberOfExtractViews() {
+		return numberOfExtractViews;
+	}
+
+	// Just a trick to make processing a little easier
+    public static void saveNumberOfExtractViews() {
+		numberOfExtractViews = views.size();
+    }
+
+	public static int getNumberOfReferenceViews() {
+		return views.size() - numberOfExtractViews;
+	}
 
 }

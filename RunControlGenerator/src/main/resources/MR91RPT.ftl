@@ -144,7 +144,7 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
  
 Number of compiler warnings:               0
 Number of compiler errors:                 0
-Number of reference-phase views: 3,435,973,836
-Number of extract-phase views:             1
+Number of reference-phase views: ${numrefviews?c?left_pad(11)}
+Number of extract-phase views:   ${numextviews?c?left_pad(11)}
  
 Process completed successfully
