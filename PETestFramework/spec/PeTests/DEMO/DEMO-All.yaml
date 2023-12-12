@@ -2,7 +2,7 @@
 #Seven or fewer characters in the name
 #Uppercase please
 name: "DEMO"
-title: "SAFR Demo Views"
+title: "All SAFR Demo Views"
 description: "SAFR Demo Views"
 #The category maps to the directory path below the Spec directory
 #Which is where the spec file should be located
