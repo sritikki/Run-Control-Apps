@@ -22,15 +22,22 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.StreamHandler;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersEnvironment;
+import org.genevaers.utilities.ZFileHandler;
 
 import com.google.common.flogger.FluentLogger;
+import com.ibm.jzos.ZFile;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -91,9 +98,16 @@ public class ReportWriter {
 
 	private  void generateTemplatedOutput(Template template, Map<String, Object> nodeMap, String reportFileName) {
 		try {
-    		FileWriter cfgWriter = new FileWriter(reportFileName);
-	    	template.process(nodeMap, cfgWriter);
-            cfgWriter.close();
+			String os = System.getProperty("os.name");
+            Writer out;
+			if (os.startsWith("z")) {
+                ZFile dd = new ZFile("//DD:" + reportFileName, "w");
+                out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");
+			} else {
+                out = new FileWriter(reportFileName);
+			}
+	    	template.process(nodeMap, out);
+            out.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

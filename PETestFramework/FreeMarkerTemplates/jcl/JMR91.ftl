@@ -119,6 +119,7 @@ export IBM_JAVA_OPTIONS="$IJO "
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=4004,BLKSIZE=32036)
+//MR91RPT  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
 //MR91LOG  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
 //*
 //*******************************************************************
