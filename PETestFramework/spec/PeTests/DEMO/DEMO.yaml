@@ -198,3 +198,5 @@ tests:
     recfm: "FB"
     lrecl: "136"
     workfile: "2"
+  expectedresult:
+    rc: "0"
