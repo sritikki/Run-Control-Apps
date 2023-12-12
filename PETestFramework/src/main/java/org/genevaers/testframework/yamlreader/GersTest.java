@@ -57,6 +57,7 @@ public class GersTest {
     private OutputFile mr91out;
     private Spec spec;
     private Map<Integer, Boolean> viewResults = new TreeMap<>();
+    private String runOnly = "N";
 
     public String getName() {
         return name;
@@ -390,5 +391,13 @@ public class GersTest {
         } else {
             return extractfiles.stream().filter(f -> f.getDdname().equalsIgnoreCase(name)).findAny().orElse(null);
         }
+    }
+
+    public String getRunOnly() {
+        return runOnly;
+    }
+
+    public void setRunOnly(String runOnly) {
+        this.runOnly = runOnly;
     }
 }

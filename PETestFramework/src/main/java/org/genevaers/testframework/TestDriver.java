@@ -562,7 +562,7 @@ public class TestDriver {
 
 	private static boolean getExpectedOutputs(GersTest testToRun) {
 		boolean found = true;
-		if (testToRun.getComparephase().equalsIgnoreCase("Y")) {
+		if (testToRun.getRunOnly().equals("Y") || testToRun.getComparephase().equalsIgnoreCase("Y")) {
 			found = true; //No output files to get
 		} else {
 			String outFile = null;
@@ -647,41 +647,44 @@ public class TestDriver {
 		Path rootPath = Paths.get(GersEnvironment.get(LOCALROOT));
 		Path outPath = rootPath.resolve("out");
 		Path baseFolder = rootPath.resolve("base").resolve(test.getFullName());
-		//Get actual result
-		if (test.hasComparePhase()) {
+		if(test.getRunOnly().equals("Y")) {
+			System.out.println(Menu.GREEN + "Run Only " + test.getName() + Menu.RESET);
 		} else {
-			if (heldJobs.allJobsCompleted(test.getNumExpectedJobs())) {
-				if (heldJobs.getMaxRC() > test.getExpectedresult().getRcAsInt()) {
-					test.getResult().setMessage(heldJobs.getResultRC());
-				} else {
-					if (compareOutFiles(baseFolder, test, outPath)) {
-						test.getResult().setMessage("pass");
+		//Get actual result
+			if (test.hasComparePhase()) {
+			} else {
+				if (heldJobs.allJobsCompleted(test.getNumExpectedJobs())) {
+						if (heldJobs.getMaxRC() > test.getExpectedresult().getRcAsInt()) {
+							test.getResult().setMessage(heldJobs.getResultRC());
+						} else {
+							if (compareOutFiles(baseFolder, test, outPath)) {
+								test.getResult().setMessage("pass");
+							} else {
+								test.getResult().setMessage("fail compare");
+							}
+						}
+				} else if (heldJobs.getNumJobs() < test.getNumExpectedJobs()) {
+					if (heldJobs.getMaxRC() > 8) {
+						test.getResult().setMessage(heldJobs.getResultRC());
 					} else {
-						test.getResult().setMessage("fail compare");
+						test.getResult().setMessage("fail timedout");
 					}
 				}
-			} else if (heldJobs.getNumJobs() < test.getNumExpectedJobs()) {
-				if (heldJobs.getMaxRC() > 8) {
-					test.getResult().setMessage(heldJobs.getResultRC());
-				} else {
-					test.getResult().setMessage("fail timedout");
-				}
 			}
-		}
 
-		test.verifyExpected();
+			test.verifyExpected();
 
 
-		// Messed up world of paths
-		// let's make them once somewhere and keep them around
+			// Messed up world of paths
+			// let's make them once somewhere and keep them around
 
-		// the testOutputPath
-		// the testBasePath
-		// And the story is a little messed up with extract or format file too
-		// Needs different prefix but we should be able to just say getOuptutFileName()
-		// and it sorts the type etc internally?
+			// the testOutputPath
+			// the testBasePath
+			// And the story is a little messed up with extract or format file too
+			// Needs different prefix but we should be able to just say getOuptutFileName()
+			// and it sorts the type etc internally?
 
-		// Not sure we need the TestResult types either?
+			// Not sure we need the TestResult types either?
 
 			Map<String, Object> nodeMap = new HashMap<>();
 			nodeMap.put("specName", test.getSpecPath());
@@ -709,7 +712,7 @@ public class TestDriver {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// checkSetResultState(result);
+		}
 	}
 
 	public static boolean compareOutFiles(Path baseFolder, GersTest test, Path outPath) {
