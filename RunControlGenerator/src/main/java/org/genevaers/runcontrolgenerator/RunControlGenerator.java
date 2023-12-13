@@ -44,6 +44,7 @@ public class RunControlGenerator {
 
 	RunControlConfigration rcc;
 	private FileWriter reportWriter;
+	ReportWriter rw = new ReportWriter();
 
 	private Status status;
 
@@ -57,7 +58,6 @@ public class RunControlGenerator {
 	public void runFromConfig(RunControlConfigration rcc) {
 		this.rcc = rcc;
 
-		openReportFile();
 		GenevaLog.writeHeader("Run Control Generator");
 
 		if(buildComponentRepositoryFromSelectedInput(rcc) != Status.ERROR) {
@@ -68,13 +68,7 @@ public class RunControlGenerator {
 			singlePassOptimise(rcc);
 			runCompilers(rcc);
 			writeRunControlFiles(rcc);
-
-			try {
-				reportWriter.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			rw.write(rcc);
 		} else {
 			logger.atSevere().log("Failed to build the component repository");
 		}
@@ -91,6 +85,9 @@ public class RunControlGenerator {
 			rcw.setExtractLogicTable(extractLogicTable);
 			rcw.setJoinLogicTable(joinLogicTable);
 			status = rcw.run();
+			rw.setNumJLTRecordsWritten(joinLogicTable.getNumberOfRecords());
+			rw.setNumXLTRecordsWritten(extractLogicTable.getNumberOfRecords());
+			rw.setNumVDPRecordsWritten(rcw.getNumVDPRecordsWritten());
 		}
 	}
 

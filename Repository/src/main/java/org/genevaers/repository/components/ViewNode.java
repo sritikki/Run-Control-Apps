@@ -157,6 +157,10 @@ public class ViewNode extends ComponentNode{
 		return viewDef.getComponentId();
 	}
 
+	public String getIDStr() {
+		return String.format("%7d", viewDef.getComponentId());
+	}
+
 	public boolean isFormat() {
 		return (viewDef.getViewType() == ViewType.SUMMARY || viewDef.getViewType() == ViewType.DETAIL);
 	}
@@ -326,4 +330,54 @@ public class ViewNode extends ComponentNode{
 		viewDef.setOutputColHdrLnsMax((short)maxNumHeaderLines);
 	}
 
+	public String getOutputPhaseName() {
+		return "Soon";
+	}
+
+	public String getPhase() {
+		return isFormat() ? "Format" : "Extract";
+	}
+
+	public String getOutputFormat() {
+		switch(viewDef.getOutputMedia()) {
+			case HARDCOPY:
+				return "Report";
+			case CSV:
+				return "Delimited";
+			case FILE:
+			case EXCEL:
+			case EXECINFO:
+			case EXECINFOCSV:
+			case INVALID:
+			case LOTUS123:
+			case ONLINE:
+			default:
+				return "Fixed-Length";
+			
+		}
+	}
+
+	public String getERAon() {
+		String era = " ";
+		if(isFormat()) {
+			era = isExtractSummarized() ? "Y" : "N";
+		}
+		return era;
+	}
+
+	public String getERAsize() {
+		String buffSize = " ";
+		if(isExtractSummarized()) {
+			buffSize = String.format("%,d", viewDef.getMaxExtractSummaryRecords());
+		}
+		return buffSize;
+	}
+
+	public String getFRAon() {
+		String fra = " ";
+		if( isFormat()) {
+			fra = viewDef.getViewType() == ViewType.SUMMARY ? "Y" : "N";
+		}
+		return fra;
+	}
 }

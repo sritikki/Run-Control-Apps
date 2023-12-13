@@ -60,6 +60,7 @@ public class App {
         pr.setConfig(rcc);
         try {
             pr.populateConfigFrom(rcc.getParmFileName());
+            rcc.setLinesRead(pr.getLinesRead());
             if(rcc.isValid()) {
                 GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, rcc.getLogLevel());
                 rcg.runFromConfig(rcc);

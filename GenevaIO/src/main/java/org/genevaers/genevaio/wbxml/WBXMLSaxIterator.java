@@ -11,6 +11,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
+import org.genevaers.repository.data.InputReport;
+
 import com.google.common.flogger.FluentLogger;
 
 /*
@@ -265,6 +267,10 @@ public class WBXMLSaxIterator {
 
     public void setInputBuffer(BufferedInputStream ib) {
         inputBuffer = ib;
+    }
+
+    public String getGenerationID() {
+        return catalog.get("Generation0").getCreated();
     }
 
 }

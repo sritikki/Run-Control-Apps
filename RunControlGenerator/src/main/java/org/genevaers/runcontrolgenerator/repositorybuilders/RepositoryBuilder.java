@@ -43,6 +43,8 @@ import org.genevaers.genevaio.dbreader.DBReader;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.DatabaseConnection.DbType;
 import org.genevaers.genevaio.wbxml.WBXMLSaxIterator;
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.data.InputReport;
 import org.genevaers.runcontrolgenerator.InputType;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.utility.Status;
@@ -152,7 +154,10 @@ public class RepositoryBuilder {
 							logger.atInfo().log("Build Repo from " + buildName);
 							inputBuffer = FileFactory.newBufferedInputStream(buildName);
 							// ZFile pdsmem = new ZFile(buildName, "r");
-							buildFromXML();
+							InputReport ir = new InputReport();
+							ir.setDdName(ddname);
+							ir.setMemberName(mname);
+							buildFromXML(ir);
 							// pdsmem.close();
 							inputBuffer.close();
 						}
@@ -190,7 +195,12 @@ public class RepositoryBuilder {
 				logger.atFine().log("Read %s", d.getName());
 				try {
 					inputBuffer = new BufferedInputStream(new FileInputStream(d)); 
-					buildFromXML();
+					InputReport ir = new InputReport();
+					ir.setDdName(rcc.getWBXMLDirectory());
+					ir.setMemberName(d.getName());
+					buildFromXML(ir);
+					Repository.addInputReport(ir);
+
 				} catch (FileNotFoundException e) {
 					logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
 					retval = Status.ERROR;
@@ -201,11 +211,13 @@ public class RepositoryBuilder {
 		}
 	}
 
-	private void buildFromXML() {
+	private void buildFromXML(InputReport ir) {
 		WBXMLSaxIterator wbReader = new WBXMLSaxIterator();
 		try {
 			wbReader.setInputBuffer(inputBuffer);
 			wbReader.addToRepsitory();
+			ir.setGenerationID(wbReader.getGenerationID());
+
 		} catch (Exception e) {
 			logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
 			retval = Status.ERROR;

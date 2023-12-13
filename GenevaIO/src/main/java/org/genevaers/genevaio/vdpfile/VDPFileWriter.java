@@ -677,4 +677,8 @@ public class VDPFileWriter {
 		VDPWriter.close();
 	}
 
+	public int getNumRecordsWritten() {
+		return VDPWriter.getNumRecordsWritten();
+	}
+
 }

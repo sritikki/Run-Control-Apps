@@ -2,6 +2,8 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -23,12 +25,15 @@ import java.nio.file.Path;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import com.google.common.flogger.FluentLogger;
 
 public class RunControlConfigration {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private List<String> linesRead = new ArrayList<>();
 
     private class ConfigEntry {
         String value = "";
@@ -78,6 +83,7 @@ public class RunControlConfigration {
     private static final String REPORT_FILE = "MR91RPT";
     private static final String LOG_FILE = "MR91LOG";
     public static final String LOG_LEVEL = "LOG_LEVEL";
+    public static final String TRACE = "TRACE";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";
@@ -113,6 +119,7 @@ public class RunControlConfigration {
         parmToValue.put(DB2_DATABASE, new ConfigEntry("", false));
         parmToValue.put(DBFLDRS, new ConfigEntry("", false));
         parmToValue.put(DBVIEWS, new ConfigEntry("", false));
+        parmToValue.put(TRACE, new ConfigEntry("N", false));
 
         //Hidden defaults
         parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
@@ -133,7 +140,6 @@ public class RunControlConfigration {
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
         parmToValue.put(VDP_FILE, new ConfigEntry("VDP", true));
 
-        parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
 
         parmToValue.put(NUMBER_MODE, new ConfigEntry("STANDARD", false )); //Could be LARGE
     }
@@ -211,7 +217,7 @@ public class RunControlConfigration {
 	}
 
 	public Level getLogLevel() {
-		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("FINE")){
+		if(parmToValue.get(TRACE).getValue().equalsIgnoreCase("Y")){
             return Level.FINE;
         } else {
             return Level.INFO;
@@ -357,6 +363,24 @@ public class RunControlConfigration {
 
     public boolean isNumberModeStandard() {
         return parmToValue.get(NUMBER_MODE).getValue().equalsIgnoreCase("STANDARD");      
+    }
+
+    public void setLinesRead(List<String> linesRead) {
+        this.linesRead = linesRead;
+    }
+
+    public List<String> getLinesRead() {
+        return linesRead;
+    }
+
+    public List<String> getOptionsInEffect() {
+        List<String> optsInEfect = new ArrayList<>();
+        for(Entry<String, ConfigEntry> parm : parmToValue.entrySet()) {
+            if(!parm.getValue().isHidden()) {
+                optsInEfect.add(String.format("%-33s = %s", parm.getKey(), parm.getValue().getValue()));
+            }
+        };
+        return optsInEfect;
     }
 
 }
