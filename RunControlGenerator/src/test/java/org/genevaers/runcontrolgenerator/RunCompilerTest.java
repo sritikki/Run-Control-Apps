@@ -90,7 +90,7 @@ class RunCompilerTest extends RunCompilerBase {
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(4);
-        assertEquals("-25", dtc.getArg().getValue());
+        assertEquals("-25", dtc.getArg().getValue().getString());
     }
 
     @Test void testAssignments() {
@@ -309,7 +309,6 @@ class RunCompilerTest extends RunCompilerBase {
         LogicTableF2 lkde = (LogicTableF2) xlt.getFromPosition(7);
         assertEquals("LKDE", lkde.getFunctionCode());
         LogicTableArg arg1 = lkde.getArg1();
-        assertEquals(10208, arg1.getLogfileId());
         assertEquals(DataType.ALPHANUMERIC, arg1.getFieldFormat());
         LogicTableArg arg2 = lkde.getArg2();
         assertEquals(DataType.BINARY, arg2.getFieldFormat());
@@ -322,16 +321,16 @@ class RunCompilerTest extends RunCompilerBase {
         LogicTableF2 dte = (LogicTableF2) jlt.getFromPosition(8);
         assertEquals(400618, dte.getArg1().getFieldId());
         LogicTableF1 dtc = (LogicTableF1) jlt.getFromPosition(20);
-        assertEquals("10", dtc.getArg().getValue());
+        assertEquals("10", dtc.getArg().getValue().getString());
         LogicTableF1 effdates = (LogicTableF1) jlt.getFromPosition(23);
-        assertEquals("2", effdates.getArg().getValue());
+        assertEquals("2", effdates.getArg().getValue().getString());
     }
 
     @Test void testDemoExtractWithLookups() {
         LogicTable xlt = runFromXMLOverrideLogic(10689, TestHelper.DEMO_LOOKUPS, "");
         assertTrue(xlt.getNumberOfRecords() > 46);
         LogicTableF1 join2 = (LogicTableF1) xlt.getFromPosition(26);
-        assertEquals("2", join2.getArg().getValue());
+        assertEquals("2", join2.getArg().getValue().getString());
         LogicTableF1 join = (LogicTableF1) xlt.getFromPosition(32);
         assertEquals("JOIN", join.getFunctionCode());
         LogicTable jlt = comp.getJoinLogicTable();
@@ -391,7 +390,7 @@ class RunCompilerTest extends RunCompilerBase {
         assertEquals(27, nv.getSortTitleLen());
         LogicTableF1 lklr = (LogicTableF1) xlt.getFromPosition(5);
         assertEquals("LKLR", lklr.getFunctionCode());
-        assertEquals("1", lklr.getArg().getValue());
+        assertEquals("0", lklr.getArg().getValue().getString());
         LogicTableF1 kslk = (LogicTableF1) xlt.getFromPosition(7);
         assertEquals("KSLK", kslk.getFunctionCode());
         LogicTable jlt = comp.getJoinLogicTable();

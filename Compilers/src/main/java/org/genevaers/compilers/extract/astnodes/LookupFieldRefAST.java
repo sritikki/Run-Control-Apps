@@ -109,6 +109,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setFieldContentId(getDateCode());
             LogicTableArg arg2 = dtl.getArg2();
             flipDataTypeIfFieldAlphanumeric(arg1, arg2);
+            arg2.setFieldContentId(lhs.getWorkingCode());
             ltEmitter.addToLogicTable((LTRecord)dtl);
         }else if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
             LogicTableF1 ctl = (LogicTableF1) fcf.getCTL(redField, currentViewColumn);
@@ -195,7 +196,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     @Override
     public LTFileObject emitDivFunctionCode() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableNameF1 divl = (LogicTableNameF1) fcf.getMULL("", ref);
+        LogicTableNameF1 divl = (LogicTableNameF1) fcf.getDIVL("", ref);
         argFixup(divl.getArg());
         ltEmitter.addToLogicTable((LTRecord)divl);
         return null;
