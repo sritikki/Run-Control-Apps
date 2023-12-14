@@ -93,7 +93,7 @@ public class AppTest {
     }
 
     @Test public void testDemo3() {
-        TestHelper.setupWithViewCompileOnlyAndDot("V0010702.xml", "", "");
+        TestHelper.setupWithView("V0010702.xml");
         App.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
         File report = TestHelper.getReport();
         assertTrue(report.exists());
@@ -102,7 +102,7 @@ public class AppTest {
         File xltfile = TestHelper.getXLT();         
         assertTrue(xltfile.exists());
         File jltfile = TestHelper.getJLT();
-        assertFalse(jltfile.exists());
+        assertTrue(jltfile.exists());
     }
 
     @Test public void testIfAndOrFieldFromWBXML() {

@@ -76,6 +76,7 @@ public class ExtractCompiler {
             }
             astTree = (ErrorAST)ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
             ((ErrorAST)astTree).setErrors(errorListener.getErrors());
+            parent.addChildIfNotNull(astTree);
             ASTBase.addToErrorCount(errorListener.getErrors().size());
         }
         if(astTree != null) {

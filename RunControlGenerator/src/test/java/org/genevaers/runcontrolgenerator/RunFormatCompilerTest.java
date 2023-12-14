@@ -136,8 +136,8 @@ class RunFormatCompilerTest extends RunCompilerBase {
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
         ViewNode v = Repository.getViews().get(12087);
         CalcStack cs = v.getFormatFilterCalcStack();
-        assertStackEntry(cs, 2, CalcStackOpcode.CalcStackBranchLE, "188");
-        assertStackEntry(cs, 5, CalcStackOpcode.CalcStackBranchGE, "188");
+        assertStackEntry(cs, 2, CalcStackOpcode.CalcStackBranchLE, "196");
+        assertStackEntry(cs, 5, CalcStackOpcode.CalcStackBranchGE, "196");
     }
 
     /*
@@ -150,8 +150,8 @@ class RunFormatCompilerTest extends RunCompilerBase {
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
         ViewNode v = Repository.getViews().get(12087);
         CalcStack cs = v.getFormatFilterCalcStack();
-        assertStackEntry(cs, 2, CalcStackOpcode.CalcStackBranchGT, "128");
-        assertStackEntry(cs, 5, CalcStackOpcode.CalcStackBranchGE, "188");
+        assertStackEntry(cs, 2, CalcStackOpcode.CalcStackBranchGT, "136");
+        assertStackEntry(cs, 5, CalcStackOpcode.CalcStackBranchGE, "196");
     }
 
     @Test void testColumnCalculation() {
@@ -168,9 +168,9 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertNotNull(ffTree);
         ViewNode v = Repository.getViews().get(12087);
         assertEquals(14, v.getColumnNumber(3).getColumnCalculationStack().getNumEntries());
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 2, CalcStackOpcode.CalcStackBranchLE, "200");
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 5, CalcStackOpcode.CalcStackBranchGE, "200");
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 9, CalcStackOpcode.CalcStackBranchAlways, "264");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 2, CalcStackOpcode.CalcStackBranchLE, "208");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 5, CalcStackOpcode.CalcStackBranchGE, "208");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 9, CalcStackOpcode.CalcStackBranchAlways, "272");
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
     }
 
@@ -180,8 +180,8 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertNotNull(ffTree);
         ViewNode v = Repository.getViews().get(12087);
         assertEquals(10, v.getColumnNumber(3).getColumnCalculationStack().getNumEntries());
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 2, CalcStackOpcode.CalcStackBranchLE, "192");
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 5, CalcStackOpcode.CalcStackBranchGE, "192");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 2, CalcStackOpcode.CalcStackBranchLE, "200");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 5, CalcStackOpcode.CalcStackBranchGE, "200");
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
     }
 
@@ -191,10 +191,10 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertNotNull(ffTree);
         ViewNode v = Repository.getViews().get(12087);
         assertEquals(17, v.getColumnNumber(3).getColumnCalculationStack().getNumEntries());
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 2, CalcStackOpcode.CalcStackBranchLE, "332");
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 5, CalcStackOpcode.CalcStackBranchGE, "332");
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 8, CalcStackOpcode.CalcStackBranchLE, "268");
-        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 12, CalcStackOpcode.CalcStackBranchAlways, "332");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 2, CalcStackOpcode.CalcStackBranchLE, "340");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 5, CalcStackOpcode.CalcStackBranchGE, "340");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 8, CalcStackOpcode.CalcStackBranchLE, "276");
+        assertStackEntry(v.getColumnNumber(3).getColumnCalculationStack(), 12, CalcStackOpcode.CalcStackBranchAlways, "340");
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
     }
 

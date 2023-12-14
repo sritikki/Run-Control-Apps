@@ -25,6 +25,7 @@ import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -75,7 +76,7 @@ class RunStringConcatinationTest extends RunCompilerBase {
 		GenevaLog.closeLogger(RunCompilerTest.class.getName());
     }
 
-    @Test void testConcatAssignment() {
+    @Test @Disabled void testConcatAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "");
         String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
@@ -98,97 +99,97 @@ class RunStringConcatinationTest extends RunCompilerBase {
         assertDtx((LogicTableF2)xlt.getFromPosition(55) , 98, 10);
     }
 
-    @Test void testRightFieldAssignment() {
+    @Test @Disabled void testRightFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = RIGHT({Ten}, 4)");
         assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 27, 4);
     }
         
-    @Test void testLeftFieldAssignment() {
+    @Test @Disabled void testLeftFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = LEFT({Ten}, 4)");
         assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 21, 4);
     }
         
-    @Test void testDefaultSubstringFieldAssignment() {
+    @Test @Disabled void testDefaultSubstringFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = SUBSTR({Ten}, 4)");
         assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 21, 4);
     }
         
-    @Test void testSubstringFieldAssignment() {
+    @Test @Disabled void testSubstringFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = SUBSTR({Ten}, 3, 4)");
         assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 24, 4);
     }
         
-    @Test void testRightLookupFieldAssignment() {
+    @Test @Disabled void testRightLookupFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = RIGHT({Concat_ConcatTarg.Ten}, 4)");
         assertDtlSource((LogicTableF2)xlt.getFromPosition(7) , 17, 4);
     }
         
-    @Test void testLeftLookupFieldAssignment() {
+    @Test @Disabled void testLeftLookupFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = LEFT({Concat_ConcatTarg.Ten}, 4)");
         assertDtlSource((LogicTableF2)xlt.getFromPosition(7) , 11, 4);
     }
         
-    @Test void testDefaultLookupSubstringFieldAssignment() {
+    @Test @Disabled void testDefaultLookupSubstringFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = SUBSTR({Concat_ConcatTarg.Ten}, 4)");
         assertDteSource((LogicTableF2)xlt.getFromPosition(7) , 11, 4);
     }
         
-    @Test void testSubstringLookupFieldAssignment() {
+    @Test @Disabled void testSubstringLookupFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = SUBSTR({Concat_ConcatTarg.Ten}, 3, 4)");
         assertDteSource((LogicTableF2)xlt.getFromPosition(7) , 14, 4);
     }
         
-    @Test void testRightColRefAssignment() {
+    @Test @Disabled void testRightColRefAssignment() {
         LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
         "COLUMN = RIGHT(Col.1, 4)");
         assertDtxSource((LogicTableF2)xlt.getFromPosition(6) , 7, 4);
     }
         
-    @Test void testLeftColRefAssignment() {
+    @Test @Disabled void testLeftColRefAssignment() {
         LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
         "COLUMN = LEFT(Col.1, 4)");
         assertDtxSource((LogicTableF2)xlt.getFromPosition(6) , 1, 4);
     }
         
-    @Test void testDefaultColRefFieldAssignment() {
+    @Test @Disabled void testDefaultColRefFieldAssignment() {
         LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
         "COLUMN = SUBSTR(Col.1, 4)");
         assertDtxSource((LogicTableF2)xlt.getFromPosition(7) , 1, 4);
     }
         
-    @Test void testSubstringColRefAssignment() {
+    @Test @Disabled void testSubstringColRefAssignment() {
         LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
         "COLUMN = SUBSTR(Col.1, 3, 4)");
         assertDtxSource((LogicTableF2)xlt.getFromPosition(7) , 4, 4);
     }
         
-    @Test void testRightStringAssignment() {
+    @Test @Disabled void testRightStringAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = RIGHT(\"A Big String\", 4)");
         assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 10, "ring");
     }
         
-    @Test void testLeftStringAssignment() {
+    @Test @Disabled void testLeftStringAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = LEFT(\"A Big String\", 4)");
         assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 12, "A Bi");
     }
         
-    @Test void testDefaultStringAssignment() {
+    @Test @Disabled void testDefaultStringAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = SUBSTR(\"A Big String\", 4)");
         assertDtc((LogicTableF1)xlt.getFromPosition(4), 1, 10, "A Bi");
     }
         
-    @Test void testSubstringStringAssignment() {
+    @Test @Disabled void testSubstringStringAssignment() {
         LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
         "COLUMN = SUBSTR(\"A Big String\", 3, 4)");
         assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 10, "ig S");

@@ -150,7 +150,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, "COLUMN = {Binary1} + {AllTypeLookup.Binary2}");
         String[] expected = new String[]{ "DIMN", "SETE", "ADDL", "DTA" };
         int expectedGotos[][] = {{}};
-        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
         LogicTable jlt = comp.getJoinLogicTable();
         String[] jexpected = new String[]{ "HD", "DIM4", "SETC", "RENX" };
         int jexpectedGotos[][] = {{}};
@@ -165,37 +165,38 @@ class RunCompilerArithTests extends RunCompilerBase {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, "COLUMN = {Binary1} - {AllTypeLookup.Binary2}");
         String[] expected = new String[]{ "DIMN", "SETE", "SUBL", "DTA" };
         int expectedGotos[][] = {{}};
-        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
     }
 
     @Test void testFieldTimesLookupField() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, "COLUMN = {Binary1} * {AllTypeLookup.Binary2}");
         String[] expected = new String[]{ "DIMN", "SETE", "MULL", "DTA" };
         int expectedGotos[][] = {{}};
-        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
     }
 
     @Test void testFieldDivideLookupField() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, "COLUMN = {Binary1} / {AllTypeLookup.Binary2}");
         String[] expected = new String[]{ "DIMN", "SETE", "DIVL", "DTA" };
         int expectedGotos[][] = {{}};
-        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
     }
 
 // Accumulators - needs BIDMAS to work too
     @Test void testFieldPlusAccumulator() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Binary1} + {Binary2} * 3");
-        String[] expected = new String[]{ "DIMN", "SETE", "DIMN", "SETE", "MULC", "ADDA", "DTA" };
+        logger.atInfo().log("XLT\n" + LTLogger.logRecords(xlt));
+        String[] expected = new String[]{ "DIMN", "SETE", "MULC", "DIMN", "SETE", "ADDA", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableNameValue addc = (LogicTableNameValue) xlt.getFromPosition(9);
-        assertEquals("g_9956_1506_1762_1_0", addc.getTableName());        
-        assertEquals("g_9956_1506_1762_1_1", addc.getValue());        
+        assertEquals("g_9956_1506_1762_1_1", addc.getTableName());        
+        assertEquals("g_9956_1506_1762_1_0", addc.getValue());        
     }
 
     @Test void testFieldMinusAccumulator() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Binary1} - {Binary2} * 3");
-        String[] expected = new String[]{ "DIMN", "SETE", "DIMN", "SETE", "MULC", "SUBA", "DTA" };
+        String[] expected = new String[]{ "DIMN", "SETE", "MULC", "DIMN", "SETE", "SUBA", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
@@ -203,18 +204,18 @@ class RunCompilerArithTests extends RunCompilerBase {
     @Test void testFieldTimesAccumulator() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Binary1} * ({Binary2} + 3)");
         logger.atInfo().log("XLT\n" + LTLogger.logRecords(xlt));
-        String[] expected = new String[]{ "DIMN", "SETE", "DIMN", "SETE", "ADDC", "MULA", "DTA" };
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "DIMN", "SETE", "MULA", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableNameValue mula = (LogicTableNameValue) xlt.getFromPosition(9);
-        assertEquals("g_9956_1506_1762_1_0", mula.getTableName());        
-        assertEquals("g_9956_1506_1762_1_1", mula.getValue());        
+        assertEquals("g_9956_1506_1762_1_1", mula.getTableName());        
+        assertEquals("g_9956_1506_1762_1_0", mula.getValue());        
     }
 
     @Test void testFieldDivideAccumulator() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Binary1} /  ({Binary2} + 3)");
         logger.atInfo().log("XLT\n" + LTLogger.logRecords(xlt));
-        String[] expected = new String[]{ "DIMN", "SETE", "DIMN", "SETE", "ADDC", "DIVA", "DTA" };
+        String[] expected = new String[]{ "DIMN", "SETE", "ADDC", "DIMN", "SETE", "DIVA", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
@@ -275,14 +276,14 @@ class RunCompilerArithTests extends RunCompilerBase {
 
      @Test void testBIMDAS() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Binary1} + {Binary2} * 99");
-        String[] expected = new String[]{ "DIMN", "SETE", "DIMN", "SETE", "MULC", "ADDA", "DTA" };
+        String[] expected = new String[]{ "DIMN", "SETE", "MULC", "DIMN", "SETE", "ADDA", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
      }
 
      @Test void testBIMDAS2() throws IOException {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Binary1} * 33 - {Binary2} * 99");
-        String[] expected = new String[]{ "DIMN", "DIMN", "SETE", "MULC", "SETA", "DIMN", "SETE", "MULC", "SUBA", "DTA" };
+        String[] expected = new String[]{ "DIMN", "SETE", "MULC", "DIMN", "SETE", "MULC", "DIMN", "SETA", "SUBA", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
      }
@@ -315,7 +316,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(4);
-        assertEquals("Ginger", dtc.getArg().getValue());
+        assertEquals("Ginger", dtc.getArg().getValue().getString());
     }
 
     //     //This gets us into the whole Cookie debacle 
@@ -334,7 +335,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(4);
-        assertEquals("25", dtc.getArg().getValue());
+        assertEquals("25", dtc.getArg().getValue().getString());
     }
 
     @Test void testNoneExistingFieldAssignment() throws IOException {
