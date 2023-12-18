@@ -57,7 +57,7 @@ public class ReportWriter {
 
     private int xltRecordsWritten;
 
-    private Object vdpRecordsWritten;
+    private int vdpRecordsWritten;
 
 	public  void write(RunControlConfigration rcc){
 		GersEnvironment.initialiseFromTheEnvironment();
@@ -76,16 +76,18 @@ public class ReportWriter {
             nodeMap.put("parmsRead", rcc.getLinesRead());
             nodeMap.put("optsInEffect", rcc.getOptionsInEffect());
             nodeMap.put("inputReports", Repository.getInputReports());
-            nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
-            nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
-            nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
-            nodeMap.put("views", Repository.getViews().getValues());
-            nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
-            nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getREHViewNumber()));
-            nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getRTHViewNumber()));
             nodeMap.put("compErrs", Repository.getCompilerErrors());
-            nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
-            nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
+            if(Repository.getCompilerErrors().isEmpty()) {
+                nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
+                nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
+                nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
+                nodeMap.put("views", Repository.getViews().getValues());
+                nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
+                nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getREHViewNumber()));
+                nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getRTHViewNumber()));
+                nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
+                nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
+            }
 
             logger.atInfo().log(rcc.getReportFileName());
             generateTemplatedOutput(template, nodeMap, rcc.getReportFileName());

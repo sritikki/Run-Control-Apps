@@ -44,7 +44,7 @@ public class RunControlGenerator {
 
 	RunControlConfigration rcc;
 	private FileWriter reportWriter;
-	ReportWriter rw = new ReportWriter();
+	ReportWriter report = new ReportWriter();
 
 	private Status status;
 
@@ -68,9 +68,9 @@ public class RunControlGenerator {
 			singlePassOptimise(rcc);
 			runCompilers(rcc);
 			writeRunControlFiles(rcc);
-			rw.write(rcc);
+			report.write(rcc);
 		} else {
-			logger.atSevere().log("Failed to build the component repository");
+			logger.atSevere().log("Failed to build the component repository. No run control files will be written");
 		}
 	}
 
@@ -85,9 +85,11 @@ public class RunControlGenerator {
 			rcw.setExtractLogicTable(extractLogicTable);
 			rcw.setJoinLogicTable(joinLogicTable);
 			status = rcw.run();
-			rw.setNumJLTRecordsWritten(joinLogicTable.getNumberOfRecords());
-			rw.setNumXLTRecordsWritten(extractLogicTable.getNumberOfRecords());
-			rw.setNumVDPRecordsWritten(rcw.getNumVDPRecordsWritten());
+			report.setNumJLTRecordsWritten(joinLogicTable.getNumberOfRecords());
+			report.setNumXLTRecordsWritten(extractLogicTable.getNumberOfRecords());
+			report.setNumVDPRecordsWritten(rcw.getNumVDPRecordsWritten());
+		} else {
+			logger.atSevere().log("There were errors. No run control files will be written");
 		}
 	}
 
@@ -108,16 +110,16 @@ public class RunControlGenerator {
 			status =comp.run();
 			extractLogicTable = comp.getExtractLogicTable();
 			joinLogicTable = comp.getJoinLogicTable();
+		} else {
+			logger.atSevere().log("There were SPO errors. No compilation performed.");
 		}
 	}
 
 	private void singlePassOptimise(RunControlConfigration rcc) {
-		if(status != Status.ERROR) {
-			SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
-			status = spo.run();
-			logicGroups = spo.getLogicGroups();
-			dumpLogicGroups();
-		}
+		SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+		status = spo.run();
+		logicGroups = spo.getLogicGroups();
+		dumpLogicGroups();
 	}
 
 	private void dumpLogicGroups() {

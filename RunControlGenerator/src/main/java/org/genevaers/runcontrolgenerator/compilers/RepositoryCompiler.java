@@ -40,7 +40,6 @@ import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.PFAstNode;
 import org.genevaers.compilers.extract.astnodes.ViewColumnSourceAstNode;
 import org.genevaers.compilers.extract.astnodes.ViewSourceAstNode;
-import org.genevaers.compilers.extract.emitters.CodeEmitter;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
 import org.genevaers.compilers.format.FormatAST2Dot;
 import org.genevaers.compilers.format.FormatCompiler;
@@ -82,16 +81,28 @@ public class RepositoryCompiler {
 
 	public Status run() {
 		GenevaLog.writeHeader("Compile the repository logic");
-		ASTBase.clearErrorCount();
-		buildTheAST();
-		//once the AST is built we now have enough data
-		//to generate the JLT
-		//This has to be done before building the XLT
-		//since the lookup numbers are changed when we generate the JLT
-		emitLogicTablesIfEnabled();
+		extactPhaseCompile();
+		formatPhaseCompile();
+		return returnStatus;
+	}
+
+	private void formatPhaseCompile() {
 		buildFormatAST();
 		emitFormatRecordsIfNeeded();
-		return returnStatus;
+	}
+
+	private void extactPhaseCompile() {
+		ASTBase.clearErrorCount();
+		buildTheAST();
+		if(Repository.getCompilerErrors().size() == 0) {
+			//once the AST is built we now have enough data
+			//to generate the JLT
+			//This has to be done before building the XLT
+			//since the lookup numbers are changed when we generate the JLT
+			emitLogicTablesIfEnabled();
+		} else{
+			returnStatus = Status.ERROR;
+		}
 	}
 
 	private void emitFormatRecordsIfNeeded() {
@@ -211,17 +222,8 @@ public class RepositoryCompiler {
 	}
 
 	private void buildTheExtractLogicTable() {
-		//Walk the AST and add the entries to the XLT
-		//We need to ensure there were no errors
-		if(ASTBase.getErrorCount() == 0) {
-			//Put an error count in the Base and check
-			//We also need to extract the Join information at this time
-			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
-			((EmittableASTNode)extractRoot).emit();
-		} else {
-			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", ASTBase.getErrorCount());
-			//walk the tree here and get the errors?
-		}
+		ExtractBaseAST.setLogicTableEmitter(xltEmitter);
+		((EmittableASTNode)extractRoot).emit();
 	}
 
 	public void setLogicGroups(List<LogicGroup> lgs) {

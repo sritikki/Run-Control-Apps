@@ -81,9 +81,13 @@ ${opt}
                                                            Output              >Output         ERA  ERA Buf Size  FRA
 View ID  View Name                                         Phase               >Format         On   (in Records)  On
 =======  ------------------------------------------------  ---------           >-------------  ---  ------------  ---
+<#if views?? > 
 <#list views as v>
 ${v.IDStr}  ${v.name?right_pad(48)}  ${v.phase?right_pad(9)}           >${v.outputFormat?right_pad(13)}  ${v.ERAon?right_pad(3)}  ${v.ERAsize?left_pad(12)}  ${v.FRAon}
 </#list>
+<#else>
+<none>
+</#if>
  
  
 ====================
@@ -103,17 +107,15 @@ ${ir.ddName?right_pad(8)}  ${ir.memberName}  ${ir.generationID}
  
 DD Name   Member    Record Count
 ========  ========  ------------
-VDP                 ${vdpRecordsWritten?left_pad(12)}
-JLT                 ${jltRecordsWritten?left_pad(12)}
-XLT                 ${xltRecordsWritten?left_pad(12)}
+VDP                 ${vdpRecordsWritten!0?left_pad(12)}
+JLT                 ${jltRecordsWritten!0?left_pad(12)}
+XLT                 ${xltRecordsWritten!0?left_pad(12)}
  
  
 ===================================
 ~REFW - Reference-phase Work Files:
 ===================================
-<#if refviews?size == 0> 
-<none>
-<#else>
+<#if refviews??> 
  
 Ref Work  Runtime                                            Ref       Ref     >Ref                                               Ref      Ref      Key  St  En 
 DD Name   View ID  View Name                                 DD Name   PF ID   >PF Name                                           LR ID    LF ID    Len  Dt  Dt
@@ -127,6 +129,8 @@ ${reh.outputFile.outputDDName}   ${reh.ID?c}  ${reh.name?right_pad(40)}
 <#if rth??>
 ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 </#if>
+<#else>
+<none>
 </#if>
  
 ===============================
@@ -139,10 +143,14 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 =============================
 ~ERRS - SAFR compiler errors:
 =============================
+<#if compErrs?size == 0> 
+<none>
+<#else>
 <#list compErrs as err>
 View(${err.viewid?c}) Loc(${err.source}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcLF?c}) Col(${err.columnNumber})
  ${err.detail}
 </#list>
+</#if>
 
  
  
@@ -152,7 +160,11 @@ View(${err.viewid?c}) Loc(${err.source}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcL
  
 Number of compiler warnings:               0
 Number of compiler errors:       ${compErrs?size?left_pad(11)}
-Number of reference-phase views: ${numrefviews?c?left_pad(11)}
-Number of extract-phase views:   ${numextviews?c?left_pad(11)}
+Number of reference-phase views: ${numrefviews!0?c?left_pad(11)}
+Number of extract-phase views:   ${numextviews!0?c?left_pad(11)}
  
+<#if compErrs?size == 0> 
 Process completed successfully
+<#else>
+There were errors. No Run Control Files written.
+</#if>
