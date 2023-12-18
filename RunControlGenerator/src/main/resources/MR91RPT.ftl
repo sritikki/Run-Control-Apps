@@ -108,9 +108,12 @@ JLT                 ${jltRecordsWritten?left_pad(12)}
 XLT                 ${xltRecordsWritten?left_pad(12)}
  
  
-==================================
-~REFW - Reference-phase Work Files
-==================================
+===================================
+~REFW - Reference-phase Work Files:
+===================================
+<#if refviews?size == 0> 
+<none>
+<#else>
  
 Ref Work  Runtime                                            Ref       Ref     >Ref                                               Ref      Ref      Key  St  En 
 DD Name   View ID  View Name                                 DD Name   PF ID   >PF Name                                           LR ID    LF ID    Len  Dt  Dt
@@ -124,6 +127,7 @@ ${reh.outputFile.outputDDName}   ${reh.ID?c}  ${reh.name?right_pad(40)}
 <#if rth??>
 ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 </#if>
+</#if>
  
 ===============================
 ~WRNS - SAFR compiler warnings:
@@ -135,8 +139,11 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 =============================
 ~ERRS - SAFR compiler errors:
 =============================
- 
-<none>
+<#list compErrs as err>
+View(${err.viewid?c}) Loc(${err.source}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcLF?c}) Col(${err.columnNumber})
+ ${err.detail}
+</#list>
+
  
  
 ==========================
@@ -144,7 +151,7 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 ==========================
  
 Number of compiler warnings:               0
-Number of compiler errors:                 0
+Number of compiler errors:       ${compErrs?size?left_pad(11)}
 Number of reference-phase views: ${numrefviews?c?left_pad(11)}
 Number of extract-phase views:   ${numextviews?c?left_pad(11)}
  

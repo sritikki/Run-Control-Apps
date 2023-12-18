@@ -41,6 +41,7 @@ import org.genevaers.repository.components.UserExit;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.enums.LrStatus;
+import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.repository.data.InputReport;
 import org.genevaers.repository.jltviews.JLTView;
@@ -81,6 +82,8 @@ public class Repository {
 	private static JoinViewsManager jvm = new JoinViewsManager();
 
 	private static List<InputReport> inputReports = new ArrayList<>();
+	private static List<CompilerMessage> compilerWarnings = new ArrayList<>();
+	private static List<CompilerMessage> compilerErrors = new ArrayList<>();
 
 	private static Date generationTime;
 
@@ -98,6 +101,8 @@ public class Repository {
 		views = new ComponentCollection<ViewNode>();
 		formatViews = new ComponentCollection<ViewNode>();
 		jvm = new JoinViewsManager();	
+		compilerErrors.clear();
+		compilerWarnings.clear();
 
 		UniqueKeys.reset();
 
@@ -416,6 +421,22 @@ public class Repository {
 
 	public static int getNumberOfReferenceViews() {
 		return views.size() - numberOfExtractViews;
+	}
+
+	public static void addErrorMessage(CompilerMessage err) {
+		compilerErrors.add(err);
+	}
+
+	public static void addWarningMessage(CompilerMessage warn) {
+		compilerWarnings.add(warn);
+	}
+
+	public static List<CompilerMessage> getCompilerErrors() {
+		return compilerErrors;
+	}
+
+	public static List<CompilerMessage> getCompilerWarnings() {
+		return compilerWarnings;
 	}
 
 }

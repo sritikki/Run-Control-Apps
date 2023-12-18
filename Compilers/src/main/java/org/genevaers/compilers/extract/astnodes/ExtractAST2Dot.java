@@ -428,11 +428,7 @@ public class ExtractAST2Dot {
 
     private static void dotErrorNode(ExtractBaseAST node) {
         ErrorAST errs = (ErrorAST) node;
-        label = errs.getErrors().size() + " Errors\n";
-        Iterator<String> ei = errs.getErrors().iterator();
-        while (ei.hasNext()) {
-            label += ei.next() + "\n";
-        }
+        label = errs.getError();
         colour = "red";
         shape = "octagon";
         idString = "err_" + nodeNum++;

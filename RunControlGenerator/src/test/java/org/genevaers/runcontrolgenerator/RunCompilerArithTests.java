@@ -344,8 +344,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestHelper.setColumn1Logic(9956, "COLUMN = {Rubbish}");
         rcc.setDotFilter("9956", "1", "N");
         ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
-        ErrorAST errs = (ErrorAST) root.getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
+        assertTrue(Repository.getCompilerErrors().size() > 0);
     }
 
     @Test void testBadSyntaxAssignment() throws IOException {
@@ -354,8 +353,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestHelper.setColumn1Logic(9956, "COLUMN = oops}");
         rcc.setDotFilter("9956", "1", "N");
         ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
-        ErrorAST errs = (ErrorAST) root.getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
+        assertTrue(Repository.getCompilerErrors().size() > 0);
     }
 
     // @Test void testEventArith() {

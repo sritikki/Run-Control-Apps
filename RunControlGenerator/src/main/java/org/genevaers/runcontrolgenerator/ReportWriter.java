@@ -83,6 +83,7 @@ public class ReportWriter {
             nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
             nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getREHViewNumber()));
             nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getRTHViewNumber()));
+            nodeMap.put("compErrs", Repository.getCompilerErrors());
             nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
             nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
 

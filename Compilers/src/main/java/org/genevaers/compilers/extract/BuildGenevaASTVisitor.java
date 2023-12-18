@@ -76,6 +76,7 @@ import org.genevaers.grammar.GenevaERSParser;
 import org.genevaers.grammar.GenevaERSParser.EffDateContext;
 import org.genevaers.grammar.GenevaERSParser.ExprArithFactorContext;
 import org.genevaers.grammar.GenevaERSParser.ExprArithTermContext;
+import org.genevaers.grammar.GenevaERSParser.LrFieldContext;
 import org.genevaers.grammar.GenevaERSParser.StmtContext;
 import org.genevaers.grammar.GenevaERSParser.SymbollistContext;
 import org.genevaers.repository.Repository;
@@ -397,26 +398,29 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
 	@Override public ExtractBaseAST visitLrField(GenevaERSParser.LrFieldContext ctx) { 
-        //This should be common to all of the builders
+        FieldReferenceAST fieldRef = makeCurrentOrPriorFieldReferenceAST(ctx);
+        LogicalRecord lr = Repository.getLogicalRecords().get(viewSource.getSourceLRID());
+        fieldRef.resolveField(lr, stripBraces(ctx.CURLED_NAME().getText()));
+        return fieldRef; 
+    }
 
-        // Could be a PRIOR Field
-        String fieldName = ctx.getText();
+    private String stripBraces(String curledName) {
+        int braceNdx = curledName.indexOf("{");
+        int endNdx = curledName.indexOf("}");
+        return curledName.substring(braceNdx+1, endNdx);
+    }
+
+    private FieldReferenceAST makeCurrentOrPriorFieldReferenceAST(LrFieldContext ctx) {
         FieldReferenceAST fieldRef;
-        if(fieldName.contains("PRIOR")) {
+        if(ctx.PRIOR() != null) {
             fieldRef = (FieldReferenceAST) ASTFactory.getNodeOfType(ASTFactory.Type.PRIORLRFIELD);             
         } else {
         //we need the repository to verify that the field exists?
             fieldRef = (FieldReferenceAST) ASTFactory.getNodeOfType(ASTFactory.Type.LRFIELD);
         }
-        //We can get the field name from the second child of the ctx
-        int braceNdx = fieldName.indexOf("{");
-        int endNdx = fieldName.indexOf("}");
-        fieldName = fieldName.substring(braceNdx+1, endNdx);
-        LogicalRecord lr = Repository.getLogicalRecords().get(viewSource.getSourceLRID());
-        //To save this messing about maybe each view column source should hold a ref to its lr
-        //Set this up at build time
-        fieldRef.resolveField(lr, fieldName);
-        return fieldRef; 
+        fieldRef.setCharPostionInLine(ctx.getStart().getCharPositionInLine());
+        fieldRef.setLineNumber(ctx.getStart().getLine());
+        return fieldRef;
     }
 
     @Override public ExtractBaseAST visitIfbody(GenevaERSParser.IfbodyContext ctx) { 
@@ -476,9 +480,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 		if(lookup != null) {
             lkRef.setLookup(lookup);
 		} else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unkown Lookup " + lkname);
-            lkRef.addChildIfNotNull(err);
+            lkRef.addError("Unkown Lookup " + lkname);
         }		
     }
 
@@ -490,16 +492,10 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 		if(lookup != null) {
             lkfieldRef.resolveField(lookup, parts[1]);
 		} else {
-            addErrorNode(lkfieldRef, "Unkown Lookup " + parts[0]);
+            lkfieldRef.addError("Unkown Lookup " + parts[0]);
         }		
         parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkfieldRef);
         return lkfieldRef;
-    }
-
-    private void addErrorNode(ExtractBaseAST node, String msg) {
-        ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-        err.addError(msg);
-        node.addChildIfNotNull(err);
     }
 
 	@Override public ExtractBaseAST visitExprStringAtom(GenevaERSParser.ExprStringAtomContext ctx) { 
@@ -658,9 +654,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
                 }
             } else {
                 StringComparisonAST strcmp = (StringComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCOMP);
-                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-                err.addError("Incompatable data types");
-                strcmp.addChildIfNotNull(err);
+                strcmp.addError("Incompatable data types");
                 return strcmp; 
             }
         }
@@ -679,9 +673,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
                 if(StringDataTypeChecker.allowConcatNode(concatNode)) {
                     strconcat.addChildIfNotNull(concatNode);
                 } else {
-                    ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-                    err.addError("Incompatable data type for " + n.getText());
-                    strconcat.addChildIfNotNull(err);
+                    strconcat.addError("Incompatable data type for " + n.getText());
                 }
                 c+=2;
             }
@@ -794,5 +786,4 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         this.parent = parent;
     }
 
-    
 }

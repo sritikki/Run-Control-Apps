@@ -43,10 +43,7 @@ import org.genevaers.repository.components.enums.DataType;
 public class FieldReferenceAST extends FormattedASTNode implements Assignable, CalculationSource, Concatable {
 
     protected LRField ref;
-    protected String name; //this is a duplication for the moment
-    // the name is within the LRField
-
-    private DataType format = DataType.INVALID; //Note that can be overridden.
+    protected String name; 
 
     public FieldReferenceAST() {
         type = ASTFactory.Type.LRFIELD;
@@ -69,24 +66,13 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
     }
 
     public void resolveField(LogicalRecord lr, String fieldName) {
-        // //Check for PRIOR
-        // if() {
-        //     stripPrior(fieldName);
-        // }
         LRField fld = lr.findFromFieldsByName(fieldName);
         name = fieldName;
         if(fld != null) {       
             ref = fld;
         } else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unknown field " + fieldName);
-            addChildIfNotNull(err);
+            addError("Unknown field {" + fieldName +"}");
         }
-    }
-
-    private void stripPrior(String fieldName) {
-        Pattern stringPattern = Pattern.compile("PRIOR(");
-        Matcher m = stringPattern.matcher(fieldName);
     }
 
     public void populateArg(LogicTableArg arg1) {
@@ -266,5 +252,7 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         }
         return length;
     }
+
+
 
 }

@@ -20,13 +20,11 @@ package org.genevaers.compilers.extract;
 
 import java.io.IOException;
 import java.util.Iterator;
-
 import com.google.common.flogger.FluentLogger;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.extract.BuildGenevaASTVisitor.ExtractContext;
 import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.extract.astnodes.ErrorAST;
@@ -44,56 +42,55 @@ public class ExtractCompiler {
     private ViewColumnSource vcs;
     protected ViewSource vs;
 
+    private GenevaERSParser parser;
+
+    private GoalContext tree;
+
     public ExtractCompiler() {
     }
 
     public void processLogicAndAddNodesToParent(ExtractBaseAST parent, String logic, BuildGenevaASTVisitor.ExtractContext exContext) throws IOException {
-        CodePointCharStream stream = CharStreams.fromString(logic);
-        ASTBase astTree = null;
 
+        parseTheLogicAndBuildParseTree(logic);
+        if (parser.getNumberOfSyntaxErrors() == 0) {
+            buildASTAndAddToParent(parent, exContext);
+        } else {
+            handleParserErrors(parent);
+        }
+    }
+
+    private void handleParserErrors(ExtractBaseAST parent) {
+        logger.atSevere().log("Syntax Errors detected");
+        Iterator<String> ei = errorListener.getErrors().iterator();
+        while(ei.hasNext()) {
+            String e = ei.next();
+            logger.atSevere().log(e);
+            ErrorAST err = (ErrorAST)ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+            err.setError(e);
+            parent.addChildIfNotNull(err);
+        }
+    }
+
+    private void buildASTAndAddToParent(ExtractBaseAST parent, BuildGenevaASTVisitor.ExtractContext exContext) {
+        BuildGenevaASTVisitor astBuilder = new BuildGenevaASTVisitor(exContext);
+        astBuilder.setParent(parent);
+        if(exContext == ExtractContext.COLUMN) {
+            astBuilder.setViewColumnSource(vcs);
+        } else {
+            astBuilder.setViewSource(vs);
+        }
+        astBuilder.visit(tree);
+    }
+
+    private void parseTheLogicAndBuildParseTree(String logic) {
+        CodePointCharStream stream = CharStreams.fromString(logic);
         GenevaERSLexer lexer = new GenevaERSLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        GenevaERSParser parser = new GenevaERSParser(tokens);
+        parser = new GenevaERSParser(tokens);
         parser.removeErrorListeners(); // remove ConsoleErrorListener
         errorListener = new ParseErrorListener();
         parser.addErrorListener(errorListener); // add ours
-        GoalContext tree = parser.goal(); // parse
-        if (parser.getNumberOfSyntaxErrors() == 0) {
-            BuildGenevaASTVisitor astBuilder = new BuildGenevaASTVisitor(exContext);
-            astBuilder.setParent(parent);
-            if(exContext == ExtractContext.COLUMN) {
-                astBuilder.setViewColumnSource(vcs);
-            } else {
-                astBuilder.setViewSource(vs);
-            }
-            astTree = astBuilder.visit(tree);
-        } else {
-            logger.atSevere().log("Syntax Errors detected");
-            Iterator<String> ei = errorListener.getErrors().iterator();
-            while(ei.hasNext()) {
-                //Want to add these to an Error AST Node
-                logger.atSevere().log(ei.next());
-            }
-            astTree = (ErrorAST)ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            ((ErrorAST)astTree).setErrors(errorListener.getErrors());
-            parent.addChildIfNotNull(astTree);
-            ASTBase.addToErrorCount(errorListener.getErrors().size());
-        }
-        if(astTree != null) {
-            ErrorAST errs = (ErrorAST) ((ExtractBaseAST) astTree).getFirstNodeOfType(ASTFactory.Type.ERRORS);
-            if(errs != null) {
-                logger.atSevere().log("Errors detected");
-                Iterator<String> ei = errs.getErrors().iterator();
-                while(ei.hasNext()) {
-                    //Want to add these to an Error AST Node
-                    logger.atSevere().log(ei.next());
-                }
-                ASTBase.addToErrorCount(errs.getErrors().size());
-            }
-        } else {
-            logger.atInfo().log("Null AST Tree generated");
-        }
-        //parent.addChildIfNotNull(astTree);
+        tree = parser.goal(); // parse
     }
 
     public boolean hasErrors() {

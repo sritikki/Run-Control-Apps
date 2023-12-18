@@ -7,6 +7,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRIndex;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
@@ -43,6 +44,7 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
     public void setViewColumnSource(ViewColumnSource vcs) {
         this.vcs = vcs;
         currentViewColumnSource = vcs;
+        currentViewColumn = Repository.getViews().get(vcs.getViewId()).getColumnByID(vcs.getColumnID());
     }
 
     public ViewColumnSource getViewColumnSource() {
@@ -51,8 +53,6 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
 
     @Override
     public void emit() {
-        ViewNode view = Repository.getViews().get(vcs.getViewId());
-        currentViewColumn = view.getColumnByID(vcs.getColumnID());
         ltEmitter.setSuffixSeqNbr((short)vcs.getColumnNumber());
         accumulateAreaLengths();
         //This will be a stepping stone.
@@ -81,15 +81,16 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
      }
 
      private void accumulateAreaLengths() {
-         switch (currentViewColumn.getExtractArea()) {
+        ViewColumn vc = Repository.getViews().get(vcs.getViewId()).getColumnByID(vcs.getColumnID());
+        switch (vc.getExtractArea()) {
              case SORTKEY:
-                 ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+                 ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
                  ((ViewSourceAstNode) getParent()).getAreaValues().addSkLen(sk.getSkFieldLength());
                  break;
              case SORTKEYTITLE:
                  break;
              case AREADATA:
-                 ((ViewSourceAstNode) getParent()).getAreaValues().addDtLen(currentViewColumn.getFieldLength());
+                 ((ViewSourceAstNode) getParent()).getAreaValues().addDtLen(vc.getFieldLength());
                  break;
              case AREACALC:
                  ((ViewSourceAstNode) getParent()).getAreaValues().addCtLen((short) 1);

@@ -38,9 +38,7 @@ public class WriteExitNode extends ExtractBaseAST {
         if(exit != null) {       
             ref = exit;
         } else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unknown exit " + exitName);
-            addChildIfNotNull(err);
+            addError("Unknown exit " + exitName);
         }
     }
 

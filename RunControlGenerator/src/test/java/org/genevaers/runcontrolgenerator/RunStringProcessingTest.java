@@ -107,24 +107,21 @@ class RunStringProcessingTest extends RunCompilerBase {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
         "IF {Binary1} CONTAINS {Binary2} THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
         ErrorAST errs = (ErrorAST) comp.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
-        assertTrue(errs.getErrors().get(0).contains("Incompatable"));
+        assertTrue(errs.getError().contains("Incompatable"));
     }
 
     @Test void testLhsNumericField() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
         "IF {Binary1} CONTAINS {Alphanumeric} THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
         ErrorAST errs = (ErrorAST) comp.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
-        assertTrue(errs.getErrors().get(0).contains("Incompatable"));
+        assertTrue(errs.getError().contains("Incompatable"));
     }
 
     @Test void testRhsNumericField() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
         "IF {Alphanumeric} CONTAINS {Binary1} THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
         ErrorAST errs = (ErrorAST) comp.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
-        assertTrue(errs.getErrors().get(0).contains("Incompatable"));
+        assertTrue(errs.getError().contains("Incompatable"));
     }
 
     @Test void testSFCP() {

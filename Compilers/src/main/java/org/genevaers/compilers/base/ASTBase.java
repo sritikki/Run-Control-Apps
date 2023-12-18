@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.genevaers.compilers.extract.astnodes.ASTFactory;
-
 /** 
  * This class represents a generic AST node.
  * And provides functions for management thereof.
@@ -34,6 +32,8 @@ public abstract class ASTBase {
     protected List<ASTBase> children = new ArrayList<>();
     protected ASTBase parent;
     protected static int errorCount = 0;
+    private int charPositionInLine;
+    private int lineNumber;
 
 
     public Iterator<ASTBase> getChildIterator() {
@@ -95,5 +95,20 @@ public abstract class ASTBase {
         ASTBase.errorCount = 0;
     }
 
+    public void setCharPostionInLine(int charPositionInLine) {
+        this.charPositionInLine = charPositionInLine;
+    }
+
+    public void setLineNumber(int line) {
+        lineNumber = line;
+    }
+
+    public int getCharPositionInLine() {
+        return charPositionInLine;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
     
 }
