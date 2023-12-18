@@ -62,7 +62,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
                 jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
             }
         } else {
-            addError("Unkown field " + fieldName);
+            addError("Unknown lookup field " + fieldName);
         }
     }
 

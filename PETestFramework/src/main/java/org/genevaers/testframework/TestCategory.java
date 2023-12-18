@@ -157,11 +157,11 @@ public class TestCategory {
 		if(test.hasResults()) {
 			addExpandedResults(testResults, test);
 		} else {
-			addUnkownResults(testResults, test);
+			addUnknownResults(testResults, test);
 		}
 	}
 
-	private void addUnkownResults(List<SpecTestResult> testResults, GersTest test) {
+	private void addUnknownResults(List<SpecTestResult> testResults, GersTest test) {
 		Iterator<Entry<Integer, String>> pvi = test.getPassViewsEntriesIterator();
 		while(pvi.hasNext()) {
 			SpecTestResult testResult = new SpecTestResult();

@@ -255,7 +255,7 @@ public class LTLogger {
 			case 2:
 			return "Token";
 			default:
-			return "Unkown";
+			return "Unknown";
 		}
 	}
 
