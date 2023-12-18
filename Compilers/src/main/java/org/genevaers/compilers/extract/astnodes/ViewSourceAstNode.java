@@ -53,6 +53,7 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
 
     @Override
     public void emit() {
+        currentViewSource = vs;
         logger.atFine().log("Emit from view source %d:%s ", vs.getViewId(), vs.getSequenceNumber());
         ltEmitter.setViewId(vs.getViewId());
         LogicTableNV nv = emitNV();

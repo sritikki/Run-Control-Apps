@@ -77,7 +77,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
             accNum = accNum + 1;
         }
         accumMap.put(accumBase, accNum);
-        accumName = String.format("g_%d_%d_%d_%d_%d", viewSource.getViewId(), viewSource.getSourceLFID(), viewSource.getSourceLRID(), vc, accNum);
+        accumName = String.format("%s_%d", accumBase, accNum);
         return accumName;
     }
 
