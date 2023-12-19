@@ -136,9 +136,14 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 ===============================
 ~WRNS - SAFR compiler warnings:
 ===============================
- 
+<#if warnings?size == 0> 
 <none>
- 
+<#else>
+<#list warnings as warn>
+View(${warn.viewid?c}) Loc(${warn.source}) SrcLR(${warn.srcLR?c})  SrcLF(${warn.srcLF?c}) Col(${warn.columnNumber})
+ ${warn.detail}
+</#list>
+</#if> 
  
 =============================
 ~ERRS - SAFR compiler errors:

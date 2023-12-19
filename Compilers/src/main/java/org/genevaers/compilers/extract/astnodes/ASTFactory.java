@@ -37,6 +37,7 @@ public class ASTFactory {
         SKIPIF("SkipIf"), 
         LRFIELD("LR Field"), 
         ERRORS("Errors"), 
+        WARNING("Warning"),
         COLUMN("Column"), 
         COLUMNREF("Column Ref"), 
         CT_COLUMN("CT Column"), 
@@ -95,7 +96,7 @@ public class ASTFactory {
         LEFT("Left"),
         SUBSTR("Substring"), 
         ISFOUND("Is Found"),
-        ISNOTFOUND("Is Not Found")  
+        ISNOTFOUND("Is Not Found"),
         ;
 
         private String name;
@@ -141,6 +142,8 @@ public class ASTFactory {
                 return new FieldReferenceAST();
             case ERRORS:
                 return new ErrorAST();
+            case WARNING:
+                return new WarningAST();
             case SELECTIF:
                 return new SelectIfAST();
             case SKIPIF:

@@ -176,6 +176,12 @@ public abstract class ExtractBaseAST extends ASTBase{
         addChildIfNotNull(err);
     }
 
+    public void addWarning(String message) {
+        WarningAST warn = (WarningAST) ASTFactory.getNodeOfType(ASTFactory.Type.WARNING);
+        warn.setWarning(String.format("line:%d offset:%d %s", getLineNumber(), getCharPositionInLine(), message));
+        addChildIfNotNull(warn);
+    }
+
     public static ViewSource getCurrentViewSource() {
         return currentViewSource;
     }

@@ -144,7 +144,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     //Let's just visit a column node
 	@Override public ExtractBaseAST visitColumnAssignment(GenevaERSParser.ColumnAssignmentContext ctx) { 
         ColumnAssignmentASTNode casnode = (ColumnAssignmentASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNASSIGNMENT);
-        casnode.setTag("CAS found");
+        TerminalNode eq = ctx.EQ();
+        casnode.setLineNumber(eq.getSymbol().getLine());
+        casnode.setCharPostionInLine(eq.getSymbol().getCharPositionInLine());
         TerminalNode c = ctx.COLUMN();
         if(c.getSymbol().getType() == GenevaERSParser.COLUMN) {
             casnode.addChildIfNotNull(visitChildren(ctx));
@@ -449,6 +451,8 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitLookup(GenevaERSParser.LookupContext ctx) {
         LookupPathRefAST lkRef = (LookupPathRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPREF);
+        lkRef.setCharPostionInLine(ctx.getStart().getCharPositionInLine());
+        lkRef.setLineNumber(ctx.getStart().getLine());
         if(ctx.getChildCount() == 1) {
             String lkname = ctx.getText();
             int braceNdx = lkname.indexOf("{");
@@ -480,7 +484,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 		if(lookup != null) {
             lkRef.setLookup(lookup);
 		} else {
-            lkRef.addError("Unkown Lookup " + lkname);
+            lkRef.addError("Unknown Lookup " + lkname);
         }		
     }
 
@@ -492,7 +496,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 		if(lookup != null) {
             lkfieldRef.resolveField(lookup, parts[1]);
 		} else {
-            lkfieldRef.addError("Unkown Lookup " + parts[0]);
+            lkfieldRef.setCharPostionInLine(ctx.getStart().getCharPositionInLine());
+            lkfieldRef.setLineNumber(ctx.getStart().getLine());
+            lkfieldRef.addError("Unknown Lookup " + parts[0]);
         }		
         parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkfieldRef);
         return lkfieldRef;

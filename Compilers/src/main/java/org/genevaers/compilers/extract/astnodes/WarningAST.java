@@ -22,28 +22,27 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.CompilerMessageSource;
 
-public class ErrorAST extends ExtractBaseAST {
+public class WarningAST extends ExtractBaseAST {
 
-    private String error;
-    private CompilerMessage errMessage;
+    private String msg;
+    private CompilerMessage warnMessage;
 
-    public ErrorAST() {
-        type = ASTFactory.Type.ERRORS;
+    public WarningAST() {
+        type = ASTFactory.Type.WARNING;
     }
 
-    public void setError(String e) {
-        error = e ;
-        error = e ;
-        errMessage = new CompilerMessage(currentViewSource.getViewId(), CompilerMessageSource.COLUMN,  currentViewSource.getSourceLRID(), currentViewSource.getSourceLFID(), currentViewColumn.getColumnNumber(), e);
-        Repository.addErrorMessage(errMessage);              
+    public void setWarning(String w) {
+        msg = w ;
+        warnMessage = new CompilerMessage(currentViewSource.getViewId(), CompilerMessageSource.COLUMN,  currentViewSource.getSourceLRID(), currentViewSource.getSourceLFID(), currentViewColumn.getColumnNumber(), w);
+        Repository.addWarningMessage(warnMessage);              
     }
 
-    public CompilerMessage getErrMessage() {
-        return errMessage;
+    public CompilerMessage getWarningMessage() {
+        return warnMessage;
     }
 
-    public String getError() {
-        return error;
+    public String getWarning() {
+        return msg;
     }
 
 }

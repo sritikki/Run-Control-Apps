@@ -65,6 +65,13 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         STRING_AC,
         BIN4
     }
+
+    public enum GenerationWarning {
+        NONE,
+        COLUMN_SHOULD_BE_SIGNED
+    } 
+
+    GenerationWarning warning;
     
     //force implementing classes to generate an accumulator name
     public String generateAccumulatorName(ViewSource viewSource, int vc) {
@@ -1531,6 +1538,14 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     public void setAccumNumber(int accumNumber) {
         this.accumNumber = accumNumber;
     }
+
+    public void clearGenerationWarnings() {
+        warning = GenerationWarning.NONE;
+    }
+
+    public GenerationWarning getWarning() {
+        return warning;
+    }
     
     private LogicTableArg getArgFromField(LRField f) {
         LogicTableArg arg = new LogicTableArg();
@@ -1637,6 +1652,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         if(!vc.isSigned()) {
             //This should generate a warning
             logger.atWarning().log("Accumulator assigments should be signed. Changing for %s", vc.getName());
+            warning = GenerationWarning.COLUMN_SHOULD_BE_SIGNED;
             nf1.getArg().setSignedInd(true);
         }
         nf1.setAccumulatorName(accum);

@@ -82,7 +82,7 @@ public class Repository {
 	private static JoinViewsManager jvm = new JoinViewsManager();
 
 	private static List<InputReport> inputReports = new ArrayList<>();
-	private static List<CompilerMessage> compilerWarnings = new ArrayList<>();
+	private static List<CompilerMessage> warnings = new ArrayList<>();
 	private static List<CompilerMessage> compilerErrors = new ArrayList<>();
 
 	private static Date generationTime;
@@ -102,7 +102,7 @@ public class Repository {
 		formatViews = new ComponentCollection<ViewNode>();
 		jvm = new JoinViewsManager();	
 		compilerErrors.clear();
-		compilerWarnings.clear();
+		warnings.clear();
 
 		UniqueKeys.reset();
 
@@ -428,15 +428,15 @@ public class Repository {
 	}
 
 	public static void addWarningMessage(CompilerMessage warn) {
-		compilerWarnings.add(warn);
+		warnings.add(warn);
 	}
 
 	public static List<CompilerMessage> getCompilerErrors() {
 		return compilerErrors;
 	}
 
-	public static List<CompilerMessage> getCompilerWarnings() {
-		return compilerWarnings;
+	public static List<CompilerMessage> getWarnings() {
+		return warnings;
 	}
 
 }

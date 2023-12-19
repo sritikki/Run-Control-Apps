@@ -469,7 +469,9 @@ public class ExtractAST2Dot {
 
     private static void dotLookupFieldNode(ExtractBaseAST node) {
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) node;
-        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName() + "\n" + lkfieldRef.getUniqueKey() + " -> " + lkfieldRef.getNewJoinId();;
+        String labelName = lkfieldRef.getRef() != null ? lkfieldRef.getRef().getName() : "____";
+        label = lkfieldRef.getLookup().getName() + "." + labelName + "\n";
+        label += lkfieldRef.getUniqueKey() + " -> " + lkfieldRef.getNewJoinId();;
         colour = LKDATASOURCE;
         idString = "Field_" + nodeNum++;
         reverseArrow = true;
@@ -498,7 +500,7 @@ public class ExtractAST2Dot {
 
     private static void dotColumnAssignmentNode(ExtractBaseAST node) {
         ColumnAssignmentASTNode colassNode = (ColumnAssignmentASTNode) node;
-        label = colassNode.getType().toString();
+        label = colassNode.getType().toString() + " " + colassNode.getLineNumber() +":" + colassNode.getCharPositionInLine();
         colour = ASSIGNMENT;
         shape = EMITABLE;
         idString = "Colass" + nodeNum++;

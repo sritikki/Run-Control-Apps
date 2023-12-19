@@ -23,8 +23,6 @@ import java.util.Iterator;
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentDataCheckerFactory;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentEmitter;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentEmitterFactory;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.DataTypeChecker;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.DataTypeChecker.DTResult;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
@@ -93,7 +91,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
             DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(col, rhs);
             DTResult res = dc.verifyOperands(col, rhs);
             if (res == DTResult.ASSIGN_OK) {
+                LtFactoryHolder.getLtFunctionCodeFactory().clearGenerationWarnings();
                 LTRecord lto = (LTRecord) ((Assignable) rhs).getAssignmentEntry(col, (ExtractBaseAST) rhs);
+                checkForErrorsAndWarnings();
                 if (lto != null) {
                     lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
                 }
@@ -109,6 +109,18 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         } else {
             int workToDo = 1;
         }
+    }
+
+    private void checkForErrorsAndWarnings() {
+            switch (LtFactoryHolder.getLtFunctionCodeFactory().getWarning()) {
+                case NONE:
+                    break;
+                case COLUMN_SHOULD_BE_SIGNED:
+                    addWarning("Column treated as signed.");
+            
+                default:
+                    break;
+            }
     }
 
     private LookupFieldRefAST checkForJOINandEmitIfRequired() {
