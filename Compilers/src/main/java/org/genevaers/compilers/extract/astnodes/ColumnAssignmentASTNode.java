@@ -117,6 +117,7 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
                     break;
                 case COLUMN_SHOULD_BE_SIGNED:
                     addWarning("Column treated as signed.");
+                    break;
             
                 default:
                     break;
