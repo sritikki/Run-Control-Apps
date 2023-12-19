@@ -299,6 +299,7 @@ public class REHHeader {
         LRField hdrFld = Repository.makeNewField(hdrLR);
         hdrFld.setName(name);
         RepoHelper.setField(hdrFld, DataType.BINARY, startPos, len);
+        hdrFld.setSigned(true);
         hdrLR.addToFieldsByID(hdrFld);
         hdrLR.addToFieldsByName(hdrFld);
         startPos += len;
