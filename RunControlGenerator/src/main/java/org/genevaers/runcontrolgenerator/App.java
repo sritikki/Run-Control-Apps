@@ -1,8 +1,6 @@
 package org.genevaers.runcontrolgenerator;
 
 import java.io.IOException;
-import java.util.logging.Level;
-
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
 
@@ -73,7 +71,4 @@ public class App {
         GenevaLog.closeLogger(RunControlGenerator.class.getName());
     }
 
-	// private static void initLogger(String logFile) {
-    //     GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, Level.FINE);
-	// }
 }

@@ -73,6 +73,7 @@ public class ReportWriter {
             template = cfg.getTemplate(REPORT_TEMPLATE);
             Map<String, Object> nodeMap = new HashMap<>();
             nodeMap.put("env", "stuff");
+            nodeMap.put("rcgversion", readVersion());
             nodeMap.put("parmsRead", rcc.getLinesRead());
             nodeMap.put("optsInEffect", rcc.getOptionsInEffect());
             nodeMap.put("inputReports", Repository.getInputReports());
@@ -143,5 +144,19 @@ public class ReportWriter {
     public void setNumVDPRecordsWritten(int numberOfRecords) {
         vdpRecordsWritten = numberOfRecords;
     }
+
+	public String readVersion() {
+		String version = "unknown";
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Properties properties = new Properties();
+		try (InputStream resourceStream = loader.getResourceAsStream("application.properties")) {
+			properties.load(resourceStream);
+            version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return version;
+	}
+
 
 }
