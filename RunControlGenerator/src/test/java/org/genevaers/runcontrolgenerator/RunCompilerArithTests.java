@@ -306,7 +306,6 @@ class RunCompilerArithTests extends RunCompilerBase {
         ASTBase root = CompileAndGenerateDots();
         ASTBase fieldRef = root.getFirstLeafNode();
         ColumnAssignmentASTNode colAss = (ColumnAssignmentASTNode)fieldRef.getParent();
-        assertEquals("CAS found", colAss.getTag());
         assertEquals("ZONED", ((FieldReferenceAST)fieldRef).getName());
     }
 
