@@ -1,7 +1,7 @@
 <#assign aDateTime = .now>
 <#assign aDate = aDateTime?date>
 <#assign aTime = aDateTime?time>
-~MR91RPT
+~RCGRPT
  
 GenevaERS - The Single-Pass Optimization Engine
 (https://genevaers.org)
@@ -9,14 +9,14 @@ Licensed under the Apache License, Version 2.0
 Performance Engine for z/OS - Base Product
 Release PM PM4.18.00 D
  
-Program ID:      GVBMR91
+Program ID:      GVBRCG
 Program Title:   Run-Control File Generator
-Built:           <Build Date>
+Built:           ${rcgversion}
  
 Executed:        ${aDate} : ${aTime}
  
 Report DD Name:  MR91RPT
-Report Title:    GVBMR91 Control Report
+Report Title:    GVBRCG Control Report
  
  
 ================
