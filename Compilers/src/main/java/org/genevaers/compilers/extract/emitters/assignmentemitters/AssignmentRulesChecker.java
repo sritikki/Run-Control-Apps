@@ -19,15 +19,21 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 
 
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
-import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
+import org.genevaers.compilers.extract.emitters.rules.RulesChecker;
 
-public interface DataTypeChecker {
-    public enum DTResult {
+public abstract class  AssignmentRulesChecker extends RulesChecker{
+
+    
+    public enum AssignmentRulesResult {
         ASSIGN_OK,
         ASSIGN_WARNING,
         ASSIGN_ERROR
     }
 
-    public abstract DTResult verifyOperands(ColumnAST column, ExtractBaseAST rhs);
+    public abstract AssignmentRulesResult verifyOperands(ColumnAST column, FormattedASTNode rhs);
+
+    public abstract void generateErrorOrWarning();
+
     
 }

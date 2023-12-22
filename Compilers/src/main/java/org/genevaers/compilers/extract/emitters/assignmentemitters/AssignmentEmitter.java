@@ -20,6 +20,7 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.compilers.extract.emitters.CodeEmitter;
 import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -63,8 +64,8 @@ public abstract class AssignmentEmitter extends CodeEmitter {
     public LTFileObject getLTEntry(ExtractBaseAST columnAST, ExtractBaseAST rhs) {
         LTFileObject lte = null;
         // Get a DataType checker
-        DataTypeChecker dataChecker = AssignmentDataCheckerFactory.getDataChecker((ColumnAST)columnAST, rhs);
-        dataChecker.verifyOperands((ColumnAST)columnAST, rhs);
+        AssignmentRulesChecker rulesChecker = AssignmentRulesCheckerFactory.getChecker((ColumnAST)columnAST, (FormattedASTNode)rhs);
+        rulesChecker.verifyOperands((ColumnAST)columnAST, (FormattedASTNode)rhs);
         AssignmentEmitter ae =  AssignmentEmitterFactory.getAssignmentEmitter(rhs);
         lte = ae.makeLTEntry(columnAST, rhs);        
         return lte;

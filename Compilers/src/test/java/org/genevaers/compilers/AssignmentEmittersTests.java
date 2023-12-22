@@ -28,14 +28,14 @@ import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentConstEmitter;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentDataCheckerFactory;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentEmitter;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentEmitterFactory;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentFieldEmitter;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.DataTypeChecker;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentDataCheckerFactory.DateChecker;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentDataCheckerFactory.FlipDataChecker;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentDataCheckerFactory.SameTypeChecker;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesChecker;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesCheckerFactory;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.DateChecker;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.FlipDataChecker;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.SameTypeChecker;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.ViewColumn;
@@ -54,7 +54,7 @@ public class AssignmentEmittersTests {
         LRField fld = new LRField();
         fld.setDatatype(DataType.ALPHANUMERIC);
         fldast.setRef(fld);
-		DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(cast, fldast);
+		AssignmentRulesChecker dc = AssignmentRulesCheckerFactory.getChecker(cast, fldast);
         assertTrue(dc instanceof SameTypeChecker);
 	}
 
@@ -68,7 +68,7 @@ public class AssignmentEmittersTests {
         LRField fld = new LRField();
         fld.setDatatype(DataType.PACKED);
         fldast.setRef(fld);
-		DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(cast, fldast);
+		AssignmentRulesChecker dc = AssignmentRulesCheckerFactory.getChecker(cast, fldast);
         assertTrue(dc instanceof FlipDataChecker);
 	}
 
@@ -82,7 +82,7 @@ public class AssignmentEmittersTests {
         LRField fld = new LRField();
         fld.setDatatype(DataType.PACKED);
         fldast.setRef(fld);
-		DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(cast, fldast);
+		AssignmentRulesChecker dc = AssignmentRulesCheckerFactory.getChecker(cast, fldast);
         assertTrue(dc instanceof DateChecker);
 	}
 
@@ -96,7 +96,7 @@ public class AssignmentEmittersTests {
         LRField fld = new LRField();
         fld.setDatatype(DataType.ALPHANUMERIC);
         fldast.setRef(fld);
-		DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(cast, fldast);
+		AssignmentRulesChecker dc = AssignmentRulesCheckerFactory.getChecker(cast, fldast);
         assertTrue(dc instanceof FlipDataChecker);
 	}
 
@@ -131,7 +131,7 @@ public class AssignmentEmittersTests {
         LRField fld = new LRField();
         fld.setDatatype(DataType.ALPHANUMERIC);
         fldast.setRef(fld);
-		DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(cast, fldast);
+		AssignmentRulesChecker dc = AssignmentRulesCheckerFactory.getChecker(cast, fldast);
         AssignmentEmitter ae = AssignmentEmitterFactory.getAssignmentEmitter(fldast);
         ae.setLtEmitter(new LogicTableEmitter());  
         assertEquals("DTE", ((LTRecord) ae.getLTEntry(cast, fldast)).getFunctionCode());

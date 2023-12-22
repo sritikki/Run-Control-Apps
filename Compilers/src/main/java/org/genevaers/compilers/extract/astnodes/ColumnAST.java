@@ -23,6 +23,7 @@ import org.genevaers.repository.components.LRField;
 
 
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 
 public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNode{
@@ -30,6 +31,7 @@ public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNo
     protected ViewColumn vc;
     private DateCode workingCode;
     private DateCode originalCode;
+    private DataType overrideDataType;
 
     public ColumnAST() {
     }
@@ -77,6 +79,14 @@ public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNo
         if(workingCode != null) {
             vc.setDateCode(originalCode);
         }
+    }
+
+    public boolean isNumeric() {
+        return vc.getDataType() == DataType.ALPHANUMERIC ? false : true;
+    }
+
+    public void setOverrideDataType(DataType overrideDataType) {
+        this.overrideDataType = overrideDataType;
     }
 
 }

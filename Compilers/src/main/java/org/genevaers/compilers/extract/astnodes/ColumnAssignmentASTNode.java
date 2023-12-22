@@ -22,9 +22,9 @@ import java.util.Iterator;
 
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentDataCheckerFactory;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.DataTypeChecker;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.DataTypeChecker.DTResult;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesChecker;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesCheckerFactory;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesChecker.AssignmentRulesResult;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -77,41 +77,65 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
             LookupFieldRefAST lkref = checkForJOINandEmitIfRequired();
 
-            if (rhs instanceof CastAST) {
-                rhs = ((CastAST) rhs).decast();
-            }
+            rhs = decastRHS(rhs);
+            col = decastColumn(col);
+            
             ltEmitter.setSuffixSeqNbr((short) col.getViewColumn().getColumnNumber());
-            if (rhs instanceof EmittableASTNode)
-                ((EmittableASTNode) rhs).emit();
+            emitIfNeeded(rhs);
 
             // This is where we need the rules checking and data type adjustment
 
             // The rhs will have its own emmitter since it will be assignable
             // If not ... boom
-            DataTypeChecker dc = AssignmentDataCheckerFactory.getDataChecker(col, rhs);
-            DTResult res = dc.verifyOperands(col, rhs);
-            if (res == DTResult.ASSIGN_OK) {
-                LtFactoryHolder.getLtFunctionCodeFactory().clearGenerationWarnings();
-                LTRecord lto = (LTRecord) ((Assignable) rhs).getAssignmentEntry(col, (ExtractBaseAST) rhs);
-                checkForErrorsAndWarnings();
-                if (lto != null) {
-                    lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
-                }
-                ltEmitter.addToLogicTable((LTRecord) lto);
-            }
+            AssignmentRulesChecker dataTypeChecker = AssignmentRulesCheckerFactory.getChecker(col, (FormattedASTNode)rhs);
+            AssignmentRulesResult res = dataTypeChecker.verifyOperands(col, (FormattedASTNode)rhs);
+            if (res != AssignmentRulesResult.ASSIGN_ERROR) {
+                generateLogicTableEntry(rhs, col);
+            } 
             if (lkref != null) {
                 lkref.emitLookupDefault();
-                //We now know how the set the lookup goto
             }
 
             col.emit(); // In case there is a sort title emit
+            //restore in the flipper if needed
             col.restoreDateCode();
         } else {
+            //Badly constructed AST - should not get here
+            //so don't need the If?
             int workToDo = 1;
         }
     }
 
+    private void generateLogicTableEntry(ExtractBaseAST rhs, ColumnAST col) {
+        LTRecord lto = (LTRecord) ((Assignable) rhs).getAssignmentEntry(col, (ExtractBaseAST) rhs);
+        if (lto != null) {
+            lto.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
+        }
+        ltEmitter.addToLogicTable((LTRecord) lto);
+    }
+
+    private void emitIfNeeded(ExtractBaseAST rhs) {
+        if (rhs instanceof EmittableASTNode)
+            ((EmittableASTNode) rhs).emit();
+    }
+
+    private ColumnAST decastColumn(ColumnAST col) {
+        // Code does not support casting the column?
+        // if (col instanceof CastAST) {
+        //     col = ((CastAST) col).decast();
+        // }
+        return col;
+    }
+
+    private ExtractBaseAST decastRHS(ExtractBaseAST rhs) {
+        if (rhs instanceof CastAST) {
+            rhs = ((CastAST) rhs).decast();
+        }
+        return rhs;
+    }
+
     private void checkForErrorsAndWarnings() {
+        //truncation?
             switch (LtFactoryHolder.getLtFunctionCodeFactory().getWarning()) {
                 case NONE:
                     break;

@@ -108,6 +108,9 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         LRField field = ((FieldReferenceAST)rhs).getRef();
         if(field != null) {
             ltEntry =((ColumnAST)lhs).getFieldLtEntry(field);
+            //How many args do we have
+            //and why do we care? we should just set the values
+            //And not not do the flipping here... the DataChecker should deal with that
             LogicTableArg arg;
             if(vc.getExtractArea() == ExtractArea.AREACALC) {
                 arg = ((LogicTableF1)ltEntry).getArg();
