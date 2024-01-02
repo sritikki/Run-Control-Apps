@@ -34,6 +34,7 @@ import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentFie
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesChecker;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesCheckerFactory;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.DateChecker;
+import org.genevaers.compilers.extract.emitters.assignmentemitters.FlipColumnChecker;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.FlipDataChecker;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.SameTypeChecker;
 import org.genevaers.genevaio.ltfile.LTRecord;
@@ -69,7 +70,7 @@ public class AssignmentEmittersTests {
         fld.setDatatype(DataType.PACKED);
         fldast.setRef(fld);
 		AssignmentRulesChecker dc = AssignmentRulesCheckerFactory.getChecker(cast, fldast);
-        assertTrue(dc instanceof FlipDataChecker);
+        assertTrue(dc instanceof FlipColumnChecker);
 	}
 
     @Test
