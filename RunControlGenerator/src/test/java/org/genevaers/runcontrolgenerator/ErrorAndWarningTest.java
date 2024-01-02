@@ -98,16 +98,35 @@ class ErrorAndWarningTest extends RunCompilerBase {
     
 
     @Test void testWarnFlipColumn() {
-        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
+        runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
         assertEquals(1, warns.size());
         assertEquals("Treating column 1 as ZONED.", warns.get(0).getDetail());
     }
 
     @Test void testWarnFlipField() {
-        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
+        runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
         assertEquals(1, warns.size());
         assertEquals("Treating column 1 as ZONED.", warns.get(0).getDetail());
     }
+
+    @Test void testWarnFlipColumnZonedTooBig() {
+        runFromXMLOverrideLogic(9956, TestHelper.COL_TOO_BIG, "COLUMN = {ZONED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("exceeds maximum"));
+    }
+
+    @Test void testWarnFlipFieldZonedTooBig() {
+        runFromXMLOverrideLogic(9956, TestHelper.FIELD_TOO_BIG, "COLUMN = {Description}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("exceeds maximum"));
+    }
+
 }

@@ -18,7 +18,7 @@ public class FlipColumnChecker extends AssignmentRulesChecker {
 
     @Override
     public AssignmentRulesResult verifyOperands(ColumnAST column, FormattedASTNode rhs) {
-        //We already know the column in Alphanumric otherwise we would not be here
+        //We already know the column is Alphanumeric otherwise we would not be here
         column.setOverrideDataType(DataType.ZONED);
         ViewColumn vc = column.getViewColumn();
         apply(column, rhs);

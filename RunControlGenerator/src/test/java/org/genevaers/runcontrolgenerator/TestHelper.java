@@ -61,6 +61,8 @@ public class TestHelper {
     public static final String PROD_STATE = "DEMO_Summary_Product_Qty_Sold_By_State_View[10715].xml";
     public static final String DEMO_LOOKUPS = "DEMO_Extract_With_Lookups_VIEW[10689].xml";
     public static final String SKE_DT = "SKEandDT[11074].xml";
+    public static final String COL_TOO_BIG = "ColTooBig.xml";
+    public static final String FIELD_TOO_BIG = "FieldTooBig.xml";
     public static final String ONE_COL = "OneCol.xml";
     public static final String ONE_COL_LOOKUP = "OneColLookup.xml";
     public static final String ONE_COL_WRITE_EXIT = "OneColWriteExit[12052].xml";
