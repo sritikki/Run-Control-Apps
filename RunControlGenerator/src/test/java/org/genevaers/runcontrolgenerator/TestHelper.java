@@ -63,6 +63,7 @@ public class TestHelper {
     public static final String SKE_DT = "SKEandDT[11074].xml";
     public static final String COL_TOO_BIG = "ColTooBig.xml";
     public static final String FIELD_TOO_BIG = "FieldTooBig.xml";
+    public static final String INCOMPATIBLE_DATES = "IncompatibleDates.xml";
     public static final String ONE_COL = "OneCol.xml";
     public static final String ONE_COL_LOOKUP = "OneColLookup.xml";
     public static final String ONE_COL_WRITE_EXIT = "OneColWriteExit[12052].xml";

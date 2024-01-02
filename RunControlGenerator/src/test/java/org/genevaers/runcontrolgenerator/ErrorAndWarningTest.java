@@ -129,4 +129,13 @@ class ErrorAndWarningTest extends RunCompilerBase {
         assertTrue(errs.get(0).getDetail().contains("exceeds maximum"));
     }
 
+    @Test void testIncompatibleDates() {
+        runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = {ZONED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(0, warns.size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("Incompatible date formats"));
+    }
+
 }
