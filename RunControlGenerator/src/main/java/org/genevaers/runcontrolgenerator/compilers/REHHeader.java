@@ -26,6 +26,7 @@ import org.genevaers.compilers.extract.astnodes.ColumnAssignmentASTNode;
 import org.genevaers.compilers.extract.astnodes.EndOfSetASTNode;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
+import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RecordCountAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
 import org.genevaers.compilers.extract.astnodes.ViewColumnSourceAstNode;
@@ -225,6 +226,8 @@ public class REHHeader {
         ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(view.getColumnNumber(vcs.getColumnNumber()));
         if(colNode.getViewColumn().getName().equals("Record Count")) {
             addRecordCountAccumulator(casnode);
+        } else if(colNode.getViewColumn().getName().equals("Reserved")) {
+            addStringConstant(casnode, vcs);
         } else {
             addConstant(casnode, vcs);
         }
@@ -307,6 +310,12 @@ public class REHHeader {
     }
 
     private void addConstant(ColumnAssignmentASTNode casnode, ViewColumnSource vcs) {
+        NumAtomAST constNode = (NumAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.NUMATOM);
+        constNode.setValue(vcs.getSrcValue()); 
+        casnode.addChildIfNotNull(constNode);
+    }
+    
+    private void addStringConstant(ColumnAssignmentASTNode casnode, ViewColumnSource vcs) {
         StringAtomAST constNode = (StringAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGATOM);
         constNode.setValue(vcs.getSrcValue()); 
         casnode.addChildIfNotNull(constNode);

@@ -3,17 +3,19 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.compilers.extract.emitters.rules.CanAssignDates;
+import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DateCode;
 
 public class SameTypeChecker extends AssignmentRulesChecker {
 
     public SameTypeChecker() {
-        addRule(new CanAssignDates());  //Should be able use static?
+        addRule(new CanAssignDates());
     }
 
     @Override
-    public AssignmentRulesResult verifyOperands(ColumnAST column, FormattedASTNode rhs) {
+    public RuleResult verifyOperands(ColumnAST column, FormattedASTNode rhs) {
+        RuleResult result = RuleResult.RULE_PASSED;
         ViewColumn vc = column.getViewColumn();
         FormattedASTNode frhs = (FormattedASTNode) rhs;
         // LRField f = null;
@@ -24,10 +26,18 @@ public class SameTypeChecker extends AssignmentRulesChecker {
         //     LookupFieldRefAST lfr = (LookupFieldRefAST) rhs;
         //     f = lfr.getRef();
         // }
-        if (vc.getDateCode() == frhs.getDateCode()) {
+        if (vc.getDateCode() != DateCode.NONE && frhs.getDateCode() != DateCode.NONE) {
+            updateResult(result, apply(column, rhs));
             stripOffDateCodes(column, frhs);
-        } else {
-            apply(column, rhs);
+         } else {
+            //need to strip here as well but know which side and generate warning
+            if(vc.getDateCode() != DateCode.NONE) {
+                column.setWorkingCode(DateCode.NONE);
+            }
+            if(frhs.getDateCode() != DateCode.NONE) {
+                frhs.overrideDateCode(DateCode.NONE);
+            }
+            updateResult(result, apply(column, rhs));
             //generate warning
             //If both sides had compatible dates ok
             //  leave them
@@ -36,7 +46,7 @@ public class SameTypeChecker extends AssignmentRulesChecker {
             //checkDateCodeCompatibility();
             //Use bit map!!!!!!!!!!!!!!!!!!!
         }
-        return AssignmentRulesResult.ASSIGN_OK;
+        return result;
     }
 
 

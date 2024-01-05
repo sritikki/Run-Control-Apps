@@ -39,7 +39,7 @@ public class SFCLEmitter extends StringComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) rhs;
         
-        lkf.getLkEmitter().emitJoin(lkf, false);
+        lkf.emitJoin(false);
         LogicTableF1 sfcl = (LogicTableF1) ltFact.getSFCL(((GenevaERSValue)lhs).getValueString(), ((LookupFieldRefAST) rhs).getRef());
         LogicTableArg arg = sfcl.getArg();
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);

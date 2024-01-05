@@ -23,5 +23,6 @@ import org.genevaers.genevaio.ltfile.LTFileObject;
 public interface Assignable {
 
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs);
+    public int getAssignableLength();
 
 }

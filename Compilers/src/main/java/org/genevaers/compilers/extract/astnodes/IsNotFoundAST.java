@@ -11,7 +11,7 @@ public class IsNotFoundAST extends ExtractBaseAST implements EmittableASTNode{
     @Override
     public void emit() {
         LookupPathRefAST lkref = (LookupPathRefAST)getChildIterator().next();
-        lkref.getLkEmitter().emitJoin(lkref, false);
+        lkref.emitJoin(false);
     }
 
     @Override

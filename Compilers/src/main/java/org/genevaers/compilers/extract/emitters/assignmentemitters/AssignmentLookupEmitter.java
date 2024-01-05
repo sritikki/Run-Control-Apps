@@ -38,7 +38,7 @@ public class AssignmentLookupEmitter extends AssignmentEmitter{
     @Override
     public LTFileObject makeLTEntry(ExtractBaseAST lhs, ExtractBaseAST rhs) {
         LookupFieldRefAST lkf = (LookupFieldRefAST)rhs;
-        lkf.getLkEmitter().emitJoin(lkf, false);
+        lkf.emitJoin(false);
         emitDTL(lhs, lkf);
         return null;
     }

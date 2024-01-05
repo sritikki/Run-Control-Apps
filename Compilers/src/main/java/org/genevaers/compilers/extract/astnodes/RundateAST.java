@@ -152,4 +152,23 @@ RunDateASTNode::getLength() const
         arg.setFieldContentId(rawDateCode());
     }
 
+    @Override
+    public String getMessageName() {
+        return value;
+    }
+
+    @Override
+    public int getAssignableLength() {
+       switch (value) {
+        case "RUNDAY":
+            return 8;
+        case "RUNMONTH":
+            return 6;
+        case "RUNYEAR":
+            return 4;
+        default:
+            return 0;
+        }
+    }
+
 }

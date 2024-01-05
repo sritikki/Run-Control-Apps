@@ -64,6 +64,9 @@ public class TestHelper {
     public static final String COL_TOO_BIG = "ColTooBig.xml";
     public static final String FIELD_TOO_BIG = "FieldTooBig.xml";
     public static final String INCOMPATIBLE_DATES = "IncompatibleDates.xml";
+    public static final String INCOMPATIBLE_LOOKUP_DATES = "IncompatibleLookupDates.xml";
+    public static final String INCOMPATIBLE_FIELD_DATES = "IncompatibleFieldDates.xml";
+    public static final String INCOMPATIBLE_LOOKUPFIELD_DATES = "IncompatibleLookupFieldDates.xml";
     public static final String ONE_COL = "OneCol.xml";
     public static final String ONE_COL_LOOKUP = "OneColLookup.xml";
     public static final String ONE_COL_WRITE_EXIT = "OneColWriteExit[12052].xml";

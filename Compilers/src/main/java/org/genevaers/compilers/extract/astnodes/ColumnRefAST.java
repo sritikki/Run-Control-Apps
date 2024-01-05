@@ -193,4 +193,15 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         return length;
     }
 
+    @Override
+    public String getMessageName() {
+        return "column reference";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
+    }
+
 }

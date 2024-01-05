@@ -39,7 +39,7 @@ public class SFLXEmitter extends StringComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
 
-        lkf.getLkEmitter().emitJoin(lkf, false);
+        lkf.emitJoin(false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
         LogicTableF2 sflx = (LogicTableF2) ltFact.getSFLX(((LookupFieldRefAST) lhs).getRef(), ((ColumnRefAST) rhs).getViewColumn());
         LogicTableArg arg = sflx.getArg1();

@@ -20,18 +20,12 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
+import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.compilers.extract.emitters.rules.RulesChecker;
 
 public abstract class  AssignmentRulesChecker extends RulesChecker{
 
-    
-    public enum AssignmentRulesResult {
-        ASSIGN_OK,
-        ASSIGN_WARNING,
-        ASSIGN_ERROR
-    }
-
-    public abstract AssignmentRulesResult verifyOperands(ColumnAST column, FormattedASTNode rhs);
+    public abstract RuleResult verifyOperands(ColumnAST column, FormattedASTNode rhs);
 
     public abstract void generateErrorOrWarning();
 

@@ -1,8 +1,9 @@
 package org.genevaers.compilers.extract.emitters.rules;
 
+import org.genevaers.compilers.extract.astnodes.Assignable;
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
-import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
+import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.data.CompilerMessage;
@@ -15,8 +16,8 @@ public class FieldZonedMaxLength extends Rule{
     @Override
     public RuleResult apply(final ExtractBaseAST op1, final ExtractBaseAST op2) {
         final ViewColumn vc = ((ColumnAST)op1).getViewColumn();
-        FieldReferenceAST f = ((FieldReferenceAST)op2);
-        if(f.getRef().getLength() < MAX_ZONED_LENGTH ) {
+        FormattedASTNode f = ((FormattedASTNode)op2);
+        if(((Assignable)f).getAssignableLength() < MAX_ZONED_LENGTH ) {
             return RuleResult.RULE_PASSED;
         } else {
             //We must be able to extract this to the base
@@ -26,7 +27,7 @@ public class FieldZonedMaxLength extends Rule{
                                         ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
                                         ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
                                         vc.getColumnNumber(),
-                                        String.format(ERR_MESSAGE, f.getRef().getName(), MAX_ZONED_LENGTH)
+                                        String.format(ERR_MESSAGE, f.getMessageName(), MAX_ZONED_LENGTH)
                                     );
             Repository.addErrorMessage(err);
             return RuleResult.RULE_ERROR;

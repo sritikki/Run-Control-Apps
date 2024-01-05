@@ -39,7 +39,7 @@ public class CFXLEmitter extends ComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) rhs;
 
-        lkf.getLkEmitter().emitJoin(lkf, false);
+        lkf.emitJoin(false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
         LogicTableF2 cfxl = (LogicTableF2) ltFact.getCFXL(((ColumnRefAST) lhs).getViewColumn(), ((LookupFieldRefAST) rhs).getRef(), op);
         LogicTableArg arg1 = cfxl.getArg1();

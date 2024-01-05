@@ -6,6 +6,8 @@ import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.compilers.extract.emitters.rules.ColumnZonedMaxLength;
 import org.genevaers.compilers.extract.emitters.rules.FieldZonedMaxLength;
+import org.genevaers.compilers.extract.emitters.rules.Rule;
+import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DataType;
@@ -19,17 +21,17 @@ public class FlipDataChecker extends AssignmentRulesChecker {
     }
 
     @Override
-    public AssignmentRulesResult verifyOperands(ColumnAST column, FormattedASTNode rhs) {
+    public RuleResult verifyOperands(ColumnAST column, FormattedASTNode rhs) {
+        RuleResult result = RuleResult.RULE_WARNING;
         ViewColumn vc = column.getViewColumn();
-        FieldReferenceAST f = ((FieldReferenceAST)rhs);
-        apply(column, rhs);
+        updateResult(result, apply(column, rhs));
         CompilerMessage warn = new CompilerMessage(
                                         vc.getViewId(), 
                                         CompilerMessageSource.COLUMN, 
                                         ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
                                         ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
                                         column.getViewColumn().getColumnNumber(),
-                                        (String.format("Treating field {%s} as ZONED.", f.getRef().getName()))
+                                        (String.format("Treating field {%s} as ZONED.", rhs.getMessageName()))
                                     );
         Repository.addWarningMessage(warn);
 
@@ -41,7 +43,7 @@ public class FlipDataChecker extends AssignmentRulesChecker {
             // And the Formatted AST Node..
             // Also allows management of the casting
             // Which in C++ is called in the generateASTValueRef or generateASTUnaryNode in  ExtractParserBase
-        return AssignmentRulesResult.ASSIGN_WARNING;
+        return result;
     }
 
     @Override

@@ -60,4 +60,15 @@ public class StringConcatinationAST extends FormattedASTNode implements Assignab
         return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
     }
 
+    @Override
+    public String getMessageName() {
+        return "string concatination";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
+    }
+
 }

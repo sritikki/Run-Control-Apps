@@ -29,6 +29,7 @@ public abstract class FormattedASTNode extends ExtractBaseAST {
 
     public abstract DataType getDataType();
     public abstract DateCode getDateCode();
+    public abstract String getMessageName();
     
     // Implementing classes must manage the mapping to the Enum types above
     public void overrideDataType(DataType overFormat) {
@@ -58,6 +59,5 @@ public abstract class FormattedASTNode extends ExtractBaseAST {
     public boolean isNumeric() {
         return getDataType().ordinal() > DataType.ALPHA.ordinal() && getDataType().ordinal() < DataType.CONSTSTRING.ordinal();
     }
-
-
+    
 }

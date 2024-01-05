@@ -39,7 +39,7 @@ import org.genevaers.repository.components.enums.LtRecordType;
 import org.genevaers.repository.jltviews.UniqueKeyData;
 import org.genevaers.repository.jltviews.UniqueKeys;
 
-public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
+public class LookupPathHandler {
 
     protected LookupPath lookup;
     protected LookupEmitter lkEmitter = new LookupEmitter();
@@ -51,14 +51,20 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
     protected EffDateValue effDateValue;
     private String uniqueKey;
 
-    @Override
-    public void emit() {
-        goto1 = ExtractBaseAST.getLtEmitter().getNumberOfRecords();
+    public void emitJoin(boolean skt) {
+        lkEmitter.emitJoin(this, skt);
     }
-    
+
+    public void resolveGotos(Integer joinT, Integer joinF) {
+        lkEmitter.resolveGotos(joinT, joinF);
+    }
 
     public LookupPath getLookup() {
         return lookup;
+    }
+
+    public void setLookup(LookupPath lookup) {
+        this.lookup = lookup;
     }
 
     public Integer getGoto1() {
@@ -69,9 +75,8 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         return goto2;
     }
 
-    @Override
-    public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        lkEmitter.resolveGotos(joinT, joinF);
+    public void setSortTitleFieldId(int sortTitleFieldId) {
+        lkEmitter.setSortTitleFieldId(sortTitleFieldId);
     }
 
     public String getSymbolValue(String symbolicName) {
@@ -154,8 +159,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         lkde.setArg2(arg2);
         lkde.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkde);
-}
-
+    }
 
     private void emitLKDC(String val) {
 
@@ -183,21 +187,6 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         return lkEmitter;
     }
 
-
-    @Override
-    public DataType getDataType() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
-    @Override
-    public DateCode getDateCode() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
     /* 
      * Lookups are considered unique based on the combination of
      * Effective date values and symbols
@@ -219,4 +208,10 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
     public String getUniqueKey() {
         return uniqueKey;
     }
+
+    public void setFalseGotos(Integer pos) {
+        lkEmitter.setFalseGotos(pos);
+    }
+
+
 }

@@ -156,4 +156,15 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
         return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
     }
 
+    @Override
+    public String getMessageName() {
+        return "calculation";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
+    }
+
 }

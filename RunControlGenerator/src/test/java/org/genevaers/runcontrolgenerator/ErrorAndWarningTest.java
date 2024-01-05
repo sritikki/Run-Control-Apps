@@ -130,12 +130,66 @@ class ErrorAndWarningTest extends RunCompilerBase {
     }
 
     @Test void testIncompatibleDates() {
-        runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = {ZONED}");
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = {ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
         assertEquals(0, warns.size());
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(1, errs.size());
         assertTrue(errs.get(0).getDetail().contains("Incompatible date formats"));
     }
+
+    @Test void testStripColumDate() {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = {PACKED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertEquals("Removing date from column 1.", warns.get(0).getDetail());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+        LogicTableF2 dte = (LogicTableF2) xlt.getFromPosition(4);
+        assertEquals(DateCode.NONE, dte.getArg2().getFieldContentId());        
+    }
+
+    @Test void testStripFieldDate() {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_FIELD_DATES, "COLUMN = {ZONED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertEquals("Removing date from field {ZONED}.", warns.get(0).getDetail());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+        LogicTableF2 dte = (LogicTableF2) xlt.getFromPosition(4);
+        assertEquals(DateCode.NONE, dte.getArg2().getFieldContentId());        
+    }
+
+    @Test void testIncompatibleLookupDates() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.INCOMPATIBLE_LOOKUP_DATES, "COLUMN = {AllTypeLookup.ZONED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(0, warns.size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("Incompatible date formats"));
+    }
+
+    @Test void testStripColumLookupDate() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.INCOMPATIBLE_LOOKUP_DATES, "COLUMN = {AllTypeLookup.PACKED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertEquals("Removing date from column 1.", warns.get(0).getDetail());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+        LogicTableF2 dtl = (LogicTableF2) xlt.getFromPosition(7);
+        assertEquals(DateCode.NONE, dtl.getArg2().getFieldContentId());        
+    }
+
+    @Test void testStripLookupFieldDate() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.INCOMPATIBLE_LOOKUPFIELD_DATES, "COLUMN = {AllTypeLookup.ZONED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertEquals("Removing date from field {ZONED}.", warns.get(0).getDetail());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+        LogicTableF2 dtl = (LogicTableF2) xlt.getFromPosition(7);
+        assertEquals(DateCode.NONE, dtl.getArg1().getFieldContentId());        
+    }
+
 
 }

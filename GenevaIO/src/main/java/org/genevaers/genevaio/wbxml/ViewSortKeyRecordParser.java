@@ -43,14 +43,14 @@ import org.genevaers.repository.components.enums.SortOrder;
  * The low order bit is the sort break footer option
  * // 0 = Don't display a footer line at all [value 1]
  * // 1 = Print footer line on Same Page [value 2]
- * m_pSortKey->SetSortBreakFooterDisp(m_sortBreakInd & 1 ?
+ * m_pSortKey->SetSortBreakFooterDisp(m_sortBreakInd {@literal &} 1 ?
  * AttrSortBreakFooterDispSamePage :
  * AttrSortBreakFooterDispNone);
  * 
  * // The next bit indicates whether or not to skip sort break logic
  * // 0 = No (perform sort break logic) [value 1]
  * // 1 = Yes (do not perform) [value 2]
- * m_pSortKey->SetSortBreakOption(m_sortBreakInd & 2 ?
+ * m_pSortKey->SetSortBreakOption(m_sortBreakInd {@literal &} 2 ?
  * AttrSortBreakOptionNoBreak :
  * AttrSortBreakOptionBreak);
  * VDPSortBreakHeaderDisp tHeaderDisp = AttrSortBreakHeaderDispSamePage;

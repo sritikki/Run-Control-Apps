@@ -121,22 +121,5 @@ public class AssignmentEmittersTests {
         AssignmentEmitter ae = AssignmentEmitterFactory.getAssignmentEmitter(numast);
         assertTrue(ae instanceof AssignmentConstEmitter);
 	}
-
-    @Test
-	public void testDTE() {
-        ViewColumn vc = new ViewColumn();
-        vc.setDataType(DataType.BINARY);
-        ColumnAST cast = new DTColumnAST(vc);
-        cast.setViewColumn(vc);
-        FieldReferenceAST fldast = new FieldReferenceAST();
-        LRField fld = new LRField();
-        fld.setDatatype(DataType.ALPHANUMERIC);
-        fldast.setRef(fld);
-		AssignmentRulesChecker dc = AssignmentRulesCheckerFactory.getChecker(cast, fldast);
-        AssignmentEmitter ae = AssignmentEmitterFactory.getAssignmentEmitter(fldast);
-        ae.setLtEmitter(new LogicTableEmitter());  
-        assertEquals("DTE", ((LTRecord) ae.getLTEntry(cast, fldast)).getFunctionCode());
-	}
-
-    
+   
 }

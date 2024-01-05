@@ -45,7 +45,7 @@ import org.genevaers.compilers.extract.astnodes.IsFoundAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
-import org.genevaers.compilers.extract.astnodes.LookupPathAST;
+import org.genevaers.compilers.extract.astnodes.LookupPathHandler;
 import org.genevaers.compilers.extract.astnodes.LookupPathRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RepeatAST;
@@ -462,22 +462,17 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         } else if(ctx.getChildCount() == 4) {
             addLookupReferenceToNode(lkRef, ctx.getChild(1).getText());
         }
-        parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkRef);
+        if(ctx.symbollist() != null) {
+            lkRef.addChildIfNotNull(visitSymbollist(ctx.symbollist()));
+            lkRef.setSymbols((SymbolList) visitSymbollist(ctx.symbollist()));
+        }
+        if(ctx.effDate() != null) {
+            lkRef.addChildIfNotNull(visitEffDate(ctx.effDate()));
+            lkRef.setEffDateValue((EffDateValue) visitEffDate(ctx.effDate()));
+        }
+        lkRef.makeUnique();
         return lkRef;
      }
-
-    private void parseEffectiveDataAndSymbols(EffDateContext effData, SymbollistContext symList, LookupPathAST lkPath) {
-        if(symList != null) {
-            lkPath.addChildIfNotNull(visitSymbollist(symList));
-            lkPath.setSymbols((SymbolList) visitSymbollist(symList));
-        }
-        if(effData != null) {
-            lkPath.addChildIfNotNull(visitEffDate(effData));
-            lkPath.setEffDateValue((EffDateValue) visitEffDate(effData));
-        }
-        lkPath.makeUnique();
-    }
-  
 
 	private void addLookupReferenceToNode(LookupPathRefAST lkRef, String lkname) {
         LookupPath lookup =  Repository.getLookups().get(lkname);
@@ -500,7 +495,15 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             lkfieldRef.setLineNumber(ctx.getStart().getLine());
             lkfieldRef.addError("Unknown Lookup " + parts[0]);
         }		
-        parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkfieldRef);
+        if(ctx.symbollist() != null) {
+            lkfieldRef.addChildIfNotNull(visitSymbollist(ctx.symbollist()));
+            lkfieldRef.setSymbols((SymbolList) visitSymbollist(ctx.symbollist()));
+        }
+        if(ctx.effDate() != null) {
+            lkfieldRef.addChildIfNotNull(visitEffDate(ctx.effDate()));
+            lkfieldRef.setEffDateValue((EffDateValue) visitEffDate(ctx.effDate()));
+        }
+        lkfieldRef.makeUnique();
         return lkfieldRef;
     }
 

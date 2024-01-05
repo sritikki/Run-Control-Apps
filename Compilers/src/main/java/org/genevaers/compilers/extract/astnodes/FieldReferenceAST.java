@@ -256,6 +256,14 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         return length;
     }
 
+    @Override
+    public String getMessageName() {
+        return ref.getName();
+    }
 
+    @Override
+    public int getAssignableLength() {
+        return ref.getLength();
+    }
 
 }

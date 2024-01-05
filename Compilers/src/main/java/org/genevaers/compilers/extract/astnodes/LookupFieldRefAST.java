@@ -31,6 +31,7 @@ import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
+import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.DataType;
@@ -41,18 +42,26 @@ import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
 import org.genevaers.repository.jltviews.ReferenceJoin;
 
-public class LookupFieldRefAST extends LookupPathAST implements Assignable, CalculationSource, Concatable{
+public class LookupFieldRefAST extends FormattedASTNode implements Assignable, CalculationSource, Concatable{
 
     private LRField ref;
+    private LookupPathHandler lookupHandler = new LookupPathHandler();
+    private LookupPath lookup;
 
     public LookupFieldRefAST() {
         type = ASTFactory.Type.LOOKUPFIELDREF;
     }
+
+    @Override
+    public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
+        lookupHandler.resolveGotos(joinT, joinF);
+    }
  
     public void resolveField(LookupPath lk, String fieldName) {
+        lookup = lk;
+        lookupHandler.setLookup(lk);
         //get the targer LR
         //And look for the field in it
-        lookup = lk;
         LogicalRecord targLR = lk.getTargetLR();
         LRField fld = targLR.findFromFieldsByName(fieldName);
         if(fld != null) {       
@@ -244,19 +253,19 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         }
         ltgoto.setGotoRow1(ltEmitter.getNumberOfRecords());
         //Can now set the lkEmitter gotos
-        lkEmitter.setFalseGotos(null);
+        lookupHandler.setFalseGotos(null);
     }
 
-    @Override
-    public DataType getDataType() {
-        // Casting may set the format to be something we are not
-        return overriddenDataType != DataType.INVALID ? overriddenDataType : ref.getDatatype();
-   }
+//     @Override
+//     public DataType getDataType() {
+//         // Casting may set the format to be something we are not
+//         return overriddenDataType != DataType.INVALID ? overriddenDataType : ref.getDatatype();
+//    }
 
-    @Override
-    public DateCode getDateCode() {
-        return (overriddenDateCode != null) ? overriddenDateCode : ref.getDateTimeFormat();
-    }
+//     @Override
+//     public DateCode getDateCode() {
+//         return (overriddenDateCode != null) ? overriddenDateCode : ref.getDateTimeFormat();
+//     }
 
     private void flipDataTypeIfFieldAlphanumeric(LogicTableArg arg, LogicTableArg arg2) {
         if(arg2.getFieldFormat() != DataType.ALPHANUMERIC && arg.getFieldFormat() == DataType.ALPHANUMERIC) {
@@ -346,8 +355,51 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         return length;
     }
 
-    public void fixupGotos() {
-        //
-        goto2 = ltEmitter.getNumberOfRecords();
+    @Override
+    public String getMessageName() {
+        return ref.getName();
+    }
+
+    @Override
+    public int getAssignableLength() {
+        return ref.getLength();
+    }
+
+    public void emitJoin(boolean b) {
+        lookupHandler.emitJoin(b);
+    }
+
+    @Override
+    public DataType getDataType() {
+        return ref.getDatatype();
+    }
+
+    @Override
+    public DateCode getDateCode() {
+        return ref.getDateTimeFormat();
+    }
+
+    public LookupPath getLookup() {
+        return lookup;
+    }
+
+    public String getUniqueKey() {
+        return lookupHandler.getUniqueKey();
+    }
+
+    public int getNewJoinId() {
+        return lookupHandler.getNewJoinId();
+    }
+
+    public void setSymbols(SymbolList symbollist) {
+        lookupHandler.setSymbols(symbollist);
+    }
+
+    public void setEffDateValue(EffDateValue effDate) {
+        lookupHandler.setEffDateValue(effDate);
+    }
+
+    public void makeUnique() {
+        lookupHandler.makeUnique();
     }
 }

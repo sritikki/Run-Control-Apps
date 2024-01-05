@@ -24,7 +24,7 @@ import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesChecker;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesCheckerFactory;
-import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesChecker.AssignmentRulesResult;
+import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -88,8 +88,8 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
             // The rhs will have its own emmitter since it will be assignable
             // If not ... boom
             AssignmentRulesChecker dataTypeChecker = AssignmentRulesCheckerFactory.getChecker(col, (FormattedASTNode)rhs);
-            AssignmentRulesResult res = dataTypeChecker.verifyOperands(col, (FormattedASTNode)rhs);
-            if (res != AssignmentRulesResult.ASSIGN_ERROR) {
+            RuleResult res = dataTypeChecker.verifyOperands(col, (FormattedASTNode)rhs);
+            if (res != RuleResult.RULE_ERROR) {
                 generateLogicTableEntry(rhs, col);
             } 
             if (lkref != null) {
@@ -157,15 +157,15 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
             ExtractBaseAST opChild = (ExtractBaseAST) calcIterator.next().getChildIterator().next();
             if(setterChild.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
                 lkref = (LookupFieldRefAST)setterChild;
-                lkref.getLkEmitter().emitJoin(lkref, false);
+                lkref.emitJoin(false);
             }
             if(opChild.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
                 lkref = (LookupFieldRefAST)opChild;
-                lkref.getLkEmitter().emitJoin(lkref, false);
+                lkref.emitJoin(false);
             }
         } else if(c1.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
             lkref = (LookupFieldRefAST) c1;
-            lkref.getLkEmitter().emitJoin(lkref, false);
+            lkref.emitJoin(false);
         }
         return lkref;
     }

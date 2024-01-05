@@ -39,8 +39,8 @@ public class SFLLEmitter extends StringComparisonEmitter{
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
         LookupFieldRefAST rkf = (LookupFieldRefAST) rhs;
 
-        lkf.getLkEmitter().emitJoin(lkf, false);
-        rkf.getLkEmitter().emitJoin(rkf, false);
+        lkf.emitJoin(false);
+        rkf.emitJoin(false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
         LogicTableF2 cfll = (LogicTableF2) ltFact.getSFLL(((LookupFieldRefAST) lhs).getRef(), ((LookupFieldRefAST) rhs).getRef());
 

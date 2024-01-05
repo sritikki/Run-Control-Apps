@@ -4,6 +4,7 @@ import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.compilers.extract.emitters.rules.ColumnZonedMaxLength;
+import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DataType;
@@ -17,11 +18,12 @@ public class FlipColumnChecker extends AssignmentRulesChecker {
     }
 
     @Override
-    public AssignmentRulesResult verifyOperands(ColumnAST column, FormattedASTNode rhs) {
+    public RuleResult verifyOperands(ColumnAST column, FormattedASTNode rhs) {
+        RuleResult result = RuleResult.RULE_WARNING;
         //We already know the column is Alphanumeric otherwise we would not be here
         column.setOverrideDataType(DataType.ZONED);
         ViewColumn vc = column.getViewColumn();
-        apply(column, rhs);
+        updateResult(result, apply(column, rhs));
         CompilerMessage warn = new CompilerMessage(
                                         vc.getViewId(), 
                                         CompilerMessageSource.COLUMN, 
@@ -40,7 +42,7 @@ public class FlipColumnChecker extends AssignmentRulesChecker {
             // And the Formatted AST Node..
             // Also allows management of the casting
             // Which in C++ is called in the generateASTValueRef or generateASTUnaryNode in  ExtractParserBase
-        return AssignmentRulesResult.ASSIGN_WARNING;
+        return result;
     }
 
     @Override

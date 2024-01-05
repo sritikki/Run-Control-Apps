@@ -158,4 +158,18 @@ public class BetweenFunc extends FormattedASTNode implements Assignable, Calcula
     public DateCode getDateCode() {
         return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
     }
+
+    @Override
+    public String getMessageName() {
+        return "Between Dates";
+    }
+
+    /**
+     * Between Dates returns an accumulated result
+     * No real field length
+     */
+    @Override
+    public int getAssignableLength() {
+        return 0;
+    }
 }

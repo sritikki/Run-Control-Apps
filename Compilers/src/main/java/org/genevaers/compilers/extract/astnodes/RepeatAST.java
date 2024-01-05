@@ -81,4 +81,15 @@ public class RepeatAST extends FormattedASTNode implements GenevaERSValue, Assig
         return sb.toString();
     }
 
+    @Override
+    public String getMessageName() {
+        return "repeat";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
+    }
+
 }

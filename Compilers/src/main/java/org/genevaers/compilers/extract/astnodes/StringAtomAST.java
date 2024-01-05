@@ -138,4 +138,14 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         return length;
     }
 
+    @Override
+    public String getMessageName() {
+        return "string";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        return value.length();
+    }
+
 }

@@ -3,6 +3,7 @@ package org.genevaers.compilers.extract.emitters.rules;
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
+import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DateCode;
@@ -16,7 +17,7 @@ public class CanAssignDates extends Rule{
     @Override
     public RuleResult apply(final ExtractBaseAST op1, final ExtractBaseAST op2) {
         final ViewColumn vc = ((ColumnAST)op1).getViewColumn();
-        FieldReferenceAST f = ((FieldReferenceAST)op2);
+        FormattedASTNode f = ((FormattedASTNode)op2);
         if (vc.getDateCode() != DateCode.NONE &&  f.getDateCode() != DateCode.NONE) {
             if(canAssignDates(vc.getDateCode(), f.getDateCode())) {
                 return RuleResult.RULE_PASSED;                
@@ -27,7 +28,7 @@ public class CanAssignDates extends Rule{
                             ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
                             ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
                             vc.getColumnNumber(),
-                            String.format(ERR_MESSAGE, f.getRef().getDateTimeFormat(), vc.getDateCode())
+                            String.format(ERR_MESSAGE, f.getDateCode(), vc.getDateCode())
                         );
                 Repository.addErrorMessage(err);
                 return RuleResult.RULE_ERROR;
