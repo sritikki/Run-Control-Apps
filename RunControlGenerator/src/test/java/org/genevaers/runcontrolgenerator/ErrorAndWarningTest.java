@@ -191,5 +191,14 @@ class ErrorAndWarningTest extends RunCompilerBase {
         assertEquals(DateCode.NONE, dtl.getArg1().getFieldContentId());        
     }
 
+    @Test void testConstStringToDate() {
+        runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = \"66\"");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(0, warns.size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("column 1 which has a date code"));
+    }
+
 
 }

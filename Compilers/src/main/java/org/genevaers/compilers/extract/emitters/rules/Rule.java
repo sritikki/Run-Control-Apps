@@ -140,6 +140,9 @@ public abstract class Rule {
     LTContentMaskCC | LTContentMaskYY | LTContentMaskMM,
     // AttrContentCCYYMMDDHHNNSSTT
     LTContentMaskCC | LTContentMaskYY | LTContentMaskMM | LTContentMaskDD |
+    LTContentMaskHH | LTContentMaskNN | LTContentMaskSS | LTContentMaskTT,
+    // AttrContentCCYYMMDDHHNNSSTT CYMDT
+    LTContentMaskCC | LTContentMaskYY | LTContentMaskMM | LTContentMaskDD |
     LTContentMaskHH | LTContentMaskNN | LTContentMaskSS | LTContentMaskTT
     };
 
@@ -160,7 +163,7 @@ public abstract class Rule {
 
     public boolean canAssignDates(DateCode target, DateCode source) {
     // This is a superfast trick that can enable us to do this
-    int bitwiseDifferences = DateMasks[target.ordinal()] ^ DateMasks[source.ordinal()];
+        int bitwiseDifferences = DateMasks[target.ordinal()] ^ DateMasks[source.ordinal()];
     int someMissing = DateMasks[target.ordinal()] & bitwiseDifferences; // != 0 target bits missing
     return (someMissing == 0);
     }
