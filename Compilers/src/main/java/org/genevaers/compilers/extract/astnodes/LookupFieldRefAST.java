@@ -371,12 +371,12 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
 
     @Override
     public DataType getDataType() {
-        return ref.getDatatype();
+        return (overriddenDataType != DataType.INVALID) ? overriddenDataType : ref.getDatatype();
     }
 
     @Override
     public DateCode getDateCode() {
-        return ref.getDateTimeFormat();
+        return (overriddenDateCode != null) ? overriddenDateCode : ref.getDateTimeFormat();
     }
 
     public LookupPath getLookup() {
