@@ -204,4 +204,10 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
     }
 
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

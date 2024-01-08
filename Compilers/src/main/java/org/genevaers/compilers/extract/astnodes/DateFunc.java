@@ -78,4 +78,10 @@ public class DateFunc extends FormattedASTNode implements GenevaERSValue{
         return "date function";
     }
 
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

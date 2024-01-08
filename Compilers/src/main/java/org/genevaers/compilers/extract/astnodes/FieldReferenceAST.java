@@ -266,4 +266,10 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         return ref.getLength();
     }
 
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

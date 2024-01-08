@@ -171,4 +171,10 @@ RunDateASTNode::getLength() const
         }
     }
 
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

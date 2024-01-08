@@ -3,6 +3,7 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.compilers.extract.emitters.rules.CanAssignDates;
+import org.genevaers.compilers.extract.emitters.rules.Truncation;
 import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DateCode;
@@ -11,6 +12,7 @@ public class SameTypeChecker extends AssignmentRulesChecker {
 
     public SameTypeChecker() {
         addRule(new CanAssignDates());
+        addRule(new Truncation());
     }
 
     @Override

@@ -71,4 +71,10 @@ public class StringConcatinationAST extends FormattedASTNode implements Assignab
         throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
     }
 
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

@@ -103,4 +103,10 @@ public class FiscaldateAST extends FormattedASTNode implements GenevaERSValue, A
         throw new UnsupportedOperationException("Unimplemented method 'getAssignmentEntry'");
     }
 
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

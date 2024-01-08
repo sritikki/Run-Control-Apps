@@ -113,12 +113,20 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
 
     @Override
     public String getMessageName() {
-        return "numeric constant";
+        return "numeric constant '" + numStr +"'";
     }
 
     @Override
     public int getAssignableLength() {
         return numStr.length();
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        if(numStr.contains("."))
+            return numStr.length() - 1;
+        else 
+            return numStr.length();
     }
 
 }

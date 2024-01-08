@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.repository.RepoHelper;
 import org.genevaers.repository.components.LRField;
 
 /*
@@ -87,6 +88,14 @@ public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNo
 
     public void setOverrideDataType(DataType overrideDataType) {
         this.overrideDataType = overrideDataType;
+    }
+
+    public DataType getWorkingDataType() {
+        return (overrideDataType != null) ? overrideDataType : vc.getDataType();
+    }
+
+    public int getMaxNumberOfDigits() {
+        return RepoHelper.getMaxNumberOfDigitsForType(getWorkingDataType(), vc.getFieldLength());
     }
 
 }

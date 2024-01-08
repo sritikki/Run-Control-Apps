@@ -30,6 +30,7 @@ public abstract class FormattedASTNode extends ExtractBaseAST {
     public abstract DataType getDataType();
     public abstract DateCode getDateCode();
     public abstract String getMessageName();
+    public abstract int getMaxNumberOfDigits();
     
     // Implementing classes must manage the mapping to the Enum types above
     public void overrideDataType(DataType overFormat) {

@@ -172,4 +172,10 @@ public class BetweenFunc extends FormattedASTNode implements Assignable, Calcula
     public int getAssignableLength() {
         return 0;
     }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
 }

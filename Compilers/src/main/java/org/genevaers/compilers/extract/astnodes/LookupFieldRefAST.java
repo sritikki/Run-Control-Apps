@@ -402,4 +402,10 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
     public void makeUnique() {
         lookupHandler.makeUnique();
     }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
 }
