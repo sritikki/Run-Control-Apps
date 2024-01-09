@@ -5,6 +5,7 @@ import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.compilers.extract.emitters.rules.CanAssignDates;
 import org.genevaers.compilers.extract.emitters.rules.ColumnStripDate;
 import org.genevaers.compilers.extract.emitters.rules.FieldStripDate;
+import org.genevaers.compilers.extract.emitters.rules.Truncation;
 import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DateCode;
@@ -15,6 +16,7 @@ public class DateChecker extends AssignmentRulesChecker {
         addRule(new CanAssignDates());
         addRule(new ColumnStripDate());
         addRule(new FieldStripDate());
+        addRule(new Truncation());
     }
 
     @Override

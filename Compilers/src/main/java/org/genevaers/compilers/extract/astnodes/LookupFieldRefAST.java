@@ -29,6 +29,7 @@ import org.genevaers.genevaio.ltfile.LogicTableF0;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
+import org.genevaers.repository.RepoHelper;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalFile;
@@ -357,7 +358,7 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
 
     @Override
     public String getMessageName() {
-        return ref.getName();
+        return "{" + lookup.getName() + "." + ref.getName() +"}";
     }
 
     @Override
@@ -405,7 +406,6 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
 
     @Override
     public int getMaxNumberOfDigits() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+        return RepoHelper.getMaxNumberOfDigitsForType(getDataType(), ref.getLength());
     }
 }

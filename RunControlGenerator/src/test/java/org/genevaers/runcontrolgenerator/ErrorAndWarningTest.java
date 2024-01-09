@@ -200,5 +200,30 @@ class ErrorAndWarningTest extends RunCompilerBase {
         assertTrue(errs.get(0).getDetail().contains("column 1 which has a date code"));
     }
 
+    @Test void testAssignmentTruncationFromNumericConstant() {
+        runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = 1234");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(0, warns.size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("Truncation"));
+    }
 
+    @Test void testAssignmentTruncationLongField() {
+        runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = {PACKED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(2, warns.size());
+        assertTrue(warns.get(1).getDetail().contains("truncation"));
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+    }
+
+    @Test void testAssignmentTruncationLongLookupField() {
+        runFromXMLOverrideLogic(12044, TestHelper.INCOMPATIBLE_LOOKUPFIELD_DATES, "COLUMN = {AllTypeLookup.PACKED}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertTrue(warns.get(0).getDetail().contains("truncation"));
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+    }
 }

@@ -116,8 +116,7 @@ public class RecordCountAST  extends FormattedASTNode implements Assignable, Cal
 
     @Override
     public int getMaxNumberOfDigits() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+        return 10;
     }
 
 }

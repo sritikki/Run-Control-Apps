@@ -1542,7 +1542,7 @@ under the License.
             <LRFIELDID>96903</LRFIELDID>
             <FLDFMTCD>PACKD</FLDFMTCD>
             <SIGNEDIND>1</SIGNEDIND>
-            <MAXLEN>8</MAXLEN>
+            <MAXLEN>9</MAXLEN>
             <DECIMALCNT>0</DECIMALCNT>
             <ROUNDING>0</ROUNDING>
             <FLDCONTENTCD></FLDCONTENTCD>
@@ -1586,7 +1586,7 @@ under the License.
             <LRFIELDID>96905</LRFIELDID>
             <FLDFMTCD>PSORT</FLDFMTCD>
             <SIGNEDIND>0</SIGNEDIND>
-            <MAXLEN>8</MAXLEN>
+            <MAXLEN>9</MAXLEN>
             <DECIMALCNT>0</DECIMALCNT>
             <ROUNDING>0</ROUNDING>
             <FLDCONTENTCD></FLDCONTENTCD>
@@ -1606,7 +1606,7 @@ under the License.
     </LR-Field-Attribute>
     <LR-Index>
         <Record>
-            <ENVIRONID>308</ENVIRONID>
+            <ENVIRONID>308</ENVIRONID>3101
             <LRINDEXID>3379</LRINDEXID>
             <LOGRECID>1801</LOGRECID>
             <EFFDATESTARTFLDID>0</EFFDATESTARTFLDID>
