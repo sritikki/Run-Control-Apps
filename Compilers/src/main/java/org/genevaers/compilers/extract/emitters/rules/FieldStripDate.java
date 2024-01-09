@@ -24,7 +24,7 @@ public class FieldStripDate extends Rule{
                 ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
                 ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
                 vc.getColumnNumber(),
-                (String.format("Removing date from field {%s}.", frhs.getMessageName()))
+                (String.format("Removing date from field %s.", frhs.getMessageName()))
             );
             Repository.addWarningMessage(warn);
             return RuleResult.RULE_WARNING;

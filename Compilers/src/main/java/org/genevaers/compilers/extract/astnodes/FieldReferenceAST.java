@@ -259,7 +259,7 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
 
     @Override
     public String getMessageName() {
-        return ref.getName();
+        return "{" + ref.getName() + "}";
     }
 
     @Override

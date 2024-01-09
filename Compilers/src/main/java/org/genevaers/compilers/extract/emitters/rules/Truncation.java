@@ -16,7 +16,8 @@ public class Truncation extends Rule{
     public RuleResult apply(final ExtractBaseAST op1, final ExtractBaseAST op2) {
         final ViewColumn vc = ((ColumnAST)op1).getViewColumn();
         FormattedASTNode frhs = (FormattedASTNode) op2;
-        if(frhs.getMaxNumberOfDigits() > ((ColumnAST)op1).getMaxNumberOfDigits()) {
+        int rhsDigits = frhs.getMaxNumberOfDigits();
+        if( rhsDigits > 0 && rhsDigits > ((ColumnAST)op1).getMaxNumberOfDigits()) {
             if(op2.getType() == Type.NUMATOM) {
                 CompilerMessage err = new CompilerMessage(
                     vc.getViewId(), 

@@ -169,8 +169,7 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
 
     @Override
     public int getMaxNumberOfDigits() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+        return 0; //An accumulator can always potentially overvlow - need to filter out.
     }
 
 }

@@ -175,74 +175,16 @@ public class RepoHelper {
             case ZONED:
                 numDigits = length - 1;
             break;
-        // case eArithAttrFormatInvalid:
-        // case eArithAttrFormatAlphaNumeric:
-        // case eArithAttrFormatAlphabetic:
-        // case eArithAttrFormatNumeric:
-        //     numDigits = length;
-        //     break;
-        // case eArithAttrFormatPacked:
-        // case eArithAttrFormatPackedSortable:
-        //     break;
-        // case eArithAttrFormatBinarySortable:
-        // case eArithAttrFormatBinary:
-        // {
-        //     switch (length)
-        //     {
-        //     case 1:
-        //         numDigits = 3;
-        //         break;
-        //     case 2:
-        //         numDigits = 5;
-        //         break;
-        //     case 4:
-        //         numDigits = 10;
-        //         break;
-        //     case 8:
-        //         numDigits = 20;
-        //         break;
-        //     default:
-        //         numDigits = 12;// this is just a stop gap for the moment.... something odd if we are here
-        //         break;
-        //     }
-        // }
-        // break;
-        // case eArithAttrFormatBCD:
-        //     numDigits = length * 2;
-        //     break;
-        // case eArithAttrFormatMaskNumeric: //Not sure about this one either
-        // case eArithAttrFormatEditedNumeric:
-        // case eArithAttrFormatFloat: // these two should not occur so just leave them
-        // case eArithAttrFormatGenevaNumber:
-        //     numDigits = length; // Not sure about this one
-        //     break;
-        // case eArithConstNum:
-        // {
-        //     RefNumASTNode numAST(info);
-        //     std::string numStr = numAST->getStringValue();
-        //     if (numStr.find('.') != std::string::npos)
-        //     {
-        //         numDigits = numStr.size() - 1;
-        //     }
-        //     else
-        //     {
-        //         numDigits = numStr.size();
-        //     }
-        // }
-        // break;
-        // case eArithConstString:
-        // case eArithConstDate:
-        //     numDigits = length; // Not sure about this one
-        //     break;
-        // }
             case ALPHA:
-                break;
             case ALPHANUMERIC:
+            case EDITED:
                 numDigits = length;
                 break;
             case BCD:
+                numDigits = length * 2;
                 break;
             case BINARY:
+            case BSORT:
             switch (length)
             {
             case 1:
@@ -262,22 +204,12 @@ public class RepoHelper {
                 break;
             }
                 break;
-            case BSORT:
-                break;
             case CONSTDATE:
-                break;
             case CONSTNUM:
-                break;
             case CONSTSTRING:
-                break;
-            case EDITED:
-                break;
             case FLOAT:
-                break;
             case GENEVANUMBER:
-                break;
             case INVALID:
-                break;
             case MASKED:
                 break;
             case PSORT:

@@ -132,7 +132,7 @@ class ErrorAndWarningTest extends RunCompilerBase {
     @Test void testIncompatibleDates() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = {ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
-        assertEquals(0, warns.size());
+        assertEquals(1, warns.size());
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(1, errs.size());
         assertTrue(errs.get(0).getDetail().contains("Incompatible date formats"));
@@ -141,7 +141,7 @@ class ErrorAndWarningTest extends RunCompilerBase {
     @Test void testStripColumDate() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = {PACKED}");
         List<CompilerMessage> warns = Repository.getWarnings();
-        assertEquals(1, warns.size());
+        assertEquals(2, warns.size());
         assertEquals("Removing date from column 1.", warns.get(0).getDetail());
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(0, errs.size());
@@ -172,7 +172,7 @@ class ErrorAndWarningTest extends RunCompilerBase {
     @Test void testStripColumLookupDate() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.INCOMPATIBLE_LOOKUP_DATES, "COLUMN = {AllTypeLookup.PACKED}");
         List<CompilerMessage> warns = Repository.getWarnings();
-        assertEquals(1, warns.size());
+        assertEquals(2, warns.size());
         assertEquals("Removing date from column 1.", warns.get(0).getDetail());
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(0, errs.size());
@@ -184,7 +184,7 @@ class ErrorAndWarningTest extends RunCompilerBase {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.INCOMPATIBLE_LOOKUPFIELD_DATES, "COLUMN = {AllTypeLookup.ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
         assertEquals(1, warns.size());
-        assertEquals("Removing date from field {ZONED}.", warns.get(0).getDetail());
+        assertEquals("Removing date from field {AllTypeLookup.ZONED}.", warns.get(0).getDetail());
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(0, errs.size());
         LogicTableF2 dtl = (LogicTableF2) xlt.getFromPosition(7);
@@ -226,4 +226,5 @@ class ErrorAndWarningTest extends RunCompilerBase {
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(0, errs.size());
     }
+
 }
