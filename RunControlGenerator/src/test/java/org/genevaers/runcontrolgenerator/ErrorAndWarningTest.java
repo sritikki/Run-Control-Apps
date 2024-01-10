@@ -227,4 +227,31 @@ class ErrorAndWarningTest extends RunCompilerBase {
         assertEquals(0, errs.size());
     }
 
+    @Test void testInvalidDateComparison() {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "IF ({ZONED} = {Binary4}) THEN COLUMN=1 ELSE COLUMN=0 ENDIF");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(0, warns.size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("Incompatible"));
+    }
+
+    @Test void testComparisonFlipLHS() {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "IF ({Description} = {Binary2}) THEN COLUMN=1 ELSE COLUMN=0 ENDIF");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertTrue(warns.get(0).getDetail().contains("Comparing LHS operand {Description} as though it were ZONED"));
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+    }
+
+    @Test void testComparisonFlipRHS() {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "IF ( {Binary2} = {Description} ) THEN COLUMN=1 ELSE COLUMN=0 ENDIF");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertTrue(warns.get(0).getDetail().contains("Comparing RHS operand {Description} as though it were ZONED"));
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+    }
+
 }

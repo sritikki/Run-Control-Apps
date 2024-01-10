@@ -590,7 +590,7 @@ under the License.
             <MAXLEN>4</MAXLEN>
             <DECIMALCNT>0</DECIMALCNT>
             <ROUNDING>0</ROUNDING>
-            <FLDCONTENTCD></FLDCONTENTCD>
+            <FLDCONTENTCD>CCYY</FLDCONTENTCD>
             <JUSTIFYCD></JUSTIFYCD>
             <HDRJUSTIFYCD></HDRJUSTIFYCD>
             <HDRLINE1></HDRLINE1>

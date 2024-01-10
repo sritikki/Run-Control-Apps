@@ -162,10 +162,17 @@ public abstract class Rule {
     }
 
     public boolean canAssignDates(DateCode target, DateCode source) {
-    // This is a superfast trick that can enable us to do this
         int bitwiseDifferences = DateMasks[target.ordinal()] ^ DateMasks[source.ordinal()];
-    int someMissing = DateMasks[target.ordinal()] & bitwiseDifferences; // != 0 target bits missing
-    return (someMissing == 0);
+        int someMissing = DateMasks[target.ordinal()] & bitwiseDifferences; // != 0 target bits missing
+        return (someMissing == 0);
+    }
+
+    public boolean canCompareDates(DateCode d1, DateCode d2) {
+        int d1DateFields = DateMasks[d1.ordinal()];
+        int d2DateFields = DateMasks[d2.ordinal()];
+        int bitwiseDifferences = d1DateFields ^ d2DateFields;
+        //There should not be any differences
+        return (bitwiseDifferences == 0);
     }
 
 }
