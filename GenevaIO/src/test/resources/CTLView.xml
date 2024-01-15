@@ -1,0 +1,1408 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<SAFRVDP xmlns="http://www.ibm.com"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation=
+                   "http://www.ibm.com
+                   SAFRVDP.xsd">
+  <CreatedDateTime>2012-12-14T12:04:46</CreatedDateTime>
+  <Program>VDP Builder 0.0.0 D Win32 Microsoft</Program>
+  <JobInfo>
+    <Database>
+      <Type>IBMDB2</Type>
+      <Connection>Driver={IBM DB2 ODBC SAFR WE DRIVER};Database=BMS2DB2Z;Hostname=bmsdev2.boulder.ibm.com;Port=5050;Protocol=TCPIP;UID=ICUNNIN;PWD=****;</Connection>
+      <Schema>GENDEV</Schema>
+      <WorkbenchUser>ICUNNIN</WorkbenchUser>
+    </Database>
+    <RunDate>2012-12-14</RunDate>
+    <RunNumber>4283</RunNumber>
+    <MaxExtractFileNumber>4</MaxExtractFileNumber>
+    <ExtractFile ID="1">
+          <Name>Auto-generated Name for Extract Phase Output</Name>
+          <ServerRef ID="1"/>
+          <RecordType>VAREX</RecordType>
+          <FieldDelimiter>FIXED</FieldDelimiter>
+          <StringDelimiter>DBLQT</StringDelimiter>
+          <ProcessInParallel>1</ProcessInParallel>
+          <PosixDirectory>$extractdir</PosixDirectory>
+          <PosixFileName>$extractfile</PosixFileName>
+          <DSN>GEBT.RHNDS.EXT.@D.PASS01.EXTR</DSN>
+          <DDNameExtract>EXTR</DDNameExtract>
+          <DeviceType>SYSDA</DeviceType>
+          <SpaceUnit>TRK</SpaceUnit>
+          <PrimaryQuantity>20</PrimaryQuantity>
+          <SecondaryQuantity>200</SecondaryQuantity>
+          <ReleaseUnused>1</ReleaseUnused>
+          <LRECL>7168</LRECL>
+          <VSAMORG>KSDS</VSAMORG>
+          <RECFM>VB</RECFM>
+          <ExpirationDate>2012-12-14</ExpirationDate>
+    </ExtractFile>
+  </JobInfo>
+
+  <Users>
+    <User ID="ICUNNIN">
+      <EffectiveDate>2009-03-04</EffectiveDate>
+      <CreatedTimestamp>2009-03-04T00:38:25</CreatedTimestamp>
+      <CreatedUserID>JCANTER</CreatedUserID>
+      <ModifiedTimestamp>2010-01-21T02:43:40</ModifiedTimestamp>
+      <ModifiedUserID>ICUNNIN</ModifiedUserID>
+    </User>
+  </Users>
+  <Environment ID="308">
+    <Name>IC_Test</Name>
+    <EffectiveDate>2010-03-08</EffectiveDate>
+    <CreatedTimestamp>2010-03-08T18:55:08</CreatedTimestamp>
+    <CreatedUserID>ICUNNIN</CreatedUserID>
+    <Metadata>
+      <ControlRecords>
+        <ControlRecord ID="1">
+          <Name>DefaultInstall</Name>
+          <EffectiveDate>2010-03-08</EffectiveDate>
+          <TerminationDate>2100-12-31</TerminationDate>
+          <MonthFirstPeriod>1</MonthFirstPeriod>
+          <MinPeriod>1</MinPeriod>
+          <MaxPeriod>12</MaxPeriod>
+          <FiscalDate>2012-12-14</FiscalDate>
+          <Comment>Created automatically during initialization</Comment>
+          <CreatedTimestamp>2010-03-08T18:55:08</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+          <ModifiedTimestamp>2011-12-10T00:25:33</ModifiedTimestamp>
+        </ControlRecord>
+      </ControlRecords>
+      <Servers>
+        <Server ID="1">
+          <Name>Corporate IBM Mainframe</Name>
+          <ServerType>MAINF</ServerType>
+          <Database>Corporate IBM Mainframe</Database>
+          <Comment>Created automatically during install</Comment>
+          <CreatedTimestamp>2010-02-17T05:14:25</CreatedTimestamp>
+          <CreatedUserID>NIKHLAL</CreatedUserID>
+        </Server>
+      </Servers>
+      <Partitions>
+        <Partition ID="8548">
+          <Name>AllTypes</Name>
+          <ServerRef ID="1"/>
+          <CharacterSet>EBCDI</CharacterSet>
+          <RecordType>VAREX</RecordType>
+          <FieldDelimiter>FIXED</FieldDelimiter>
+          <DDNameInput>ALLTYPE</DDNameInput>
+          <DDNameExtract>E0008548</DDNameExtract>
+          <DDNameOutput>O0008548</DDNameOutput>
+          <DeviceType>SYSDA</DeviceType>
+          <SpaceUnit>TRK</SpaceUnit>
+          <ExpirationDate>2012-12-14</ExpirationDate>
+          <CreatedTimestamp>2010-06-02T05:52:49</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+          <ModifiedTimestamp>2011-02-16T04:09:27</ModifiedTimestamp>
+        </Partition>
+        <Partition ID="8576">
+          <Name>FMTOUT1</Name>
+          <ServerRef ID="1"/>
+          <CharacterSet>EBCDI</CharacterSet>
+          <RecordType>VAREX</RecordType>
+          <FieldDelimiter>FIXED</FieldDelimiter>
+          <DSN>$HLQ.FMTOUT01</DSN>
+          <DDNameInput>FMTOUT01</DDNameInput>
+          <DDNameExtract>E0008576</DDNameExtract>
+          <DDNameOutput>FMTOUT01</DDNameOutput>
+          <DeviceType>SYSDA</DeviceType>
+          <SpaceUnit>TRK</SpaceUnit>
+          <LRECL>27994</LRECL>
+          <RECFM>VB</RECFM>
+          <ExpirationDate>2012-12-14</ExpirationDate>
+          <CreatedTimestamp>2010-07-19T22:08:40</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+          <ModifiedTimestamp>2010-07-19T22:10:16</ModifiedTimestamp>
+        </Partition>
+        <Partition ID="8817">
+          <Name>AllTypelookup</Name>
+          <ServerRef ID="1"/>
+          <CharacterSet>EBCDI</CharacterSet>
+          <RecordType>VAREX</RecordType>
+          <FieldDelimiter>FIXED</FieldDelimiter>
+          <DDNameInput>LKUPALL</DDNameInput>
+          <DDNameExtract>E0008817</DDNameExtract>
+          <DDNameOutput>O0008817</DDNameOutput>
+          <DeviceType>SYSDA</DeviceType>
+          <SpaceUnit>TRK</SpaceUnit>
+          <RECFM>VB</RECFM>
+          <ExpirationDate>2012-11-22</ExpirationDate>
+          <CreatedTimestamp>2011-02-24T09:04:15</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+        </Partition>      </Partitions>
+      <LogicalFiles>
+        <LogicalFile ID="1506">
+          <Name>AllTypes</Name>
+          <EffectiveDate>2010-06-02</EffectiveDate>
+          <PartitionRefs>
+            <PartitionRef seq="1" ID="8548">
+              <XID>14543</XID>
+            </PartitionRef>
+          </PartitionRefs>
+          <CreatedTimestamp>2010-06-02T05:54:11</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+        </LogicalFile>
+        <LogicalFile ID="1525">
+          <Name>FMTOUT1</Name>
+          <EffectiveDate>2010-07-20</EffectiveDate>
+          <PartitionRefs>
+            <PartitionRef seq="1" ID="8576">
+              <XID>14579</XID>
+            </PartitionRef>
+          </PartitionRefs>
+          <CreatedTimestamp>2010-07-19T22:09:40</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+        </LogicalFile>
+        <LogicalFile ID="1670">
+          <Name>AllTypeLookup</Name>
+          <EffectiveDate>2011-02-25</EffectiveDate>
+          <PartitionRefs>
+            <PartitionRef seq="1" ID="8817">
+              <XID>14915</XID>
+            </PartitionRef>
+          </PartitionRefs>
+          <CreatedTimestamp>2011-02-24T09:03:10</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+          <ModifiedTimestamp>2011-02-24T09:05:07</ModifiedTimestamp>
+        </LogicalFile>
+      </LogicalFiles>
+      <LogicalRecords>
+        <LogicalRecord ID="1762">
+          <Name>DescAllTypes</Name>
+          <LRType>FILE</LRType>
+          <LRStatus>ACTVE</LRStatus>
+          <EffectiveDate>2010-06-02</EffectiveDate>
+          <TerminationDate>2100-12-31</TerminationDate>
+          <Fields>
+            <Field ID="96721">
+              <Name>Description</Name>
+              <DataType>ALNUM</DataType>
+              <Length>19</Length>
+              <Ordinal>1</Ordinal>
+              <DatabaseColumn>Description</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:19</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-13T21:41:29</ModifiedTimestamp>
+            </Field>
+            <Field ID="96722">
+              <Name>Alphanumeric</Name>
+              <DataType>ALNUM</DataType>
+              <Length>10</Length>
+              <Position>20</Position>
+              <Ordinal>2</Ordinal>
+              <DatabaseColumn>Alphanumeric</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-13T21:41:30</ModifiedTimestamp>
+            </Field>
+            <Field ID="96723">
+              <Name>Binary1</Name>
+              <DataType>BINRY</DataType>
+              <Length>1</Length>
+              <Position>30</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>3</Ordinal>
+              <DatabaseColumn>Binary1</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:25</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96724">
+              <Name>SBinary1</Name>
+              <DataType>BINRY</DataType>
+              <Length>1</Length>
+              <Position>30</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>3</Ordinal>
+              <DatabaseColumn>Binary1</DatabaseColumn>
+              <Comment>fred</Comment>
+              <CreatedTimestamp>2011-02-16T11:26:23</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-01-11T21:35:45</ModifiedTimestamp>
+            </Field>
+            <Field ID="96725">
+              <Name>Binary2</Name>
+              <DataType>BINRY</DataType>
+              <Length>2</Length>
+              <Position>31</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>4</Ordinal>
+              <DatabaseColumn>Binary2</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:29</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-06-10T00:55:47</ModifiedTimestamp>
+            </Field>
+            <Field ID="96726">
+              <Name>SBinary2</Name>
+              <DataType>BINRY</DataType>
+              <Length>2</Length>
+              <Position>31</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>4</Ordinal>
+              <DatabaseColumn>SBinary2</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:27</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-01-11T21:35:46</ModifiedTimestamp>
+            </Field>
+            <Field ID="96727">
+              <Name>SBinary4</Name>
+              <DataType>BINRY</DataType>
+              <Length>4</Length>
+              <Position>33</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>5</Ordinal>
+              <DatabaseColumn>SBinary4</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:33</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-13T21:41:30</ModifiedTimestamp>
+            </Field>
+            <Field ID="96728">
+              <Name>Binary4</Name>
+              <DataType>BINRY</DataType>
+              <Length>4</Length>
+              <Position>33</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>5</Ordinal>
+              <DatabaseColumn>Binary4</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:31</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-06-10T00:55:48</ModifiedTimestamp>
+            </Field>
+            <Field ID="96729">
+              <Name>Binary8</Name>
+              <DataType>BINRY</DataType>
+              <Length>8</Length>
+              <Position>37</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>6</Ordinal>
+              <DatabaseColumn>Binary8</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:35</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-09-26T00:35:43</ModifiedTimestamp>
+            </Field>
+            <Field ID="96730">
+              <Name>BCD</Name>
+              <DataType>BCD</DataType>
+              <Length>10</Length>
+              <Position>45</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>7</Ordinal>
+              <DatabaseColumn>BCD</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:37</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-13T21:41:31</ModifiedTimestamp>
+            </Field>
+            <Field ID="96731">
+              <Name>BSORT</Name>
+              <DataType>BSORT</DataType>
+              <Length>4</Length>
+              <Position>59</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>9</Ordinal>
+              <DatabaseColumn>BSORT</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:39</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-08-25T21:48:25</ModifiedTimestamp>
+            </Field>
+            <Field ID="96732">
+              <Name>EDNUM</Name>
+              <DataType>EDNUM</DataType>
+              <Length>4</Length>
+              <Position>63</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>8</Ordinal>
+              <DatabaseColumn>EDNUM</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:42</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96733">
+              <Name>ZONED</Name>
+              <DataType>NUMER</DataType>
+              <Length>8</Length>
+              <Position>67</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>10</Ordinal>
+              <DatabaseColumn>ZONED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:46</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96734">
+              <Name>UZONED</Name>
+              <DataType>NUMER</DataType>
+              <Length>8</Length>
+              <Position>67</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>10</Ordinal>
+              <DatabaseColumn>UZONED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:44</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96735">
+              <Name>PACKED2DP</Name>
+              <DataType>PACKD</DataType>
+              <Length>8</Length>
+              <Position>75</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>11</Ordinal>
+              <DecimalPlaces>2</DecimalPlaces>
+              <DatabaseColumn>PACKED2DP</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:52</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-03-31T12:04:28</ModifiedTimestamp>
+            </Field>
+            <Field ID="96736">
+              <Name>PACKED</Name>
+              <DataType>PACKD</DataType>
+              <Length>8</Length>
+              <Position>75</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>11</Ordinal>
+              <DatabaseColumn>PACKED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:50</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96737">
+              <Name>UPACKED</Name>
+              <DataType>PACKD</DataType>
+              <Length>8</Length>
+              <Position>75</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>11</Ordinal>
+              <DatabaseColumn>UPACKED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:48</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96738">
+              <Name>PSORT</Name>
+              <DataType>PSORT</DataType>
+              <Length>8</Length>
+              <Position>83</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>12</Ordinal>
+              <DatabaseColumn>PSORT</DatabaseColumn>
+              <CreatedTimestamp>2011-02-16T11:26:54</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-03-31T12:04:29</ModifiedTimestamp>
+            </Field>
+          </Fields>
+          <Comment>fre</Comment>
+          <CreatedTimestamp>2011-02-16T09:04:05</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+          <ModifiedTimestamp>2012-01-12T19:10:41</ModifiedTimestamp>
+        </LogicalRecord>
+        <LogicalRecord ID="1801">
+          <Name>AllTypesLookup</Name>
+          <LRType>FILE</LRType>
+          <LRStatus>ACTVE</LRStatus>
+          <EffectiveDate>2010-06-02</EffectiveDate>
+          <TerminationDate>2100-12-31</TerminationDate>
+          <Index ID="3379">
+            <Name>PrimaryKey</Name>
+            <IndexFieldRefs>
+              <IndexFieldRef seq="1" ID="96888">
+                <XID>36736</XID>
+                <CreatedTimestamp>2011-12-21T01:11:32</CreatedTimestamp>
+                <CreatedUserID>ICUNNIN</CreatedUserID>
+              </IndexFieldRef>
+            </IndexFieldRefs>
+          </Index>
+          <Fields>
+            <Field ID="96888">
+              <Name>Description</Name>
+              <DataType>ALNUM</DataType>
+              <Length>19</Length>
+              <Alignment>CNTER</Alignment>
+              <Ordinal>1</Ordinal>
+              <DatabaseColumn>Description</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:31</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-12T00:46:49</ModifiedTimestamp>
+            </Field>
+            <Field ID="96889">
+              <Name>Alphanumeric</Name>
+              <DataType>ALNUM</DataType>
+              <Length>10</Length>
+              <Position>20</Position>
+              <Alignment>CNTER</Alignment>
+              <Ordinal>2</Ordinal>
+              <DatabaseColumn>Alphanumeric</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:33</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-13T21:42:13</ModifiedTimestamp>
+            </Field>
+            <Field ID="96890">
+              <Name>SBinary1</Name>
+              <DataType>BINRY</DataType>
+              <Length>1</Length>
+              <Position>30</Position>
+              <SignedData>1</SignedData>
+              <Ordinal>3</Ordinal>
+              <DatabaseColumn>Binary1</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:35</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-13T21:42:14</ModifiedTimestamp>
+            </Field>
+            <Field ID="96891">
+              <Name>Binary1</Name>
+              <DataType>BINRY</DataType>
+              <Length>1</Length>
+              <Position>30</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>3</Ordinal>
+              <DatabaseColumn>Binary1</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:37</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-10-13T21:42:14</ModifiedTimestamp>
+            </Field>
+            <Field ID="96892">
+              <Name>SBinary2</Name>
+              <DataType>BINRY</DataType>
+              <Length>2</Length>
+              <Position>31</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>4</Ordinal>
+              <DatabaseColumn>SBinary2</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:40</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96893">
+              <Name>Binary2</Name>
+              <DataType>BINRY</DataType>
+              <Length>2</Length>
+              <Position>31</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>4</Ordinal>
+              <DatabaseColumn>Binary2</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:42</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96894">
+              <Name>Binary4</Name>
+              <DataType>BINRY</DataType>
+              <Length>4</Length>
+              <Position>33</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>5</Ordinal>
+              <DatabaseColumn>Binary4</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:44</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96895">
+              <Name>SBinary4</Name>
+              <DataType>BINRY</DataType>
+              <Length>4</Length>
+              <Position>33</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>5</Ordinal>
+              <DatabaseColumn>SBinary4</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:46</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96896">
+              <Name>Binary8</Name>
+              <DataType>BINRY</DataType>
+              <Length>8</Length>
+              <Position>37</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>6</Ordinal>
+              <DatabaseColumn>Binary8</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:48</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-09-28T23:32:28</ModifiedTimestamp>
+            </Field>
+            <Field ID="96897">
+              <Name>BCD</Name>
+              <DataType>BCD</DataType>
+              <Length>10</Length>
+              <Position>45</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>7</Ordinal>
+              <DatabaseColumn>BCD</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:50</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96898">
+              <Name>BSORT</Name>
+              <DataType>BSORT</DataType>
+              <Length>8</Length>
+              <Position>55</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>9</Ordinal>
+              <DatabaseColumn>BSORT</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:52</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96899">
+              <Name>EDNUM</Name>
+              <DataType>EDNUM</DataType>
+              <Length>4</Length>
+              <Position>63</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>8</Ordinal>
+              <DatabaseColumn>EDNUM</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:54</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96900">
+              <Name>UZONED</Name>
+              <DataType>NUMER</DataType>
+              <Length>8</Length>
+              <Position>67</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>10</Ordinal>
+              <DatabaseColumn>UZONED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:56</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96901">
+              <Name>ZONED</Name>
+              <DataType>NUMER</DataType>
+              <Length>8</Length>
+              <Position>67</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>10</Ordinal>
+              <DatabaseColumn>ZONED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:56:58</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96902">
+              <Name>UPACKED</Name>
+              <DataType>PACKD</DataType>
+              <Length>8</Length>
+              <Position>75</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>11</Ordinal>
+              <DatabaseColumn>UPACKED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:57:00</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96903">
+              <Name>PACKED</Name>
+              <DataType>PACKD</DataType>
+              <Length>8</Length>
+              <Position>75</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>11</Ordinal>
+              <DatabaseColumn>PACKED</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:57:02</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96904">
+              <Name>PACKED2DP</Name>
+              <DataType>PACKD</DataType>
+              <Length>8</Length>
+              <Position>75</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>11</Ordinal>
+              <DecimalPlaces>2</DecimalPlaces>
+              <DatabaseColumn>PACKED2DP</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:57:04</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+            <Field ID="96905">
+              <Name>PSORT</Name>
+              <DataType>PSORT</DataType>
+              <Length>8</Length>
+              <Position>83</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>12</Ordinal>
+              <DatabaseColumn>PSORT</DatabaseColumn>
+              <CreatedTimestamp>2011-02-24T08:57:06</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+            </Field>
+          </Fields>
+          <CreatedTimestamp>2011-02-24T08:54:46</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+          <ModifiedTimestamp>2011-12-21T01:11:30</ModifiedTimestamp>
+        </LogicalRecord>
+      </LogicalRecords>
+      <Lookups>
+        <Lookup ID="2587">
+         <Name>AllTypeLookup</Name>
+         <Steps>
+          <Step Number="1">
+           <Source>
+            <LogicalRecordRef ID="1762"/>
+            <KeyFields>
+             <KeyField ID="22703" seq="1">
+              <FieldRef ID="96721"/>
+              <DataType>ALNUM</DataType>
+              <Length>19</Length>
+              <Ordinal>1</Ordinal>
+              <CreatedTimestamp>2011-12-21T01:12:34</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+             </KeyField>
+            </KeyFields>
+           </Source>
+           <Target>
+             <LogicalRecordRef ID="1801"/>
+             <LogicalFileRef ID="1670"/>
+           </Target>
+          </Step>
+         </Steps>
+        </Lookup>
+      </Lookups>
+      <Folders>
+        <Folder ID="455">
+          <Description>Default_View_Folders</Description>
+          <PosixDirectory>$summarydir</PosixDirectory>
+          <Comment>You can create views in here if there are no other view folders</Comment>
+          <CreatedTimestamp>2010-03-08T18:55:09</CreatedTimestamp>
+          <CreatedUserID>ICUNNIN</CreatedUserID>
+        </Folder>
+      </Folders>
+    </Metadata>
+    <Views>
+      <View ID="9374">
+        <Name>CTCols</Name>
+        <EffectiveDate>2012-12-13</EffectiveDate>
+        <TerminationDate>2100-12-31</TerminationDate>
+        <Status>ACTVE</Status>
+        <Type>SUMRY</Type>
+        <OwnerUser>ICUNNIN</OwnerUser>
+        <FrequencyCode>  </FrequencyCode>
+        <FolderRefs>
+          <FolderRef ID="455"/>
+        </FolderRefs>
+        <CreatedTimestamp>2011-03-30T07:52:18</CreatedTimestamp>
+        <CreatedUserID>ICUNNIN</CreatedUserID>
+        <ModifiedTimestamp>2012-12-13T21:04:33</ModifiedTimestamp>
+        <Input>
+          <ControlRecordRef ID="1"/>
+          <DataSources>
+            <DataSource ID="14315" seq="1">
+              <LogicalFileRef ID="1506"/>
+              <LogicalRecordRef ID="1762"/>
+              <XID>3101</XID>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2011-04-04T05:11:30</ModifiedTimestamp>
+              <ColumnAssignments>
+                <ColumnAssignment ID="263577">
+                  <ColumnRef ID="230554"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96721"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {Description}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263578">
+                  <ColumnRef ID="230555"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96722"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.Alphanumeric}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263579">
+                  <ColumnRef ID="230556"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96723"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.Binary1}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263580">
+                  <ColumnRef ID="230557"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96724"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.SBinary1}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263581">
+                  <ColumnRef ID="230558"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96725"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.Binary2}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263582">
+                  <ColumnRef ID="230559"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96726"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.SBinary2}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263583">
+                  <ColumnRef ID="230560"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96728"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.Binary4}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263584">
+                  <ColumnRef ID="230561"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96727"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.SBinary4}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263585">
+                  <ColumnRef ID="230562"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96730"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.BCD}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263586">
+                  <ColumnRef ID="230563"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96731"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.BSORT}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263587">
+                  <ColumnRef ID="230564"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96732"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.EDNUM}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263588">
+                  <ColumnRef ID="230565"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96733"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.ZONED}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263589">
+                  <ColumnRef ID="230566"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96734"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.UZONED}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263590">
+                  <ColumnRef ID="230567"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96736"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.PACKED}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263591">
+                  <ColumnRef ID="230568"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96735"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.PACKED2DP}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263592">
+                  <ColumnRef ID="230569"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96737"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.UPACKED}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263593">
+                  <ColumnRef ID="230570"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96738"/>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.PSORT}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="263594">
+                  <ColumnRef ID="230571"/>
+                  <SourceType>1</SourceType>
+                  <Value>-123</Value>
+                  <CreatedTimestamp>2011-03-30T07:52:23</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = -123</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="277274">
+                  <ColumnRef ID="242641"/>
+                  <SourceType>3</SourceType>
+                  <FieldRef ID="96729"/>
+                  <CreatedTimestamp>2012-12-13T20:27:04</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN = {AllTypeLookup.Binary8}</Logic>
+                  </Logics>
+                </ColumnAssignment>
+                <ColumnAssignment ID="277275">
+                  <ColumnRef ID="242642"/>
+                  <SourceType>4</SourceType>
+                  <CreatedTimestamp>2012-12-13T21:02:06</CreatedTimestamp>
+                  <CreatedUserID>ICUNNIN</CreatedUserID>
+                  <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+                  <Logics>
+                    <Logic seq="1">COLUMN  = {Binary8} + 1</Logic>
+                  </Logics>
+                </ColumnAssignment>
+              </ColumnAssignments>
+            </DataSource>
+          </DataSources>
+        </Input>
+        <Extract>
+          <FileNumber>1</FileNumber>
+          <EnableAggregation>0</EnableAggregation>
+          <ExtractColumns>
+            <ExtractColumn seq="1" ID="230554">
+              <Area>SORTK</Area>
+              <DataType>ALNUM</DataType>
+              <Length>19</Length>
+            </ExtractColumn>
+            <ExtractColumn seq="2" ID="230555">
+              <Area>AREDT</Area>
+              <DataType>ALNUM</DataType>
+              <Length>10</Length>
+              <Ordinal>2</Ordinal>
+            </ExtractColumn>
+            <ExtractColumn seq="3" ID="230556">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="4" ID="230557">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="5" ID="230558">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="6" ID="230559">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="7" ID="230560">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="8" ID="230561">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="9" ID="242641">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="10" ID="230562">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="11" ID="230563">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="12" ID="230564">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="13" ID="230565">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="14" ID="230566">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="15" ID="230567">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="16" ID="230568">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="17" ID="230569">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="18" ID="230570">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="19" ID="230571">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+            <ExtractColumn seq="20" ID="242642">
+              <Area>ARECT</Area>
+            </ExtractColumn>
+          </ExtractColumns>
+        </Extract>
+        <Sort>
+          <SortColumns>
+            <SortColumn seq="1" ID="36094">
+              <ColumnRef ID="230554"/>
+              <Order>ASCND</Order>
+              <BreakDisplay>
+                <Break>1</Break>
+                <Footer>1</Footer>
+                <Prefix></Prefix>
+              </BreakDisplay>
+              <CreatedTimestamp>2011-08-25T23:38:07</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </SortColumn>
+          </SortColumns>
+        </Sort>
+        <Output>
+          <Media>FILE</Media>
+          <PartitionRef ID="8576">
+            <XID>14579</XID>
+          </PartitionRef>
+          <PageLayout>
+            <LinesPerPage>66</LinesPerPage>
+            <MaxCharsPerLine>250</MaxCharsPerLine>
+            <MaxColumnHeaderLines>1</MaxColumnHeaderLines>
+            <ErrorText>****************************************</ErrorText>
+            <TruncationText>########################################</TruncationText>
+          </PageLayout>
+          <FormatColumns>
+            <FormatColumn seq="1" ID="230554">
+              <Name>Column Number 1</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>Alphanumeric</HeaderLine1>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>ALNUM</DataType>
+              <Length>19</Length>
+              <Ordinal>1</Ordinal>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="2" ID="230555">
+              <Name>Column Number 2</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>Alphanumeric</HeaderLine1>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>ALNUM</DataType>
+              <Length>10</Length>
+              <Position>20</Position>
+              <Ordinal>2</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="3" ID="230556">
+              <Name>Column Number 3</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>Binary1</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>7</Length>
+              <Position>30</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>3</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="4" ID="230557">
+              <Name>Column Number 4</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>SBinary1</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>7</Length>
+              <Position>37</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>4</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="5" ID="230558">
+              <Name>Column Number 5</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>Binary2</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>7</Length>
+              <Position>44</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>5</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="6" ID="230559">
+              <Name>Column Number 6</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>SBinary2</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>7</Length>
+              <Position>51</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>6</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="7" ID="230560">
+              <Name>Column Number 7</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>Binary4</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>15</Length>
+              <Position>58</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>7</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="8" ID="230561">
+              <Name>Column Number 8</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>SBinary4</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>15</Length>
+              <Position>73</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>8</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="9" ID="242641">
+              <Name>Column Number 9</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>Binary8</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>88</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>9</Ordinal>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2012-12-13T20:27:03</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="10" ID="230562">
+              <Name>Column Number 10</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>BCD</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>10</Length>
+              <Position>96</Position>
+              <Alignment>RIGHT</Alignment>
+              <Ordinal>10</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:34</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="11" ID="230563">
+              <Name>Column Number 11</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>BSORT</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>106</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>11</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:21</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="12" ID="230564">
+              <Name>Column Number 12</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>EDNUM</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>6</Length>
+              <Position>114</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>12</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="13" ID="230565">
+              <Name>Column Number 13</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>ZONED</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>120</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>13</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="14" ID="230566">
+              <Name>Column Number 14</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>UZONED</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>128</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>14</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="15" ID="230567">
+              <Name>Column Number 15</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>PACKED</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>136</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>15</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="16" ID="230568">
+              <Name>Column Number 16</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>PACKED2DP</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>144</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>16</Ordinal>
+              <DecimalPlaces>2</DecimalPlaces>
+              <ScaleFactor>2</ScaleFactor>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN12Y</Mask>
+              <ExcelMask>-Z9.99</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="17" ID="230569">
+              <Name>Column Number 17</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>UPACKED</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>152</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>17</Ordinal>
+              <ScaleFactor>3</ScaleFactor>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="18" ID="230570">
+              <Name>Column Number 18</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>PSORT</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>160</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>18</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="19" ID="230571">
+              <Name>Column Number 19</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <HeaderLine1>const</HeaderLine1>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>5</Length>
+              <Position>168</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>19</Ordinal>
+              <DefaultValue>0</DefaultValue>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2011-03-30T07:52:22</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+            <FormatColumn seq="20" ID="242642">
+              <Name>Column Number 20</Name>
+              <HeaderAlignment>CNTER</HeaderAlignment>
+              <Aggregation>SUM</Aggregation>
+              <SpacesBeforeColumn>0</SpacesBeforeColumn>
+              <DataType>MSKNM</DataType>
+              <Length>8</Length>
+              <Position>173</Position>
+              <Alignment>RIGHT</Alignment>
+              <SignedData>1</SignedData>
+              <Ordinal>20</Ordinal>
+              <Mask>LN10N</Mask>
+              <ExcelMask>-Z9</ExcelMask>
+              <CreatedTimestamp>2012-12-13T21:02:05</CreatedTimestamp>
+              <CreatedUserID>ICUNNIN</CreatedUserID>
+              <ModifiedTimestamp>2012-12-13T21:04:35</ModifiedTimestamp>
+            </FormatColumn>
+          </FormatColumns>
+        </Output>
+      </View>
+    </Views>
+  </Environment>
+</SAFRVDP>
