@@ -26,6 +26,7 @@ import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
+import org.xml.sax.Attributes;
 
 public class LRFieldAttributeRecordParser extends BaseParser {
 

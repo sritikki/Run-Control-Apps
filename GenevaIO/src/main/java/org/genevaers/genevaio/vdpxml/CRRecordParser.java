@@ -23,6 +23,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ControlRecord;
+import org.xml.sax.Attributes;
 
 public class CRRecordParser extends BaseParser {
 

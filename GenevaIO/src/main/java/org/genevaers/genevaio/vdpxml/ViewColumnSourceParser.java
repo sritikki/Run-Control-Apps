@@ -24,18 +24,39 @@ import org.genevaers.repository.Repository;
  */
 
 import org.genevaers.repository.components.ViewColumnSource;
+import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.ColumnSourceType;
+import org.xml.sax.Attributes;
 
 public class ViewColumnSourceParser extends BaseParser {
 
 	private ViewColumnSource vcs;
+	private int viewID;
 
 	@Override
-	public void addElement(String name, String text) {
-		switch (name) {
-			case "VIEWCOLUMNSOURCEID":
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "COLUMNREF":
 				vcs = new ViewColumnSource();
-				vcs.setComponentId(Integer.parseInt(text));
+				vcs.setComponentId(componentID);
+				vcs.setColumnID(Integer.parseInt(attributes.getValue("ID")));
+				vcs.setViewId(viewID);
+				break;
+			case "FIELDREF":
+				vcs.setViewSrcLrFieldId(Integer.parseInt(attributes.getValue("ID")));
+				break;
+			default:
+				break;
+		}
+	}		
+	@Override
+	public void addElement(String name, String text) {
+		switch (name.toUpperCase()) {
+			case "LOGIC":
+				//have to append by getting what is there first
+				String logic = vcs.getLogicText();
+				logic += text;
+				vcs.setLogicText(logic);
 				break;
 			case "VIEWSOURCEID":
 				vcs.setViewSourceId(Integer.parseInt(text));
@@ -43,15 +64,10 @@ public class ViewColumnSourceParser extends BaseParser {
 			case "VIEWCOLUMNID":
 				vcs.setColumnID(Integer.parseInt(text));
 				break;
-			case "VIEWID":
-				int viewID = Integer.parseInt(text);
-				vcs.setViewId(viewID);
-				Repository.getViews().get(viewID).addViewColumnSource(vcs);
-				break;
-			case "SOURCETYPEID":
+			case "SOURCETYPE":
 				vcs.setSourceType(ColumnSourceType.values()[Integer.parseInt(text.trim())]);
 				break;
-			case "CONSTVAL":
+			case "VALUE":
 				vcs.setSrcValue(text);
 				break;
 			case "LOOKUPID":
@@ -72,5 +88,8 @@ public class ViewColumnSourceParser extends BaseParser {
 			default:
 				break;
 		}
+	}
+	public void setViewId(int currentViewID) {
+		viewID = currentViewID;
 	}
 }

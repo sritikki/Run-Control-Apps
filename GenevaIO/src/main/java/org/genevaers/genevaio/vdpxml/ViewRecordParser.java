@@ -53,12 +53,12 @@ public class ViewRecordParser extends BaseParser {
 				vd.setViewType(ViewType.fromdbcode(text.trim()));
 				break;
 
-			case "EXTRACTFILEPARTNBR":
+			case "FILENUMBER":
 				short efn = (short) Integer.parseInt(text.trim());
 				vd.setExtractFileNumber(efn);
 				break;
 
-			case "OUTPUTMEDIACD":
+			case "MEDIA":
 				vd.setOutputMedia(OutputMedia.fromdbcode(text.trim()));
 				break;
 
@@ -70,10 +70,10 @@ public class ViewRecordParser extends BaseParser {
 				RecordParserData.viewOutlfpf.put(componentID, Integer.parseInt(text.trim()));
 				break;
 
-			case "PAGESIZE":
+			case "LINESPERPAGE":
 				vd.setOutputPageSizeMax((short) Integer.parseInt(text.trim()));
 				break;
-			case "LINESIZE":
+			case "MAXCHARSPERLINE":
 				vd.setOutputLineSizeMax((short) Integer.parseInt(text.trim()));
 				break;
 			case "ZEROSUPPRESSIND":
@@ -82,7 +82,7 @@ public class ViewRecordParser extends BaseParser {
 			case "EXTRACTMAXRECCNT":
 				vd.setExtractMaxRecCount(Integer.parseInt(text.trim()));
 				break;
-			case "EXTRACTSUMMARYIND":
+			case "ENABLEAGGREGATION":
 				vd.setExtractSummarized(text.equals("0") ? false : true);
 				break;
 			case "EXTRACTSUMMARYBUF":

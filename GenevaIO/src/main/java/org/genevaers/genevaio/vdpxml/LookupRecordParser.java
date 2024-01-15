@@ -23,6 +23,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LookupPath;
+import org.xml.sax.Attributes;
 
 /**
  * This class will parse a Join Record element into a

@@ -25,6 +25,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import org.genevaers.repository.components.LRIndex;
 import org.genevaers.repository.components.LookupPathKey;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -103,5 +105,9 @@ abstract public class BaseParser {
 		lookupStepKeys = new HashMap<>();	
 		RecordParserData.clearAndInitialise();
 	}
+
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+	}
+
 
 }

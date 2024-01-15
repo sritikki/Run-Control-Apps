@@ -21,6 +21,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
@@ -31,6 +32,7 @@ import org.genevaers.repository.components.enums.SortBreakFooterOption;
 import org.genevaers.repository.components.enums.SortBreakHeaderOption;
 import org.genevaers.repository.components.enums.SortKeyDispOpt;
 import org.genevaers.repository.components.enums.SortOrder;
+import org.xml.sax.Attributes;
 
 /**
  * We need to understand how the fields of the XML record map into the in memory
@@ -86,24 +88,23 @@ public class ViewSortKeyRecordParser extends BaseParser {
 	}
 
 	@Override
-	public void addElement(String name, String text) {
-		switch (name) {
-			case "VIEWSORTKEYID":
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "COLUMNREF":
 				vsk = new ViewSortKey();
-				vsk.setComponentId(Integer.parseInt(text));
-				vsk.setViewSortKeyId(Integer.parseInt(text));
+				vsk.setComponentId(componentID);
+				vsk.setViewSortKeyId(componentID);
+				vsk.setColumnId(Integer.parseInt(attributes.getValue("ID")));
 				setDefault(vsk);
 				break;
-			case "VIEWCOLUMNID":
-				vsk.setColumnId(Integer.parseInt(text));
+			default:
 				break;
-			case "VIEWID":
-				int viewId = Integer.parseInt(text.trim());
-				if (viewId != currentViewId) {
-					currentViewNode = Repository.getViews().get(viewId);
-					currentViewId = viewId;
-				}
-				break;
+		}
+	}		
+
+	@Override
+	public void addElement(String name, String text) {
+		switch (name.toUpperCase()) {
 			case "SORTKEYLABEL":
 				vsk.setLabel(text.trim());
 				break;
@@ -112,7 +113,7 @@ public class ViewSortKeyRecordParser extends BaseParser {
 				vsk.setSequenceNumber(s);
 				currentViewNode.addViewSortKey(vsk);
 				break;
-			case "SORTSEQCD":
+			case "ORDER":
 				vsk.setSortorder(SortOrder.fromdbcode(text.trim()));
 				break;
 			case "SKFLDFMTCD":
@@ -175,5 +176,9 @@ public class ViewSortKeyRecordParser extends BaseParser {
 			default:
 				break;
 		}
+	}
+
+	public void setViewId(int vid) {
+		currentViewId = vid;
 	}
 }

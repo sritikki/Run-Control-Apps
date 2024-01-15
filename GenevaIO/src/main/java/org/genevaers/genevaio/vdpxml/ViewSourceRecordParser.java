@@ -24,6 +24,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
+import org.xml.sax.Attributes;
 
 public class ViewSourceRecordParser extends BaseParser {
 
@@ -32,6 +33,23 @@ public class ViewSourceRecordParser extends BaseParser {
 	private int lfpfAssocid;
 
 	private int viewid;
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "LOGICALFILEREF":
+				vs = new ViewSource();
+				vs.setComponentId(componentID);
+				vs.setSourceLFID(Integer.parseInt(attributes.getValue("ID")));
+				vs.setViewId(viewid);
+				break;
+			case "LOGICALRECORDREF":
+				vs.setSourceLRID(Integer.parseInt(attributes.getValue("ID")));
+				break;
+			default:
+				break;
+		}
+	}		
 
 	@Override
 	public void addElement(String name, String text) {
@@ -54,10 +72,6 @@ public class ViewSourceRecordParser extends BaseParser {
 				lrlfAssocid = Integer.parseInt(text.trim());
 				RecordParserData.vs2lrlf.put(componentID, lrlfAssocid);
 				break;
-			case "VIEWID":
-				viewid = Integer.parseInt(text.trim());
-				vs.setViewId(viewid);
-				break;
 			case "EXTRACTFILTLOGIC":
 				vs.setExtractFilter(removeBRLineEndings(text));
 				break;
@@ -79,5 +93,9 @@ public class ViewSourceRecordParser extends BaseParser {
 			default:
 				break;
 		}
+	}
+
+	public void setViewId(int currentViewID) {
+		viewid = currentViewID;
 	}
 }

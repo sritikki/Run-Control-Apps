@@ -23,6 +23,8 @@ public class VDPHandler extends DefaultHandler{
 
 	private ViewRecordParser currenctViewParser;
 
+	private Attributes elAttributes;
+
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
@@ -46,6 +48,13 @@ public class VDPHandler extends DefaultHandler{
 				currentParser = new LogicalFileRecordParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
 				break;
+			// case "PartitionRef":
+			// 	logger.atFine().log("Logical Files");
+			// 	String a0 = elAttributes.getValue("seq");
+			// 	String a1 = elAttributes.getValue("ID");
+			// 	currentParser = new LogicalFileRecordParser();
+			// 	currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+			// 	break;
 			case "LogicalRecord":
 				logger.atFine().log("Logical Record");
 				currentParser = new LRRecordParser();
@@ -96,10 +105,10 @@ public class VDPHandler extends DefaultHandler{
 				((LookupSourceKeyParser)currentParser).setSequencNumber(Integer.parseInt(attributes.getValue(1)));
 				((LookupSourceKeyParser)currentParser).setLookupID(currentLookupID);
 				break;
-			case "FieldRef":
-				logger.atFine().log("FieldRef");
-				((LookupSourceKeyParser)currentParser).setFieldId(Integer.parseInt(attributes.getValue(0)));
-				break;
+			// case "FieldRef":
+			// 	logger.atFine().log("FieldRef");
+			// 	((LookupSourceKeyParser)currentParser).setFieldId(Integer.parseInt(attributes.getValue(0)));
+			// 	break;
 			case "View":
 				logger.atFine().log("View");
 				currentParser = new ViewRecordParser();
@@ -115,16 +124,49 @@ public class VDPHandler extends DefaultHandler{
 				logger.atFine().log("DataSource");
 				currentParser = new ViewSourceRecordParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+				((ViewSourceRecordParser)currentParser).setViewId(currentViewID);
+				break;
+			case "ColumnAssignment":
+				logger.atFine().log("ColumnAssignment");
+				currentParser = new ViewColumnSourceParser();
+				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+				((ViewColumnSourceParser)currentParser).setViewId(currentViewID);
+				break;
+			case "Extract":
+				logger.atFine().log("Extract");
+				currentParser = currenctViewParser;
+				break;
+			case "ExtractColumn":
+				logger.atFine().log("ExtractColumn");
+				currentParser = new ViewColumnRecordParser();
+				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
+				((ViewColumnRecordParser)currentParser).setViewId(currentViewID);
+				break;
+			case "SortColumn":
+				logger.atFine().log("SortColumn");
+				currentParser = new ViewSortKeyRecordParser();
+				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+				((ViewSortKeyRecordParser)currentParser).setViewId(currentViewID);
+				break;
+			case "Output":
+				logger.atFine().log("Output");
+				currentParser = currenctViewParser;
+				break;
+			case "FormatColumn":
+				logger.atFine().log("FormatColumn");
+				currentParser = new ViewColumnRecordParser();
+				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
+				((ViewColumnRecordParser)currentParser).setViewId(currentViewID);
+				break;
+			default:
+				if (currentParser != null && attributes.getLength() > 0) {
+					currentParser.startElement(uri, localName, qName, attributes);
+				}
 				break;
 
 
 		}		
 		data = new StringBuilder();
-	}
-
-	private void setSourceLR(int int1) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'setSourceLR'");
 	}
 
 	@Override

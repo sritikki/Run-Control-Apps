@@ -40,10 +40,14 @@ public class ViewColumnRecordParser extends BaseParser {
 
 	@Override
 	public void addElement(String name, String text) {
-		switch (name) {
-			case "VIEWCOLUMNID":
+		switch (name.toUpperCase()) {
+			case "NAME":
+				currentViewNode = Repository.getViews().get(currentViewId);
+				vc = currentViewNode.getColumnByID(componentID);
+				break;
+			case "AREA":
 				vc = new ViewColumn();
-				vc.setComponentId(Integer.parseInt(text.trim()));
+				vc.setComponentId(componentID);
 				vc.setName("");
 				vc.setFieldName("");
 				vc.setDetailPrefix("");
@@ -51,21 +55,17 @@ public class ViewColumnRecordParser extends BaseParser {
 				vc.setDateCode(DateCode.NONE);
 				vc.setSubtotalType(SubtotalType.NONE);
 				vc.setHeaderJustifyId(JustifyId.CENTER);
-				break;
-			case "VIEWID":
-				int viewId = Integer.parseInt(text.trim());
-				if (viewId != currentViewId) {
-					currentViewNode = Repository.getViews().get(viewId);
-					currentViewId = viewId;
-				}
-				vc.setViewId(viewId);
+				currentViewNode = Repository.getViews().get(currentViewId);
+				vc.setViewId(currentViewId);
+				vc.setExtractArea(ExtractArea.fromdbcode(text.trim()));
+				currentViewNode.addViewColumn(vc);
 				break;
 			case "COLUMNNUMBER":
 				vc.setColumnNumber(Integer.parseInt(text.trim()));
 				currentViewNode.addViewColumn(vc);
 				vc.setName("Column Number " + text.trim());
 				break;
-			case "FLDFMTCD":
+			case "DATATYPE":
 				vc.setDataType(DataType.fromdbcode(text.trim()));
 				if (vc.getDataType() == DataType.ALPHANUMERIC) {
 					vc.setJustifyId(JustifyId.LEFT);
@@ -73,14 +73,14 @@ public class ViewColumnRecordParser extends BaseParser {
 					vc.setJustifyId(JustifyId.RIGHT);
 				}
 				break;
-			case "SIGNEDIND":
+			case "SIGNEDDATA":
 				vc.setSigned(text.equals("1") ? true : false);
 				break;
-			case "STARTPOSITION":
+			case "POSITION":
 				short s = (short) Integer.parseInt(text.trim());
 				vc.setStartPosition(s);
 				break;
-			case "MAXLEN":
+			case "LENGTH":
 				s = (short) Integer.parseInt(text.trim());
 				vc.setFieldLength(s);
 				break;
@@ -99,10 +99,10 @@ public class ViewColumnRecordParser extends BaseParser {
 			case "FLDCONTENTCD":
 				vc.setDateCode(DateCode.fromdbcode(text.trim()));
 				break;
-			case "JUSTIFYCD":
+			case "ALIGNMENT":
 				vc.setJustifyId(JustifyId.fromdbcode(text.trim()));
 				break;
-			case "DEFAULTVAL":
+			case "DEFAULTVALUE":
 				vc.setDefaultValue(text);
 				break;
 			case "VISIBLE":
@@ -115,9 +115,6 @@ public class ViewColumnRecordParser extends BaseParser {
 				s = (short) Integer.parseInt(text.trim());
 				vc.setSpacesBeforeColumn(s);
 				break;
-			case "EXTRACTAREACD":
-				vc.setExtractArea(ExtractArea.fromdbcode(text.trim()));
-				break;
 			case "EXTRAREAPOSITION":
 				s = (short) Integer.parseInt(text);
 				vc.setExtractAreaPosition(s);
@@ -125,19 +122,19 @@ public class ViewColumnRecordParser extends BaseParser {
 			case "SUBTLABEL":
 				vc.setSubtotalPrefix(text);
 				break;
-			case "RPTMASK":
+			case "MASK":
 				vc.setReportMask(text);
 				break;
-			case "HDRJUSTIFYCD":
+			case "HEADERALIGNMENT":
 				vc.setHeaderJustifyId(JustifyId.fromdbcode(text));
 				break;
-			case "HDRLINE1":
+			case "HEADERLINE1":
 				vc.setHeaderLine1(text);
 				break;
-			case "HDRLINE2":
+			case "HEADERLINE2":
 				vc.setHeaderLine2(text);
 				break;
-			case "HDRLINE3":
+			case "HEADERLINE3":
 				vc.setHeaderLine3(text);
 				break;
 			case "FORMATCALCLOGIC":
@@ -147,5 +144,9 @@ public class ViewColumnRecordParser extends BaseParser {
 				break;
 		}
 	}
+
+    public void setViewId(int vid) {
+        currentViewId = vid;
+    }
 
 }

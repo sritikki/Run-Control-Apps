@@ -23,6 +23,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalFile;
+import org.genevaers.repository.components.PhysicalFile;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * This class will parse a LogicalFile Record element into a
@@ -33,6 +36,21 @@ public class LogicalFileRecordParser extends BaseParser {
 	private LogicalFile lf;
 
 	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "PARTITIONREF":
+				logger.atFine().log("Logical Files");
+				String a0 = attributes.getValue("seq");
+				int pfid = Integer.parseInt(attributes.getValue("ID"));
+				PhysicalFile pf = Repository.getPhysicalFiles().get(pfid);
+				lf.addPF(pf);
+				break;
+			default:
+				break;
+		}
+	}		
+
+	@Override
 	public void addElement(String name, String text) {
 		switch (name.toUpperCase()) {
 			case "NAME":
@@ -40,6 +58,11 @@ public class LogicalFileRecordParser extends BaseParser {
 				lf.setID(componentID);
 				lf.setName(text);
 				Repository.getLogicalFiles().add(lf, componentID, text);
+				break;
+			case "PARTITIONREF":
+				//int pfid = Integer.parseInt(;
+				//PhysicalFile pf = Repository.getPhysicalFiles().get(pfid);
+				//lf.addPF(pf);
 				break;
 			case "CREATEDTIMESTAMP":
 				created = text;

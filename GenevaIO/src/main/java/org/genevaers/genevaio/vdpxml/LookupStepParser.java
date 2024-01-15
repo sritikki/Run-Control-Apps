@@ -27,6 +27,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
+import org.xml.sax.Attributes;
 
 /**
  * This class will parse a Join-Target Record element into a

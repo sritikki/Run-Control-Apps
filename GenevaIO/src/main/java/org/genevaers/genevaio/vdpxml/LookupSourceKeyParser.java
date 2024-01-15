@@ -24,9 +24,11 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
+import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
+import org.xml.sax.Attributes;
 
 public class LookupSourceKeyParser extends BaseParser {
 	private LookupPathKey lookupKey;
@@ -44,6 +46,17 @@ public class LookupSourceKeyParser extends BaseParser {
 	private ArrayList<LookupPathKey> currentKeyList;
 	private int lrfieldid;
 
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "FIELDREF":
+				lookupKey.setFieldId(Integer.parseInt(attributes.getValue("ID")));
+				break;
+			default:
+				break;
+		}
+	}		
+	
 	@Override
 	public void addElement(String name, String text) {
 		switch (name) {
@@ -104,6 +117,5 @@ public class LookupSourceKeyParser extends BaseParser {
 	}
 
 	public void setFieldId(int int1) {
-		lookupKey.setFieldId(lrfieldid);
 	}
 }

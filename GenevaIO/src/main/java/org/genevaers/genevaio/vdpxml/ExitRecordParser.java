@@ -25,6 +25,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.UserExit;
 import org.genevaers.repository.components.enums.ExitType;
 import org.genevaers.repository.components.enums.ProgramType;
+import org.xml.sax.Attributes;
 
 /**
  * This class will parse a Procedure Record element into a
