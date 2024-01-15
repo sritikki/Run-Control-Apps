@@ -261,7 +261,7 @@ public class VDPXMLSaxIterator {
     }
 
     public String getGenerationID() {
-        return catalog.get("Generation0").getCreated();
+        return "VDP XML generation id to come";
     }
 
 }

@@ -38,6 +38,7 @@ import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
+import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
@@ -221,7 +222,7 @@ public class SPOTests {
         try {
             pr.populateConfigFrom(TestHelper.getTestParmName());
             Repository.clearAndInitialise();
-            RepositoryBuilder rb = new RepositoryBuilder(rcc);
+            RepositoryBuilder rb = RepositoryBuilderFactory.get(rcc);
             rb.run();
         } catch (IOException e) {
             // TODO Auto-generated catch block

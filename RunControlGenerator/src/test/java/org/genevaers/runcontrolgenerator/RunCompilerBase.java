@@ -39,6 +39,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.compilers.RepositoryCompiler;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
+import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
 import org.genevaers.runcontrolgenerator.utility.Status;
@@ -62,7 +63,7 @@ class RunCompilerBase {
         pr.setConfig(rcc);
         try {
             pr.populateConfigFrom(TestHelper.getTestParmName());
-            RepositoryBuilder rb = new RepositoryBuilder(rcc);
+            RepositoryBuilder rb = RepositoryBuilderFactory.get(rcc);
             Status retval = rb.run();
             assertEquals(Status.OK, retval);
         } catch (IOException e) {
