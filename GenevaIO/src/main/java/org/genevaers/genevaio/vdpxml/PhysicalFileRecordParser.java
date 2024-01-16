@@ -4,6 +4,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
+import org.genevaers.repository.RepoHelper;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -53,6 +55,8 @@ public class PhysicalFileRecordParser extends BaseParser {
 				pf.setDatabaseRowFormat(DbmsRowFmtOptId.NONE);
 				pf.setRecfm(FileRecfm.VB);
 				pf.setName(text);
+				pf.setFileType(FileType.DISK); //default
+				RepoHelper.fillPF(pf);
 				Repository.getPhysicalFiles().add(pf, componentID, text);
 				break;
 			case "FILETYPECD":

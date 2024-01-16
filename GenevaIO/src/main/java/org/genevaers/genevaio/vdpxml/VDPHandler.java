@@ -2,7 +2,13 @@ package org.genevaers.genevaio.vdpxml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewColumnSource;
+import org.genevaers.repository.components.ViewSource;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -24,6 +30,10 @@ public class VDPHandler extends DefaultHandler{
 	private ViewRecordParser currenctViewParser;
 
 	private Attributes elAttributes;
+
+	private int currentViewSourceID;
+
+	private BaseParser currentStepParser;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -78,8 +88,8 @@ public class VDPHandler extends DefaultHandler{
 				logger.atFine().log("Index");
 				currentParser = new LRIndexFieldRecordParser();
 				((LRIndexFieldRecordParser)currentParser).setCurrentIndexId(currentIndexID);
-				((LRIndexFieldRecordParser)currentParser).setSequenceNumber(Integer.parseInt(attributes.getValue(0)));
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+				((LRIndexFieldRecordParser)currentParser).setSequenceNumber(Integer.parseInt(attributes.getValue("seq")));
+				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
 				((LRIndexFieldRecordParser)currentParser).setCurrentLrId(currentLRID);
 				break;
 			case "Lookup":
@@ -91,19 +101,20 @@ public class VDPHandler extends DefaultHandler{
 			case "Step":
 				logger.atFine().log("Step");
 				currentParser = new LookupStepParser();
+				currentStepParser = currentParser;
 				((LookupStepParser)currentParser).setLookupID(currentLookupID);
 				((LookupStepParser)currentParser).setStepNumber(Integer.parseInt(attributes.getValue(0)));
 				break;
-			// case "LogicalRecordRef":
-			// 	logger.atFine().log("LogicalRecordRef");
-			// 	((LookupStepParser)currentParser).setLrRef(Integer.parseInt(attributes.getValue(0)));
-			// 	break;
 			case "KeyField":
 				logger.atFine().log("KeyField");
 				currentParser =new LookupSourceKeyParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
 				((LookupSourceKeyParser)currentParser).setSequencNumber(Integer.parseInt(attributes.getValue(1)));
 				((LookupSourceKeyParser)currentParser).setLookupID(currentLookupID);
+				break;
+			case "Target":
+				logger.atFine().log("Target");
+				currentParser = currentStepParser;
 				break;
 			// case "FieldRef":
 			// 	logger.atFine().log("FieldRef");
@@ -123,14 +134,17 @@ public class VDPHandler extends DefaultHandler{
 			case "DataSource":
 				logger.atFine().log("DataSource");
 				currentParser = new ViewSourceRecordParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+				currentViewSourceID = Integer.parseInt(attributes.getValue(0));
+				currentParser.setComponentID(currentViewSourceID);
 				((ViewSourceRecordParser)currentParser).setViewId(currentViewID);
+				((ViewSourceRecordParser)currentParser).setSequenceNumber(Integer.parseInt(attributes.getValue("seq")));
 				break;
 			case "ColumnAssignment":
 				logger.atFine().log("ColumnAssignment");
 				currentParser = new ViewColumnSourceParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
 				((ViewColumnSourceParser)currentParser).setViewId(currentViewID);
+				((ViewColumnSourceParser)currentParser).setViewSourceId(currentViewSourceID);
 				break;
 			case "Extract":
 				logger.atFine().log("Extract");
@@ -139,17 +153,23 @@ public class VDPHandler extends DefaultHandler{
 			case "ExtractColumn":
 				logger.atFine().log("ExtractColumn");
 				currentParser = new ViewColumnRecordParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
+				int colId = Integer.parseInt(attributes.getValue("ID"));
+				currentParser.setComponentID(colId);
 				((ViewColumnRecordParser)currentParser).setViewId(currentViewID);
+				int seqNum = Integer.parseInt(attributes.getValue("seq"));
+				((ViewColumnRecordParser)currentParser).setSequenceNumber(seqNum);
 				break;
 			case "SortColumn":
 				logger.atFine().log("SortColumn");
 				currentParser = new ViewSortKeyRecordParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
 				((ViewSortKeyRecordParser)currentParser).setViewId(currentViewID);
+				((ViewSortKeyRecordParser)currentParser).setSeqNum(Integer.parseInt(attributes.getValue("seq")));
+				
 				break;
 			case "Output":
 				logger.atFine().log("Output");
+				fixupVCS();
 				currentParser = currenctViewParser;
 				break;
 			case "FormatColumn":
@@ -167,6 +187,10 @@ public class VDPHandler extends DefaultHandler{
 
 		}		
 		data = new StringBuilder();
+	}
+
+	private void fixupVCS() {
+		Repository.getViews().get(currentViewID).fixupVDPXMLColumns();
 	}
 
 	@Override

@@ -27,6 +27,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
+import org.genevaers.repository.components.PhysicalFile;
 import org.xml.sax.Attributes;
 
 /**
@@ -42,11 +43,11 @@ public class LookupStepParser extends BaseParser {
 	private int stepNumber;
 	private int sourceLrid;
 
-	private boolean srcLR = false;
+	private boolean srcLR = true;
 
 	@Override
-	public void addElement(String name, String text) {
-		switch (name.toUpperCase()) {
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
 			case "LOGICALRECORDREF":
 				if(srcLR) {
 					lookupStep = new LookupPathStep();
@@ -54,7 +55,22 @@ public class LookupStepParser extends BaseParser {
 					currenLookupPath = Repository.getLookups().get(currentLookupId);
 					lookupStep.setSourceLRid(sourceLrid);
 					currenLookupPath.addStep(lookupStep);
+					srcLR = false;
+				} else {
+					lookupStep.setTargetLRid(Integer.parseInt(attributes.getValue("ID")));
 				}
+				break;
+			case "LOGICALFILEREF":
+				lookupStep.setTargetLFid(Integer.parseInt(attributes.getValue("ID")));
+				break;
+			default:
+				break;
+		}
+	}		
+	@Override
+	public void addElement(String name, String text) {
+		switch (name.toUpperCase()) {
+			case "LOGICALRECORDREF":
 				break;
 			default:
 				break;

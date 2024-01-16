@@ -38,6 +38,8 @@ public class ViewColumnRecordParser extends BaseParser {
 
 	private ViewNode currentViewNode;
 
+	private int seqNum;
+
 	@Override
 	public void addElement(String name, String text) {
 		switch (name.toUpperCase()) {
@@ -57,13 +59,9 @@ public class ViewColumnRecordParser extends BaseParser {
 				vc.setHeaderJustifyId(JustifyId.CENTER);
 				currentViewNode = Repository.getViews().get(currentViewId);
 				vc.setViewId(currentViewId);
+				vc.setColumnNumber(seqNum);
 				vc.setExtractArea(ExtractArea.fromdbcode(text.trim()));
 				currentViewNode.addViewColumn(vc);
-				break;
-			case "COLUMNNUMBER":
-				vc.setColumnNumber(Integer.parseInt(text.trim()));
-				currentViewNode.addViewColumn(vc);
-				vc.setName("Column Number " + text.trim());
 				break;
 			case "DATATYPE":
 				vc.setDataType(DataType.fromdbcode(text.trim()));
@@ -147,6 +145,10 @@ public class ViewColumnRecordParser extends BaseParser {
 
     public void setViewId(int vid) {
         currentViewId = vid;
+    }
+
+    public void setSequenceNumber(int s) {
+		seqNum = s;
     }
 
 }

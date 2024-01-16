@@ -1,5 +1,8 @@
 package org.genevaers.genevaio.vdpxml;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
@@ -32,6 +35,8 @@ public class ViewColumnSourceParser extends BaseParser {
 
 	private ViewColumnSource vcs;
 	private int viewID;
+	private int viewSourceID;
+	private int colID;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -39,8 +44,11 @@ public class ViewColumnSourceParser extends BaseParser {
 			case "COLUMNREF":
 				vcs = new ViewColumnSource();
 				vcs.setComponentId(componentID);
-				vcs.setColumnID(Integer.parseInt(attributes.getValue("ID")));
+				colID = Integer.parseInt(attributes.getValue("ID"));
+				vcs.setColumnID(colID);
 				vcs.setViewId(viewID);
+				vcs.setViewSourceId(viewSourceID);
+				Repository.getViews().get(viewID).addViewColumnSource(vcs);
 				break;
 			case "FIELDREF":
 				vcs.setViewSrcLrFieldId(Integer.parseInt(attributes.getValue("ID")));
@@ -91,5 +99,16 @@ public class ViewColumnSourceParser extends BaseParser {
 	}
 	public void setViewId(int currentViewID) {
 		viewID = currentViewID;
+	}
+	public void setViewSourceId(int vsid) {
+		viewSourceID = vsid;
+	}
+
+	public int getColID() {
+		return colID;
+	}
+
+	public ViewColumnSource getVcs() {
+		return vcs;
 	}
 }

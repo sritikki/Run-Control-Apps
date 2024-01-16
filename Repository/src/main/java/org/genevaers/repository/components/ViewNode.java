@@ -39,7 +39,6 @@ import org.genevaers.repository.components.enums.ViewType;
 
 public class ViewNode extends ComponentNode{
 
-
 	public ViewDefinition viewDef = new ViewDefinition();
 
 	private Map<Integer, ViewColumn> columns = new TreeMap<Integer, ViewColumn>();
@@ -51,6 +50,9 @@ public class ViewNode extends ComponentNode{
 	private List<ReportHeader> reportHeaders = new ArrayList<>();
 	private List<ReportFooter> reportFooters = new ArrayList<>();
 	
+	//Used when parsing VDP XML. That data arrives in a different order
+	private Map<Integer, ViewColumnSource> vcsByComponentID = new TreeMap<>();
+
 
 	//A VDP view always has a 1600 record - its output file.
 	//We need to capture that in some way
@@ -177,13 +179,37 @@ public class ViewNode extends ComponentNode{
 		ViewSource vs = getViewSourceById(vcs.getViewSourceId());
 		vcs.setSequenceNumber(vs.getSequenceNumber());
 		ViewColumn vc = getColumnByID(vcs.getColumnID());
-		vcs.setColumnNumber(vc.getColumnNumber());
-		vcs.setViewSrcLrId(vs.getSourceLRID());
+		if(vc != null) { //VDP XML give data in a different order
+			vcs.setColumnNumber(vc.getColumnNumber());
+			vcs.setViewSrcLrId(vs.getSourceLRID());
 
-		//It has no view sources
-		vc.addToSourcesByID(vcs);
-		vc.addToSourcesByNumber(vcs);
-		vs.addToColumnSourcesByNumber(vcs);
+			//It has no view sources
+			vc.addToSourcesByID(vcs);
+			vc.addToSourcesByNumber(vcs);
+			vs.addToColumnSourcesByNumber(vcs);
+		} else {
+			vcsByComponentID.put(vcs.getComponentId(), vcs);
+		}
+	}
+
+	public void fixupVDPXMLColumns() {
+		Iterator<ViewColumnSource> vcsi = vcsByComponentID.values().iterator();
+		while (vcsi.hasNext()) {
+			ViewColumnSource vcs = vcsi.next();
+			ViewSource vs = getViewSourceById(vcs.getViewSourceId());
+			ViewColumn vc = getColumnByID(vcs.getColumnID());
+			if(vc != null) { //VDP XML give data in a different order
+				vcs.setColumnNumber(vc.getColumnNumber());
+				vcs.setViewSrcLrId(vs.getSourceLRID());
+	
+				//It has no view sources
+				vc.addToSourcesByID(vcs);
+				vc.addToSourcesByNumber(vcs);
+				vs.addToColumnSourcesByNumber(vcs);
+			} else {
+				System.out.println("Fixup failed\n");
+			}
+		}
 	}
 
 	public void setOutputFileFrom(PhysicalFile pf) {

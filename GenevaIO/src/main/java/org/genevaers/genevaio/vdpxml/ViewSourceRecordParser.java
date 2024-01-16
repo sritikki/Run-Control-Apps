@@ -33,6 +33,7 @@ public class ViewSourceRecordParser extends BaseParser {
 	private int lfpfAssocid;
 
 	private int viewid;
+	private int sequenceNumber;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -42,6 +43,9 @@ public class ViewSourceRecordParser extends BaseParser {
 				vs.setComponentId(componentID);
 				vs.setSourceLFID(Integer.parseInt(attributes.getValue("ID")));
 				vs.setViewId(viewid);
+				vs.setSequenceNumber((short)sequenceNumber);
+				ViewNode vn = Repository.getViews().get(viewid);
+				vn.addViewSource(vs);
 				break;
 			case "LOGICALRECORDREF":
 				vs.setSourceLRID(Integer.parseInt(attributes.getValue("ID")));
@@ -53,18 +57,7 @@ public class ViewSourceRecordParser extends BaseParser {
 
 	@Override
 	public void addElement(String name, String text) {
-		switch (name) {
-			case "VIEWSOURCEID":
-				vs = new ViewSource();
-				componentID = Integer.parseInt(text.trim());
-				vs.setComponentId(componentID);
-				break;
-			case "SRCSEQNBR":
-				short s = (short) Integer.parseInt(text.trim());
-				vs.setSequenceNumber(s);
-				ViewNode vn = Repository.getViews().get(viewid);
-				vn.addViewSource(vs);
-				break;
+		switch (name.toUpperCase()) {
 			case "INLRLFASSOCID":
 				// This assoc id doesn't make any sense until later
 				// when we parse the lflf associations
@@ -97,5 +90,9 @@ public class ViewSourceRecordParser extends BaseParser {
 
 	public void setViewId(int currentViewID) {
 		viewid = currentViewID;
+	}
+
+	public void setSequenceNumber(int seq) {
+		sequenceNumber = seq;
 	}
 }

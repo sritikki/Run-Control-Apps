@@ -41,6 +41,7 @@ public class LRFieldRecordParser extends BaseParser {
 				lrField.setLrID(currentLrId);
 				lrField.setName(text.trim());
 				lrField.setOrdinalPosition((short)1);
+				lrField.setDateTimeFormat(DateCode.NONE);
 				Repository.addLRField(lrField);
 				break;
 			case "DATABASECOLUMN":

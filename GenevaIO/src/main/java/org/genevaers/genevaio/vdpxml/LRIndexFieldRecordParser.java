@@ -57,7 +57,7 @@ public class LRIndexFieldRecordParser extends BaseParser {
 					ndxToBeUpdated = new LRIndex();
 				}
 				ndxToBeUpdated.setComponentId(componentID);
-				ndxToBeUpdated.setFieldID(fieldID);
+				ndxToBeUpdated.setFieldID(componentID);
 				ndxToBeUpdated.setKeyNumber((short) sequenceNumber);
 				ndxToBeUpdated.setLrId(currentLR.getComponentId());
 				ndxToBeUpdated.setEffectiveDateEnd(false);
