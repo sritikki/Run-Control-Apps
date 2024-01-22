@@ -23,6 +23,8 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRIndex;
+import org.genevaers.repository.components.LogicalRecord;
+import org.xml.sax.Attributes;
 
 /**
  * This class will parse a LR-Index Record element into a
@@ -34,19 +36,40 @@ public class LRIndexRecordParser extends BaseParser {
 	private int effEndFld;
 	private int currentLrId;
 	private int seqNumber;
+	private int fieldID;
+	private String ndxName;
+
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "INDEXFIELDREF":
+				fieldID = Integer.parseInt(attributes.getValue("ID"));
+				seqNumber = Integer.parseInt(attributes.getValue("seq"));
+				break;
+			default:
+				break;
+		}
+	}		
 
 	@Override
 	public void addElement(String name, String text) {
 		switch (name.toUpperCase()) {
 			case "NAME":
-				LRIndex pndx = new LRIndex();
-				pndx.setComponentId(componentID);
-				pndx.setEffectiveDateEnd(false);
-				pndx.setEffectiveDateStart(false);
-				pndx.setLrId(currentLrId);
-				pndx.setKeyNumber((short) 1); // This will be overwritten if needed
-				pndx.setName(text);
-				Repository.addLRIndex(pndx);
+				ndxName = text;
+				break;
+			case "XID":
+				LRIndex xndx = new LRIndex();
+				xndx.setComponentId(componentID);
+				xndx.setFieldID(fieldID);
+				xndx.setEffectiveDateEnd(false);
+				xndx.setEffectiveDateStart(false);
+				xndx.setLrId(currentLrId);
+				xndx.setKeyNumber((short)seqNumber);
+				xndx.setName(ndxName);
+				//Repository.addLRIndex(pndx);
+				LogicalRecord ndxLR = Repository.getLogicalRecords().get(currentLrId);
+				ndxLR.addToIndexBySeq(xndx);
 				break;
 			case "EFFDATESTARTFLDID":
 				effStartFld = Integer.parseInt(text);
