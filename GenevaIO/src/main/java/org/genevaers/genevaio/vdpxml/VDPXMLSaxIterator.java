@@ -32,7 +32,7 @@ public class VDPXMLSaxIterator {
 
     private Object saxParserFactory;
 
-    public void addToRepsitory() {
+    public void addToRepository() {
         initXMLFactoriesAndParse();
         dumpCatalog();
     }
