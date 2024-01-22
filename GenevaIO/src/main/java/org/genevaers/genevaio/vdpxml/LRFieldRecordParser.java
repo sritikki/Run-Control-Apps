@@ -42,6 +42,7 @@ public class LRFieldRecordParser extends BaseParser {
 				lrField.setName(text.trim());
 				lrField.setOrdinalPosition((short)1);
 				lrField.setDateTimeFormat(DateCode.NONE);
+				lrField.setStartPosition((short)1); //default since VDP XML will not supply
 				Repository.addLRField(lrField);
 				break;
 			case "DATABASECOLUMN":
