@@ -9,6 +9,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.components.enums.ExitType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -33,7 +34,7 @@ public class VDPHandler extends DefaultHandler{
 
 	private int currentViewSourceID;
 
-	private BaseParser currentStepParser;
+	private LookupStepParser currentStepParser;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -53,6 +54,26 @@ public class VDPHandler extends DefaultHandler{
 				currentParser = new PhysicalFileRecordParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
 				break;
+			// case "ExitRef":
+			// 	int exitRef = Integer.parseInt(attributes.getValue("ID"));
+			// 	ExitType exitType = ExitType.fromdbcode(attributes.getValue("Type"));
+			// 	switch (exitType) {
+			// 		case READ:
+			// 			((PhysicalFileRecordParser)currentParser).setExitRef(exitRef);
+			// 			break;
+				
+			// 		case WRITE:
+						
+			// 			break;
+			// 		case LOOKUP:
+			// 			((LookupStepParser)currentStepParser).setExitRef(exitRef);
+			// 		break;
+			// 		case FORMAT:
+			// 			break;
+			// 		default:
+			// 			break;
+			// 	}
+			// 	break;
 			case "LogicalFile":
 				logger.atFine().log("Logical Files");
 				currentParser = new LogicalFileRecordParser();
@@ -80,17 +101,9 @@ public class VDPHandler extends DefaultHandler{
 			case "Index":
 				logger.atFine().log("Index");
 				currentParser = new LRIndexRecordParser();
-				currentIndexID = Integer.parseInt(attributes.getValue(0));
+				currentIndexID = Integer.parseInt(attributes.getValue("ID"));
 				currentParser.setComponentID(currentIndexID);
 				((LRIndexRecordParser)currentParser).setCurrentLrId(currentLRID);
-				break;
-			case "IndexFieldRef":
-				logger.atFine().log("Index");
-				currentParser = new LRIndexFieldRecordParser();
-				((LRIndexFieldRecordParser)currentParser).setCurrentIndexId(currentIndexID);
-				((LRIndexFieldRecordParser)currentParser).setSequenceNumber(Integer.parseInt(attributes.getValue("seq")));
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
-				((LRIndexFieldRecordParser)currentParser).setCurrentLrId(currentLRID);
 				break;
 			case "Lookup":
 				logger.atFine().log("Lookup");
@@ -98,28 +111,33 @@ public class VDPHandler extends DefaultHandler{
 				currentLookupID = Integer.parseInt(attributes.getValue(0));
 				currentParser.setComponentID(currentLookupID);
 				break;
-			case "Step":
-				logger.atFine().log("Step");
-				currentParser = new LookupStepParser();
-				currentStepParser = currentParser;
-				((LookupStepParser)currentParser).setLookupID(currentLookupID);
-				((LookupStepParser)currentParser).setStepNumber(Integer.parseInt(attributes.getValue(0)));
-				break;
-			case "KeyField":
-				logger.atFine().log("KeyField");
-				currentParser =new LookupSourceKeyParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
-				((LookupSourceKeyParser)currentParser).setSequencNumber(Integer.parseInt(attributes.getValue(1)));
-				((LookupSourceKeyParser)currentParser).setLookupID(currentLookupID);
-				break;
-			case "Target":
-				logger.atFine().log("Target");
-				currentParser = currentStepParser;
-				break;
+			// case "Step":
+			// 	logger.atFine().log("Step");
+			// 	currentParser = new LookupStepParser();
+			// 	currentStepParser = (LookupStepParser) currentParser;
+			// 	((LookupStepParser)currentParser).setLookupID(currentLookupID);
+			// 	((LookupStepParser)currentParser).setStepNumber(Integer.parseInt(attributes.getValue(0)));
+			// 	break;
+			// case "KeyField":
+			// 	logger.atFine().log("KeyField");
+			// 	currentParser =new LookupSourceKeyParser();
+			// 	currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+			// 	((LookupSourceKeyParser)currentParser).setSequencNumber(Integer.parseInt(attributes.getValue(1)));
+			// 	((LookupSourceKeyParser)currentParser).setLookupID(currentLookupID);
+			// 	break;
+			// case "Target":
+			// 	logger.atFine().log("Target");
+			// 	currentParser = currentStepParser;
+			// 	break;
 			// case "FieldRef":
 			// 	logger.atFine().log("FieldRef");
 			// 	((LookupSourceKeyParser)currentParser).setFieldId(Integer.parseInt(attributes.getValue(0)));
 			// 	break;
+			case "Exit":
+				logger.atFine().log("Exit");
+				currentParser = new ExitRecordParser();
+				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
+				break;
 			case "View":
 				logger.atFine().log("View");
 				currentParser = new ViewRecordParser();
@@ -179,7 +197,7 @@ public class VDPHandler extends DefaultHandler{
 				((ViewColumnRecordParser)currentParser).setViewId(currentViewID);
 				break;
 			default:
-				if (currentParser != null && attributes.getLength() > 0) {
+				if (currentParser != null) {
 					currentParser.startElement(uri, localName, qName, attributes);
 				}
 				break;

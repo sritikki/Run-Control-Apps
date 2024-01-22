@@ -44,33 +44,24 @@ public class ExitRecordParser extends BaseParser {
 
 	@Override
 	public void addElement(String name, String text) {
-		switch (name) {
-			case "EXITID":
+		switch (name.toUpperCase()) {
+			case "PROGRAM":
 				userExit = new UserExit();
-				componentID = Integer.parseInt(text);
 				userExit.setComponentId(componentID);
-				break;
-			case "NAME":
 				userExit.setName(text);
 				Repository.getUserExits().add(userExit, componentID, text);
 				break;
-			case "MODULEID":
+			case "MODULE":
 				userExit.setExecutable(text);
 				break;
-			case "EXITTYPECD":
+			case "TYPE":
 				userExit.setExitType(ExitType.fromdbcode(text.trim()));
 				break;
-			case "PROGRAMTYPECD":
+			case "PROGRAMTYPE":
 				userExit.setProgramType(ProgramType.fromdbcode(text.trim()));
 				break;
-			case "OPTIMIZEIND":
+			case "OPTIMIZE":
 				userExit.setOptimizable(text.equals("1") ? true : false);
-				break;
-			case "CREATEDTIMESTAMP":
-				created = text;
-				break;
-			case "LASTMODTIMESTAMP":
-				lastMod = text;
 				break;
 			default:
 				break;

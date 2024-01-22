@@ -1,8 +1,5 @@
 package org.genevaers.runcontrolgenerator.repositorybuilders;
 
-
-
-
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -30,13 +27,13 @@ public class RepositoryBuilderFactory {
 
 		switch (rcc.getInputType()) {
 			case "WBXML":
-				return new DB2Builder(rcc);
+				return new WBXMLBuilder(rcc);
 			case "VDPXML":
 				return new VDPXMLBuilder(rcc);
 			case "DB2":
-				return new PostgresBuilder(rcc);
+				return new DB2Builder(rcc);
 			case "POSTGRES":
-				return new WBXMLBuilder(rcc);
+				return new PostgresBuilder(rcc);
 			default:
 				logger.atSevere().log("Unknown Input Type %s", rcc.getInputType());
 				return null;

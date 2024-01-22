@@ -32,6 +32,7 @@ import org.genevaers.repository.components.enums.FileRecfm;
 import org.genevaers.repository.components.enums.FileType;
 import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.TextDelimiter;
+import org.xml.sax.Attributes;
 
 /**
  * This class will parse a PhysicalFile Record element into a
@@ -40,6 +41,17 @@ import org.genevaers.repository.components.enums.TextDelimiter;
 public class PhysicalFileRecordParser extends BaseParser {
 
 	private PhysicalFile pf;
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "EXITREF":
+				pf.setReadExitID(Integer.parseInt(attributes.getValue("ID")));
+				break;
+				default:
+				break;
+		}
+	}
 
 	@Override
 	public void addElement(String name, String text) {
@@ -59,20 +71,13 @@ public class PhysicalFileRecordParser extends BaseParser {
 				RepoHelper.fillPF(pf);
 				Repository.getPhysicalFiles().add(pf, componentID, text);
 				break;
-			case "FILETYPECD":
+			case "PARTITIONTYPE":
 				pf.setFileType(FileType.fromdbcode(text));
 				break;
 			case "ACCESSMETHODCD":
 				// Not sure what this one is
 				// fieldValue = parseField("DISKFILETYPECD", record);
 				pf.setAccessMethod(AccessMethod.fromdbcode(text.trim()));
-				break;
-			case "READEXITID":
-				// translate old access codes
-				// if (fieldValue.equals("EXCP ") || fieldValue.equals("SEQEX")) {
-				// fieldValue = "SEQIN";
-				// }
-				pf.setReadExitID(Integer.parseInt(text));
 				break;
 			case "READEXITSTARTUP":
 				pf.setReadExitIDParm(text);
@@ -133,5 +138,9 @@ public class PhysicalFileRecordParser extends BaseParser {
 			default:
 				break;
 		}
+	}
+
+	public void setExitRef(int exitRef) {
+		pf.setReadExitID(exitRef);
 	}
 }

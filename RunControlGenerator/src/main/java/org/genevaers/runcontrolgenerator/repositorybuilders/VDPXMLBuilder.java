@@ -22,7 +22,7 @@ public class VDPXMLBuilder extends XMLBuilder{
         VDPXMLSaxIterator vdpxmlReader = new VDPXMLSaxIterator();
 		try {
             vdpxmlReader.setInputBuffer(inputBuffer);
-            vdpxmlReader.addToRepsitory();
+            vdpxmlReader.addToRepository();
             ir.setGenerationID(vdpxmlReader.getGenerationID());
 
 		} catch (Exception e) {
