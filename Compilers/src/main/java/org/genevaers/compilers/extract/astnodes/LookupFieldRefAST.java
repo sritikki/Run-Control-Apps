@@ -63,7 +63,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             }
         } else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unkown field " + fieldName);
+            err.addError("Unknown field " + fieldName);
             addChildIfNotNull(err);
         }
     }

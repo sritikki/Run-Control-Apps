@@ -477,7 +477,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             lkRef.setLookup(lookup);
 		} else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unkown Lookup " + lkname);
+            err.addError("Unknown Lookup " + lkname);
             lkRef.addChildIfNotNull(err);
         }		
     }
@@ -490,7 +490,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 		if(lookup != null) {
             lkfieldRef.resolveField(lookup, parts[1]);
 		} else {
-            addErrorNode(lkfieldRef, "Unkown Lookup " + parts[0]);
+            addErrorNode(lkfieldRef, "Unknown Lookup " + parts[0]);
         }		
         parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkfieldRef);
         return lkfieldRef;
