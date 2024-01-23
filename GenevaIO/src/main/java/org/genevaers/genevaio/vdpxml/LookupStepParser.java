@@ -24,6 +24,7 @@ import javax.xml.stream.events.XMLEvent;
  */
 
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
@@ -44,6 +45,7 @@ public class LookupStepParser extends BaseParser {
 	private int sourceLrid;
 
 	private boolean srcLR = true;
+	private LogicalRecord targetLR;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -72,6 +74,9 @@ public class LookupStepParser extends BaseParser {
 		switch (name.toUpperCase()) {
 			case "LOGICALRECORDREF":
 				break;
+			case "PARAMETER":
+				targetLR.setLookupExitParams(text);
+				break;
 			default:
 				break;
 		}
@@ -94,5 +99,10 @@ public class LookupStepParser extends BaseParser {
 			lookupStep.setTargetLRid(lrid);
 		}
 	}
+    public void setExitRef(int exitRef) {
+		int trgLR = lookupStep.getTargetLR();
+		targetLR = Repository.getLogicalRecords().get(trgLR);
+		targetLR.setLookupExitID(exitRef);
+    }
 
 }

@@ -54,8 +54,6 @@ abstract public class BaseParser {
 	protected static Map<Integer, LRIndex> effdateStarts = new HashMap<>();
 	protected static Map<Integer, LRIndex> effdateEnds = new HashMap<>();
 
-	protected static Map<Integer, List<LookupPathKey>> lookupStepKeys = new HashMap<>();
-
 	public BaseParser() {
 	}
 
@@ -102,7 +100,6 @@ abstract public class BaseParser {
 		effdateStarts = new HashMap<>();
 		effdateEnds = new HashMap<>();
 	
-		lookupStepKeys = new HashMap<>();	
 		RecordParserData.clearAndInitialise();
 	}
 

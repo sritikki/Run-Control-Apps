@@ -59,7 +59,7 @@ public class LookupSourceKeyParser extends BaseParser {
 	
 	@Override
 	public void addElement(String name, String text) {
-		switch (name) {
+		switch (name.toUpperCase()) {
 			case "DATATYPE":
 				lookupKey.setDatatype(DataType.fromdbcode(text.trim()));
 				break;
@@ -112,7 +112,7 @@ public class LookupSourceKeyParser extends BaseParser {
 		lookupKey.setKeyNumber(seqNum);
 		currentKeyList = new ArrayList<LookupPathKey>();
 		currentStepId = componentID;
-		lookupStepKeys.put(componentID, currentKeyList);
+//		lookupStepKeys.put(componentID, currentKeyList);
 		currentKeyList.add(lookupKey);
 	}
 
