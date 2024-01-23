@@ -316,7 +316,7 @@ public class JoinViewsManager {
 							normJoin.addReason("SrcKeyStep" + step.getStepNum(), lookup.getID(), 0);
 						}
 					} else {
-						exitJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
+						exitJoins.getOrAddJoinifAbsent(LookupType.EXIT, step.getTargetLR(), lookup.getID());
 					}
 				}
 				if(step.getStepNum() > 1) {
@@ -347,10 +347,10 @@ public class JoinViewsManager {
 						referenceJoins = referenceDataSet.computeIfAbsent(keyLf, k -> makeReferenceJoinMap(LookupType.NORMAL, keyLf));
 						jltv = referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, keyLrId, lookup.getID());
 						jltv.addReason("KeyField", lookup.getID(), keyfldID);
-						keyFieldsToJoin.put(keyfldID, jltv);
 					} else {
 						jltv = exitJoins.getOrAddJoinifAbsent(LookupType.EXIT, keyLrId, lookup.getID());
 					}
+					keyFieldsToJoin.put(keyfldID, jltv);
 
 					//Since we're here (keyLF not null)
 					//There must be an existing jltv for the key
@@ -396,6 +396,13 @@ public class JoinViewsManager {
 		while (k2ji.hasNext()) {
 			Entry<Integer, JLTView> k2j = k2ji.next();
 			logger.atFine().log("%d -> %d", k2j.getKey(), k2j.getValue().getRefViewNum());
+		}
+		logger.atFine().log("Exit Joins");
+		Iterator<ExitJoin> eji = exitJoins.getIterator();
+		while (eji.hasNext()) {
+			ExitJoin ej = eji.next();
+			logger.atFine().log("Orig ID %d", ej.getOrginalLookupId());
+			
 		}
     }
 

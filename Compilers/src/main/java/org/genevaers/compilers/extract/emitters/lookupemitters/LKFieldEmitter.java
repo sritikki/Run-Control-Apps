@@ -41,12 +41,17 @@ public class LKFieldEmitter extends LookupEmitter {
             lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
         } else {
             //we need the the mapped field not the original
-            JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId());
-            LRField redfld = jltvOfTargetSourceStep.getRedFieldFromLookupField(lkpkey.getFieldId());
-            lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
-            if(redfld != null)
-                //lk.getArg1().setStartPosition((short)(redfld.getStartPosition() - jltv.getKeyLength())); // Remap to RED LR position
-                lk.getArg1().setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
+            int keyfieldLR = Repository.getFields().get(lkpkey.getFieldId()).getLrID();
+            if(keyfieldLR != lkpkey.getSourceLrId()) {
+                lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
+            } else {
+                JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId());
+                LRField redfld = jltvOfTargetSourceStep.getRedFieldFromLookupField(lkpkey.getFieldId());
+                lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
+                if(redfld != null)
+                    //lk.getArg1().setStartPosition((short)(redfld.getStartPosition() - jltv.getKeyLength())); // Remap to RED LR position
+                    lk.getArg1().setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
+            }
         }
         return lk;
     }
