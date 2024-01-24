@@ -53,6 +53,9 @@ public class ViewColumnSourceParser extends BaseParser {
 			case "FIELDREF":
 				vcs.setViewSrcLrFieldId(Integer.parseInt(attributes.getValue("ID")));
 				break;
+			case "LOOKUPREF":
+				vcs.setSrcJoinId((Integer.parseInt(attributes.getValue("ID"))));
+				break;
 			default:
 				break;
 		}
