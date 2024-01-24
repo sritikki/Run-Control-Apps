@@ -113,6 +113,9 @@ public class LookupSourceKeyRecordParser extends RecordParser {
 				case "VALUELEN":
 					short s = (short) Integer.parseInt(text);
 					lookupKey.setFieldLength(s);
+					if(lrfieldid == 0) {
+						lookupKey.setValueLength(s);
+					}
 					break;
 				case "DECIMALCNT":
 					s = (short) Integer.parseInt(text);
