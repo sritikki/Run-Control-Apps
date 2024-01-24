@@ -61,6 +61,8 @@ public class ViewColumnRecordParser extends BaseParser {
 				vc.setViewId(currentViewId);
 				vc.setColumnNumber(seqNum);
 				vc.setExtractArea(ExtractArea.fromdbcode(text.trim()));
+				vc.setExtractAreaPosition((short) 1);
+				vc.setStartPosition((short) 1);
 				currentViewNode.addViewColumn(vc);
 				break;
 			case "DATATYPE":
@@ -77,12 +79,13 @@ public class ViewColumnRecordParser extends BaseParser {
 			case "POSITION":
 				short s = (short) Integer.parseInt(text.trim());
 				vc.setStartPosition(s);
+				vc.setExtractAreaPosition(s);
 				break;
 			case "LENGTH":
 				s = (short) Integer.parseInt(text.trim());
 				vc.setFieldLength(s);
 				break;
-			case "ORDINALPOSITION":
+			case "ORDINAL":
 				s = (short) Integer.parseInt(text.trim());
 				vc.setOrdinalPosition(s);
 				break;
