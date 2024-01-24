@@ -1,6 +1,7 @@
 package org.genevaers.genevaio.vdpxml;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -47,6 +48,7 @@ public class LookupRecordParser extends BaseParser {
 	private LookupPathKey lookupKey;
 	private int targLrId;
 	private LogicalRecord targetLR;
+	private int srcLrId;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -61,7 +63,8 @@ public class LookupRecordParser extends BaseParser {
 				if(source) {
 					lookupStep = new LookupPathStep();
 					lookupStep.setStepNum(stepNumber);
-					lookupStep.setSourceLRid(Integer.parseInt(attributes.getValue("ID")));
+					srcLrId = Integer.parseInt(attributes.getValue("ID"));
+					lookupStep.setSourceLRid(srcLrId);
 					lookup.addStep(lookupStep);
 				} else {
 					targLrId = Integer.parseInt(attributes.getValue("ID"));
@@ -72,9 +75,10 @@ public class LookupRecordParser extends BaseParser {
 			case "KEYFIELD":
 				seqNum = Integer.parseInt(attributes.getValue("seq"));
 				lookupKey = new LookupPathKey();
+				lookupKey.setStepNumber((short)stepNumber);
 				lookupKey.setComponentId(lookup.getID());
 				lookupKey.setDateTimeFormat(DateCode.NONE);
-				lookupKey.setJustification(JustifyId.NONE);
+				lookupKey.setJustification(JustifyId.LEFT);
 				lookupKey.setKeyNumber(seqNum);
 				lookupStep.addKey(lookupKey);
 				break;
@@ -82,7 +86,15 @@ public class LookupRecordParser extends BaseParser {
 				lookupKey.setFieldId(Integer.parseInt(attributes.getValue("ID")));
 				break;
 			case "LOGICALFILEREF":
-				lookupStep.setTargetLFid(Integer.parseInt(attributes.getValue("ID")));
+				int lfid = Integer.parseInt(attributes.getValue("ID"));
+				lookupStep.setTargetLFid(lfid);
+				Iterator<LookupPathKey> ki = lookupStep.getKeyIterator();
+				while (ki.hasNext()) {
+					LookupPathKey k = ki.next();
+					k.setTargetlfid(lfid);
+					k.setTargetLrId(targLrId);
+					k.setSourceLrId(srcLrId);
+				}
 				break;
 			case "TARGET":
 				source = false;
@@ -109,12 +121,15 @@ public class LookupRecordParser extends BaseParser {
 			case "DATATYPE":
 				lookupKey.setDatatype(DataType.fromdbcode(text.trim()));
 				break;
-			case "SIGNED":
+			case "SIGNEDDATA":
 				lookupKey.setSigned(text.equals("1") ? true : false);
 				break;
 			case "LENGTH":
 				short s = (short) Integer.parseInt(text);
 				lookupKey.setFieldLength(s);
+				if(lookupKey.getFieldId() == 0) {
+					lookupKey.setValueLength(s);
+				}
 				break;
 			case "DECIMALCNT":
 				s = (short) Integer.parseInt(text);
