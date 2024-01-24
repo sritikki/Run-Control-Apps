@@ -1,8 +1,6 @@
 package org.genevaers.genevaio.vdpxml;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.XMLEvent;
+
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -50,7 +48,7 @@ public class ViewSourceRecordParser extends BaseParser {
 			case "LOGICALRECORDREF":
 				vs.setSourceLRID(Integer.parseInt(attributes.getValue("ID")));
 				break;
-			default:
+				default:
 				break;
 		}
 	}		
@@ -64,6 +62,10 @@ public class ViewSourceRecordParser extends BaseParser {
 				// Need to preserve for a fixup later
 				lrlfAssocid = Integer.parseInt(text.trim());
 				RecordParserData.vs2lrlf.put(componentID, lrlfAssocid);
+				break;
+			case "FILTER":
+				vs.setExtractFilter(vs.getExtractFilter() + text);
+				vs.setSequenceNumber((short)sequenceNumber);
 				break;
 			case "EXTRACTFILTLOGIC":
 				vs.setExtractFilter(removeBRLineEndings(text));
