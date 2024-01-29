@@ -164,14 +164,20 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
 	@Override public ExtractBaseAST visitExprBoolOr(GenevaERSParser.ExprBoolOrContext ctx) { 
-        if(ctx.getChildCount() > 1) { //Must be an actual OR node
-            BooleanOrAST boolOrNode = (BooleanOrAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLOR);
+        if(ctx.getChildCount() > 1) { 
             Iterator<ParseTree> ci = ctx.children.iterator();
+            BooleanOrAST boolOrNode = (BooleanOrAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLOR);
+            int childNum = 0;
             while (ci.hasNext()) {
                 ParseTree ctxEntry = ci.next();
-                if(! ctxEntry.getText().equalsIgnoreCase("OR")) {
+                if(ctxEntry.getText().equalsIgnoreCase("OR") && childNum > 2) {
+                    BooleanOrAST nextboolOrNode = (BooleanOrAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLOR);
+                    nextboolOrNode.addChildIfNotNull(boolOrNode);
+                    boolOrNode = nextboolOrNode;
+                } else {
                     boolOrNode.addChildIfNotNull(visit(ctxEntry));
                 }
+                childNum ++;
             }
             return boolOrNode; 
         } else {
