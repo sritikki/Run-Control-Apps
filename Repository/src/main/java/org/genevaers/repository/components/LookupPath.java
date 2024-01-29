@@ -98,9 +98,8 @@ public class LookupPath extends ComponentNode {
 	}
 
 	public int getTargetLRID() {
-		//If there are many steps this will be wrong!!!!
 		if(targetLRid == 0)
-			targetLRid = steps.get(0).getTargetLR();
+			targetLRid = steps.get(steps.size()-1).getTargetLR();
 		return targetLRid; 
 	}
 
@@ -114,7 +113,7 @@ public class LookupPath extends ComponentNode {
 
 	public int getTargetLFID() {
 		if(targetLFid == 0)
-			targetLFid = steps.get(0).getTargetLF();
+			targetLFid = steps.get(steps.size()-1).getTargetLF();
 		return targetLFid; 
 	}
 
