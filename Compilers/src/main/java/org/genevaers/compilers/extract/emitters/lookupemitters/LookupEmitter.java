@@ -110,7 +110,7 @@ public class LookupEmitter extends CodeEmitter {
                 kslk.setFileId(lookup.getTargetLFID());
                 ExtractBaseAST.getLtEmitter().addToLogicTable(kslk);
             } else {
-                if(lookup.hasExit()) {
+                if(step.hasExit()) {
                     lusm = emitLUEX(step, lookup);               
                 } else {
                     lusm = emitLUSM(step, lookup);               
@@ -145,7 +145,7 @@ public class LookupEmitter extends CodeEmitter {
     private LogicTableRE emitLUEX(LookupPathStep step, LookupPath lookup) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         luex = (LogicTableRE) ltFact.getLUEX();
-        luex.setReadExitId(lookup.getReadExitId());
+        luex.setReadExitId(step.getReadExitId());
         ExtractBaseAST.getLtEmitter().addToLogicTable(luex);
         if(step.getStepNum() < lookup.getNumberOfSteps()) {
             int truePos = ExtractBaseAST.getLtEmitter().getNumberOfRecords();
