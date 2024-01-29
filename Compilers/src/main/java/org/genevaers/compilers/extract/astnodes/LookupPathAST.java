@@ -30,12 +30,14 @@ import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
+import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.UniqueKeyData;
 import org.genevaers.repository.jltviews.UniqueKeys;
 
@@ -181,6 +183,13 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
     public LookupEmitter getLkEmitter() {
         return lkEmitter;
+    }
+
+    public void resolveLookup(LookupPath lk) {
+        JLTView jv = Repository.getJoinViews().addJLTView(lookup);
+        if(currentViewColumnSource != null) {
+            jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
+        }
     }
 
 
