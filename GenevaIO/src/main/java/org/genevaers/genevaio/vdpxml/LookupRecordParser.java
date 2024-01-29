@@ -55,6 +55,7 @@ public class LookupRecordParser extends BaseParser {
 		switch (qName.toUpperCase()) {
 			case "STEP":
 				stepNumber = Integer.parseInt(attributes.getValue("Number"));
+				source = true;
 				break;
 			case "SOURCE":
 				source = true;
@@ -86,14 +87,16 @@ public class LookupRecordParser extends BaseParser {
 				lookupKey.setFieldId(Integer.parseInt(attributes.getValue("ID")));
 				break;
 			case "LOGICALFILEREF":
-				int lfid = Integer.parseInt(attributes.getValue("ID"));
-				lookupStep.setTargetLFid(lfid);
-				Iterator<LookupPathKey> ki = lookupStep.getKeyIterator();
-				while (ki.hasNext()) {
-					LookupPathKey k = ki.next();
-					k.setTargetlfid(lfid);
-					k.setTargetLrId(targLrId);
-					k.setSourceLrId(srcLrId);
+				if(source == false) {
+					int lfid = Integer.parseInt(attributes.getValue("ID"));
+					lookupStep.setTargetLFid(lfid);
+					Iterator<LookupPathKey> ki = lookupStep.getKeyIterator();
+					while (ki.hasNext()) {
+						LookupPathKey k = ki.next();
+						k.setTargetlfid(lfid);
+						k.setTargetLrId(targLrId);
+						k.setSourceLrId(srcLrId);
+					}
 				}
 				break;
 			case "TARGET":

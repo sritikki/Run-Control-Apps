@@ -60,6 +60,7 @@ public class ViewColumnSourceParser extends BaseParser {
 				break;
 		}
 	}		
+	
 	@Override
 	public void addElement(String name, String text) {
 		switch (name.toUpperCase()) {
