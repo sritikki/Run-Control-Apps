@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract;
 
+import java.util.Iterator;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -162,10 +164,15 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
 	@Override public ExtractBaseAST visitExprBoolOr(GenevaERSParser.ExprBoolOrContext ctx) { 
-        if(ctx.getChildCount() == 3) { //Must be an actual OR node
+        if(ctx.getChildCount() > 1) { //Must be an actual OR node
             BooleanOrAST boolOrNode = (BooleanOrAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLOR);
-            boolOrNode.addChildIfNotNull(visit(ctx.children.get(0))); //LHS operand
-            boolOrNode.addChildIfNotNull(visit(ctx.children.get(2))); //RHS Operand
+            Iterator<ParseTree> ci = ctx.children.iterator();
+            while (ci.hasNext()) {
+                ParseTree ctxEntry = ci.next();
+                if(! ctxEntry.getText().equalsIgnoreCase("OR")) {
+                    boolOrNode.addChildIfNotNull(visit(ctxEntry));
+                }
+            }
             return boolOrNode; 
         } else {
             //Just passing through
@@ -231,10 +238,21 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
   
 
 	@Override public ExtractBaseAST visitExprBoolAnd(GenevaERSParser.ExprBoolAndContext ctx) { 
-        if(ctx.getChildCount() == 3) { //Must be an actual AND node
+        if(ctx.getChildCount() > 1) { 
+            Iterator<ParseTree> ci = ctx.children.iterator();
             BooleanAndAST boolAndNode = (BooleanAndAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLAND);
-            boolAndNode.addChildIfNotNull(visit(ctx.children.get(0))); //LHS operand
-            boolAndNode.addChildIfNotNull(visit(ctx.children.get(2))); //RHS Operand
+            int childNum = 0;
+            while (ci.hasNext()) {
+                ParseTree ctxEntry = ci.next();
+                if(ctxEntry.getText().equalsIgnoreCase("AND") && childNum > 2) {
+                    BooleanAndAST nextboolAndNode = (BooleanAndAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLAND);
+                    nextboolAndNode.addChildIfNotNull(boolAndNode);
+                    boolAndNode = nextboolAndNode;
+                } else {
+                    boolAndNode.addChildIfNotNull(visit(ctxEntry));
+                }
+                childNum ++;
+            }
             return boolAndNode; 
         } else {
             //Just passing through
@@ -475,6 +493,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         LookupPath lookup =  Repository.getLookups().get(lkname);
 		if(lookup != null) {
             lkRef.setLookup(lookup);
+            lkRef.resolveLookup(lookup);
 		} else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
             err.addError("Unknown Lookup " + lkname);
