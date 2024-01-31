@@ -49,10 +49,9 @@ public class VDPHandler extends DefaultHandler{
 				currentParser = new CRRecordParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
 				break;
-			case "Partition":
-				logger.atFine().log("Parsing Partitions");
-				currentParser = new PhysicalFileRecordParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+			case "Partitions":
+					logger.atFine().log("Parsing Partitions");
+					currentParser = new PhysicalFileRecordParser();
 				break;
 			// case "ExitRef":
 			// 	int exitRef = Integer.parseInt(attributes.getValue("ID"));
@@ -111,28 +110,6 @@ public class VDPHandler extends DefaultHandler{
 				currentLookupID = Integer.parseInt(attributes.getValue(0));
 				currentParser.setComponentID(currentLookupID);
 				break;
-			// case "Step":
-			// 	logger.atFine().log("Step");
-			// 	currentParser = new LookupStepParser();
-			// 	currentStepParser = (LookupStepParser) currentParser;
-			// 	((LookupStepParser)currentParser).setLookupID(currentLookupID);
-			// 	((LookupStepParser)currentParser).setStepNumber(Integer.parseInt(attributes.getValue(0)));
-			// 	break;
-			// case "KeyField":
-			// 	logger.atFine().log("KeyField");
-			// 	currentParser =new LookupSourceKeyParser();
-			// 	currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
-			// 	((LookupSourceKeyParser)currentParser).setSequencNumber(Integer.parseInt(attributes.getValue(1)));
-			// 	((LookupSourceKeyParser)currentParser).setLookupID(currentLookupID);
-			// 	break;
-			// case "Target":
-			// 	logger.atFine().log("Target");
-			// 	currentParser = currentStepParser;
-			// 	break;
-			// case "FieldRef":
-			// 	logger.atFine().log("FieldRef");
-			// 	((LookupSourceKeyParser)currentParser).setFieldId(Integer.parseInt(attributes.getValue(0)));
-			// 	break;
 			case "Exit":
 				logger.atFine().log("Exit");
 				currentParser = new ExitRecordParser();

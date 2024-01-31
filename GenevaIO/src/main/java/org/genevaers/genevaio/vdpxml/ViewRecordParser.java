@@ -1,8 +1,8 @@
 package org.genevaers.genevaio.vdpxml;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.XMLEvent;
+import java.util.Iterator;
+
+
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -22,18 +22,34 @@ import javax.xml.stream.events.XMLEvent;
  */
 
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.OutputFile;
+import org.genevaers.repository.components.PhysicalFile;
+import org.genevaers.repository.components.UserExit;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
-
-import difflib.StringUtills;
+import org.xml.sax.Attributes;
 
 public class ViewRecordParser extends BaseParser {
 
 	private ViewDefinition vd;
 	private ViewNode vn;
+	private OutputFile outfile;
+
+	@Override
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		switch (qName.toUpperCase()) {
+			case "PARTITION":
+				int id = Integer.parseInt(attributes.getValue("ID"));
+				generateExtractOutputLogic(id);
+				break;
+			default:
+				break;
+		}
+	}		
 
 	@Override
 	public void addElement(String name, String text) {
@@ -122,4 +138,62 @@ public class ViewRecordParser extends BaseParser {
     public void setContolRecord(int crid) {
 		vd.setControlRecordId(crid);
     }
+
+	private void generateExtractOutputLogic(int id) {
+		String writeLogic = "";
+		switch(vn.getViewDefinition().getViewType()) {
+			case COPY:
+				if(id > 0) {
+					writeLogic = String.format("WRITE(SOURCE=INPUT, %s", getFileParm(vn, id));
+				} else {
+					writeLogic = "WRITE(SOURCE=INPUT,DEST=DEFAULT)";
+				}
+				break;
+			case SUMMARY:
+			case DETAIL:
+				writeLogic = String.format("WRITE(SOURCE=VIEW,DEST=EXT=%03d", vn.getViewDefinition().getExtractFileNumber());
+				writeLogic += getWriteParm(vn) + ")";
+				break;
+			case EXTRACT:
+				if(vn.getOutputFile().getComponentId() > 0) {
+					writeLogic = String.format("WRITE(SOURCE=DATA, %s", getFileParm(vn, id));
+				} else {
+					writeLogic = "WRITE(SOURCE=DATA,DEST=DEFAULT)";
+				}
+				break;
+			default:
+				//Error case
+				break;
+			
+		}
+		Iterator<ViewSource> vsi = vn.getViewSourceIterator();
+		while (vsi.hasNext()) {
+			ViewSource vs = vsi.next();
+			vs.setExtractOutputLogic(writeLogic);
+		}
+	}
+
+	private String getWriteParm(ViewNode vn) {
+		String exitStr = "";
+		int exitID = vn.getViewDefinition().getWriteExitId();
+		if (exitID != 0) {
+			UserExit ex = Repository.getUserExits().get(exitID);
+			String wparms = vn.getViewDefinition().getWriteExitParams();
+			if(wparms.length() > 0) {
+				exitStr += String.format(",USEREXIT=({%s, \"%s\"})", ex.getName(), wparms);
+			} else {
+				exitStr += String.format(",USEREXIT=({%s})", ex.getName());
+			}
+		}
+		return exitStr;
+	}
+
+	private String getFileParm(ViewNode vn, int partId) {
+		String fileStr;
+		PhysicalFile pf = Repository.getPhysicalFiles().get(partId);
+		fileStr = "DEST=FILE={" + pf.getLogicalFilename() + "." + pf.getName() + "}" + getWriteParm(vn);
+		return fileStr;
+	}
+	
+
 }

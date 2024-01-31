@@ -45,6 +45,9 @@ public class PhysicalFileRecordParser extends BaseParser {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
 		switch (qName.toUpperCase()) {
+			case "PARTITION":
+				componentID = Integer.parseInt(attributes.getValue(0));
+				break;
 			case "EXITREF":
 				pf.setReadExitID(Integer.parseInt(attributes.getValue("ID")));
 				break;
