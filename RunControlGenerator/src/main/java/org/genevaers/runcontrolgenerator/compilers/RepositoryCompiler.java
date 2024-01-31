@@ -312,16 +312,30 @@ public class RepositoryCompiler {
 	}
 
 	private void compileExtractOutputLogic(ViewSourceAstNode vsnode) {
-		ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
-		vsnode.addChildIfNotNull(eo);
-		ExtractOutputCompiler eoc = new ExtractOutputCompiler();
-		eoc.setViewSource(vsnode.getViewSource());
-		try {
-			eoc.processLogicAndAddNodes(eo);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		boolean runEOC = true;
+		if(rcc.getInputType().equalsIgnoreCase("VDPXML")) {
+			if(noWriteStatementMissing(vsnode)) {
+				runEOC = false; //There must have been a write in the last column
+			}
+		}
+
+		//What if the extract output logic does not contain a write?
+		if(runEOC) {
+			ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
+			vsnode.addChildIfNotNull(eo);
+			ExtractOutputCompiler eoc = new ExtractOutputCompiler();
+			eoc.setViewSource(vsnode.getViewSource());
+			try {
+				eoc.processLogicAndAddNodes(eo);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+	}
+
+	private boolean noWriteStatementMissing(ViewSourceAstNode vsnode) {
+		return (ExtractBaseAST.getLastColumnWithAWrite() == vsnode.getNumberOfColumns());
 	}
 
 	private void compileColumn(ViewColumnSourceAstNode vcsn) {

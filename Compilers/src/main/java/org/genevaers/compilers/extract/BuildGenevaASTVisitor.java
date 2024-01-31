@@ -576,7 +576,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitWriteStatement(GenevaERSParser.WriteStatementContext ctx) {
         WriteASTNode wr = (WriteASTNode)ASTFactory.getNodeOfType(ASTFactory.Type.WRITE);
+        ExtractBaseAST.setLastColumnWithAWrite();
         wr.setViewSource(viewSource);
+
         //Should we process here to see what the child nodes are?
         //Or just let the nodes do their own thing and sort it at emit time?
         for(int c=0; c<ctx.getChildCount(); c++) {

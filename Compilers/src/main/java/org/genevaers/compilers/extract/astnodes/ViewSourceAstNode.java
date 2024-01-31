@@ -137,4 +137,8 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
         return areaValues;
     }
 
+    public int getNumberOfColumns() {
+        return vs.getValuesOfColumnSourcesByNumber().size();
+    }
+
 }
