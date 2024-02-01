@@ -351,10 +351,25 @@ public class LookupEmitter extends CodeEmitter {
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
+        //This stuff should be manage at compile time?
+        //The warning generation and rewrite
         if(key.getValue().length() > 0) {
-            arg.setValue(new Cookie(key.getValue()));
+            if(key.getDatatype() == DataType.ALPHANUMERIC) {
+                arg.setValue(new Cookie(key.getValue()));
+            } else {
+                if(StringUtils.isNumeric(key.getValue())) {
+                    arg.setValue(new Cookie(key.getValue()));
+                } else {
+                    arg.setValue(new Cookie("0"));
+                }
+            }
         } else {
-            Cookie c = new Cookie(StringUtils.repeat(" ", key.getFieldLength()));
+            Cookie c;
+            if(key.getDatatype() == DataType.ALPHANUMERIC) {
+                c = new Cookie(StringUtils.repeat(" ", key.getFieldLength()));
+            } else {
+                c = new Cookie("0");
+            }
             arg.setValue(c);
         }
         arg.setPadding2("");  //This seems a little silly
