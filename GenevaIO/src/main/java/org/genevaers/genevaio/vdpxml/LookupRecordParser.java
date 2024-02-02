@@ -134,7 +134,7 @@ public class LookupRecordParser extends BaseParser {
 					lookupKey.setValueLength(s);
 				}
 				break;
-			case "DECIMALCNT":
+			case "DECIMALPLACES":
 				s = (short) Integer.parseInt(text);
 				lookupKey.setDecimalCount(s);
 				break;

@@ -89,7 +89,7 @@ public class ViewColumnRecordParser extends BaseParser {
 				s = (short) Integer.parseInt(text.trim());
 				vc.setOrdinalPosition(s);
 				break;
-			case "DECIMALCNT":
+			case "DECIMALPLACES":
 				s = (short) Integer.parseInt(text.trim());
 				vc.setDecimalCount(s);
 				break;

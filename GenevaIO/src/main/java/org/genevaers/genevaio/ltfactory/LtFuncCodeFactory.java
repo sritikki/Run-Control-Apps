@@ -1711,6 +1711,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
         arg.setSignedInd(key.isSigned());
+        arg.setRounding(key.getRounding());
         arg.setValue(new Cookie(key.getValue()));
         arg.setPadding2("");  //This seems a little silly
     }

@@ -43,6 +43,10 @@ import com.google.common.flogger.FluentLogger;
 
 /**
  * There be dragons here!
+ * A lookup in the workbench defines the Path to the reference data. 
+ * But it is only once we process views that use the reference data do we know how to build the JLT.
+ * Amd this class acts as an accumulator of that data
+ * 
  * So in an attempt to tame the beast I am creating this class
  * and throwing out some words (rather a lot... take heed).
  * 
@@ -511,6 +515,17 @@ public class JoinViewsManager {
 	}
 
 	public JLTView getJltViewFromKeyField(int keyfld) {
-		return keyFieldsToJoin.get(keyfld);
+		LRField kf = Repository.getFields().get(keyfld);
+		int lridOfkf = kf.getLrID();
+		Integer lfOfKey = lr2lf.get(lridOfkf);
+		JLTView jv;
+		if(Repository.getLogicalRecords().get(lridOfkf).getLookupExitID() == 0) {
+			JLTViewMap<ReferenceJoin> jvs = referenceDataSet.get(lfOfKey);
+			jv = jvs.getJLTView(lridOfkf, false);
+		} else {
+			jv = exitJoins.getJLTView(lridOfkf, false);
+		}
+		jv.setSourceLFID(lfOfKey);
+		return jv;
 	}
 }

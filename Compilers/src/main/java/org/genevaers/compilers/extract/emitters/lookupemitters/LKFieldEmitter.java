@@ -20,6 +20,7 @@ package org.genevaers.compilers.extract.emitters.lookupemitters;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
@@ -30,7 +31,7 @@ public class LKFieldEmitter extends LookupEmitter {
 
     private int srcLFID;
 
-    public LogicTableF2 emit(LookupPathKey lkpkey) {
+    public LogicTableF2 emit(LookupPathKey lkpkey, int srcLrid) {
         // There should be a valid converson check done
 
 
@@ -42,15 +43,18 @@ public class LKFieldEmitter extends LookupEmitter {
         } else {
             //we need the the mapped field not the original
             int keyfieldLR = Repository.getFields().get(lkpkey.getFieldId()).getLrID();
-            if(keyfieldLR != lkpkey.getSourceLrId()) {
+            //does key field come from the event LR?
+            if(keyfieldLR == srcLrid) {
                 lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
-            } else {
+            } else { //Keyfield is from a previous step
                 JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId());
                 LRField redfld = jltvOfTargetSourceStep.getRedFieldFromLookupField(lkpkey.getFieldId());
                 lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
-                if(redfld != null)
-                    //lk.getArg1().setStartPosition((short)(redfld.getStartPosition() - jltv.getKeyLength())); // Remap to RED LR position
-                    lk.getArg1().setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
+                if(redfld != null) {
+                    LogicTableArg arg1 = lk.getArg1();
+                    arg1.setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
+                    arg1.setLogfileId(jltvOfTargetSourceStep.getSourceLF());
+                }
             }
         }
         return lk;
