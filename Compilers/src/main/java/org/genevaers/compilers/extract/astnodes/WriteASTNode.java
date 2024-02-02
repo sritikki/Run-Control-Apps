@@ -49,6 +49,7 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
     @Override
     public void emit() {
         boolean extractWrite = true;
+        short savedSeqNum = ltEmitter.getSuffixSeqNbr();
         //The correct function code to generate comes from the Source
         //Yeah, the source...
         //So we should find the child Source node and figure out what to generate
@@ -124,6 +125,7 @@ public class WriteASTNode extends ExtractBaseAST implements EmittableASTNode {
         }
         wr.setSourceSeqNbr((short) ltEmitter.getLogicTable().getNumberOfRecords());
         ltEmitter.addToLogicTable(wr);
+        ltEmitter.setSuffixSeqNbr(savedSeqNum);
     }
 
     private void getPFFromChildNode() {
