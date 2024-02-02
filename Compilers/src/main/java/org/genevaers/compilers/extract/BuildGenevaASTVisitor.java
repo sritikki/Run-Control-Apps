@@ -83,6 +83,7 @@ import org.genevaers.grammar.GenevaERSParser.SymbollistContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
@@ -161,6 +162,22 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             }
         }
         return casnode;
+    }
+
+	@Override public ExtractBaseAST visitColumnRefAssignment(GenevaERSParser.ColumnRefAssignmentContext ctx) { 
+        ColumnAssignmentASTNode colRefAss = (ColumnAssignmentASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNASSIGNMENT);
+        TerminalNode c = ctx.COL_REF();
+        colRefAss.addChildIfNotNull(visit(ctx.getChild(2)));
+        if(c.getSymbol().getType() == GenevaERSParser.COL_REF) {
+            String col = c.getText();
+            String[] bits = col.split("\\.");
+            ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+            ViewColumn vc = view.getColumnNumber(Integer.parseInt(bits[1])); 
+            ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(vc); // Change this to make column type more specific
+            colNode.setViewColumn(vc);
+            colRefAss.addChildIfNotNull(colNode);
+        }
+        return colRefAss;
     }
 
 	@Override public ExtractBaseAST visitExprBoolOr(GenevaERSParser.ExprBoolOrContext ctx) { 
