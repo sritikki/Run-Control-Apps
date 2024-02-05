@@ -350,6 +350,7 @@ public class LookupEmitter extends CodeEmitter {
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
+        arg.setSignedInd(key.isSigned());
         //This stuff should be manage at compile time?
         //The warning generation and rewrite
         if(key.getValue().length() > 0) {
