@@ -39,6 +39,7 @@ public class ViewColumnRecordParser extends BaseParser {
 	private ViewNode currentViewNode;
 
 	private int seqNum;
+	private boolean formalDetails = false;
 
 	@Override
 	public void addElement(String name, String text) {
@@ -46,6 +47,7 @@ public class ViewColumnRecordParser extends BaseParser {
 			case "NAME":
 				currentViewNode = Repository.getViews().get(currentViewId);
 				vc = currentViewNode.getColumnByID(componentID);
+				formalDetails = true;
 				break;
 			case "AREA":
 				vc = new ViewColumn();
@@ -64,6 +66,7 @@ public class ViewColumnRecordParser extends BaseParser {
 				vc.setExtractAreaPosition((short) 1);
 				vc.setStartPosition((short) 1);
 				currentViewNode.addViewColumn(vc);
+				formalDetails = false;
 				break;
 			case "DATATYPE":
 				vc.setDataType(DataType.fromdbcode(text.trim()));
@@ -78,8 +81,11 @@ public class ViewColumnRecordParser extends BaseParser {
 				break;
 			case "POSITION":
 				short s = (short) Integer.parseInt(text.trim());
-				vc.setStartPosition(s);
-				vc.setExtractAreaPosition(s);
+				if(formalDetails) {
+					vc.setStartPosition(s);
+				} else {
+					vc.setExtractAreaPosition(s);
+				}
 				break;
 			case "LENGTH":
 				s = (short) Integer.parseInt(text.trim());
