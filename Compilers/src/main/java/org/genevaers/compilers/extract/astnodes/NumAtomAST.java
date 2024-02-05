@@ -40,8 +40,27 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
     }
 
     public void setValue(String numString) {
-        numStr = stripTrailingZeros(numString);
+        numStr = stripLeadingingZeros(numString);
+        numStr = stripTrailingZeros(numStr);
         value = Float.parseFloat(numString);
+    }
+
+    private String stripLeadingingZeros(String numString) {
+        boolean notDone = true;
+        int ndx = 0;
+        int end = numString.length() - 1;
+        int dpndx = numString.indexOf('.');
+        if(dpndx > 0) {
+            end = dpndx - 1;
+        }
+        while (notDone && ndx != end ) {
+            if(numString.charAt(ndx) != '0') {
+                notDone = false; 
+            } else {
+                ndx++;
+            }
+        }
+        return numString.substring(ndx);
     }
 
     private String stripTrailingZeros(String numString) {
