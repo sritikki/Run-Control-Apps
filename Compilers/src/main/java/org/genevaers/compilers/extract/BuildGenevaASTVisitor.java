@@ -561,7 +561,10 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitSymbollist(GenevaERSParser.SymbollistContext ctx) { 
         SymbolList symList = (SymbolList) ASTFactory.getNodeOfType(ASTFactory.Type.SYMBOLLIST);
-        symList.addChildIfNotNull(visitChildren(ctx)); 
+        Iterator<ParseTree> ci = ctx.children.iterator();
+        while (ci.hasNext()) {
+            symList.addChildIfNotNull(visit(ci.next()));             
+        }
         return symList;
     }
 
