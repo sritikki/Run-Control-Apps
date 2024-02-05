@@ -105,7 +105,7 @@ public class ViewRecordParser extends BaseParser {
 			case "ENABLEAGGREGATION":
 				vd.setExtractSummarized(text.equals("0") ? false : true);
 				break;
-			case "EXTRACTSUMMARYBUF":
+			case "AGGREGATIONRECORDS":
 				vd.setMaxExtractSummaryRecords(Integer.parseInt(text.trim()));
 				break;
 			case "OUTPUTMAXRECCNT":
