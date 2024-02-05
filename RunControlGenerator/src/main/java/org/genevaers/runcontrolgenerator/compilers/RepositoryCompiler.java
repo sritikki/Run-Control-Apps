@@ -269,6 +269,7 @@ public class RepositoryCompiler {
 			logger.atInfo().log("Compile view %d source %d", vs.getViewId(), vs.getSequenceNumber());
 			vsnode.setViewSource(vs);
 			lfNode.addChildIfNotNull(vsnode);
+			ExtractBaseAST.clearLastColumnWithAWrite();
 			if(vsnode.hasExtractFilterText()) {
 				addViewSourceNodes(vsnode);
 			}

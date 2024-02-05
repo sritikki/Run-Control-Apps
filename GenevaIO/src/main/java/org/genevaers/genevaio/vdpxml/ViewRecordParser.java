@@ -46,6 +46,10 @@ public class ViewRecordParser extends BaseParser {
 				int id = Integer.parseInt(attributes.getValue("ID"));
 				generateExtractOutputLogic(id);
 				break;
+			case "PARTITIONREF":
+				int pid = Integer.parseInt(attributes.getValue("ID"));
+				generateExtractOutputLogic(pid);
+				break;
 			default:
 				break;
 		}
@@ -156,7 +160,9 @@ public class ViewRecordParser extends BaseParser {
 				break;
 			case EXTRACT:
 				if(vn.getOutputFile().getComponentId() > 0) {
-					writeLogic = String.format("WRITE(SOURCE=DATA, %s", getFileParm(vn, id));
+					writeLogic = String.format("WRITE(SOURCE=DATA, %s)", getFileParm(vn, id));
+				} else if(Repository.getPhysicalFiles().get(id) != null) {
+					writeLogic = String.format("WRITE(SOURCE=DATA, %s)", getFileParm(vn, id));
 				} else {
 					writeLogic = "WRITE(SOURCE=DATA,DEST=DEFAULT)";
 				}

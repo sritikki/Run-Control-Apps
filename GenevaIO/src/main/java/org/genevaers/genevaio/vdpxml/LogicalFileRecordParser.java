@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 public class LogicalFileRecordParser extends BaseParser {
 
 	private LogicalFile lf;
+	private PhysicalFile pf;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -42,8 +43,9 @@ public class LogicalFileRecordParser extends BaseParser {
 				logger.atFine().log("Logical Files");
 				String a0 = attributes.getValue("seq");
 				int pfid = Integer.parseInt(attributes.getValue("ID"));
-				PhysicalFile pf = Repository.getPhysicalFiles().get(pfid);
+				pf = Repository.getPhysicalFiles().get(pfid);
 				lf.addPF(pf);
+				pf.setLogicalFilename(lf.getName());
 				break;
 			default:
 				break;
