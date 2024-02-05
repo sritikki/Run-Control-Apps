@@ -32,7 +32,7 @@ import org.genevaers.repository.components.enums.DataType;
 
 public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Assignable, CalculationSource{
 
-    private int value;
+    private float value;
     private String numStr;
 
     public NumAtomAST() {
@@ -40,11 +40,28 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
     }
 
     public void setValue(String numString) {
-        numStr = numString;
+        numStr = stripTrailingZeros(numString);
+        value = Float.parseFloat(numString);
+    }
+
+    private String stripTrailingZeros(String numString) {
+        int dpndx = numString.indexOf('.');
+        if(dpndx > 0) {
+            boolean allZeros = true;
+            for(int i=dpndx+1; i<numString.length(); i++) {
+                if(numString.charAt(i) != '0') {
+                    allZeros = false;
+                }
+            }
+            if(allZeros) {
+                return numString.substring(0,dpndx);
+            }
+        }
+        return numString;
     }
 
     public int getValue() {
-        return value;
+        return Math.round(value);
     }
 
     @Override
