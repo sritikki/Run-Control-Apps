@@ -84,7 +84,7 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
          switch (currentViewColumn.getExtractArea()) {
              case SORTKEY:
                  ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
-                 ((ViewSourceAstNode) getParent()).getAreaValues().addSkLen(sk.getSkFieldLength());
+                 ((ViewSourceAstNode) getParent()).getAreaValues().addSkLen(currentViewColumn.getFieldLength());
                  break;
              case SORTKEYTITLE:
                  break;

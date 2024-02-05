@@ -22,6 +22,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.PhysicalFile;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
@@ -100,6 +101,9 @@ public class ViewSortKeyRecordParser extends BaseParser {
 				vsk.setColumnId(Integer.parseInt(attributes.getValue("ID")));
 				vsk.setSequenceNumber((short)seqNum);
 				vsk.setSortKeyDataType(DataType.ALPHANUMERIC);
+				ViewColumn vc = Repository.getViews().get(currentViewId).getColumnByID(Integer.parseInt(attributes.getValue("ID")));
+				vsk.setSkFieldLength(vc.getFieldLength());
+				vsk.setSkStartPosition(vc.getExtractAreaPosition());
 				setDefault(vsk);
 				Repository.getViews().get(currentViewId).addViewSortKey(vsk);
 				break;

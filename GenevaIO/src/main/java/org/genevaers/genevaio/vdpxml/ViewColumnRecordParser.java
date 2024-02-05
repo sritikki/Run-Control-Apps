@@ -93,11 +93,11 @@ public class ViewColumnRecordParser extends BaseParser {
 				s = (short) Integer.parseInt(text.trim());
 				vc.setDecimalCount(s);
 				break;
-			case "ROUNDING":
+			case "SCALEFACTOR":
 				s = (short) Integer.parseInt(text);
 				vc.setRounding(s);
 				break;
-			case "FLDCONTENTCD":
+			case "DATEFORMAT":
 				vc.setDateCode(DateCode.fromdbcode(text.trim()));
 				break;
 			case "ALIGNMENT":
@@ -115,10 +115,6 @@ public class ViewColumnRecordParser extends BaseParser {
 			case "SPACESBEFORECOLUMN":
 				s = (short) Integer.parseInt(text.trim());
 				vc.setSpacesBeforeColumn(s);
-				break;
-			case "EXTRAREAPOSITION":
-				s = (short) Integer.parseInt(text);
-				vc.setExtractAreaPosition(s);
 				break;
 			case "SUBTLABEL":
 				vc.setSubtotalPrefix(text);

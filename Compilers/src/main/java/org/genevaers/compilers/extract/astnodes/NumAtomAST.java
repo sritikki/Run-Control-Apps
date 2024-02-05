@@ -24,6 +24,10 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
 
 public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Assignable, CalculationSource{
@@ -61,7 +65,12 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
             ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(numStr, currentViewColumn));
         } else {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getSKC(numStr, currentViewColumn));
+            LTRecord ltr = (LTRecord)fcf.getSKC(numStr, currentViewColumn);
+            ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+            LogicTableArg arg = ((LogicTableF1)ltr).getArg();
+            arg.setFieldLength(sk.getSkFieldLength());
+            arg.setStartPosition(sk.getSkStartPosition());
+            ltEmitter.addToLogicTable(ltr);
         }
         return null;
     }

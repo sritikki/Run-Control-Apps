@@ -3,8 +3,11 @@ package org.genevaers.compilers.extract.astnodes;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewSortKey;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -63,7 +66,10 @@ public class SKColumnAST extends ColumnAST {
     @Override
     public LTFileObject getConstLtEntry(String value) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        return fcf.getSKC(value, vc);
+        ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
+        LogicTableF1 skc = (LogicTableF1) fcf.getSKC(value, vc);
+        skc.getArg().setFieldLength(sk.getSkFieldLength());
+        return skc;
     }
     
 }
