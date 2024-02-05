@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract.emitters.lookupemitters;
 
+import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -20,11 +22,13 @@ package org.genevaers.compilers.extract.emitters.lookupemitters;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupPathKey;
+import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.jltviews.JLTView;
 
 public class LKFieldEmitter extends LookupEmitter {
@@ -57,6 +61,7 @@ public class LKFieldEmitter extends LookupEmitter {
                 }
             }
         }
+        EmitterArgHelper.checkAndFixDateCodes(lk);
         return lk;
     }
 

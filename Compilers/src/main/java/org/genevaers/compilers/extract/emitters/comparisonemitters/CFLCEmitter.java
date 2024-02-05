@@ -39,7 +39,6 @@ public class CFLCEmitter extends ComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
         
-
         lkf.getLkEmitter().emitJoin(lkf, false);
         LogicTableF1 cflc = (LogicTableF1) ltFact.getCFLC(lkf.getRef(), ((GenevaERSValue)rhs).getValueString(), op);
         LogicTableArg arg = cflc.getArg();
@@ -49,7 +48,7 @@ public class CFLCEmitter extends ComparisonEmitter{
         arg.setLrId(lkf.getRef().getLrID());
         arg.setFieldId(lkf.getRef().getComponentId());
         arg.setStartPosition(redFld.getStartPosition());
-        arg.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
+        arg.setFieldContentId(redFld.getDateTimeFormat());
         cflc.setArg(arg);
 
         return cflc;  
