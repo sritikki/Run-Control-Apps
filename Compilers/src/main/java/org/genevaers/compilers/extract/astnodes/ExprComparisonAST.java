@@ -140,9 +140,12 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.RUNDATE, ASTFactory.Type.LRFIELD), new CFCEEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.FISCALDATE, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.DATEFUNC, ASTFactory.Type.LRFIELD), new CFCEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.FISCALDATE, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.DATEFUNC, ASTFactory.Type.LOOKUPFIELDREF), new CFCLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.PRIORLRFIELD), new CFCPEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.STRINGATOM, ASTFactory.Type.PRIORLRFIELD), new CFCPEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.NUMATOM, ASTFactory.Type.COLUMNREF), new CFCXEmitter());
@@ -166,6 +169,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.NUMATOM), new CFLCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.DATEFUNC), new CFLCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.RUNDATE), new CFLCEmitter());
+        emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.FISCALDATE), new CFLCEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.LRFIELD), new CFLEEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.LOOKUPFIELDREF), new CFLLEmitter());
         emitters.put(new ComparisonKey(ASTFactory.Type.LOOKUPFIELDREF, ASTFactory.Type.PRIORLRFIELD), new CFLPEmitter());
@@ -313,9 +317,22 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
             DateCode lhsDate = DateCode.NONE;
             DateCode rhsDate = DateCode.NONE;
             String ds = "";
-            if(((LTRecord)ltfo).getFunctionCode().equals("CFEC") ) {
+            String fc = ((LTRecord)ltfo).getFunctionCode();
+            if(fc.equals("CFEC")) {
                 fld = ((FieldReferenceAST) lhs);
                 lhsDate = fld.getDateCode();
+                if(rhs.getType() == ASTFactory.Type.DATEFUNC) {
+                    ds = ((DateFunc)rhs).getNormalisedDate();
+                    rhsDate = ((DateFunc)rhs).getDateCode();
+                } else if(rhs.getType() == ASTFactory.Type.FISCALDATE) {
+                    //rhsDate = ((FiscaldateAST)rhs).getDateCode();
+                    rhsDate = DateCode.HHMMSS; //Frig to leave code as it is
+                } else if(rhs.getType() ==  ASTFactory.Type.RUNDATE) {
+                    rhsDate = ((RundateAST)rhs).getDateCode();
+                }
+            } else if(fc.equals("CFLC")) {
+                LookupFieldRefAST lkfld = ((LookupFieldRefAST) lhs);
+                lhsDate = lkfld.getDateCode();
                 if(rhs.getType() == ASTFactory.Type.DATEFUNC) {
                     ds = ((DateFunc)rhs).getNormalisedDate();
                     rhsDate = ((DateFunc)rhs).getDateCode();
