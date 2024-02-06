@@ -38,17 +38,25 @@ public class ViewRecordParser extends BaseParser {
 	private ViewDefinition vd;
 	private ViewNode vn;
 	private OutputFile outfile;
+	private int exitID;
+	private int prefid;
+	private int pid;
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
 		switch (qName.toUpperCase()) {
 			case "PARTITION":
-				int id = Integer.parseInt(attributes.getValue("ID"));
-				generateExtractOutputLogic(id);
+				pid = Integer.parseInt(attributes.getValue("ID"));
+				generateExtractOutputLogic(pid);
 				break;
 			case "PARTITIONREF":
-				int pid = Integer.parseInt(attributes.getValue("ID"));
-				generateExtractOutputLogic(pid);
+				prefid = Integer.parseInt(attributes.getValue("ID"));
+				generateExtractOutputLogic(prefid);
+				break;
+			case "EXITREF":
+				exitID = Integer.parseInt(attributes.getValue("ID"));
+				vd.setWriteExitId(exitID);
+				generateExtractOutputLogicWithWrite(exitID);
 				break;
 			default:
 				break;
@@ -111,7 +119,7 @@ public class ViewRecordParser extends BaseParser {
 			case "OUTPUTMAXRECCNT":
 				vd.setOutputMaxRecCount(Integer.parseInt(text.trim()));
 				break;
-			case "WRITEEXITID":
+			case "WRITEEXIT":
 				vd.setWriteExitId(Integer.parseInt(text.trim()));
 				break;
 			case "WRITEEXITSTARTUP":
@@ -188,7 +196,7 @@ public class ViewRecordParser extends BaseParser {
 			if(wparms.length() > 0) {
 				exitStr += String.format(",USEREXIT=({%s, \"%s\"})", ex.getName(), wparms);
 			} else {
-				exitStr += String.format(",USEREXIT=({%s})", ex.getName());
+				exitStr += String.format(",USEREXIT={%s}", ex.getName());
 			}
 		}
 		return exitStr;
@@ -200,6 +208,15 @@ public class ViewRecordParser extends BaseParser {
 		fileStr = "DEST=FILE={" + pf.getLogicalFilename() + "." + pf.getName() + "}" + getWriteParm(vn);
 		return fileStr;
 	}
-	
+
+	private void generateExtractOutputLogicWithWrite(int exitID) {
+		if(pid != 0) {
+			generateExtractOutputLogic(pid);
+		} else if (prefid != 0) {
+			generateExtractOutputLogic(prefid);
+		} else {
+			//In trouble here
+		}
+	}
 
 }
