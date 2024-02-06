@@ -205,17 +205,23 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     public void emitLookupDefault() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         // Emit goto followed by correct DTC
+        LTRecord lkEntry = ltEmitter.getLogicTable().getLastEntry();
         LogicTableF0 ltgoto = (LogicTableF0) fcf.getGOTO();
         ltEmitter.addToLogicTable((LTRecord) ltgoto);
 
         // we could let the fcf auto correc the DT type base on the column?
+        
         switch (currentViewColumn.getExtractArea()) {
             case AREADATA:
-                LogicTableF1 dtc;
-                if (currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                    dtc = (LogicTableF1)fcf.getDTC(" ", currentViewColumn);
-                } else {
-                    dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
+                LogicTableF1 dtc = null;
+                if(lkEntry.getFunctionCode().equals("DTL")) {
+                    DataType dtlDataType = ((LogicTableF2)lkEntry).getArg2().getFieldFormat();
+                    if (dtlDataType == DataType.ALPHANUMERIC) {
+                        dtc = (LogicTableF1)fcf.getDTC(" ", currentViewColumn);
+                    } else {
+                        dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
+                    }
+                    dtc.getArg().setFieldFormat(dtlDataType);
                 }
                 if(currentViewColumn.getDateCode() == ref.getDateTimeFormat()) {
                     dtc.getArg().setFieldContentId(DateCode.NONE);
