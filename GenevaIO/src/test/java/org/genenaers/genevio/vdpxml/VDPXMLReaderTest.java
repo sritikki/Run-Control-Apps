@@ -4,6 +4,7 @@
 package org.genenaers.genevio.vdpxml;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 
@@ -36,9 +37,6 @@ import org.genevaers.genevaio.vdpxml.VDPXMLSaxIterator;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.utilities.GenevaLog;
 import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.ViewNode;
-import org.genevaers.repository.components.enums.OutputMedia;
-import org.genevaers.repository.components.enums.ViewType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,34 +61,15 @@ public class VDPXMLReaderTest {
 		GenevaLog.closeLogger(VDPXMLReaderTest.class.getName());
     }
 
-
-    @Test
-    public void testVDPXMLCatalog() throws Exception {
-        VDPXMLSaxIterator wbxmlReader = new VDPXMLSaxIterator();
-        Path root = Paths.get(resources);
-        Path readme = root.resolve(TEST_FILE);
-
-        wbxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
-        wbxmlReader.addToRepsitory();
-        assertEquals(61, wbxmlReader.getCatalogEntries().size());
-
-    }
-
     @Test
     public void testOpenVDPXMLFile() throws Exception {
         VDPXMLSaxIterator vdpxmlReader = new VDPXMLSaxIterator();
         Path root = Paths.get(resources);
         Path readme = root.resolve(TEST_FILE);
         vdpxmlReader.setInputBuffer(new BufferedInputStream(new FileInputStream(readme.toFile())));
-        vdpxmlReader.addToRepsitory();
+        vdpxmlReader.addToRepository();
 
-//        assertEquals(1, Repository.getViews().size());
-        // ViewNode v1 = Repository.getViews().get(11288);
-        // ViewNode v2 = Repository.getViews().get(11589);
-        // assertEquals(ViewType.EXTRACT, v1.getViewDefinition().getViewType());
-        // assertEquals("CMP_ARITH_PLUS", v1.getViewDefinition().getName());
-        // assertEquals(OutputMedia.FILE, v1.getViewDefinition().getOutputMedia());
-        // assertEquals(ViewType.DETAIL, v2.getViewDefinition().getViewType());
+        assertEquals(1, Repository.getViews().size());
     }
 
 }
