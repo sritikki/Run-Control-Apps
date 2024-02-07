@@ -215,8 +215,10 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
      */
     public void makeUnique() {
         uniqueKey = lookup.getID() + "_";
-        uniqueKey += effDateValue != null ? effDateValue.getUniqueKey() : "";
-        uniqueKey += symbols != null ? symbols.getUniqueKey() : "";
+        if(lookup.isOptimizable()) {
+            uniqueKey += effDateValue != null ? effDateValue.getUniqueKey() : "";
+            uniqueKey += symbols != null ? symbols.getUniqueKey() : "";
+        }
         UniqueKeyData uk = UniqueKeys.getOrMakeUniuUniqueKeyData(uniqueKey, lookup.getID());
         newJoinId = uk.getNewJoinId();
     }
