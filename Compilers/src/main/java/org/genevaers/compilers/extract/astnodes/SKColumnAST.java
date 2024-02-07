@@ -3,11 +3,14 @@ package org.genevaers.compilers.extract.astnodes;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewSortKey;
+import org.genevaers.repository.components.enums.DataType;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -28,9 +31,10 @@ import org.genevaers.repository.components.ViewSortKey;
 
 
 public class SKColumnAST extends ColumnAST {
-
+    private ViewSortKey skc;
     public SKColumnAST(ViewColumn vc) {
         type = ASTFactory.Type.SK_COLUMN;
+        skc = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
         this.vc = vc;
     }
 
@@ -54,7 +58,14 @@ public class SKColumnAST extends ColumnAST {
     @Override
     public LTFileObject getFieldLtEntry(LRField field) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        return fcf.getSKE(field, vc);
+        LogicTableF2 ske = (LogicTableF2) fcf.getSKE(field, vc);
+        // LogicTableArg arg1 = ske.getArg1();
+        LogicTableArg arg2 = ske.getArg2();
+        arg2.setFieldFormat(skc.getSortKeyDataType());
+        // if(arg2.getFieldFormat() == DataType.ALPHANUMERIC && arg1.getFieldFormat() != DataType.ALPHANUMERIC) {
+        //     arg2.setFieldFormat(DataType.ZONED);
+        // }
+        return ske;
     }
 
     @Override

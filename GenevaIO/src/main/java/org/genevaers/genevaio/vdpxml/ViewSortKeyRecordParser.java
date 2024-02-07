@@ -100,8 +100,8 @@ public class ViewSortKeyRecordParser extends BaseParser {
 				vsk.setViewSortKeyId(componentID);
 				vsk.setColumnId(Integer.parseInt(attributes.getValue("ID")));
 				vsk.setSequenceNumber((short)seqNum);
-				vsk.setSortKeyDataType(DataType.ALPHANUMERIC);
 				ViewColumn vc = Repository.getViews().get(currentViewId).getColumnByID(Integer.parseInt(attributes.getValue("ID")));
+				vsk.setSortKeyDataType(vc.getDataType());
 				vsk.setSkFieldLength(vc.getFieldLength());
 				vsk.setSkStartPosition(vc.getExtractAreaPosition());
 				setDefault(vsk);
@@ -126,7 +126,7 @@ public class ViewSortKeyRecordParser extends BaseParser {
 			case "ORDER":
 				vsk.setSortorder(SortOrder.fromdbcode(text.trim()));
 				break;
-			case "SKFLDFMTCD":
+			case "DATATYPE":
 				vsk.setSortKeyDataType(DataType.fromdbcode(text.trim()));
 				break;
 			case "SKSIGNED":
