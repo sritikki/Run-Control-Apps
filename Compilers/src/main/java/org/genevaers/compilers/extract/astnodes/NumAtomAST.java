@@ -40,9 +40,13 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
     }
 
     public void setValue(String numString) {
-        numStr = stripLeadingingZeros(numString);
-        numStr = stripTrailingZeros(numStr);
-        value = Float.parseFloat(numString);
+        if(numString.equals("0.00000000")) {
+            numStr = numString; //Just to keep the C++ comparison sweet for the moment
+        } else {
+            numStr = stripLeadingingZeros(numString);
+            numStr = stripTrailingZeros(numStr);
+            value = Float.parseFloat(numString);
+        }
     }
 
     private String stripLeadingingZeros(String numString) {
@@ -96,13 +100,13 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(numStr, currentViewColumn));
-        } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(numStr, currentViewColumn));
+        if(col.getViewColumn().getExtractArea() == ExtractArea.AREACALC) {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getCTC(numStr, col.getViewColumn()));
+        } else if(col.getViewColumn().getExtractArea() == ExtractArea.AREADATA) {
+            ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(numStr, col.getViewColumn()));
         } else {
-            LTRecord ltr = (LTRecord)fcf.getSKC(numStr, currentViewColumn);
-            ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+            LTRecord ltr = (LTRecord)fcf.getSKC(numStr, col.getViewColumn());
+            ViewSortKey sk = Repository.getViews().get(col.getViewColumn().getViewId()).getViewSortKeyFromColumnId(col.getViewColumn().getComponentId());
             LogicTableArg arg = ((LogicTableF1)ltr).getArg();
             arg.setFieldLength(sk.getSkFieldLength());
             arg.setStartPosition(sk.getSkStartPosition());
