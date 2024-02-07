@@ -22,7 +22,7 @@ public class WBXMLBuilder extends XMLBuilder{
 			wbReader.setInputBuffer(inputBuffer);
 			wbReader.addToRepsitory();
 			ir.setGenerationID(wbReader.getGenerationID());
-
+			retval = Status.OK;
 		} catch (Exception e) {
 			logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
 			retval = Status.ERROR;
@@ -31,7 +31,7 @@ public class WBXMLBuilder extends XMLBuilder{
 
     @Override
     protected String getXMLDirectory() {
-        return "WBXMLI";
+        return rcc.getWBXMLDirectory();
     }
 
 

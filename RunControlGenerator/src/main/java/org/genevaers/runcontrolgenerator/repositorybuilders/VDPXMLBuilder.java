@@ -24,7 +24,7 @@ public class VDPXMLBuilder extends XMLBuilder{
             vdpxmlReader.setInputBuffer(inputBuffer);
             vdpxmlReader.addToRepository();
             ir.setGenerationID(vdpxmlReader.getGenerationID());
-
+			retval = Status.OK;
 		} catch (Exception e) {
 			logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
 			retval = Status.ERROR;
