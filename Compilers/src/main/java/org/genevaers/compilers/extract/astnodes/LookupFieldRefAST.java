@@ -222,10 +222,12 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
                         dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
                     }
                     dtc.getArg().setFieldFormat(dtlDataType);
+                    if(currentViewColumn.getDateCode() == ref.getDateTimeFormat()) {
+                        dtc.getArg().setFieldContentId(DateCode.NONE);
+                    } 
+                } else if(lkEntry.getFunctionCode().equals("DTA")) {
+                    dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
                 }
-                if(currentViewColumn.getDateCode() == ref.getDateTimeFormat()) {
-                    dtc.getArg().setFieldContentId(DateCode.NONE);
-                } 
                 ltEmitter.addToLogicTable((LTRecord)dtc );
                 break;
 
