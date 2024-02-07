@@ -31,6 +31,7 @@ public class LookupPath extends ComponentNode {
 	private int targetLRid = 0;
 	private int targetLFid = 0;
 	private int destLrLfid;
+	private Boolean optimizable;
 
 	public LookupPath() {
 		// super.record = new LookupPathRecord();
@@ -122,7 +123,15 @@ public class LookupPath extends ComponentNode {
 	}
 
     public boolean isOptimizable() {
-        return false;
+		if(optimizable == null) {
+			int ei = Repository.getLogicalRecords().get(targetLRid).getLookupExitID();
+			if(ei > 0) {
+				optimizable = Repository.getUserExits().get(ei).isOptimizable();
+			} else {
+				optimizable = true;
+			}
+		}
+        return optimizable;
     }
 
 	public int getTargetLRIndexID() {

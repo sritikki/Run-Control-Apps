@@ -424,6 +424,9 @@ public class JoinViewsManager {
 			logger.atFine().log("Orig ID %d", ej.getOrginalLookupId());
 			
 		}
+		for (Entry<String, UniqueKeyData> ukv : UniqueKeys.keysMap.entrySet()) {
+			logger.atFine().log("Unique Join Key %s, %d -> %d", ukv.getKey(), ukv.getValue().getOriginalJoinId(), ukv.getValue().getNewJoinId());			
+		}
     }
 
 	public List<ReferenceReportEntry> getRefReportEntries() {

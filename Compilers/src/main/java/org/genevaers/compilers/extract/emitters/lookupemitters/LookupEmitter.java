@@ -98,6 +98,9 @@ public class LookupEmitter extends CodeEmitter {
             } else {
                 // An LKLR does not have gotos really
                 retEntry = addLKLR(lookup, step, skt, lookupAST.getNewJoinId());
+                if (step.getStepNum() == 1) {
+                    firstLookupRecord = retEntry;
+                }
             }
             Iterator<LookupPathKey> ki = step.getKeyIterator();
             while(ki.hasNext()) {
