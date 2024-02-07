@@ -52,7 +52,8 @@ public class ExitRecordParser extends BaseParser {
 				Repository.getUserExits().add(userExit, componentID, text);
 				break;
 			case "MODULE":
-				userExit.setExecutable(text);
+				userExit.setExecutable(text.trim());
+				Repository.getUserExits().add(userExit, componentID, text.trim());
 				break;
 			case "TYPE":
 				userExit.setExitType(ExitType.fromdbcode(text.trim()));
