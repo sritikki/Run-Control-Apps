@@ -112,7 +112,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.12.0</version>
+				<version>3.14.0</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.jt400</groupId>
@@ -257,8 +257,7 @@
 						</executions>
 						<configuration>
 							<licenses>
-								<license
-									implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20">
+								<license implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20">
 									<notes>Also allow the license url to be https.</notes>
 									<patterns>
 										<pattern>https://www.apache.org/licenses/LICENSE-2.0</pattern>
@@ -275,9 +274,9 @@
 							<excludes>
 								<exclude>README.md</exclude>
 								<exclude>**/ratExcludes.txt</exclude>
-								<exclude>>**/.gitattributes</exclude>
-								<exclude>>**/*.yaml</exclude>
-								<exclude>>**/*.md</exclude>
+								<exclude>&gt;**/.gitattributes</exclude>
+								<exclude>&gt;**/*.yaml</exclude>
+								<exclude>&gt;**/*.md</exclude>
 							</excludes>
 						</configuration>
 					</plugin>
