@@ -53,20 +53,26 @@ public class LTLogger {
 
 	private static final String ARGLFLR = "%7d %7d %7d ";
 	private static final String ARGVALUES = "%4d %3d %s (%s/%d,%d %s)";
+	private static final String KEYVALUES = "     %3d %s (%s/%d,%d %s)";
 	private static final String LEAD2GOTOS = "%-119s %s";
+	private static final String LKLR2GOTOS = "%-23s %-95s %s";
 	private static final String GOTOS = "%4d %4d";
 	private static final String AGOTO = "%-119s %4d";
 	private static final String OLDJOIN = " %d -> \"%s\" %d/%d"; // 3296 -> "1" 10203/10245
-	private static final String JOIN = " %d -> \"%s\""; // 3296 -> "1" C++ gets it wrong so use this
+	private static final String JOIN = " %d -> \"%s\" %d/%d"; // 3296 -> "1" C++ gets it wrong so use this
 	private static final String LUSM = "                                                         %5d %5d"; // 3296 ->
 																											// "1"
 																											// 10203/10245
+	private static final String REEX = "%s %d, User Exit ID=%d";
+	private static final String LUEX = "%s  , User Exit ID=%d";
 	private static final String CECOMP = "%s%-49s %s %s %s";
-	private static final String ECCOMP = "%s%s   %s  %-46s %s";
+	private static final String ECCOMP = "%s %s  %s  %-46s %s";
 	private static final String EECOMP = "%s %s  %s %s %s";
 	private static final String DECLARATION = "%s Declare %s  = 0";
 	private static final String ASSIGNMENT = "%s %s  ->  %s";
+	private static final String KEYASSIGNMENT = "%s %s  ->  %s";
 	private static final String CONSTASSIGNMENT = "%s %-47s  ->  %s";
+	private static final String SYMASSIGNMENT = "%s %-47s  ->  %s";
 	private static final String ACCUM2COLUMN = "%s %-47s  ->  %s";
 	private static final String ARITHOP = "%s %s  ->  %s";
 	private static final String CTASSIGNMENT = "%-68s <-  %s";
@@ -74,7 +80,9 @@ public class LTLogger {
 	private static final String ACCUMAOP = "%s %s %s %s";
 	private static final String FNCC = "%s %s %s %s -> %s";
 	private static final String WRSU = "%s Dest=%s, Buffered records=%d, Partition ID=%d, Prog ID = %d, Param = '%s'";
+	private static final String WRSUNOPF = "%s Dest=%s, Buffered records=%d";
 	private static final String WRDT = "%s Dest=%s, Partition ID=%d, Prog ID = %d, Param = '%s'";
+	private static final String WRDESTONLY = "%s Dest=%s";
 	private static final String FILEID = "%s %d";
 
 
@@ -111,6 +119,7 @@ public class LTLogger {
 				LTRecord ltr = lti.next();
 				fw.write(getLogString(ltr) + "\n");
 			}
+			fw.write("\nEnd of LT Records");
 		} catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
@@ -126,23 +135,40 @@ public class LTLogger {
 				return(leadin);
 			case "GEN":
 				return(leadin + getGenDetails((LogicTableGeneration) ltr));
+			case "REEX":
+				LogicTableRE reex = (LogicTableRE) ltr;
+				return("\n" + String.format(REEX, leadin, reex.getFileId(), reex.getReadExitId()));
 			case "NV":
 				return(getViewLine(ltr) + leadin + getNewViewDetails((LogicTableNV) ltr));
 			case "JOIN":
 				LogicTableF1 j = (LogicTableF1) ltr;
 				LogicTableArg arg = j.getArg();
 				return(String.format(LEAD2GOTOS,
-										leadin + String.format(JOIN, j.getColumnId(), arg.getValue().getString()),
+										leadin + String.format(JOIN, j.getColumnId(), arg.getValue().getString(), arg.getLogfileId(), arg.getLrId()),
 										getGotos(ltr)));
 			case "LUSM":
 				return(String.format(LEAD2GOTOS, leadin, getGotos(ltr)));
+			case "LKS":
+				LogicTableF1 lks = (LogicTableF1) ltr;
+				return (String.format(SYMASSIGNMENT, leadin, getArgConst(lks.getArg()), getArgKeyDetails(lks.getArg())));
+			case "LKE":
+				LogicTableF2 lke = (LogicTableF2) ltr;
+				return (String.format(KEYASSIGNMENT, leadin, getFullArg(lke.getArg1()), getArgKeyDetails(lke.getArg2())));
+			case "LKC":
+				LogicTableF1 lkc = (LogicTableF1) ltr;
+				return (String.format(SYMASSIGNMENT, leadin, getArgConst(lkc.getArg()), getArgKeyDetails(lkc.getArg())));
+			case "LUEX":
+				LogicTableRE luex = (LogicTableRE) ltr;
+				return(String.format(LUEX, leadin, luex.getReadExitId()));
+			case "LKLR":
+				return(String.format(LKLR2GOTOS, leadin, getLKLRInfo(ltr), getGotos(ltr)));
 			case "GOTO":
 				LogicTableF0 agoto = (LogicTableF0) ltr;
 				return(String.format(AGOTO, leadin, agoto.getGotoRow1()));
 			case "CFCE": 
 			case "CFCL": {
 				LogicTableF1 cf = (LogicTableF1) ltr;
-				return(String.format(CECOMP, leadin, " \"" + getArgValue(cf) + "\"", cf.getCompareType(),
+				return(String.format(CECOMP, leadin, getArgValue(cf) + "\"", cf.getCompareType(),
 						getFullArg(cf.getArg()) , getGotos(ltr)));
 			}
 			case "CFEC":
@@ -194,15 +220,30 @@ public class LTLogger {
 				return(String.format(CTASSIGNMENT, leadin, ct.getAccumulatorName()));
 			case "CTC":
 				LogicTableF1 ctc = (LogicTableF1) ltr;
-				return(String.format(CTASSIGNMENT, leadin, ctc.getArg().getValue()));
+				return(String.format(CTASSIGNMENT, leadin, ctc.getArg().getValue().getString()));
+			case "CTE":
+				LogicTableF1 cte = (LogicTableF1) ltr;
+				return(String.format(CTASSIGNMENT, leadin, getArgDetails(cte.getArg()) ));
 			case "WRSU": {
 				LogicTableWR wr = (LogicTableWR) ltr;
-				return(String.format(WRSU, leadin, getWrDest(wr), wr.getExtrSumRecCnt(), wr.getOutputFileId(), wr.getWriteExitId(),wr.getWriteExitParms()));
+				if(wr.getOutputFileId() == 0) {
+					return(String.format(WRSUNOPF, leadin, getWrDest(wr), wr.getExtrSumRecCnt()));
+				} else {
+					return(String.format(WRSU, leadin, getWrDest(wr), wr.getExtrSumRecCnt(), wr.getOutputFileId(), wr.getWriteExitId(),wr.getWriteExitParms()));
+				}
 			}
 			case "WRDT": 
 			case "WRXT": {
 				LogicTableWR wr = (LogicTableWR) ltr;
-				return(String.format(WRDT, leadin, getWrDest(wr), wr.getOutputFileId(), wr.getWriteExitId(),wr.getWriteExitParms()));
+				if(wr.getOutputFileId() == 0) {
+					if(wr.getWriteExitId() == 0) {
+						return(String.format(WRDESTONLY, leadin, getWrDest(wr), wr.getExtrSumRecCnt()));
+					} else {
+						return(String.format(WRDT, leadin, getWrDest(wr), wr.getOutputFileId(), wr.getWriteExitId(),wr.getWriteExitParms()));
+					}
+				} else {
+					return(String.format(WRDT, leadin, getWrDest(wr), wr.getOutputFileId(), wr.getWriteExitId(),wr.getWriteExitParms()));
+				}
 			}
 			case "ET":
 			case "ES":
@@ -229,8 +270,7 @@ public class LTLogger {
 						return(leadin + " \"" + getArgValue(f1) + "\"");
 					case F2:
 						LogicTableF2 f2 = (LogicTableF2) ltr;
-						return(String.format(ASSIGNMENT, leadin, getFullArg(f2.getArg1()),
-								getArgDetails(f2.getArg2())));
+						return(String.format(ASSIGNMENT, leadin, getFullArg(f2.getArg1()), getArgDetails(f2.getArg2())));
 					default:
 						return(leadin + " More details?");
 				}
@@ -238,8 +278,13 @@ public class LTLogger {
 		}
 	}
 
+	private static Object getLKLRInfo(LTRecord ltr) {
+		LogicTableF1 lklr = (LogicTableF1) ltr;
+		return String.format("%d/%d %d -> \"%s\"", lklr.getArg().getLogfileId(), lklr.getArg().getLrId(), lklr.getColumnId(), lklr.getArg().getValue().getString());
+	}
+
 	private static String getViewLine(LTRecord ltr) {
-		return String.format("View %07d\n", ltr.getViewId());
+		return String.format("------------\nView %07d\n------------\n", ltr.getViewId());
 	}
 
 	private static Object getArgConst(LogicTableArg arg) {
@@ -298,11 +343,11 @@ public class LTLogger {
 			}
 			return "COOKIE";
 		} else {
-			if (al == 0) {
-				return " ";
-			} else {
+			// if (al == 0) {
+			// 	return " ";
+			// } else {
 				return arg.getValue().getString();
-			}
+			//}
 		}
 	}
 
@@ -316,6 +361,11 @@ public class LTLogger {
 
 	private static String getArgDetails(LogicTableArg a) {
 		return String.format(ARGVALUES, a.getStartPosition(), a.getFieldLength(), getDataTypeLetter(a.getFieldFormat()),
+				a.isSignedInd() ? "S" : "U", a.getRounding(), a.getDecimalCount(), a.getFieldContentId());
+	}
+
+	private static String getArgKeyDetails(LogicTableArg a) {
+		return String.format(KEYVALUES, a.getFieldLength(), getDataTypeLetter(a.getFieldFormat()),
 				a.isSignedInd() ? "S" : "U", a.getRounding(), a.getDecimalCount(), a.getFieldContentId());
 	}
 
