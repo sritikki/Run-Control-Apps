@@ -143,6 +143,7 @@ public class JLTView {
     private int ddNum;
 
     private List<Reason> reasons = new ArrayList<>();
+    private Integer sourceLF;
 
     public JLTView(int lr, int lkup) {
         lrid = lr;
@@ -534,6 +535,14 @@ public class JLTView {
 
     public ViewNode getView() {
         return vn;
+    }
+
+    public int getSourceLF() {
+        return sourceLF;
+    }
+
+    public void setSourceLFID(Integer lfOfKey) {
+        sourceLF = lfOfKey;
     }
     
 }

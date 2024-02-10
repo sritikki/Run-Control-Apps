@@ -53,7 +53,7 @@ public class LFAstNode extends ExtractBaseAST implements EmittableASTNode{
         ltEmitter.setFileId(lf.getID());
         // In here we emit the RE
         emitRE();
-
+        ViewSourceAstNode.resetLfSourceNumber();
         // Then the children deal with the NVs and content
         emitChildNodes();
         // We'll need the ES or ET now

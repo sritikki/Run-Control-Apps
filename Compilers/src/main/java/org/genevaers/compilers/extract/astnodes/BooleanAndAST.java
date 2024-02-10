@@ -22,7 +22,7 @@ import org.genevaers.compilers.base.EmittableASTNode;
 
 public class BooleanAndAST extends ExtractBaseAST implements EmittableASTNode{
 
-    Integer andEnd = 0;
+    private Integer andEnd = 0;
 
     public BooleanAndAST() {
         type = ASTFactory.Type.BOOLAND;

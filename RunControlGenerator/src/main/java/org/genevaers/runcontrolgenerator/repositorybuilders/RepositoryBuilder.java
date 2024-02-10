@@ -28,57 +28,47 @@ import java.util.Iterator;
  */
 
 import com.google.common.flogger.FluentLogger;
-import com.google.common.flogger.StackSize;
-import com.ibm.jzos.FileFactory;
-import com.ibm.jzos.PdsDirectory;
-import com.ibm.jzos.ZFile;
-import com.ibm.jzos.ZFileConstants;
-import com.ibm.jzos.ZFileException;
-import com.ibm.jzos.PdsDirectory.MemberInfo;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.dbreader.DBReader;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.DatabaseConnection.DbType;
-import org.genevaers.genevaio.wbxml.WBXMLSaxIterator;
-import org.genevaers.repository.Repository;
-import org.genevaers.repository.data.InputReport;
-import org.genevaers.runcontrolgenerator.InputType;
+
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.utility.Status;
-import org.genevaers.utilities.GenevaLog;
 
-public class RepositoryBuilder {
+
+public abstract class RepositoryBuilder {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-	private RunControlConfigration rcc;
-	private Status retval;
-	private BufferedInputStream inputBuffer;
+	protected RunControlConfigration rcc;
+	protected Status retval;
 
 	public RepositoryBuilder(RunControlConfigration rcc) {
 		this.rcc = rcc;
 	}
 
-	// Could flip this around and have types of RepoBuilder
-	public Status run() {
-		retval = Status.OK;
-		GenevaLog.writeHeader("Build the internal repository");
-		if (rcc.getInputType().equals(InputType.WBXML.toString())) {
-			logger.atInfo().log("Build repository from WB XML");
-			buildRepoFromWBXML();
-		} else if (rcc.getInputType().equals(InputType.DB2.toString())) {
-			logger.atInfo().log("Build repository from DB2");
-			buildRepoFromDB2();
-		} else if (rcc.getInputType().equals(InputType.POSTGRES.getName())) {
-			logger.atInfo().log("Build repository from Postgres");
-			buildRepoFromPostgres();
-		} else {
-			logger.atSevere().log("Unknown Input Type %s", rcc.getInputType());
-			retval = Status.ERROR;
-		}
-		return retval;
-	}
+	public abstract Status run();
+
+	// public Status run() {
+	// 	retval = Status.OK;
+	// 	GenevaLog.writeHeader("Build the internal repository");
+	// 	if (rcc.getInputType().equals(InputType.WBXML.toString())) {
+	// 		logger.atInfo().log("Build repository from WB XML");
+	// 		buildRepoFromWBXML();
+	// 	} else if (rcc.getInputType().equals(InputType.VDPXML.toString())) {
+	// 			logger.atInfo().log("Build repository from VDP XML");
+	// 			buildRepoFromVDPXML();
+	// 	 else if (rcc.getInputType().equals(InputType.DB2.toString())) {
+	// 		logger.atInfo().log("Build repository from DB2");
+	// 		buildRepoFromDB2();
+	// 	} else if (rcc.getInputType().equals(InputType.POSTGRES.getName())) {
+	// 		logger.atInfo().log("Build repository from Postgres");
+	// 		buildRepoFromPostgres();
+	// 	} else {
+	// 		logger.atSevere().log("Unknown Input Type %s", rcc.getInputType());
+	// 		retval = Status.ERROR;
+	// 	}
+	// 	return retval;
+	// }
 
 	private void buildRepoFromDB2() {
 		DatabaseConnectionParams conParams = new DatabaseConnectionParams();
@@ -112,115 +102,22 @@ public class RepositoryBuilder {
 		dbr.addViewsToRepository(conParams);
 	}
 
-	private void buildRepoFromWBXML() {
-		logger.atFine().log("Read From %s", rcc.getWBXMLDirectory());
+	// private void buildRepoFromWBXML() {
+	// 	logger.atFine().log("Read From %s", rcc.getWBXMLDirectory());
 
-		// Here we need to know if we're on z/OS
-		// Is so treat the WBXMLDirectory as a DDname to a PDS
-		// Then again we could be running on USS?
+	// 	// Here we need to know if we're on z/OS
+	// 	// Is so treat the WBXMLDirectory as a DDname to a PDS
+	// 	// Then again we could be running on USS?
 
-		// We need to know if we are reading a PDS or not
-		// or DDname input
-		String os = System.getProperty("os.name");
-		logger.atFine().log("Operating System %s", os);
-		if (os.startsWith("z")) {
-			readFromDataSet();
-		} else {
-			readFromDirectory();
-		}
-	}
+	// 	// We need to know if we are reading a PDS or not
+	// 	// or DDname input
+	// 	String os = System.getProperty("os.name");
+	// 	logger.atFine().log("Operating System %s", os);
+	// 	if (os.startsWith("z")) {
+	// 		readFromDataSet();
+	// 	} else {
+	// 		readFromDirectory();
+	// 	}
+	// }
 
-	private void readFromDataSet() {
-		try {
-			String ddname = "//DD:" + rcc.getWBXMLDirectory();
-			ZFile dd = new ZFile(ddname, "r");
-			// Problem here is that this will be a PDS and we need to iterate its memebers
-			int type = dd.getDsorg();
-			switch (type) {
-				case ZFileConstants.DSORG_PDSE: 
-					logger.atInfo().log("found PDS E");
-					//Drop through
-				case ZFileConstants.DSORG_PDS_DIR: {
-					logger.atInfo().log("found PDS");
-					String pdsName = dd.getActualFilename();
-					logger.atInfo().log("Actual filename " + pdsName);
-					try {
-						PdsDirectory pds = new PdsDirectory(ddname);
-						Iterator pdsi = pds.iterator();
-						while (pdsi.hasNext()) {
-							MemberInfo mem = (MemberInfo) pdsi.next();
-							String mname = mem.getName();
-							String buildName = ddname + "(" + mname + ")";
-							logger.atInfo().log("Build Repo from " + buildName);
-							inputBuffer = FileFactory.newBufferedInputStream(buildName);
-							// ZFile pdsmem = new ZFile(buildName, "r");
-							InputReport ir = new InputReport();
-							ir.setDdName(ddname);
-							ir.setMemberName(mname);
-							buildFromXML(ir);
-							// pdsmem.close();
-							inputBuffer.close();
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-					break;
-				case ZFileConstants.DSORG_PDS_MEM:
-				// logger.atInfo().log("found PDS member");
-				// 	buildFromXML(dd.getInputStream());
-				// 	break;
-				case ZFileConstants.DSORG_PS:
-					// logger.atInfo().log("found DSOR PS");
-					// buildFromXML(dd.getInputStream());
-					// break;
-				default:
-					logger.atSevere().log("Unhandled DSORG " + type);
-			}
-			dd.close();
-		} catch (ZFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void readFromDirectory() {
-		Path xmlPath = Paths.get(rcc.getWBXMLDirectory());
-		if (xmlPath.toFile().exists()) {
-			WildcardFileFilter fileFilter = new WildcardFileFilter("*.xml");
-			Collection<File> xmlFiles = FileUtils.listFiles(xmlPath.toFile(), fileFilter, TrueFileFilter.TRUE);
-
-			for (File d : xmlFiles) {
-				logger.atFine().log("Read %s", d.getName());
-				try {
-					inputBuffer = new BufferedInputStream(new FileInputStream(d)); 
-					InputReport ir = new InputReport();
-					ir.setDdName(rcc.getWBXMLDirectory());
-					ir.setMemberName(d.getName());
-					buildFromXML(ir);
-					Repository.addInputReport(ir);
-
-				} catch (FileNotFoundException e) {
-					logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
-					retval = Status.ERROR;
-				}
-			}
-		} else {
-			logger.atSevere().log("WBXML file %s not found", xmlPath.toString());
-		}
-	}
-
-	private void buildFromXML(InputReport ir) {
-		WBXMLSaxIterator wbReader = new WBXMLSaxIterator();
-		try {
-			wbReader.setInputBuffer(inputBuffer);
-			wbReader.addToRepsitory();
-			ir.setGenerationID(wbReader.getGenerationID());
-
-		} catch (Exception e) {
-			logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
-			retval = Status.ERROR;
-		}
-	}
 }

@@ -383,4 +383,9 @@ public class RunControlConfigration {
         return optsInEfect;
     }
 
+    public Object getVDPXMLDirectory() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getVDPXMLDirectory'");
+    }
+
 }

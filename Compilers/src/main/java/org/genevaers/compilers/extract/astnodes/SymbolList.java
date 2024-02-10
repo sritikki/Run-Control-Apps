@@ -43,7 +43,13 @@ public class SymbolList extends ExtractBaseAST {
     }
 
     public String getUniqueKey() {
-        return null;
+        String key = "";
+        Iterator<ASTBase> ci = children.iterator();
+        while(ci.hasNext()) {
+            SymbolEntry sym = (SymbolEntry)ci.next();
+            key += "SY_" +sym.getValue() + "_";
+        }
+        return key ;
     }
 
 }

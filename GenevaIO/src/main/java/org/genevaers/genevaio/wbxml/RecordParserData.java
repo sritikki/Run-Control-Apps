@@ -120,14 +120,8 @@ public class RecordParserData {
 					if(assocs != null) {
 						destassocid = assocs.getAssocID(lksk.getKeyNumber());
 					}
-					if (destassocid != 0) {
-						LRLF trglrlf = lrlfs.get(destassocid);
-						lksk.setTargetLrId(trglrlf.lrid);
-						lksk.setTargetlfid(trglrlf.lfid);
-					} else {
 						lksk.setTargetLrId(lkstep.getTargetLR());
 						lksk.setTargetlfid(lkstep.getTargetLF());
-					}
 					lksk.setSourceLrId(lkstep.getSourceLR());
 					lksk.setStepNumber((short) lkstep.getStepNum());
 				}

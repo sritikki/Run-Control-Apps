@@ -565,14 +565,18 @@ public class VDPFileWriter {
 	}
 
 	private void writeLRIndexes() {
-		Iterator<LRIndex> lrii = Repository.getIndexes().getIterator();
-		while (lrii.hasNext()) {
-			VDPLRIndex vi = new VDPLRIndex();
-			LRIndex lri = lrii.next();
-			logger.atFine().log("Write Index:%d %d %s", lri.getComponentId(), lri.getLrId(), lri.getName());
-			vi.fillFromComponent(lri);
-			vi.fillTheWriteBuffer(VDPWriter);
-			VDPWriter.writeAndClearTheRecord();
+		Iterator<LogicalRecord> lri = Repository.getLogicalRecords().getIterator();
+		while(lri.hasNext()) {
+			LogicalRecord lr = lri.next();
+			Iterator<LRIndex> ii = lr.getIteratorForIndexBySeq();
+			while (ii.hasNext()) {
+				VDPLRIndex vi = new VDPLRIndex();
+				LRIndex ndx = ii.next();
+				logger.atFine().log("Write Index:%d %d %s", ndx.getComponentId(), ndx.getLrId(), ndx.getName());
+				vi.fillFromComponent(ndx);
+				vi.fillTheWriteBuffer(VDPWriter);
+				VDPWriter.writeAndClearTheRecord();
+			}
 		}
 	}
 

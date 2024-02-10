@@ -33,7 +33,9 @@ import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableF0;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
@@ -151,7 +153,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF1 ccol;
         if(vc.getExtractArea() == ExtractArea.SORTKEY) {
+            ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
             ccol = ((LogicTableF1)fcf.getSKC(val, vc));
+            ccol.getArg().setFieldLength(sk.getSkFieldLength());
         } else if(vc.getExtractArea() == ExtractArea.AREADATA) {
             ccol = ((LogicTableF1)fcf.getDTC(val, vc));
         } else {

@@ -66,6 +66,7 @@ public class ArgHelper {
         arg.setFieldId(key.getFieldId());
         arg.setLogfileId(key.getTargetlfid());
         arg.setLrId(key.getSourceLrId());
+        arg.setSignedInd(key.isSigned());
         //TODO the start pos is dependent on extract type
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());

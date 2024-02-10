@@ -98,6 +98,9 @@ public class LookupEmitter extends CodeEmitter {
             } else {
                 // An LKLR does not have gotos really
                 retEntry = addLKLR(lookup, step, skt, lookupAST.getNewJoinId());
+                if (step.getStepNum() == 1) {
+                    firstLookupRecord = retEntry;
+                }
             }
             Iterator<LookupPathKey> ki = step.getKeyIterator();
             while(ki.hasNext()) {
@@ -110,7 +113,7 @@ public class LookupEmitter extends CodeEmitter {
                 kslk.setFileId(lookup.getTargetLFID());
                 ExtractBaseAST.getLtEmitter().addToLogicTable(kslk);
             } else {
-                if(lookup.hasExit()) {
+                if(step.hasExit()) {
                     lusm = emitLUEX(step, lookup);               
                 } else {
                     lusm = emitLUSM(step, lookup);               
@@ -145,7 +148,7 @@ public class LookupEmitter extends CodeEmitter {
     private LogicTableRE emitLUEX(LookupPathStep step, LookupPath lookup) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         luex = (LogicTableRE) ltFact.getLUEX();
-        luex.setReadExitId(lookup.getReadExitId());
+        luex.setReadExitId(step.getReadExitId());
         ExtractBaseAST.getLtEmitter().addToLogicTable(luex);
         if(step.getStepNum() < lookup.getNumberOfSteps()) {
             int truePos = ExtractBaseAST.getLtEmitter().getNumberOfRecords();
@@ -193,8 +196,7 @@ public class LookupEmitter extends CodeEmitter {
             } else {
                 lfid = ExtractBaseAST.getLtEmitter().getFileId();
             }
-            LogicTableF2 lk = lkfe.emit(key);
-            lk.getArg1().setLogfileId(lfid);        
+            LogicTableF2 lk = lkfe.emit(key, lookup.getStep(1).getSourceLR());
             ExtractBaseAST.getLtEmitter().addToLogicTable(lk);
         } else if(key.getSymbolicName().length() > 0) {
             LogicTableF1 lks = lkse.emit(key);
@@ -351,10 +353,26 @@ public class LookupEmitter extends CodeEmitter {
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
         arg.setJustifyId(key.getJustification());
+        arg.setSignedInd(key.isSigned());
+        //This stuff should be manage at compile time?
+        //The warning generation and rewrite
         if(key.getValue().length() > 0) {
-            arg.setValue(new Cookie(key.getValue()));
+            if(key.getDatatype() == DataType.ALPHANUMERIC) {
+                arg.setValue(new Cookie(key.getValue()));
+            } else {
+                if(StringUtils.isNumeric(key.getValue())) {
+                    arg.setValue(new Cookie(key.getValue()));
+                } else {
+                    arg.setValue(new Cookie("0"));
+                }
+            }
         } else {
-            Cookie c = new Cookie(StringUtils.repeat(" ", key.getFieldLength()));
+            Cookie c;
+            if(key.getDatatype() == DataType.ALPHANUMERIC) {
+                c = new Cookie(StringUtils.repeat(" ", key.getFieldLength()));
+            } else {
+                c = new Cookie("0");
+            }
             arg.setValue(c);
         }
         arg.setPadding2("");  //This seems a little silly
@@ -362,7 +380,9 @@ public class LookupEmitter extends CodeEmitter {
 
     public void resolveGotos(Integer joinT, Integer joinF) {
         if(joinT != null) {
-            firstLookupRecord.setGotoRow1(joinT);
+            if(firstLookupRecord != null) {
+                firstLookupRecord.setGotoRow1(joinT);
+            }
             lusm.setGotoRow1(joinT);
         }
         if(joinF != null) {

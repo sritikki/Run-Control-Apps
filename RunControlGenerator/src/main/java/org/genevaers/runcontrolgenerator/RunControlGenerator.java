@@ -31,11 +31,13 @@ import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.compilers.RepositoryCompiler;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
+import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.runcontrolwriter.RunControlWriter;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
 import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
+import org.postgresql.shaded.com.ongres.scram.common.message.ServerFinalMessage.Error;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -126,8 +128,8 @@ public class RunControlGenerator {
 	}
 
 	private Status buildComponentRepositoryFromSelectedInput(RunControlConfigration rcc) {
-		RepositoryBuilder rb = new RepositoryBuilder(rcc);
-		return rb.run();
+		RepositoryBuilder rb = RepositoryBuilderFactory.get(rcc);
+		return rb != null ? rb.run() : Status.ERROR;
 	}
 
 	private void openReportFile() {

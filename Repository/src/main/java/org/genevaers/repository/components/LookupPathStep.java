@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.genevaers.repository.Repository;
+
 public class LookupPathStep extends ComponentNode {
 
     private List<LookupPathKey> keys = new ArrayList<>();
@@ -103,6 +105,14 @@ public class LookupPathStep extends ComponentNode {
 
     public int getStepID() {
         return stepID;
+    }
+
+    public boolean hasExit() {
+		return Repository.getLogicalRecords().get(targetLR).getLookupExitID() > 0;
+    }
+
+    public int getReadExitId() {
+		return Repository.getLogicalRecords().get(targetLR).getLookupExitID();
     }
 
 }
