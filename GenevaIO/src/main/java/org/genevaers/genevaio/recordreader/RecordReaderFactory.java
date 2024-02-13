@@ -25,13 +25,10 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import com.google.common.flogger.FluentLogger;
-import com.ibm.jzos.ZFile;
-import com.ibm.jzos.ZUtil;
-
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.vdpfile.VDPFileObject;
 
-public class RecordFileReaderWriter {
+public class RecordReaderFactory {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private RandomAccessFile rFile;
@@ -55,11 +52,8 @@ public class RecordFileReaderWriter {
 	private RecordWriter rw;
 	private boolean writeEBCDIC = false;
 
-	public RecordFileReaderWriter() {
-		getOsBasedWriter();
-	}
-
-	private void getOsBasedWriter() {
+	public RecordReaderFactory() {
+		//want the spaces buffer to be the correct character
 		String os = System.getProperty("os.name");
 		logger.atFine().log("Operating System %s", os);
 		if(os.startsWith("z")) {
@@ -87,25 +81,6 @@ public class RecordFileReaderWriter {
 
 	public boolean isFileReadable() {
 		return readable;
-	}
-	public void readRecordsFromDDName(String ddname) throws IOException {
-        final String ddspec = "//DD:" + ddname;
-
-        // Create a zFile to represent the data set
-        final ZFile zFile = new ZFile(ddspec, "rb,type=record,noseek");
-
-        // Read each record in the data set
-        try {
-            //final byte[] recBuf = new byte[zFile.getLrecl()];
-            int nread; // @KQC
-            final String encoding = ZUtil.getDefaultPlatformEncoding();
-            while ((nread = zFile.read(record.bytes.array())) >= 0) { // @KQC
-				record.length = (short) nread;
-            }
-			EOFreached = true;
-        } finally {
-            zFile.close();
-        }
 	}
 
 	public FileRecord readRecord() throws IOException {

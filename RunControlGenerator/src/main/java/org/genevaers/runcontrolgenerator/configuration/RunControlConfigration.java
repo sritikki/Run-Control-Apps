@@ -1,9 +1,6 @@
 package org.genevaers.runcontrolgenerator.configuration;
 
-import java.net.URI;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -23,44 +20,14 @@ import java.util.List;
  */
 
 
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Map.Entry;
-import java.util.logging.Level;
+import org.genevaers.utilities.ConfigEntry;
+import org.genevaers.utilities.GersConfigration;
 
 import com.google.common.flogger.FluentLogger;
 
-public class RunControlConfigration {
+public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private List<String> linesRead = new ArrayList<>();
-
-    private class ConfigEntry {
-        String value = "";
-        boolean hidden = false;
-
-        public ConfigEntry(String value, boolean hidden) {
-            this.value = value;
-            this.hidden = hidden;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public boolean isHidden() {
-            return hidden;
-        }
-
-        public void setHidden(boolean hidden) {
-            this.hidden = hidden;
-        }
-    }
-    
     public static final String DEFAULT_PARM_FILENAME = "MR91Parm.cfg";
     public static final String DEFAULT_ZOSPARM_FILENAME = "MR91PARM";
 
@@ -78,12 +45,8 @@ public class RunControlConfigration {
     public static final String DBFLDRS = "DBFLDRS";
     public static final String DBVIEWS = "DBVIEWS";
 
-    private static final String PARMFILE = "PARMFILE";
-    private static final String ZOSPARMFILE = "ZOSPARMFILE";
     private static final String REPORT_FILE = "MR91RPT";
     private static final String LOG_FILE = "MR91LOG";
-    public static final String LOG_LEVEL = "LOG_LEVEL";
-    public static final String TRACE = "TRACE";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";
@@ -93,16 +56,13 @@ public class RunControlConfigration {
     public static final String EMIT_ENABLED = "EMIT_ENABLED";
 
     public static final String WB_XML_FILES_SOURCE = "WBXMLI";
+    public static final String VDP_XML_FILES_SOURCE = "VDPXMLI";
 
-    public static final String XLT_FILE = "XLT";
-    public static final String JLT_FILE = "JLT";
-    public static final String VDP_FILE = "VDP";
     private static final String DOT_FORMAT = "DOT_FORMAT";
 
     private static final String NUMBER_MODE = "NUMBER_MODE";
     // Configuration is just a map of parm names to values
     // Make it a TreeMap so it is sorted
-    Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
     public RunControlConfigration() {
         //Map preloaded with expect names and default values
@@ -144,31 +104,18 @@ public class RunControlConfigration {
         parmToValue.put(NUMBER_MODE, new ConfigEntry("STANDARD", false )); //Could be LARGE
     }
 
-	public String getInputType() {
+	public static String getInputType() {
 		return parmToValue.get(INPUT_TYPE).getValue();
 	}
 
-    public void addParmValue(String name, String value) {
-        ConfigEntry pv = parmToValue.get(name.toUpperCase());
-        if(pv != null) {
-            pv.setValue(value);
-        } else {
-            logger.atWarning().log("Ignoring unexpected parameter %s=%s", name, value);
-        }
-    }
-
-    public boolean isParmExpected(String name) {
-        return parmToValue.get(name.toUpperCase()) != null;
-    }
-
-	public boolean isValid() {
+	public static boolean isValid() {
         boolean valid = false;
         valid = isInputValid();
         valid &= isOutputValid();
 		return valid;
 	}
 
-    private boolean isOutputValid() {
+    public static boolean isOutputValid() {
         boolean valid = false;
         if( isOutputRC()) {
             valid = true;
@@ -182,19 +129,19 @@ public class RunControlConfigration {
         return valid;
     }
 
-    public boolean isOutputRC() {
+    public static boolean isOutputRC() {
         return parmToValue.get(OUTPUT_RUN_CONTROL_FILES).getValue().equalsIgnoreCase("Y");
     }
 
-    public boolean isWriteWBXML() {
+    public static boolean isWriteWBXML() {
         return parmToValue.get(OUTPUT_WB_XML_FILES).getValue().equalsIgnoreCase("Y");
     }
 
-    public boolean isWriteVDPXML() {
+    public static boolean isWriteVDPXML() {
         return parmToValue.get(OUTPUT_VDP_XML_FILE).getValue().equalsIgnoreCase("Y");
     }
 
-    private boolean isInputValid() {
+    private static boolean isInputValid() {
         boolean valid = true;
         switch(getInputType()) {
             case "WBXML":
@@ -212,56 +159,40 @@ public class RunControlConfigration {
         return valid;
     }
 
-	public String getParmFileName() {
-		return parmToValue.get(PARMFILE).getValue();
-	}
-
-	public Level getLogLevel() {
-		if(parmToValue.get(TRACE).getValue().equalsIgnoreCase("Y")){
-            return Level.FINE;
-        } else {
-            return Level.INFO;
-        }
-	}
-
-	public String getZosParmFileName() {
-		return parmToValue.get(ZOSPARMFILE).getValue();
-	}
-
-	public void overrideParmFile(String parmFile) {
+	public static void overrideParmFile(String parmFile) {
         if(parmFile.length() > 0) {
             ConfigEntry pv = parmToValue.get(PARMFILE);
             pv.setValue(parmFile);
         }
 	}
 
-	public void overrideReportFile(String rptFile) {
+	public static void overrideReportFile(String rptFile) {
         if(rptFile.length() > 0) {
             ConfigEntry pv = parmToValue.get(REPORT_FILE);
             pv.setValue(rptFile);
         }
 	}
 
-	public void overrideLogFile(String logFile) {
+	public static void overrideLogFile(String logFile) {
         if(logFile.length() > 0) {
             ConfigEntry pv = parmToValue.get(LOG_FILE);
             pv.setValue(logFile);
         }
 	}
 
-	public String getLogFileName() {
+	public static String getLogFileName() {
         return parmToValue.get(LOG_FILE).getValue();
 	}
 
-	public String getReportFileName() {
+	public static String getReportFileName() {
         return parmToValue.get(REPORT_FILE).getValue();
 	}
 
-    public String getWBXMLDirectory() {
+    public static String getWBXMLDirectory() {
         return parmToValue.get(WB_XML_FILES_SOURCE).getValue();
     }
 
-    public boolean isXltDotEnabled() {
+    public static boolean isXltDotEnabled() {
         if( parmToValue.get(DOT_XLT) != null) {
             return parmToValue.get(DOT_XLT).getValue().equalsIgnoreCase("Y");
         } else {
@@ -269,7 +200,7 @@ public class RunControlConfigration {
         }
     }
 
-    public boolean isJltDotEnabled() {
+    public static boolean isJltDotEnabled() {
         if( parmToValue.get(DOT_JLT) != null) {
             return parmToValue.get(DOT_JLT).getValue().equalsIgnoreCase("Y");
         } else {
@@ -277,7 +208,7 @@ public class RunControlConfigration {
         }
     }
 
-    public String getViewDots() {
+    public static String getViewDots() {
         if( parmToValue.get(VIEW_DOTS) != null) {
             return parmToValue.get(VIEW_DOTS).getValue();
         } else {
@@ -285,7 +216,7 @@ public class RunControlConfigration {
         }
     }
 
-    public String getColumnDots() {
+    public static String getColumnDots() {
         if( parmToValue.get(COLUMN_DOTS) != null) {
             return parmToValue.get(COLUMN_DOTS).getValue();
         } else {
@@ -293,99 +224,39 @@ public class RunControlConfigration {
         }
     }
 
-    public void setDotFilter(String views, String cols, String pfs) {
+    public static void setDotFilter(String views, String cols, String pfs) {
         parmToValue.put(DOT_XLT, new ConfigEntry("Y", true));
         parmToValue.put(VIEW_DOTS, new ConfigEntry(views, true));
         parmToValue.put(COLUMN_DOTS, new ConfigEntry(cols, true));
         parmToValue.put(PF_DOTS, new ConfigEntry(pfs, true));
     }
 
-    public void setJltDotFilter(String views, String cols, String pfs) {
+    public static void setJltDotFilter(String views, String cols, String pfs) {
         parmToValue.put(DOT_JLT, new ConfigEntry("Y", true));
         parmToValue.put(VIEW_DOTS, new ConfigEntry(views, true));
         parmToValue.put(COLUMN_DOTS, new ConfigEntry(cols, true));
         parmToValue.put(PF_DOTS, new ConfigEntry(pfs, true));
     }
 
-    public Boolean isPFDotEnabled() {
+    public static Boolean isPFDotEnabled() {
         return parmToValue.get(PF_DOTS).getValue().equalsIgnoreCase("Y");
     }
 
-    public String getXLTFileName() {
-        return parmToValue.get(XLT_FILE).getValue();
-    }
-
-    public String getVdpFile() {
-        return parmToValue.get(VDP_FILE).getValue();
-    }
-
-    public String getJLTFileName() {
-        return parmToValue.get(JLT_FILE).getValue();
-    }
-
-	public void overrideVDPFile(String vdpFile) {
-        if(vdpFile.length() > 0) {
-            ConfigEntry pv = parmToValue.get(VDP_FILE);
-            pv.setValue(vdpFile);
-        }
-	}
-
-	public void overrideXLTFile(String xltFile) {
-        if(xltFile.length() > 0) {
-            ConfigEntry pv = parmToValue.get(XLT_FILE);
-            pv.setValue(xltFile);
-        }
-	}
-
-	public void overrideJLTFile(String jltFile) {
-        if(jltFile.length() > 0) {
-            ConfigEntry pv = parmToValue.get(JLT_FILE);
-            pv.setValue(jltFile);
-        }
-	}
-
-    public boolean isEmitEnabled() {
+    public static boolean isEmitEnabled() {
         return parmToValue.get(EMIT_ENABLED).getValue().equalsIgnoreCase("Y");
     }
 
-    public String getParm(String parm) {
-        ConfigEntry cfe = parmToValue.get(parm);
-        if(cfe != null) {
-            return cfe.getValue();
-        } else {
-            return "";
-        }
-    }
-
-    public boolean isFormatDotEnabled() {
+    public static boolean isFormatDotEnabled() {
         return parmToValue.get(DOT_FORMAT).getValue().equalsIgnoreCase("Y");
     }
 
-    public boolean isNumberModeStandard() {
+    public static boolean isNumberModeStandard() {
         return parmToValue.get(NUMBER_MODE).getValue().equalsIgnoreCase("STANDARD");      
     }
 
-    public void setLinesRead(List<String> linesRead) {
-        this.linesRead = linesRead;
+    public static String getVDPXMLDirectory() {
+        return parmToValue.get(WB_XML_FILES_SOURCE).getValue();
     }
 
-    public List<String> getLinesRead() {
-        return linesRead;
-    }
-
-    public List<String> getOptionsInEffect() {
-        List<String> optsInEfect = new ArrayList<>();
-        for(Entry<String, ConfigEntry> parm : parmToValue.entrySet()) {
-            if(!parm.getValue().isHidden()) {
-                optsInEfect.add(String.format("%-33s = %s", parm.getKey(), parm.getValue().getValue()));
-            }
-        };
-        return optsInEfect;
-    }
-
-    public Object getVDPXMLDirectory() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVDPXMLDirectory'");
-    }
 
 }

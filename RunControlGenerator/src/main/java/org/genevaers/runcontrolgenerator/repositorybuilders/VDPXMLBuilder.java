@@ -12,13 +12,12 @@ import com.google.common.flogger.StackSize;
 public class VDPXMLBuilder extends XMLBuilder{
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public VDPXMLBuilder(RunControlConfigration rcc) {
-        super(rcc);
-        //TODO Auto-generated constructor stub
+    public VDPXMLBuilder() {
     }
 
     @Override
     protected void buildFromXML(InputReport ir) {
+        Status retval;
         VDPXMLSaxIterator vdpxmlReader = new VDPXMLSaxIterator();
 		try {
             vdpxmlReader.setInputBuffer(inputBuffer);
@@ -33,7 +32,7 @@ public class VDPXMLBuilder extends XMLBuilder{
 
     @Override
     protected String getXMLDirectory() {
-        return "VDPXMLI";
+        return RunControlConfigration.getVDPXMLDirectory();
     }
     
 }

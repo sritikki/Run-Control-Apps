@@ -87,9 +87,9 @@ public class CommandLineHandler {
 			RCAGenerationData.setFlow(flow);
 			RCAMenu.generate();
 		} else if(line.hasOption("x")) {
-			flow.generateXltPrint(root);
+			AnalyserDriver.generateXltPrint(root);
 		} else if(line.hasOption("j")) {
-			flow.generateJltPrint(root);
+			AnalyserDriver.generateJltPrint(root);
 		} else if(line.hasOption("c")) {
 			flow.aggregateLtCoverage();
 		} else if(line.hasOption("d")) {
@@ -99,8 +99,8 @@ public class CommandLineHandler {
 		} else {
 			flow.makeRunControlAnalyserDataStore(root);
 			root.resolve("rca").toFile().mkdirs();
-			flow.generateXltPrint(root);
-			flow.generateJltPrint(root);
+			AnalyserDriver.generateXltPrint(root);
+			AnalyserDriver.generateJltPrint(root);
 			flow.writeCoverageResults(root);
 			generateFlow();
 		}

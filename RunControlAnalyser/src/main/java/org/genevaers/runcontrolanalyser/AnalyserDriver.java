@@ -28,13 +28,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
-import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.Records2Dot;
 import org.genevaers.genevaio.html.LTRecordsHTMLWriter;
 import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
+import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FTPSession;
@@ -44,6 +44,8 @@ import com.google.common.flogger.FluentLogger;
 
 public class AnalyserDriver {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+	private RcaConfigration rcac;
 
 	/**
 	 *
@@ -56,7 +58,7 @@ public class AnalyserDriver {
 	private RunControlAnalyser fa = new RunControlAnalyser();
 	private Object cwd;
 	private Path dataStore;
-	private LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
+	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
 
 	private boolean jlt1Present;
 
@@ -155,21 +157,20 @@ public class AnalyserDriver {
 		return dataStore.toFile().list();
 	}
 
-	public void generateXltPrint(Path root) {
+	public static void generateXltPrint(Path root) {
 		XLTFileReader xltr = new XLTFileReader();
 		Path xltp = root.resolve("XLT");
 		xltr.open(xltp.toString());
 		LogicTable xlt = xltr.makeLT();
-        LTLogger.logRecords(xlt);
         LTLogger.writeRecordsTo(xlt, root.resolve("rca").resolve("xltrpt.txt"));
-		collectCoverageDataFrom(xltp, xlt);
+		//collectCoverageDataFrom(xltp, xlt);
 	}
 
-    private void collectCoverageDataFrom(Path xltp, LogicTable xlt) {
+    private static void collectCoverageDataFrom(Path xltp, LogicTable xlt) {
 		ltCoverageAnalyser.addDataFrom(xltp, xlt);
 	}
 
-	public void generateJltPrint(Path root) {
+	public static void generateJltPrint(Path root) {
 		XLTFileReader jltr = new XLTFileReader();
 		Path jltp = root.resolve("JLT");
 		if(jltp.toFile().exists()) {
@@ -287,6 +288,18 @@ public class AnalyserDriver {
 		Path vdpPath = rc.resolve("VDP");
 		Path xltPath = rc.resolve("XLT");
 		return vdpPath.toFile().exists() &&	xltPath.toFile().exists();
+	}
+
+	public static void runFromConfig() {
+		String locroot = System.getProperty("user.dir");
+    	//locroot = locroot.replaceAll("^[Cc]:", "");
+    	locroot = locroot.replace("\\", "/");
+    	Path root = Paths.get(locroot);
+		if(RcaConfigration.isXltReportOnly()) {
+			generateXltPrint(root);
+		} else if(RcaConfigration.isJltReportOnly()) {
+			generateJltPrint(root);
+		}
 	}
 
 }

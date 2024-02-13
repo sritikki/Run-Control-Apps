@@ -1,4 +1,4 @@
-package org.genevaers.runcontrolgenerator;
+package org.genevaers.utilities;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -29,12 +29,10 @@ import java.util.List;
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.ZFile;
 
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-
 public class ParmReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	RunControlConfigration rcc;
+	GersConfigration rcc;
 	List<String> linesRead = new ArrayList<>();
 
 	public enum PARM_RESULT {
@@ -43,7 +41,7 @@ public class ParmReader {
 
 	PARM_RESULT result = PARM_RESULT.OK;
 
-	public void setConfig(RunControlConfigration rcc) {
+	public void setConfig(GersConfigration rcc) {
 		this.rcc = rcc;
 	}
 

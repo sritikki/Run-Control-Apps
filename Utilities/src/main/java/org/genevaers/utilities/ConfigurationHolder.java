@@ -1,9 +1,7 @@
-package org.genevaers.runcontrolgenerator.repositorybuilders;
-
-
+package org.genevaers.utilities;
 
 /*
- * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
+ * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,11 +17,17 @@ package org.genevaers.runcontrolgenerator.repositorybuilders;
  * under the License.
  */
 
-import org.genevaers.runcontrolgenerator.utility.Status;
 
+public class ConfigurationHolder {
 
-public interface RepositoryBuilder {
+    static GersConfigration config;
 
-	public abstract Status run();
+    public static void setConfig(GersConfigration config) {
+        ConfigurationHolder.config = config;
+    }
 
+    public static GersConfigration get() {
+        return config;
+    }
+    
 }

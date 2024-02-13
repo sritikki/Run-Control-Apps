@@ -41,12 +41,10 @@ public class RunControlWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private LogicTable extractLogicTable;
     private LogicTable joinLogicTable;
-    private RunControlConfigration rcc;
 
     private int numVDPRecords;
 
-	public RunControlWriter(RunControlConfigration rc) {
-        rcc = rc;
+	public RunControlWriter() {
 	}
 
 	public Status run() {
@@ -57,20 +55,20 @@ public class RunControlWriter {
         try {
             if(joinLogicTable.getNumberOfRecords() > 5) {
                 logger.atInfo().log("Write Join Logic Table");
-                jltw.write(joinLogicTable, Paths.get(rcc.getJLTFileName()));
+                jltw.write(joinLogicTable, Paths.get(RunControlConfigration.getJLTFileName()));
                 jltw.close();
             } else {
                 logger.atInfo().log("No Join Logic Table required");
             }
             logger.atInfo().log("Write Extract Logic Table");
-            xltw.write(extractLogicTable, Paths.get(rcc.getXLTFileName()));
+            xltw.write(extractLogicTable, Paths.get(RunControlConfigration.getXLTFileName()));
             xltw.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         VDPFileWriter vdpw = new VDPFileWriter();
-        vdpw.open(rcc.getVdpFile());
+        vdpw.open(RunControlConfigration.getVdpFile());
         VDPManagementRecords vmrs = makeVDPManagementRecords();
         try {
             vdpw.writeVDPFrom(vmrs);
@@ -115,7 +113,7 @@ public class RunControlWriter {
         gen.setDate(dateFormat.format(dt));
         gen.setRunDate(dateFormat1.format(dt));
         gen.setTime(timeFormat.format(dt));
-        gen.setDescription("Java MR91 via " + rcc.getInputType());
+        gen.setDescription("Java MR91 via " + RunControlConfigration.getInputType());
         gen.setPadding4("");
         gen.setPadding5("");
         setNumberNode(gen);
@@ -136,7 +134,7 @@ public class RunControlWriter {
     }
 
     private void setNumberNode(VDPGenerationRecord gen) {
-        if(rcc.isNumberModeStandard()) {
+        if(RunControlConfigration.isNumberModeStandard()) {
             gen.setMaxDecimalDigits((byte)23);
             gen.setMaxDecimalPlaces((byte)8);
         } else {
