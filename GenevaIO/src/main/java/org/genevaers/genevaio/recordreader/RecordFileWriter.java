@@ -25,14 +25,20 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 import org.apache.commons.lang.StringUtils;
+import org.genevaers.utilities.GersConfigration;
 
-public abstract class RecordWriter {
+import com.google.common.flogger.FluentLogger;
+
+public abstract class RecordFileWriter {
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	private static boolean spacesConverted = false;
 	protected static String spaces = StringUtils.repeat(" ", 1536); //!!! Don't change this length  !!!!!
 
 	public abstract void writeRecordsTo(File file) throws IOException;
 	public abstract void write(ByteBuffer bytes);
 	public abstract void close();
+	protected FileRecord record = new FileRecord();
+	private int numRecordsWritten;
 
 	public static String getSpaces() {
 		return spaces;
@@ -49,4 +55,53 @@ public abstract class RecordWriter {
 		}
 	}
 
+	public void writeAndClearTheRecord() {
+		//The record should now be filled.
+		//The first short should be the length of the record
+		//Write an ID at the end of each record "JEND"
+		write(record.bytes);
+		record.bytes.clear();
+		numRecordsWritten++;
+	}
+
+	public void setLengthFromPosition() {
+		short p = (short)record.bytes.position();
+		record.bytes.putShort(0, p);
+	}	
+	
+	public int getNumRecordsWritten() {
+		return numRecordsWritten;
+	}
+
+	public byte[] convertOutputIfNeeded(String str){
+		byte[] retStr;
+		//This flag needed to be determined by detecting 
+		//the operating system at startup
+		//We can also introduce a factory to select the appropriate
+		//record writer to use too.
+		if (GersConfigration.isZos()) {
+			return asciiToEbcdic(str);
+		} else {
+			if(str != null) {
+				retStr = str.getBytes();
+			} else {
+				String mt = "";
+				logger.atWarning().log("RecordFileReaderWriter: Converting null string");
+				retStr = mt.getBytes();
+			}
+			return retStr;
+		}
+	}
+
+	private byte[] asciiToEbcdic(String str) {
+		Charset utf8charset = Charset.forName("UTF-8");
+		Charset ebccharset = Charset.forName("IBM-1047");
+		ByteBuffer inputBuffer = ByteBuffer.wrap(str.getBytes());
+		CharBuffer data = utf8charset.decode(inputBuffer);
+		return ebccharset.encode(data).array();
+	}
+  
+	public FileRecord getRecordToFill() {
+		return record;
+	}
 }

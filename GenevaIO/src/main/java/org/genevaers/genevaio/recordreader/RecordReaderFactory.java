@@ -49,7 +49,7 @@ public class RecordReaderFactory {
 
 	private FileRecord record = new FileRecord();
 	private long filelen;
-	private RecordWriter rw;
+	private RecordFileWriter rw;
 	private boolean writeEBCDIC = false;
 
 	public RecordReaderFactory() {
@@ -60,13 +60,13 @@ public class RecordReaderFactory {
 			logger.atFine().log("Using ZosRecordWriter");
 			rw = new ZosRecordWriter();
 			writeEBCDIC = true;
-			RecordWriter.setSpacesEBCDIC();
+			RecordFileWriter.setSpacesEBCDIC();
 		} else {
 			logger.atFine().log("Using BinRecordWriter");
 			rw = new BinRecordWriter();
 		}
-		VDPFileObject.setSpaces(RecordWriter.getSpaces());
-		LTFileObject.setSpaces(RecordWriter.getSpaces());
+		VDPFileObject.setSpaces(RecordFileWriter.getSpaces());
+		LTFileObject.setSpaces(RecordFileWriter.getSpaces());
 	}
 
 	public void readRecordsFrom(File file) throws IOException {

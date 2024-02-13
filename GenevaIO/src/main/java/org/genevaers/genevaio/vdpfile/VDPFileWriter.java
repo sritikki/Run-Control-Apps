@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
+import org.genevaers.genevaio.recordreader.RecordFileWriter;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.calculationstack.CalcStack;
@@ -58,7 +59,7 @@ public class VDPFileWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private File vdpFile;
-	private RecordFileReaderWriter VDPWriter;
+	private RecordFileWriter VDPWriter;
 	private int numrecords;
 	private VDPManagementRecords vdpMgmtRecs;
 
@@ -83,7 +84,7 @@ public class VDPFileWriter {
 	}
 
 	private void writeTheRecords() throws Exception {
-		VDPWriter = new RecordFileReaderWriter();
+		VDPWriter = RecordFileReaderWriter.getWriter();
 		VDPWriter.writeRecordsTo(vdpFile);
 
 		// We really need to walk the list of items to get the generation information

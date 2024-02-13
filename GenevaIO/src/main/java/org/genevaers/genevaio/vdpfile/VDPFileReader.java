@@ -31,8 +31,9 @@ import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.RootTypeFactory;
 import org.genevaers.genevaio.fieldnodes.ViewFieldNode;
+import org.genevaers.genevaio.recordreader.FileRecord;
+import org.genevaers.genevaio.recordreader.RecordFileReader;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.calculationstack.CalcStack;
@@ -61,7 +62,7 @@ public class VDPFileReader{
 	private boolean compare;
 	
 	private File vdpFile;
-	private RecordFileReaderWriter rr;
+	private RecordFileReader rr;
 	private int numrecords;
 
 	private ViewNode currentView;
@@ -126,7 +127,7 @@ public class VDPFileReader{
 	}
 	
 	private void readVDP() throws Exception {
-		rr = new RecordFileReaderWriter();
+		rr = RecordFileReaderWriter.getReader();
 		rr.readRecordsFrom(vdpFile);
 		FileRecord rec = rr.readRecord();
 		while (rr.isAtFileEnd() == false) {

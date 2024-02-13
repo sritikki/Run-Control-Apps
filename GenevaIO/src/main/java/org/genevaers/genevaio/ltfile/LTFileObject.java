@@ -22,8 +22,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
+import org.genevaers.genevaio.recordreader.FileRecord;
+import org.genevaers.genevaio.recordreader.RecordFileWriter;
 
 public abstract class LTFileObject {
 
@@ -34,7 +34,7 @@ public abstract class LTFileObject {
 
 	public abstract void writeCSV(FileWriter csvFile) throws IOException;
 	public abstract void writeCSVHeader(FileWriter csvFile) throws IOException;
-	public abstract void fillTheWriteBuffer(RecordFileReaderWriter rw);
+	public abstract void fillTheWriteBuffer(RecordFileWriter rw);
 
 	public static void setSpaces(String spaces) {
 		LTFileObject.spaces = spaces;
@@ -57,7 +57,7 @@ public abstract class LTFileObject {
         return c;
 	}
 
-	protected void cookieWriter(Cookie value, RecordFileReaderWriter readerWriter, FileRecord buffer) {
+	protected void cookieWriter(Cookie value, RecordFileWriter readerWriter, FileRecord buffer) {
         buffer.bytes.putInt(value.length());
         if(value.length() < 0) {
             buffer.bytes.put(value.getBytes(), 0, 256);

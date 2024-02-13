@@ -22,9 +22,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
-import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.recordreader.FileRecord;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
+import org.genevaers.genevaio.recordreader.RecordFileReader;
 import org.genevaers.repository.components.enums.LtRecordType;
 
 public class XLTFileReader {
@@ -33,7 +33,7 @@ public class XLTFileReader {
 	private MetadataNode recordsRoot;
 	private boolean compare;
 	
-	private RecordFileReaderWriter rr;
+	private RecordFileReader rr;
 	private File ltFile;
 	private int numrecords;
 	
@@ -41,8 +41,7 @@ public class XLTFileReader {
 	private boolean charSetRead = false;
 
 	public LogicTable readLT() throws Exception {
-		rr = new RecordFileReaderWriter();
-		rr.readRecordsFrom(ltFile);
+		rr = RecordFileReaderWriter.getReader();
 		FileRecord rec = rr.readRecord();
 		while (rr.isAtFileEnd() == false) {
 			numrecords++;
