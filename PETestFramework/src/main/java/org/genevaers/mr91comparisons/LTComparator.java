@@ -154,7 +154,6 @@ public class LTComparator {
 		XLTFileReader xltr = new XLTFileReader();
 		xltr.open(ltPath.resolve(type).toString());
 		LogicTable lt = xltr.makeLT();
-        LTLogger.logRecords(lt);
         LTLogger.writeRecordsTo(lt, ltPath.resolve(toName));
 	}
 }

@@ -19,13 +19,17 @@ package org.genevaers.genevaio.ltfile;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.Iterator;
 
 import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.utilities.GersConfigration;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
+import com.ibm.jzos.ZFile;
 
 public class LTLogger {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -113,19 +117,45 @@ public class LTLogger {
 	}
 
 	public static void writeRecordsTo(LogicTable lt, Path file) {
-		try (FileWriter fw = new FileWriter(file.toFile())) {
-			Iterator<LTRecord> lti = lt.getIterator();
-			while (lti.hasNext()) {
-				LTRecord ltr = lti.next();
-				fw.write(getLogString(ltr) + "\n");
+		ZFile dd;
+		if (GersConfigration.isZos()) {
+			try {
+				dd = new ZFile("//DD:" + GersConfigration.XLT_PRINT, "w");
+				writeTheLtDetailsToDnname(lt, dd);
+			} catch (IOException e) {
+				logger.atSevere().log("Unable to create DDname %s", GersConfigration.XLT_PRINT);
 			}
-			fw.write("\nEnd of LT Records");
-		} catch (Exception e) {
+		} else {
+			writeTheLtDetailsToFile(lt, file);
+		}
+	}
+
+	private static void writeTheLtDetailsToFile(LogicTable lt, Path file) {
+		try (Writer out = new FileWriter(file.toFile());) {
+			writeDetails(lt, out);
+		}
+		catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
 	}
-	// private static final String ARG1 = "%7d %7d %7d %4d %3d %s (%s/%d,%d %s)";
-	// 10208 10249 400661 37 10 X (U/0,0 NONE)
+
+	private static void writeDetails(LogicTable lt, Writer out) throws IOException {
+		Iterator<LTRecord> lti = lt.getIterator();
+		while (lti.hasNext()) {
+			LTRecord ltr = lti.next();
+			out.write(getLogString(ltr) + "\n");
+		}
+		out.write("\nEnd of LT Records");
+	}
+
+	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd) throws IOException {
+		try (Writer out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
+			writeDetails(lt, out);
+		}
+		catch (Exception e) {
+			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
+		}
+	}
 
 	private static String getLogString(LTRecord ltr) {
 		String leadin = getLeadin(ltr);

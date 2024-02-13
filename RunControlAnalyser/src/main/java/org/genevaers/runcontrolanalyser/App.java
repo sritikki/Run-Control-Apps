@@ -40,14 +40,13 @@ public class App {
     } 
 
     public static void run() {
-        RunControlAnalyser rca = new RunControlAnalyser();
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
         pr.setConfig(rcac);
         try {
-            pr.populateConfigFrom(rcac.getParmFileName());
+            pr.populateConfigFrom(GersConfigration.getParmFileName());
             GersConfigration.setLinesRead(pr.getLinesRead());
-            if(rcac.isValid()) {
+            if(RcaConfigration.isValid()) {
                 GenevaLog.initLogger(RunControlAnalyser.class.getName(), rcac.getLogFileName(), rcac.getLogLevel());
                 AnalyserDriver.runFromConfig();
             } else {

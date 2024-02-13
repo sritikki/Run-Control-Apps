@@ -31,7 +31,6 @@ import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.dots.LookupGenerationDotWriter;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
-import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.html.VDPHTMLWriter;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
@@ -39,6 +38,7 @@ import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.vdpfile.VDPFileReader;
 import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.visualisation.GraphVizRunner;
 
@@ -244,4 +244,9 @@ public class RunControlAnalyser {
 		CommandRunner cmdRunner = new CommandRunner();
 		cmdRunner.run("cmd /C " + showme.toString(), showme.getParent().toFile());
 	}
+
+    public void runFromConfig(RcaConfigration rcac) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'runFromConfig'");
+    }
 }

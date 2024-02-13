@@ -30,7 +30,7 @@ import com.ibm.jzos.ZFileException;
 public abstract class XMLBuilder implements RepositoryBuilder{
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	protected BufferedInputStream inputBuffer;
-	private Status retval;
+	private Status retval = Status.OK;
 
     public XMLBuilder() {
     }
@@ -74,7 +74,6 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 							ir.setDdName(ddname);
 							ir.setMemberName(mname);
 							buildFromXML(ir);
-							retval = Status.OK;
 							// pdsmem.close();
 							inputBuffer.close();
 						}
@@ -113,7 +112,6 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 					ir.setMemberName(d.getName());
 					buildFromXML(ir);
 					Repository.addInputReport(ir);
-
 				} catch (FileNotFoundException e) {
 					logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
 					retval = Status.ERROR;
