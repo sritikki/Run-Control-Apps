@@ -56,12 +56,10 @@ public class ParmReader {
 	private void readDDParm() throws IOException {
 		String ddname = "//DD:" + GersConfigration.getZosParmFileName();
 		logger.atInfo().log("Read %s", ddname);
-		ZFile dd = null;
-		dd = new ZFile(ddname, "r");
 		BufferedReader br = new BufferedReader(new InputStreamReader(new ZFile(ddname, "r").getInputStream()));
 		logger.atInfo().log("Reading %s", ddname);
 		parseLines(br);
-		dd.close();
+		br.close();
 	}
 
 	private void readSuppliedParm(String parmName) {
