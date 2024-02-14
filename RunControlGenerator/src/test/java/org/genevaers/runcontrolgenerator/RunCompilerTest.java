@@ -366,7 +366,6 @@ class RunCompilerTest extends RunCompilerBase {
         assertEquals(400585, lkl.getArg1().getFieldId());
         assertEquals(1, lkl.getArg1().getStartPosition());
 
-
         LogicTable jlt = comp.getJoinLogicTable();
 //        assertEquals(75, jlt.getNumberOfRecords());
     }

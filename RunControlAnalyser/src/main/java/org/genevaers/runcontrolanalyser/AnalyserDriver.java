@@ -159,10 +159,11 @@ public class AnalyserDriver {
 	}
 
 	public static void generateXltPrint(Path root) {
+		logger.atInfo().log("Generate %s", GersConfigration.XLT_PRINT);
 		XLTFileReader xltr = new XLTFileReader();
 		xltr.open(root, GersConfigration.XLT_FILE);
 		LogicTable xlt = xltr.makeLT();
-		logger.atInfo().log("Read Lt %d records", xlt.getNumberOfRecords());
+		logger.atInfo().log("Read %d XLT records", xlt.getNumberOfRecords());
         LTLogger.writeRecordsTo(xlt, GersConfigration.XLT_PRINT);
 		//collectCoverageDataFrom(xltp, xlt);
 		xltr.close();
@@ -173,15 +174,16 @@ public class AnalyserDriver {
 	}
 
 	public static void generateJltPrint(Path root) {
+		logger.atInfo().log("Generate %s", GersConfigration.JLT_PRINT);
 		XLTFileReader jltr = new XLTFileReader();
 		Path jltp = root.resolve("JLT");
-		if(jltp.toFile().exists()) {
+		if(GersConfigration.isZos() || jltp.toFile().exists()) {
 			jltr.open(root, GersConfigration.JLT_FILE);
 			
 			LogicTable jlt = jltr.makeLT();
-			LTLogger.logRecords(jlt);
+			logger.atInfo().log("Read %d JLT records", jlt.getNumberOfRecords());
 			LTLogger.writeRecordsTo(jlt, GersConfigration.JLT_PRINT);
-			collectCoverageDataFrom(jltp, jlt);
+			//collectCoverageDataFrom(jltp, jlt);
 			jltr.close();
 		}
     }

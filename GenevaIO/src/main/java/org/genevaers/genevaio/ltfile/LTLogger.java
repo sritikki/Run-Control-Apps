@@ -120,12 +120,12 @@ public class LTLogger {
 		ZFile dd;
 		if (GersConfigration.isZos()) {
 			try {
-				logger.atInfo().log("Write LT report to %s", GersConfigration.XLT_PRINT);
+				logger.atInfo().log("Write LT report to %s", ltPrint);
 				dd = new ZFile("//DD:" + ltPrint, "w");
 				writeTheLtDetailsToDnname(lt, dd);
 				dd.close();
 			} catch (IOException e) {
-				logger.atSevere().log("Unable to create DDname %s", GersConfigration.XLT_PRINT);
+				logger.atSevere().log("Unable to create DDname %s", ltPrint);
 			}
 		} else {
 			writeTheLtDetailsToFile(lt, ltPrint);
