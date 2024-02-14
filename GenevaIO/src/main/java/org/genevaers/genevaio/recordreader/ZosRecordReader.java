@@ -53,7 +53,7 @@ public class ZosRecordReader extends RecordFileReader {
             byte[] readBuffer = new byte[8092];
             int numread = reader.read(readBuffer);
             record.length = (short) numread;
-            logger.atInfo().log("Read %d ", numread);
+            logger.atFine().log("Read %d ", numread);
             record.bytes.putShort((short) 4);
             record.bytes.put(readBuffer);
             if(numread < 0) {

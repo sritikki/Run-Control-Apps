@@ -38,6 +38,7 @@ import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FTPSession;
+import org.genevaers.utilities.GersConfigration;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -159,11 +160,10 @@ public class AnalyserDriver {
 
 	public static void generateXltPrint(Path root) {
 		XLTFileReader xltr = new XLTFileReader();
-		Path xltp = root.resolve("XLT");
-		xltr.open(xltp.toString());
+		xltr.open(root, GersConfigration.XLT_FILE);
 		LogicTable xlt = xltr.makeLT();
 		logger.atInfo().log("Read Lt %d records", xlt.getNumberOfRecords());
-        LTLogger.writeRecordsTo(xlt, root.resolve("rca").resolve("xltrpt.txt"));
+        LTLogger.writeRecordsTo(xlt, GersConfigration.XLT_PRINT);
 		//collectCoverageDataFrom(xltp, xlt);
 		xltr.close();
 	}
@@ -176,12 +176,13 @@ public class AnalyserDriver {
 		XLTFileReader jltr = new XLTFileReader();
 		Path jltp = root.resolve("JLT");
 		if(jltp.toFile().exists()) {
-			jltr.open(root.resolve("JLT").toString());
+			jltr.open(root, GersConfigration.JLT_FILE);
 			
 			LogicTable jlt = jltr.makeLT();
 			LTLogger.logRecords(jlt);
-			LTLogger.writeRecordsTo(jlt, root.resolve("rca").resolve("jltrpt.txt"));
+			LTLogger.writeRecordsTo(jlt, GersConfigration.JLT_PRINT);
 			collectCoverageDataFrom(jltp, jlt);
+			jltr.close();
 		}
     }
 

@@ -40,6 +40,7 @@ import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.CommandRunner;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.visualisation.GraphVizRunner;
 
 public class RunControlAnalyser {
@@ -78,7 +79,7 @@ public class RunControlAnalyser {
 		XLTFileReader xltr = new XLTFileReader();
 		xltr.setCompare(compare);
 		xltr.setRecordsRoot(recordsRoot);
-		xltr.open(xltPath.toString());
+		xltr.open(xltPath, GersConfigration.XLT_FILE);
 		xlt = xltr.makeLT();
 		if(withCSV) {
 			try {
@@ -96,7 +97,7 @@ public class RunControlAnalyser {
 			XLTFileReader jltr = new XLTFileReader();
 			jltr.setCompare(compare);
 			jltr.setRecordsRoot(recordsRoot);
-			jltr.open(jltPath.toString());
+			jltr.open(jltPath, GersConfigration.JLT_FILE);
 			jlt = jltr.makeLT();
 			if(withCSV) {
 				try {

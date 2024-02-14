@@ -74,7 +74,7 @@ public class GersConfigration {
     }
 
 	public static Level getLogLevel() {
-		if(parmToValue.get(TRACE).getValue().equalsIgnoreCase("Y")){
+		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("TRACE")){
             return Level.FINE;
         } else {
             return Level.INFO;

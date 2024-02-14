@@ -34,6 +34,7 @@ public class RcaConfigration extends GersConfigration {
     public static final String COMPARE = "COMPARE";
     public static final String COVERAGE = "COVERAGE";
  
+    public static final String RCA_DIR = "RCA/";
     public RcaConfigration() {
         //Map preloaded with expect names and default values
         parmToValue.put(TRACE, new ConfigEntry("N", false));
@@ -43,13 +44,15 @@ public class RcaConfigration extends GersConfigration {
         parmToValue.put(ZOSPARMFILE, new ConfigEntry(DEFAULT_ZOSPARM_FILENAME, true));
         // parmToValue.put(REPORT_FILE, new ConfigEntry(REPORT_FILE, true));
         parmToValue.put(LOG_FILE, new ConfigEntry("RCALOG", true));
-
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
         parmToValue.put(XLT_FILE, new ConfigEntry("XLT", true));
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
         
         
         parmToValue.put(XLT_REPORT, new ConfigEntry("XLT_REPORT", false));
         parmToValue.put(JLT_REPORT, new ConfigEntry("JLT_REPORT", false));
+
+
 
     }
 

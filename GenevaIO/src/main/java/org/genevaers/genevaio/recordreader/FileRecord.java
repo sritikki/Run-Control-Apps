@@ -15,13 +15,13 @@ public class FileRecord {
 	}
 
     public void dump() {
-		logger.atInfo().log("Record length %d", length);
+		logger.atFine().log("Record length %d", length);
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<length; i++) {
 			sb.append(String.format("%02X ", bytes.get(i)));
 		}
 		sb.append("\n");
-		logger.atInfo().log(sb.toString());
+		logger.atFine().log(sb.toString());
 		bytes.rewind();
     }
 }

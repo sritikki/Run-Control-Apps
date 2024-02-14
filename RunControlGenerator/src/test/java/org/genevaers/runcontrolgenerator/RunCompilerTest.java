@@ -305,7 +305,7 @@ class RunCompilerTest extends RunCompilerBase {
     @Test void testDemoOrderByStateSales() {
         LogicTable xlt = runFromXMLOverrideLogic(10714, TestHelper.STATE_SALES, "");
         LTLogger.logRecords(xlt);
-        LTLogger.writeRecordsTo(xlt, Paths.get("target/xlt.txt"));
+        LTLogger.writeRecordsTo(xlt, Paths.get("target/xlt.txt").toString());
         assertTrue(xlt.getNumberOfRecords() > 0);
         LogicTableF2 lkde = (LogicTableF2) xlt.getFromPosition(7);
         assertEquals("LKDE", lkde.getFunctionCode());

@@ -20,6 +20,7 @@ package org.genevaers.genevaio.ltfile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.recordreader.FileRecord;
@@ -48,13 +49,13 @@ public class XLTFileReader {
 		rr = RecordFileReaderWriter.getReader();
 		rr.readRecordsFrom(ltFile);
 		FileRecord rec = rr.readRecord();
-		logger.atInfo().log("read LT record");
+		logger.atFine().log("read LT record");
 		while (rr.isAtFileEnd() == false) {
 			numrecords++;
 			addToLTFromRecord(rec);
 			rec.bytes.clear();
 			rec = rr.readRecord();
-			logger.atInfo().log("read LT record");
+			logger.atFine().log("read LT record");
 		}
 		//rr.readRecord();
 		return logicTable;
@@ -65,7 +66,7 @@ public class XLTFileReader {
 		rec.bytes.rewind();
         int recType = rec.bytes.getInt(30);
 		rec.dump();
-		logger.atInfo().log("Record Type %d",recType);
+		logger.atFine().log("Record Type %d",recType);
         if(recType == LtRecordType.HD.ordinal()) {
 			addHD(rec);
         } else if(recType == LtRecordType.NV.ordinal()) {
@@ -212,11 +213,11 @@ public class XLTFileReader {
 		logicTable.add(nvr);
 	}
 
-	public void open(String name) {
+	public void open(Path root, String name) {
 		if(GersConfigration.isZos()) {
-			ltFile = new File(GersConfigration.XLT_FILE);
-		} else {
 			ltFile = new File(name);
+		} else {
+			ltFile = root.resolve(name).toFile();
 		}
 	}
 

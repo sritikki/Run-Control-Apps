@@ -100,6 +100,8 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
         parmToValue.put(VDP_FILE, new ConfigEntry("VDP", true));
 
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("LOG_LEVEL", false));
+
 
         parmToValue.put(NUMBER_MODE, new ConfigEntry("STANDARD", false )); //Could be LARGE
     }

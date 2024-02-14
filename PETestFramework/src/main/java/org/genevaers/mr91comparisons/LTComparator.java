@@ -152,8 +152,8 @@ public class LTComparator {
 
 	private void runLTPrint(Path ltPath, String type, String toName) throws IOException, InterruptedException {
 		XLTFileReader xltr = new XLTFileReader();
-		xltr.open(ltPath.resolve(type).toString());
+		xltr.open(ltPath, type);
 		LogicTable lt = xltr.makeLT();
-        LTLogger.writeRecordsTo(lt, ltPath.resolve(toName));
+        LTLogger.writeRecordsTo(lt, ltPath.resolve(toName).toString());
 	}
 }

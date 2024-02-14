@@ -47,7 +47,7 @@ public class App {
             pr.populateConfigFrom(GersConfigration.getParmFileName());
             GersConfigration.setLinesRead(pr.getLinesRead());
             if(RcaConfigration.isValid()) {
-                GenevaLog.initLogger(RunControlAnalyser.class.getName(), rcac.getLogFileName(), rcac.getLogLevel());
+                GenevaLog.initLogger(RunControlAnalyser.class.getName(), RcaConfigration.getLogFileName(), GersConfigration.getLogLevel());
                 AnalyserDriver.runFromConfig();
             } else {
                 logger.atSevere().log("Invalid configuration processing stopped");

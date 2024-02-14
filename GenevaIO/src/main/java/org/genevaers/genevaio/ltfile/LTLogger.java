@@ -116,25 +116,25 @@ public class LTLogger {
 		return sb.toString();
 	}
 
-	public static void writeRecordsTo(LogicTable lt, Path file) {
+	public static void writeRecordsTo(LogicTable lt, String ltPrint) {
 		ZFile dd;
 		if (GersConfigration.isZos()) {
 			try {
 				logger.atInfo().log("Write LT report to %s", GersConfigration.XLT_PRINT);
-				dd = new ZFile("//DD:" + GersConfigration.XLT_PRINT, "w");
+				dd = new ZFile("//DD:" + ltPrint, "w");
 				writeTheLtDetailsToDnname(lt, dd);
 				dd.close();
 			} catch (IOException e) {
 				logger.atSevere().log("Unable to create DDname %s", GersConfigration.XLT_PRINT);
 			}
 		} else {
-			writeTheLtDetailsToFile(lt, file);
+			writeTheLtDetailsToFile(lt, ltPrint);
 		}
 		logger.atInfo().log("LT report written");
 	}
 
-	private static void writeTheLtDetailsToFile(LogicTable lt, Path file) {
-		try (Writer out = new FileWriter(file.toFile());) {
+	private static void writeTheLtDetailsToFile(LogicTable lt, String ltPrint) {
+		try (Writer out = new FileWriter(ltPrint);) {
 			writeDetails(lt, out);
 		}
 		catch (Exception e) {
@@ -146,14 +146,14 @@ public class LTLogger {
 		Iterator<LTRecord> lti = lt.getIterator();
 		while (lti.hasNext()) {
 			LTRecord ltr = lti.next();
-			logger.atInfo().log(getLogString(ltr));
+			logger.atFine().log(getLogString(ltr));
 			out.write(getLogString(ltr) + "\n");
 		}
 		out.write("\nEnd of LT Records");
 	}
 
 	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd) throws IOException {
-		logger.atInfo().log("Stream details");
+		logger.atFine().log("Stream details");
 		try (Writer out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
 			writeDetails(lt, out);
 		}
