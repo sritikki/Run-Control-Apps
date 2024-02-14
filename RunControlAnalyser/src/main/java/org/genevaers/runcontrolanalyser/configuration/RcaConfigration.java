@@ -29,8 +29,8 @@ public class RcaConfigration extends GersConfigration {
     public static final String DEFAULT_PARM_FILENAME = "RCAPARM";
     public static final String DEFAULT_ZOSPARM_FILENAME = "RCAPARM";
 
-    public static final String XLT_REPORT = "XLT_REPORT_ONLY";
-    public static final String JLT_REPORT = "JLT_REPORT_ONLY";
+    public static final String XLT_REPORT = "XLT_REPORT";
+    public static final String JLT_REPORT = "JLT_REPORT";
     public static final String COMPARE = "COMPARE";
     public static final String COVERAGE = "COVERAGE";
  
@@ -49,11 +49,8 @@ public class RcaConfigration extends GersConfigration {
         parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
         
         
-        parmToValue.put(XLT_REPORT, new ConfigEntry("XLT_REPORT", false));
-        parmToValue.put(JLT_REPORT, new ConfigEntry("JLT_REPORT", false));
-
-
-
+        parmToValue.put(XLT_REPORT, new ConfigEntry("N", false));
+        parmToValue.put(JLT_REPORT, new ConfigEntry("N", false));
     }
 
     public static boolean isValid() {

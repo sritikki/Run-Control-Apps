@@ -302,7 +302,8 @@ public class AnalyserDriver {
     	Path root = Paths.get(locroot);
 		if(RcaConfigration.isXltReportOnly()) {
 			generateXltPrint(root);
-		} else if(RcaConfigration.isJltReportOnly()) {
+		}
+		if(RcaConfigration.isJltReportOnly()) {
 			generateJltPrint(root);
 		}
 	}
