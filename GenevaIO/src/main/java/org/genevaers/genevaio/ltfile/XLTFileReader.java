@@ -26,8 +26,12 @@ import org.genevaers.genevaio.recordreader.FileRecord;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReader;
 import org.genevaers.repository.components.enums.LtRecordType;
+import org.genevaers.utilities.GersConfigration;
+
+import com.google.common.flogger.FluentLogger;
 
 public class XLTFileReader {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private LTRecordReader recordReader = new LTRecordReader();
 	private MetadataNode recordsRoot;
@@ -42,12 +46,15 @@ public class XLTFileReader {
 
 	public LogicTable readLT() throws Exception {
 		rr = RecordFileReaderWriter.getReader();
+		rr.readRecordsFrom(ltFile);
 		FileRecord rec = rr.readRecord();
+		logger.atInfo().log("read LT record");
 		while (rr.isAtFileEnd() == false) {
 			numrecords++;
 			addToLTFromRecord(rec);
 			rec.bytes.clear();
 			rec = rr.readRecord();
+			logger.atInfo().log("read LT record");
 		}
 		//rr.readRecord();
 		return logicTable;
@@ -55,7 +62,10 @@ public class XLTFileReader {
 
 	private void addToLTFromRecord(FileRecord rec) throws Exception {
 		determineCharacterSet(rec);
+		rec.bytes.rewind();
         int recType = rec.bytes.getInt(30);
+		rec.dump();
+		logger.atInfo().log("Record Type %d",recType);
         if(recType == LtRecordType.HD.ordinal()) {
 			addHD(rec);
         } else if(recType == LtRecordType.NV.ordinal()) {
@@ -203,7 +213,11 @@ public class XLTFileReader {
 	}
 
 	public void open(String name) {
-		ltFile = new File(name);
+		if(GersConfigration.isZos()) {
+			ltFile = new File(GersConfigration.XLT_FILE);
+		} else {
+			ltFile = new File(name);
+		}
 	}
 
 	public LogicTable makeLT() {
@@ -221,6 +235,10 @@ public class XLTFileReader {
 
 	public int getNumberOfRecords() {
 		return numrecords;
+	}
+
+	public void close() {
+		rr.close();
 	}
 
 }

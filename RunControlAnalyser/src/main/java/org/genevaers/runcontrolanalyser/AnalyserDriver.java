@@ -162,8 +162,10 @@ public class AnalyserDriver {
 		Path xltp = root.resolve("XLT");
 		xltr.open(xltp.toString());
 		LogicTable xlt = xltr.makeLT();
+		logger.atInfo().log("Read Lt %d records", xlt.getNumberOfRecords());
         LTLogger.writeRecordsTo(xlt, root.resolve("rca").resolve("xltrpt.txt"));
 		//collectCoverageDataFrom(xltp, xlt);
+		xltr.close();
 	}
 
     private static void collectCoverageDataFrom(Path xltp, LogicTable xlt) {

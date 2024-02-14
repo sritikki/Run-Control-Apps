@@ -26,7 +26,7 @@ import com.ibm.jzos.ZFileException;
 
 public class ZosRecordReader extends RecordFileReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-    com.ibm.jzos.RecordReader reader = null;
+    private com.ibm.jzos.RecordReader reader = null;
 	protected static String spaces = StringUtils.repeat("@", 1536); //!!! Don't change this length  !!!!!
 	private FileRecord record = new FileRecord();
 
@@ -42,15 +42,23 @@ public class ZosRecordReader extends RecordFileReader {
 
     @Override
     public void readRecordsFrom(File file) throws IOException {
-        String ddname = "//:DD" +file.toString();
-        System.out.println("Open DD Name = " + ddname);
+        String ddname = file.toString();
+        logger.atInfo().log("Open DD Name = " + ddname);
         reader = com.ibm.jzos.RecordReader.newReaderForDD(ddname);
-}
+    }
 
     @Override
     public FileRecord readRecord() {
         try {
-            reader.read(record.bytes.array());
+            byte[] readBuffer = new byte[8092];
+            int numread = reader.read(readBuffer);
+            record.length = (short) numread;
+            logger.atInfo().log("Read %d ", numread);
+            record.bytes.putShort((short) 4);
+            record.bytes.put(readBuffer);
+            if(numread < 0) {
+                EOFreached = true;
+            }
         } catch (ZFileException e) {
             logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);   
         } 
