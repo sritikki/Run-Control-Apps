@@ -160,15 +160,11 @@ public class RunControlAnalyser {
 	}
 
 	public void writeLtCSV(String ltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		LTCSVWriter csvw = new LTCSVWriter();
-		csvw.write(xlt, ltName);
-		csvw.close();
+		LTCSVWriter.write(xlt, ltName);
 	}
 
 	public void writeJLTCSV(String jltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		LTCSVWriter csvw = new LTCSVWriter();
-		csvw.write(jlt, jltName);
-		csvw.close();
+		LTCSVWriter.write(jlt, jltName);
 	}
 
 	public void setTargetDirectory(Path trgPath) {

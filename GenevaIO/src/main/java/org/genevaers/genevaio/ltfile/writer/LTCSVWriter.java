@@ -39,11 +39,9 @@ import com.ibm.jzos.ZFile;
 public class LTCSVWriter {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	private Writer fw;
+	private static Set<LtRecordType> headerMap = new HashSet<>();
 
-	private Set<LtRecordType> headerMap = new HashSet<>();
-
-	public void write(LogicTable lt, String output) {
+	public static void write(LogicTable lt, String output) {
 		ZFile dd;
 		if (GersConfigration.isZos()) {
 			try {
@@ -60,36 +58,34 @@ public class LTCSVWriter {
 		logger.atInfo().log("LT report written");
 	}
 
-	private void writeRecords(LogicTable lt) throws IOException {
+	private static void writeRecords(LogicTable lt, Writer fw) throws IOException {
 		Iterator<LTRecord> lti = lt.getIterator();
 		while(lti.hasNext()){
 			LTRecord ltr = lti.next();
-			writeHeaderForTypeIfNeeded((LTFileObject) ltr, ltr.getRecordType());
-			writeRecordCSV((LTFileObject) ltr);
+			writeHeaderForTypeIfNeeded((LTFileObject) ltr, ltr.getRecordType(), fw);
+			writeRecordCSV((LTFileObject) ltr, fw);
 		}
 	}
 
-	private void writeTheLtDetailsToFile(LogicTable lt, String output) {
-		try {
-			fw = new FileWriter(output);
-			writeRecords(lt);
-			fw.close();
+	private static void writeTheLtDetailsToFile(LogicTable lt, String output) {
+		try (Writer fw = new FileWriter(output)){
+			writeRecords(lt, fw);
 		} catch (IOException e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
 	}
 
-	private void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd) {
+	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd) {
 		logger.atFine().log("Stream details");
 		try (Writer fw = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
-			writeRecords(lt);
+			writeRecords(lt, fw);
 		}
 		catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
 	}
 
-	private void writeHeaderForTypeIfNeeded(LTFileObject ltr, LtRecordType t) throws IOException {
+	private static void writeHeaderForTypeIfNeeded(LTFileObject ltr, LtRecordType t, Writer fw) throws IOException {
 		if(!headerMap.contains(t)) {
 			ltr.writeCSVHeader(fw);
 			fw.write("\n");
@@ -97,17 +93,8 @@ public class LTCSVWriter {
 		}
 	}
 
-	private void writeRecordCSV(LTFileObject ltr) throws IOException {
+	private static void writeRecordCSV(LTFileObject ltr, Writer fw) throws IOException {
 		ltr.writeCSV(fw);
 		fw.write("\n");
 	}
-
-	public void close()  {
-		try {
-			fw.close();
-		} catch (IOException e) {
-			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
-		}
-	}
-
 }

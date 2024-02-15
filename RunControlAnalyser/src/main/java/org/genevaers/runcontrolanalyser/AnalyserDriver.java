@@ -181,10 +181,9 @@ public class AnalyserDriver {
 				LTLogger.writeRecordsTo(lt, ddname);
 				break;
 			case "CSV":
-				LTCSVWriter csvw = new LTCSVWriter();
-				csvw.write(lt, ddname);
+				LTCSVWriter.write(lt, ddname);
 				break;
-				case "HTML":
+			case "HTML":
 				
 				break;
 		
