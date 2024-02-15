@@ -31,9 +31,13 @@ public class RcaConfigration extends GersConfigration {
 
     public static final String XLT_REPORT = "XLT_REPORT";
     public static final String JLT_REPORT = "JLT_REPORT";
+    public static final String REPORT_FORMAT = "REPORT_FORMAT";
     public static final String COMPARE = "COMPARE";
     public static final String COVERAGE = "COVERAGE";
  
+    public static final String XLT_REPORT_DDNAME = "XLTRPT";
+    public static final String JLT_REPORT_DDNAME = "JLTRPT";
+
     public static final String RCA_DIR = "RCA/";
     public RcaConfigration() {
         //Map preloaded with expect names and default values
@@ -45,16 +49,16 @@ public class RcaConfigration extends GersConfigration {
         // parmToValue.put(REPORT_FILE, new ConfigEntry(REPORT_FILE, true));
         parmToValue.put(LOG_FILE, new ConfigEntry("RCALOG", true));
         parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
-        parmToValue.put(XLT_FILE, new ConfigEntry("XLT", true));
-        parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
-        
+        parmToValue.put(XLT_DDNAME, new ConfigEntry("XLT", true));
+        parmToValue.put(JLT_DDNAME, new ConfigEntry("JLT", true));
         
         parmToValue.put(XLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(JLT_REPORT, new ConfigEntry("N", false));
+        parmToValue.put(REPORT_FORMAT, new ConfigEntry("TEXT", false));
     }
 
     public static boolean isValid() {
-        if(isXltReportOnly() || isJltReportOnly()) {
+        if(isXltReport() || isJltReport()) {
             return true;
         } else {
             return false;
@@ -65,11 +69,15 @@ public class RcaConfigration extends GersConfigration {
         return getParm(LOG_FILE);
     }
 
-    public static boolean isXltReportOnly() {
+    public static boolean isXltReport() {
         return parmToValue.get(XLT_REPORT).getValue().equalsIgnoreCase("Y");
     }
 
-    public static boolean isJltReportOnly() {
+    public static boolean isJltReport() {
         return parmToValue.get(JLT_REPORT).getValue().equalsIgnoreCase("Y");
+    }
+
+    public static String getReportFormat() {
+        return parmToValue.get(REPORT_FORMAT).getValue();
     }
 }

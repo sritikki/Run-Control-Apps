@@ -68,7 +68,7 @@ public class RunControlWriter {
             e.printStackTrace();
         }
         VDPFileWriter vdpw = new VDPFileWriter();
-        vdpw.open(RunControlConfigration.getVdpFile());
+        vdpw.open(RunControlConfigration.getVdpDdname());
         VDPManagementRecords vmrs = makeVDPManagementRecords();
         try {
             vdpw.writeVDPFrom(vmrs);

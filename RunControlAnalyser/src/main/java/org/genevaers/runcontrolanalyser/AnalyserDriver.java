@@ -34,6 +34,7 @@ import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
+import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.CommandRunner;
@@ -159,32 +160,50 @@ public class AnalyserDriver {
 	}
 
 	public static void generateXltPrint(Path root) {
-		logger.atInfo().log("Generate %s", GersConfigration.XLT_PRINT);
-		XLTFileReader xltr = new XLTFileReader();
-		xltr.open(root, GersConfigration.XLT_FILE);
-		LogicTable xlt = xltr.makeLT();
-		logger.atInfo().log("Read %d XLT records", xlt.getNumberOfRecords());
-        LTLogger.writeRecordsTo(xlt, GersConfigration.XLT_PRINT);
+		logger.atInfo().log("Generate %s", RcaConfigration.XLT_REPORT_DDNAME);
+		LogicTable xlt = readLT(root, GersConfigration.XLT_DDNAME);
+		writeLtReport(xlt, RcaConfigration.XLT_REPORT_DDNAME);
 		//collectCoverageDataFrom(xltp, xlt);
-		xltr.close();
 	}
 
-    private static void collectCoverageDataFrom(Path xltp, LogicTable xlt) {
+	private static LogicTable readLT(Path root, String ddName) {
+		XLTFileReader xltr = new XLTFileReader();
+		xltr.open(root, ddName);
+		LogicTable xlt = xltr.makeLT();
+		xltr.close();
+		logger.atInfo().log("Read %d XLT records", xlt.getNumberOfRecords());
+		return xlt;
+	}
+
+    private static void writeLtReport(LogicTable lt, String ddname) {
+		switch (RcaConfigration.getReportFormat()) {
+			case "TEXT":
+				LTLogger.writeRecordsTo(lt, ddname);
+				break;
+			case "CSV":
+				LTCSVWriter csvw = new LTCSVWriter();
+				csvw.write(lt, ddname);
+				csvw.close();
+				break;
+				case "HTML":
+				
+				break;
+		
+			default:
+				break;
+		}
+	}
+
+	private static void collectCoverageDataFrom(Path xltp, LogicTable xlt) {
 		ltCoverageAnalyser.addDataFrom(xltp, xlt);
 	}
 
 	public static void generateJltPrint(Path root) {
-		logger.atInfo().log("Generate %s", GersConfigration.JLT_PRINT);
-		XLTFileReader jltr = new XLTFileReader();
+		logger.atInfo().log("Generate %s", RcaConfigration.JLT_REPORT_DDNAME);
 		Path jltp = root.resolve("JLT");
 		if(GersConfigration.isZos() || jltp.toFile().exists()) {
-			jltr.open(root, GersConfigration.JLT_FILE);
-			
-			LogicTable jlt = jltr.makeLT();
-			logger.atInfo().log("Read %d JLT records", jlt.getNumberOfRecords());
-			LTLogger.writeRecordsTo(jlt, GersConfigration.JLT_PRINT);
-			//collectCoverageDataFrom(jltp, jlt);
-			jltr.close();
+			LogicTable xlt = readLT(root, GersConfigration.JLT_DDNAME);
+			writeLtReport(xlt, RcaConfigration.JLT_REPORT_DDNAME);
 		}
     }
 
@@ -300,10 +319,10 @@ public class AnalyserDriver {
     	//locroot = locroot.replaceAll("^[Cc]:", "");
     	locroot = locroot.replace("\\", "/");
     	Path root = Paths.get(locroot);
-		if(RcaConfigration.isXltReportOnly()) {
+		if(RcaConfigration.isXltReport()) {
 			generateXltPrint(root);
 		}
-		if(RcaConfigration.isJltReportOnly()) {
+		if(RcaConfigration.isJltReport()) {
 			generateJltPrint(root);
 		}
 	}

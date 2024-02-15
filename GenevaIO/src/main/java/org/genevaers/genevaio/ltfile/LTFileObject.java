@@ -18,8 +18,8 @@ package org.genevaers.genevaio.ltfile;
  */
 
 
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.recordreader.FileRecord;
@@ -32,8 +32,8 @@ public abstract class LTFileObject {
 	public abstract void readRecord(LTRecordReader reader, FileRecord rec) throws Exception;
    	public abstract void addRecordNodes(FieldNodeBase root, boolean compare);
 
-	public abstract void writeCSV(FileWriter csvFile) throws IOException;
-	public abstract void writeCSVHeader(FileWriter csvFile) throws IOException;
+	public abstract void writeCSV(Writer csvFile) throws IOException;
+	public abstract void writeCSVHeader(Writer fw) throws IOException;
 	public abstract void fillTheWriteBuffer(RecordFileWriter rw);
 
 	public static void setSpaces(String spaces) {

@@ -96,9 +96,9 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(EMIT_ENABLED, new ConfigEntry("Y", true));
         parmToValue.put(DOT_FORMAT, new ConfigEntry("N", true));
 
-        parmToValue.put(XLT_FILE, new ConfigEntry("XLT", true));
-        parmToValue.put(JLT_FILE, new ConfigEntry("JLT", true));
-        parmToValue.put(VDP_FILE, new ConfigEntry("VDP", true));
+        parmToValue.put(XLT_DDNAME, new ConfigEntry("XLT", true));
+        parmToValue.put(JLT_DDNAME, new ConfigEntry("JLT", true));
+        parmToValue.put(VDP_DDNAME, new ConfigEntry("VDP", true));
 
         parmToValue.put(LOG_LEVEL, new ConfigEntry("LOG_LEVEL", false));
 

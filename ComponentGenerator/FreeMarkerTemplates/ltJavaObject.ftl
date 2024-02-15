@@ -7,7 +7,7 @@ package org.genevaers.genevaio.ltfile;
 import ${i};
 </#list>
 
-import java.io.FileWriter;
+import java.io.Writer;
 import java.io.IOException;
 <#if javaList>
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ ${fieldNodeEntry}
     }
 
     @Override
-    public void writeCSV(FileWriter fw) throws IOException
+    public void writeCSV(Writer fw) throws IOException
     {
 <#list entries.csvEntries as csvEntry>
 ${csvEntry}
@@ -76,7 +76,7 @@ ${csvEntry}
     }
 
     @Override
-    public void writeCSVHeader(FileWriter fw) throws IOException
+    public void writeCSVHeader(Writer fw) throws IOException
     {
 <#list entries.csvHeaders as csvHeader>
 ${csvHeader}

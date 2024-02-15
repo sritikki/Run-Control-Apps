@@ -79,16 +79,8 @@ public class RunControlAnalyser {
 		XLTFileReader xltr = new XLTFileReader();
 		xltr.setCompare(compare);
 		xltr.setRecordsRoot(recordsRoot);
-		xltr.open(xltPath, GersConfigration.XLT_FILE);
+		xltr.open(xltPath, GersConfigration.XLT_DDNAME);
 		xlt = xltr.makeLT();
-		if(withCSV) {
-			try {
-				writeXLTCSV("XLT");
-			} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void readJLT(Path jltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
@@ -97,16 +89,8 @@ public class RunControlAnalyser {
 			XLTFileReader jltr = new XLTFileReader();
 			jltr.setCompare(compare);
 			jltr.setRecordsRoot(recordsRoot);
-			jltr.open(jltPath, GersConfigration.JLT_FILE);
+			jltr.open(jltPath, GersConfigration.JLT_DDNAME);
 			jlt = jltr.makeLT();
-			if(withCSV) {
-				try {
-					writeJLTCSV("JLT");
-				} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		} else {
 			logger.atInfo().log("No JLT found");
 		}
@@ -175,17 +159,15 @@ public class RunControlAnalyser {
 		htmlFileName = name;
 	}
 
-	public void writeXLTCSV(String xltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		Path output = trg.resolve(xltName + ".csv");
+	public void writeLtCSV(String ltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 		LTCSVWriter csvw = new LTCSVWriter();
-		csvw.write(xlt, output);
+		csvw.write(xlt, ltName);
 		csvw.close();
 	}
 
 	public void writeJLTCSV(String jltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		Path output = trg.resolve(jltName + ".csv");
 		LTCSVWriter csvw = new LTCSVWriter();
-		csvw.write(jlt, output);
+		csvw.write(jlt, jltName);
 		csvw.close();
 	}
 

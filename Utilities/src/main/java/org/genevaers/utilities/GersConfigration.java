@@ -42,13 +42,10 @@ public class GersConfigration {
     public static final String TRACE = "TRACE";
     public static final String LOG_FILE = "LOGFILE";
 
-    public static final String XLT_FILE = "XLT";
-    public static final String JLT_FILE = "JLT";
-    public static final String VDP_FILE = "VDP";
+    public static final String XLT_DDNAME = "XLT";
+    public static final String JLT_DDNAME = "JLT";
+    public static final String VDP_DDNAME = "VDP";
     
-    public static final String XLT_PRINT = "XLTPRT";
-    public static final String JLT_PRINT = "JLTPRT";
-
     public static final String ZOS = "ZOS";
     protected static Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
@@ -82,34 +79,34 @@ public class GersConfigration {
 	}
 
     public static String getXLTFileName() {
-        return parmToValue.get(XLT_FILE).getValue();
+        return parmToValue.get(XLT_DDNAME).getValue();
     }
 
-    public static String getVdpFile() {
-        return parmToValue.get(VDP_FILE).getValue();
+    public static String getVdpDdname() {
+        return parmToValue.get(VDP_DDNAME).getValue();
     }
 
     public static String getJLTFileName() {
-        return parmToValue.get(JLT_FILE).getValue();
+        return parmToValue.get(JLT_DDNAME).getValue();
     }
 
 	public static void overrideVDPFile(String vdpFile) {
         if(vdpFile.length() > 0) {
-            ConfigEntry pv = parmToValue.get(VDP_FILE);
+            ConfigEntry pv = parmToValue.get(VDP_DDNAME);
             pv.setValue(vdpFile);
         }
 	}
 
 	public static void overrideXLTFile(String xltFile) {
         if(xltFile.length() > 0) {
-            ConfigEntry pv = parmToValue.get(XLT_FILE);
+            ConfigEntry pv = parmToValue.get(XLT_DDNAME);
             pv.setValue(xltFile);
         }
 	}
 
 	public static void overrideJLTFile(String jltFile) {
         if(jltFile.length() > 0) {
-            ConfigEntry pv = parmToValue.get(JLT_FILE);
+            ConfigEntry pv = parmToValue.get(JLT_DDNAME);
             pv.setValue(jltFile);
         }
 	}
