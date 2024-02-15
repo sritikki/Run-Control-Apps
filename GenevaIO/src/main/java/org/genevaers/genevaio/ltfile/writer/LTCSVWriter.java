@@ -73,6 +73,7 @@ public class LTCSVWriter {
 		try {
 			fw = new FileWriter(output);
 			writeRecords(lt);
+			fw.close();
 		} catch (IOException e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}

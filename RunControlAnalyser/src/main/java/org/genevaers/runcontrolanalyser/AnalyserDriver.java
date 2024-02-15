@@ -183,7 +183,6 @@ public class AnalyserDriver {
 			case "CSV":
 				LTCSVWriter csvw = new LTCSVWriter();
 				csvw.write(lt, ddname);
-				csvw.close();
 				break;
 				case "HTML":
 				
