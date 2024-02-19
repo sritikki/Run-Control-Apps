@@ -19,6 +19,7 @@ package org.genevaers.genevaio.ltfile;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -151,6 +152,13 @@ public class LTLogger {
 	}
 
 	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd) throws IOException {
+		logger.atFine().log("Stream details");
+		try (Writer out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
+			writeDetails(lt, out);
+		}
+		catch (Exception e) {
+			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
+		}
 	}
 
 	private static String getLogString(LTRecord ltr) {

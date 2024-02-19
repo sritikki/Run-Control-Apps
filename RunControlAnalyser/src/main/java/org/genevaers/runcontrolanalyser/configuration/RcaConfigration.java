@@ -31,12 +31,14 @@ public class RcaConfigration extends GersConfigration {
 
     public static final String XLT_REPORT = "XLT_REPORT";
     public static final String JLT_REPORT = "JLT_REPORT";
+    public static final String VDP_REPORT = "VDP_REPORT";
     public static final String REPORT_FORMAT = "REPORT_FORMAT";
     public static final String COMPARE = "COMPARE";
     public static final String COVERAGE = "COVERAGE";
  
     public static final String XLT_REPORT_DDNAME = "XLTRPT";
     public static final String JLT_REPORT_DDNAME = "JLTRPT";
+    public static final String VDP_REPORT_DDNAME = "VDPRPT";
 
     public static final String RCA_DIR = "RCA/";
     public RcaConfigration() {
@@ -54,11 +56,12 @@ public class RcaConfigration extends GersConfigration {
         
         parmToValue.put(XLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(JLT_REPORT, new ConfigEntry("N", false));
+        parmToValue.put(VDP_REPORT, new ConfigEntry("N", false));
         parmToValue.put(REPORT_FORMAT, new ConfigEntry("TEXT", false));
     }
 
     public static boolean isValid() {
-        if(isXltReport() || isJltReport()) {
+        if(isVdpReport() || isXltReport() || isJltReport()) {
             return true;
         } else {
             return false;
@@ -75,6 +78,10 @@ public class RcaConfigration extends GersConfigration {
 
     public static boolean isJltReport() {
         return parmToValue.get(JLT_REPORT).getValue().equalsIgnoreCase("Y");
+    }
+
+    public static boolean isVdpReport() {
+        return parmToValue.get(VDP_REPORT).getValue().equalsIgnoreCase("Y");
     }
 
     public static String getReportFormat() {

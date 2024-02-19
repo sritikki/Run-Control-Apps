@@ -35,6 +35,7 @@ import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
+import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.CommandRunner;
@@ -57,7 +58,7 @@ public class AnalyserDriver {
 	 *
 	 */
 	private static final String FTP_GET = "FTP Get ";
-	private RunControlAnalyser fa = new RunControlAnalyser();
+	private static RunControlAnalyser fa = new RunControlAnalyser();
 	private Object cwd;
 	private Path dataStore;
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
@@ -205,6 +206,33 @@ public class AnalyserDriver {
 		}
     }
 
+	public static void generateVdpPrint(Path root) {
+		logger.atInfo().log("Generate %s", RcaConfigration.VDP_REPORT_DDNAME);
+		MetadataNode recordsRoot = new MetadataNode();
+		recordsRoot.setName("Root");
+		fa.readVDP(root, GersConfigration.VDP_DDNAME, false, recordsRoot, false);
+		writeVDPReport(recordsRoot, RcaConfigration.VDP_REPORT_DDNAME);
+		//collectCoverageDataFrom(xltp, xlt);
+	}
+
+	private static void writeVDPReport(MetadataNode recordsRoot, String vdpReportDdname) {
+		switch (RcaConfigration.getReportFormat()) {
+			case "TEXT":
+				VDPTextWriter.writeFromRecordNodes(recordsRoot, vdpReportDdname);
+				break;
+			case "CSV":
+				break;
+			case "HTML":
+				VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
+				vdprw.setIgnores();
+				vdprw.writeFromRecordNodes(recordsRoot, vdpReportDdname);					
+				break;
+		
+			default:
+				break;
+		}
+	}
+
 	public void writeCoverageResults(Path root) {
 		ltCoverageAnalyser.setName(root.getFileName());
 		ltCoverageAnalyser.writeResults(root.resolve("rca"));
@@ -242,7 +270,7 @@ public class AnalyserDriver {
 			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
 			LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
 			ltrw.setIgnores();
-			ltrw.writeFromRecordNodes(root, recordsRoot, "JLT.html");
+			ltrw.writeFromRecordNodes(recordsRoot, "JLT.html");
 		}
 	}
 
@@ -259,7 +287,7 @@ public class AnalyserDriver {
 		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
 		LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
 		ltrw.setIgnores();
-		ltrw.writeFromRecordNodes(root, recordsRoot, "XLT.html");
+		ltrw.writeFromRecordNodes(recordsRoot, "XLT.html");
 	}
 
 	private void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
@@ -267,16 +295,16 @@ public class AnalyserDriver {
 		recordsRoot.setName("Root");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
-		fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
+		fa.readVDP(rc1.resolve("VDP"), GersConfigration.VDP_DDNAME, false, recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
 		VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
 		vdprw.setIgnores();
-		vdprw.writeFromRecordNodes(root, recordsRoot, "VDP1.html");
+		vdprw.writeFromRecordNodes(recordsRoot, "VDP1.html");
 		Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
-		fa.readVDP(rc2.resolve("VDP"), false, recordsRoot, true);
+		fa.readVDP(rc2.resolve("VDP"), GersConfigration.VDP_DDNAME, false, recordsRoot, true);
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
-		vdprw.writeFromRecordNodes(root, recordsRoot, "VDPDiff.html");
+		vdprw.writeFromRecordNodes(recordsRoot, "VDPDiff.html");
 	}
 
 	private boolean runControlFilesPresent(Path root) {
@@ -297,12 +325,12 @@ public class AnalyserDriver {
 	private boolean checkJLTPresent(Path rc, String name) {
 		boolean present = false;
 		Path jltPath = rc.resolve("JLT");
-			if(jltPath.toFile().exists()) {
-				logger.atInfo().log("JLT present %s", name);
-				present = true;
-			} else {
-				logger.atInfo().log("No JLT for %s", name);
-			};
+		if(jltPath.toFile().exists()) {
+			logger.atInfo().log("JLT present %s", name);
+			present = true;
+		} else {
+			logger.atInfo().log("No JLT for %s", name);
+		};
 		return present;
 	}
 
@@ -322,6 +350,9 @@ public class AnalyserDriver {
 		}
 		if(RcaConfigration.isJltReport()) {
 			generateJltPrint(root);
+		}
+		if(RcaConfigration.isVdpReport()) {
+			generateVdpPrint(root);
 		}
 	}
 

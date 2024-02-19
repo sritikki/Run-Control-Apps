@@ -45,6 +45,14 @@ public class XLTFileReader {
 	private LogicTable  logicTable = new LogicTable ();
 	private boolean charSetRead = false;
 
+	public void open(Path root, String name) {
+		if(GersConfigration.isZos()) {
+			ltFile = new File(name);
+		} else {
+			ltFile = root.resolve(name).toFile();
+		}
+	}
+	
 	public LogicTable readLT() throws Exception {
 		rr = RecordFileReaderWriter.getReader();
 		rr.readRecordsFrom(ltFile);
@@ -213,13 +221,6 @@ public class XLTFileReader {
 		logicTable.add(nvr);
 	}
 
-	public void open(Path root, String name) {
-		if(GersConfigration.isZos()) {
-			ltFile = new File(name);
-		} else {
-			ltFile = root.resolve(name).toFile();
-		}
-	}
 
 	public LogicTable makeLT() {
 		try {

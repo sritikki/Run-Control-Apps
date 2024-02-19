@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.common.flogger.StackSize;
 
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
@@ -53,6 +54,7 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.JustifyId;
+import org.genevaers.utilities.GersConfigration;
 
 public class VDPFileReader{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -91,12 +93,16 @@ public class VDPFileReader{
 	
 	public VDPFileReader() {}
 
-	public void addToRepsitory(boolean withCSV) throws Exception {
+	public void addToRepsitory(boolean withCSV) {
 		writeCSV = withCSV;
 		if(withCSV) {
 			openCSVFile();
 		}
-		readVDP();
+		try {
+			readVDP();
+		} catch (Exception e) {
+			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
+		}
 		//componentRepo.fixupPFExits();
 	}
 
@@ -121,9 +127,13 @@ public class VDPFileReader{
 		this.csvPath = csvPath;
 	}
 
-	public void open(Path readme) {
-		filePath = readme;
-		vdpFile = readme.toFile();
+	public void open(Path root, String name) {
+		if(GersConfigration.isZos()) {
+			vdpFile = new File(name);
+		} else {
+			filePath = root.resolve(name);
+			vdpFile = filePath.toFile();
+		}
 	}
 	
 	private void readVDP() throws Exception {

@@ -58,14 +58,14 @@ public class RunControlAnalyser {
 		trg = Paths.get("RunControls");
 	}
 
-	public void readVDP(Path vdpPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) throws Exception {
+	public void readVDP(Path vdpPath, String ddName, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read VDP %s csv flag %s", vdpPath, Boolean.toString(withCSV));
 		if(vdpPath.toFile().exists()) {
 			VDPFileReader vdpr = new VDPFileReader();
 			vdpr.setCsvPath(trg);
 			vdpr.setRecordsRoot(recordsRoot);
 			vdpr.setCompare(compare);
-			vdpr.open(vdpPath);
+			vdpr.open(vdpPath, ddName);
 			vdpr.addToRepsitory(withCSV);
 			vmrs = vdpr.getViewManagementRecords();
 		} else {
@@ -190,7 +190,7 @@ public class RunControlAnalyser {
 			logger.atInfo().log("Read JLT File %s", jltName);
 			logger.atInfo().log("Write to %s", htmlFileName);
 
-			readVDP(vdpName, withCSV, null, false);
+			readVDP(vdpName, GersConfigration.VDP_DDNAME, withCSV, null, false);
 			readXLT(xltName, withCSV, null, false);
 			readJLT(jltName, withCSV, null, false);
 			writeHTML(joinsFilter);
