@@ -59,7 +59,7 @@ public class RunControlAnalyser {
 	}
 
 	public void readVDP(Path vdpPath, String ddName, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
-		logger.atInfo().log("Read VDP %s csv flag %s", vdpPath, Boolean.toString(withCSV));
+		logger.atInfo().log("Read VDP %s csv flag %s", ddName, Boolean.toString(withCSV));
 		if(vdpPath.toFile().exists()) {
 			VDPFileReader vdpr = new VDPFileReader();
 			vdpr.setCsvPath(trg);

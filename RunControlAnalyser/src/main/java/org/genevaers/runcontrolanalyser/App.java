@@ -43,10 +43,11 @@ public class App {
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
         pr.setConfig(rcac);
-        GenevaLog.initLogger(RunControlAnalyser.class.getName(), RcaConfigration.getLogFileName(), GersConfigration.getLogLevel());
         try {
             pr.populateConfigFrom(GersConfigration.getParmFileName());
             GersConfigration.setLinesRead(pr.getLinesRead());
+            GenevaLog.initLogger(RunControlAnalyser.class.getName(), RcaConfigration.getLogFileName(), GersConfigration.getLogLevel());
+            logger.atInfo().log("Log level %s", GersConfigration.getLogLevel());
             if(RcaConfigration.isValid()) {
                 AnalyserDriver.runFromConfig();
             } else {

@@ -147,12 +147,17 @@ public class VDPFileReader{
 			rec = rr.readRecord();
 		}
 		//addVDPRecordToRepo(rec);
+		logger.atInfo().log("Read %d VDP records", numrecords);
+		rr.close();
 	}
 
 	private void addVDPRecordToRepo(FileRecord rec) throws Exception{
 		VDPFileObject vdpObject = null;
+		rec.dump();
 		int viewID = rec.bytes.getInt(2);
 		short recType = rec.bytes.getShort(14);
+		logger.atFine().log("RecType %d", recType);
+		rec.bytes.rewind();
 		switch(recType) {
 		case VDPRecord.VDP_GENERATION:
 			vdpObject = makeAndStoreGenerationRecord(recordReader, rec);
@@ -579,9 +584,11 @@ public class VDPFileReader{
 		} else {
 			VDPFileRecordReader.setEBCDICText();
 		}
+		logger.atInfo().log("Text is %s", VDPFileRecordReader.isASCIItext() ? "ASCII" : "EBCDIC");
 		VDPGenerationRecord vgen = new VDPGenerationRecord();
 		vgen.readRecord(recordReader, rec);
 		vdpManagementRecords.setViewGeneration(vgen);
+		logger.atInfo().log("gen from %s", vgen.getDescription());
 		return vgen;
 	}
 
