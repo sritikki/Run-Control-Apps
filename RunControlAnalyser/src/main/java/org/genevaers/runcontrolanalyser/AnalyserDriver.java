@@ -172,7 +172,7 @@ public class AnalyserDriver {
 		xltr.open(root, ddName);
 		LogicTable xlt = xltr.makeLT();
 		xltr.close();
-		logger.atInfo().log("Read %d XLT records", xlt.getNumberOfRecords());
+		logger.atInfo().log("Read %d LT records", xlt.getNumberOfRecords());
 		return xlt;
 	}
 

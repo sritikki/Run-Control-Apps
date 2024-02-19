@@ -118,6 +118,8 @@ public class RunControlWriter {
         gen.setPadding5("");
         setNumberNode(gen);
         setRecordNumbers(gen);
+		gen.setVersionInfo((short)13);
+		gen.setLrFieldCount(Repository.getFields().size());
         return gen;
     }
 

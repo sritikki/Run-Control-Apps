@@ -608,7 +608,6 @@ public class VDPFileWriter {
 	private void writeGenerationRecord() {
 		logger.atFine().log("Write Generation");
 		VDPGenerationRecord gen = vdpMgmtRecs.getViewGeneration();
-		gen.setAsciiInd(true);
 		gen.setVersionInfo((short)13);
 		gen.setLrFieldCount(Repository.getFields().size());
 		gen.fillTheWriteBuffer(VDPWriter);
