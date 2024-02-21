@@ -81,11 +81,11 @@ public class VDPTextWriter {
 
 	public static  void writeDetails( MetadataNode recordsRoot, Writer fw) throws IOException {
 		writeSummary(recordsRoot,fw);
-		writeViewSumaries(recordsRoot, fw);
+		writeViewSummaries(recordsRoot, fw);
 		writeContent(recordsRoot,fw);
 	}
 	
-	private static void writeViewSumaries(MetadataNode recordsRoot, Writer fw) throws IOException {
+	private static void writeViewSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
 		Iterator<ViewDetails> vds = viewDetailsById.values().iterator();
 		fw.write("View Summaries\n");
 		fw.write("==============\n");
