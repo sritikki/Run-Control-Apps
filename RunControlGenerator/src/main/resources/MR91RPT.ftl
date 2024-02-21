@@ -93,7 +93,7 @@ ${v.IDStr}  ${v.name?right_pad(48)}  ${v.phase?right_pad(9)}           >${v.outp
 DD Name   Member    Create Date/Time   
 ========  --------  -------------------
 <#list inputReports as ir>
-${ir.ddName?right_pad(8)}  ${ir.memberName}  ${ir.generationID} 
+${ir.ddName?right_pad(8)}  ${ir.memberName}  ${ir.generationID!0} 
 </#list>
  
  
