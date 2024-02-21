@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
@@ -41,6 +42,7 @@ public class VDPTextWriter {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	
 	protected Map<String, Boolean> ignoreTheseDiffs = new HashMap<>();
+	private static Map<Integer, ViewDetails> viewDetailsById = new TreeMap<>();
 
 	public static void writeFromRecordNodes( MetadataNode recordsRoot, String filename) {
 		ZFile dd;
@@ -79,10 +81,60 @@ public class VDPTextWriter {
 
 	public static  void writeDetails( MetadataNode recordsRoot, Writer fw) throws IOException {
 		writeSummary(recordsRoot,fw);
+		writeViewSumaries(recordsRoot, fw);
 		writeContent(recordsRoot,fw);
 	}
 	
+	private static void writeViewSumaries(MetadataNode recordsRoot, Writer fw) throws IOException {
+		Iterator<ViewDetails> vds = viewDetailsById.values().iterator();
+		fw.write("View Summaries\n");
+		fw.write("==============\n");
+		fw.write(String.format("%7s %-48s %-8s %-4s %s\n", "ID", "Name", "Type", "Cols", "Sources"));
+		fw.write(StringUtils.repeat('-', 78)+"\n");
+		while (vds.hasNext()) {
+			ViewDetails vd = vds.next();
+			fw.write(String.format("%7d %-48s %-8s %4d %7d\n", vd.id, vd.name, vd.viewType, vd.numberOfColumns, vd.numberOfSources));
+		}
+	}
+
 	private static void writeSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
+        Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
+		fw.write("Summary\n=======\n\n");
+		fw.write(String.format("%-20s: %7s\n", "Component", "Count"));
+		fw.write(StringUtils.repeat('=', 29)+"\n");
+		int numViews = 0;
+        while (fi.hasNext()) {
+            FieldNodeBase n = (FieldNodeBase) fi.next();
+			if(n.getFieldNodeType() != FieldNodeType.VIEW) {
+				fw.write(String.format("%-20s: %7d\n", n.getName(), n.getChildren().size()));
+			} else {
+				numViews++;
+				collectViewDetails(n, fw);
+			}
+		}
+		fw.write(String.format("%-20s: %7d\n\n\n", "Views", numViews));
+	}
+
+	private static void collectViewDetails(FieldNodeBase v, Writer fw) throws IOException {
+        Iterator<FieldNodeBase> fi = v.getChildren().iterator();
+		ViewDetails vds = new ViewDetails();
+        while (fi.hasNext()) {
+            FieldNodeBase n = (FieldNodeBase) fi.next();
+			if(n.getName().equals("View_Definition")) {
+				FieldNodeBase rec = n.getChildren().get(0);
+				vds.name = ((StringFieldNode)(rec.getChildrenByName("viewName"))).getValue();
+				vds.id = ((NumericFieldNode)(rec.getChildrenByName("recordId"))).getValue();
+				vds.viewType = ((StringFieldNode)(rec.getChildrenByName("viewType"))).getValue();
+			} else if(n.getName().equals("Columns")) {
+				vds.numberOfColumns = n.getChildren().size();
+			} else if(n.getName().equals("Sources")) {
+				vds.numberOfSources = n.getChildren().size();
+			}		
+		}
+		viewDetailsById.put(vds.id, vds);
+	}
+
+	private static void writeComponentSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
         Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
 		fw.write("Summary\n=======\n\n");
 		fw.write(String.format("%-20s: %7s\n", "Component", "Count"));
@@ -99,7 +151,9 @@ public class VDPTextWriter {
 		fw.write(String.format("%-20s: %7d\n\n\n", "Views", numViews));
 	}
 
+
 	private static void writeContent(MetadataNode recordsRoot, Writer fw) throws IOException {
+		fw.write(String.format("Record Level Reports\n"));
         Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
         while (fi.hasNext()) {
             FieldNodeBase n = (FieldNodeBase) fi.next();

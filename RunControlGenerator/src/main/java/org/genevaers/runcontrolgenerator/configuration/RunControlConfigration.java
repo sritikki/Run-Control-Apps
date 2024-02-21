@@ -257,7 +257,7 @@ public class RunControlConfigration extends GersConfigration{
     }
 
     public static String getVDPXMLDirectory() {
-        return parmToValue.get(WB_XML_FILES_SOURCE).getValue();
+        return VDP_XML_FILES_SOURCE;
     }
 
 
