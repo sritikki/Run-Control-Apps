@@ -105,7 +105,7 @@ public class RunControlGenerator {
 		if(status != Status.ERROR) {
 			RepositoryCompiler comp = new RepositoryCompiler();
 			comp.setLogicGroups(logicGroups);
-			status =comp.run();
+			status = comp.run();
 			extractLogicTable = comp.getExtractLogicTable();
 			joinLogicTable = comp.getJoinLogicTable();
 		}
