@@ -43,6 +43,7 @@ public class VDPTextWriter {
 	
 	protected Map<String, Boolean> ignoreTheseDiffs = new HashMap<>();
 	private static Map<Integer, ViewDetails> viewDetailsById = new TreeMap<>();
+	private static Map<Integer, LookupDetails> lookupDetailsById = new TreeMap<>();
 
 	public static void writeFromRecordNodes( MetadataNode recordsRoot, String filename) {
 		ZFile dd;
@@ -82,9 +83,22 @@ public class VDPTextWriter {
 	public static  void writeDetails( MetadataNode recordsRoot, Writer fw) throws IOException {
 		writeSummary(recordsRoot,fw);
 		writeViewSummaries(recordsRoot, fw);
+		writeLookupSummaries(recordsRoot, fw);
 		writeContent(recordsRoot,fw);
 	}
 	
+	private static void writeLookupSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
+		Iterator<LookupDetails> lkds = lookupDetailsById.values().iterator();
+		fw.write("\nLookup Path Summaries\n");
+		fw.write("=====================\n");
+		fw.write(String.format("%7s %-48s %-8s %-4s %s\n", "ID", "Name", "Steps", "SrcLT", "TrgLR", "TrgLF"));
+		fw.write(StringUtils.repeat('-', 78)+"\n");
+		while (lkds.hasNext()) {
+			LookupDetails lkd = lkds.next();
+			fw.write(String.format("%7d %-48s %-8s %4d %7d\n", lkd.id, lkd.name, lkd.numberOfSteps, lkd.sourceLR, lkd.targetLR, lkd.targetLF));
+		}
+	}
+
 	private static void writeViewSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
 		Iterator<ViewDetails> vds = viewDetailsById.values().iterator();
 		fw.write("View Summaries\n");
@@ -107,12 +121,36 @@ public class VDPTextWriter {
             FieldNodeBase n = (FieldNodeBase) fi.next();
 			if(n.getFieldNodeType() != FieldNodeType.VIEW) {
 				fw.write(String.format("%-20s: %7d\n", n.getName(), n.getChildren().size()));
+				if(n.getName().equals("Lookup_Paths")) {
+					collectLookupDetails(n, fw);
+				}
 			} else {
 				numViews++;
 				collectViewDetails(n, fw);
 			}
 		}
 		fw.write(String.format("%-20s: %7d\n\n\n", "Views", numViews));
+	}
+
+	private static void collectLookupDetails(FieldNodeBase n, Writer fw) {
+        Iterator<FieldNodeBase> fi = n.getChildren().iterator();
+		int currentID = 0 ;
+		int stepNum = 0;
+		LookupDetails lkds = null;
+        while (fi.hasNext()) {
+            FieldNodeBase lk = (FieldNodeBase) fi.next();
+			int id = ((NumericFieldNode)(lk.getChildrenByName("recordId"))).getValue();
+			if(id != currentID) {
+				lkds = new LookupDetails();
+				lkds.id = id;
+				lkds.name = ((StringFieldNode)(lk.getChildrenByName("joinName"))).getValue();
+				lookupDetailsById.put(lkds.id, lkds);
+			}
+			lkds.numberOfSteps = ((NumericFieldNode)(lk.getChildrenByName("sequenceNbr"))).getValue();
+			lkds.sourceLR = ((NumericFieldNode)(lk.getChildrenByName("sourceLrId"))).getValue();
+			lkds.targetLF = ((NumericFieldNode)(lk.getChildrenByName("inputFileId"))).getValue();
+			lkds.targetLR = ((NumericFieldNode)(lk.getChildrenByName("targetLrId"))).getValue();
+		}
 	}
 
 	private static void collectViewDetails(FieldNodeBase v, Writer fw) throws IOException {
@@ -153,7 +191,8 @@ public class VDPTextWriter {
 
 
 	private static void writeContent(MetadataNode recordsRoot, Writer fw) throws IOException {
-		fw.write(String.format("Record Level Reports\n"));
+		fw.write(String.format("\nRecord Level Reports\n"));
+	fw.write(String.format("====================\n"));
         Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
         while (fi.hasNext()) {
             FieldNodeBase n = (FieldNodeBase) fi.next();
