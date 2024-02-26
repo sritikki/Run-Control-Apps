@@ -1,6 +1,6 @@
 record_name: LogicTableNameF2
 record_type: V2
-record_length: 36
+record_length: 780
 fields:
 - name: prefix
   type: mappingOnly
