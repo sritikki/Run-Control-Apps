@@ -18,8 +18,10 @@ package org.genevaers.repository.components;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.genevaers.repository.Repository;
 
@@ -32,6 +34,8 @@ public class LookupPath extends ComponentNode {
 	private int targetLFid = 0;
 	private int destLrLfid;
 	private Boolean optimizable;
+
+	private Map<Integer, Integer> lr2lf = new HashMap<>();
 
 	public LookupPath() {
 		// super.record = new LookupPathRecord();
@@ -178,5 +182,13 @@ public class LookupPath extends ComponentNode {
 
 	public int getDestLrLfid() {
 		return destLrLfid;
+	}
+
+	public void saveLrLFPair(int lr, int lf) {
+		lr2lf.put(lr, lf);
+	}
+
+	public int getLfFromLr(int lr) {
+		return lr2lf.get(lr);
 	}
 }

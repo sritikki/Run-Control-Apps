@@ -27,6 +27,7 @@ import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
+import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.jltviews.JLTView;
@@ -35,7 +36,7 @@ public class LKFieldEmitter extends LookupEmitter {
 
     private int srcLFID;
 
-    public LogicTableF2 emit(LookupPathKey lkpkey, int srcLrid) {
+    public LogicTableF2 emit(LookupPathKey lkpkey, LookupPath lookup) {
         // There should be a valid converson check done
 
 
@@ -48,10 +49,10 @@ public class LKFieldEmitter extends LookupEmitter {
             //we need the the mapped field not the original
             int keyfieldLR = Repository.getFields().get(lkpkey.getFieldId()).getLrID();
             //does key field come from the event LR?
-            if(keyfieldLR == srcLrid) {
+            if(keyfieldLR == lookup.getStep(1).getSourceLR()) {
                 lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
             } else { //Keyfield is from a previous step
-                JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId());
+                JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId(), lookup);
                 LRField redfld = jltvOfTargetSourceStep.getRedFieldFromLookupField(lkpkey.getFieldId());
                 lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
                 if(redfld != null) {
