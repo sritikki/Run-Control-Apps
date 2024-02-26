@@ -16,7 +16,7 @@ public class StringFieldNode extends FieldNodeBase {
         if(state == ComparisonState.DIFF || state == ComparisonState.IGNORED) {
             return value + " -> " + diffValue;
         }
-        return value;
+        return value != null ? value : "";
     }
 
     public void setValue(String value) {
