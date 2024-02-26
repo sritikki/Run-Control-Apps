@@ -176,6 +176,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         } else {
             arg.setValue(new Cookie(val));
         }
+        arg.setLogfileId(ExtractBaseAST.getLtEmitter().getFileId());
         lkd.setArg(arg);
         lkd.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkd);
