@@ -68,9 +68,10 @@ public class LTLogger {
 																											// 10203/10245
 	private static final String REEX = "%s %d, User Exit ID=%d";
 	private static final String LUEX = "%s  , User Exit ID=%d";
-	private static final String CECOMP = "%s%-49s %s %s %s";
+	private static final String CECOMP = "%s  %-47s %s %s %s";
 	private static final String ECCOMP = "%s %s  %s  %-46s %s";
-	private static final String EECOMP = "%s %s  %s %s %s";
+	private static final String EECOMP = "%s %s  %s %-46s %s";
+	private static final String CCCOMP = "%s %-48s  %s %-46s %s";
 	private static final String DECLARATION = "%s Declare %s  = 0";
 	private static final String ASSIGNMENT = "%s %s  ->  %s";
 	private static final String KEYASSIGNMENT = "%s %s  ->  %s";
@@ -87,6 +88,7 @@ public class LTLogger {
 	private static final String WRDT = "%s Dest=%s, Partition ID=%d, Prog ID = %d, Param = '%s'";
 	private static final String WRDESTONLY = "%s Dest=%s";
 	private static final String FILEID = "%s %d";
+	private static final String CFA = "%s %-47s  %s %-47s %s";
 
 
 	// Format strings for the parts
@@ -145,8 +147,9 @@ public class LTLogger {
 		Iterator<LTRecord> lti = lt.getIterator();
 		while (lti.hasNext()) {
 			LTRecord ltr = lti.next();
-			logger.atFine().log(getLogString(ltr));
-			out.write(getLogString(ltr) + "\n");
+			String logme = getLogString(ltr);
+			logger.atFine().log(logme);
+			out.write(logme + "\n");
 		}
 		out.write("\nEnd of LT Records");
 	}
@@ -196,14 +199,22 @@ public class LTLogger {
 				return(String.format(LUEX, leadin, luex.getReadExitId()));
 			case "LKLR":
 				return(String.format(LKLR2GOTOS, leadin, getLKLRInfo(ltr), getGotos(ltr)));
+			case "LKDC": {
+				LogicTableF1 f1 = (LogicTableF1) ltr;
+				return(leadin + "  " + f1.getArg().getValue().getPrintString());
+			}
 			case "GOTO":
 				LogicTableF0 agoto = (LogicTableF0) ltr;
 				return(String.format(AGOTO, leadin, agoto.getGotoRow1()));
+				case "CFAA": 
+				case "CFAC": {
+						LogicTableNameValue cfa = (LogicTableNameValue) ltr;
+				return(String.format(CFA, leadin, cfa.getTableName(), cfa.getCompareType(), cfa.getValue(), getGotos(ltr)));
+			}
 			case "CFCE": 
 			case "CFCL": {
 				LogicTableF1 cf = (LogicTableF1) ltr;
-				return(String.format(CECOMP, leadin, getArgValue(cf) + "\"", cf.getCompareType(),
-						getFullArg(cf.getArg()) , getGotos(ltr)));
+				return(String.format(CECOMP, leadin, getArgValue(cf), cf.getCompareType(), getFullArg(cf.getArg()) , getGotos(ltr)));
 			}
 			case "CFEC":
 			case "CFLC":
@@ -216,6 +227,9 @@ public class LTLogger {
 				LogicTableF2 cfee = (LogicTableF2) ltr;
 				return(String.format(EECOMP, leadin, getFullArg(cfee.getArg1()), cfee.getCompareType(),
 						getFullArg(cfee.getArg2()), getGotos(ltr)));
+			case "CFCC":
+				LogicTableCC cfcc = (LogicTableCC) ltr;
+			return(String.format(CCCOMP, leadin, cfcc.getValue1().getPrintString(), cfcc.getCompareType(),	cfcc.getValue2().getPrintString(), getGotos(ltr)));
 			case "DIMN":
 			case "DIM4":
 				LogicTableName ln = (LogicTableName) ltr;
@@ -289,7 +303,7 @@ public class LTLogger {
 				return(String.format(CONSTASSIGNMENT, leadin, getArgConst(dtc.getArg()), getArgDetails(dtc.getArg())));
 			case "FNCC":
 				LogicTableNameF2 nf2 = (LogicTableNameF2) ltr;
-				return(String.format(FNCC, leadin, nf2.getArg1().getValue(), nf2.getArg1().getValue(), "DaysBetween", nf2.getAccumulatorName()));
+				return(String.format(FNCC, leadin, nf2.getArg1().getValue().getString(), nf2.getArg2().getValue().getString(), "DaysBetween", nf2.getAccumulatorName()));
 			default: {
 				switch (ltr.getRecordType()) {
 					case RE:
@@ -322,7 +336,7 @@ public class LTLogger {
 	}
 
 	private static Object getArgConst(LogicTableArg arg) {
-		return "\"" + arg.getValue().getString() + "\"";
+		return "\"" + arg.getValue().getPrintString() + "\"";
 	}
 
 	private static String getWrDest(LogicTableWR wr) {

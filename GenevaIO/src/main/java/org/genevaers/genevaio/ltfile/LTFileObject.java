@@ -20,6 +20,7 @@ package org.genevaers.genevaio.ltfile;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigInteger;
 
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.recordreader.FileRecord;
@@ -46,11 +47,14 @@ public abstract class LTFileObject {
             byte[] bytes = new byte[256];
             rec.bytes.get(bytes, 0, 256);
             StringBuilder result = new StringBuilder();
+            //result.append("0X");
             for (int i=0; i< Integer.BYTES; i++) {
                 result.append(String.format("%02X", bytes[i]));
             }
-            c.setIntegerData(result.toString());
-          } else {
+            int value = new BigInteger(result.toString(), 16).intValue();
+            c.setIntegerData(Integer.toString(value));
+            c.setValueLength(valueLength);
+        } else {
             rec.bytes.get(reader.getCleanStringBuffer(256), 0, 256);
             c.setIntegerData(reader.convertStringIfNeeded(reader.getStringBuffer(), 256).trim());
         }
