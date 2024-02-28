@@ -143,6 +143,9 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg1.setFieldLength(f.getRef().getLength());
         arg1.setFieldFormat(f.getDataType());
         arg1.setJustifyId(JustifyId.NONE);
+        arg1.setLrId(f.getRef().getLrID());
+        arg1.setLogfileId(ltEmitter.getFileId());
+        arg1.setFieldId(f.getRef().getComponentId());
         arg1.setValue(new Cookie(""));
         lkde.setArg1(arg1);
 
