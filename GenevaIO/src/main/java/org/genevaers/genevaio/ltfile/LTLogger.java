@@ -214,13 +214,12 @@ public class LTLogger {
 			case "CFCE": 
 			case "CFCL": {
 				LogicTableF1 cf = (LogicTableF1) ltr;
-				return(String.format(CECOMP, leadin, getArgValue(cf), cf.getCompareType(), getFullArg(cf.getArg()) , getGotos(ltr)));
+				return(String.format(CECOMP, leadin, cf.getArg().getValue().getPrintString(), cf.getCompareType(), getFullArg(cf.getArg()) , getGotos(ltr)));
 			}
 			case "CFEC":
 			case "CFLC":
 				LogicTableF1 cf = (LogicTableF1) ltr;
-				return(String.format(ECCOMP, leadin, getFullArg(cf.getArg()), cf.getCompareType(),
-						" \"" + getArgValue(cf) + "\"", getGotos(ltr)));
+				return(String.format(ECCOMP, leadin, getFullArg(cf.getArg()), cf.getCompareType(), cf.getArg().getValue().getPrintString(), getGotos(ltr)));
 			case "CFEE":
 			case "CFEL":
 			case "CFLE":
@@ -315,7 +314,7 @@ public class LTLogger {
 
 						}
 						LogicTableF1 f1 = (LogicTableF1) ltr;
-						return(leadin + " \"" + getArgValue(f1) + "\"");
+						return(leadin + " \"" + f1.getArg().getValue().getPrintString() + "\"");
 					case F2:
 						LogicTableF2 f2 = (LogicTableF2) ltr;
 						return(String.format(ASSIGNMENT, leadin, getFullArg(f2.getArg1()), getArgDetails(f2.getArg2())));
@@ -375,30 +374,6 @@ public class LTLogger {
 		return String.format(LEAD_IN, ltr.getRowNbr(), ltr.getSuffixSeqNbr(), ltr.getFunctionCode());
 	}
 
-	private static String getArgValue(LogicTableF1 f1) {
-		LogicTableArg arg = f1.getArg();
-		int al = arg.getValue().length();
-		if (al < 0) {
-			// Cookie time
-			// Needs to use the value too
-			switch (al) {
-				case Cookie.LTDateRunDay:
-					return "RUNDAY";
-				case Cookie.LTDateRunMonth:
-					return "RUNMONTH";
-				case Cookie.LTDateRunYear:
-					return "RUNYEAR";
-			}
-			return "COOKIE";
-		} else {
-			// if (al == 0) {
-			// 	return " ";
-			// } else {
-				return arg.getValue().getString();
-			//}
-		}
-	}
-
 	private static String getFullArg(LogicTableArg arg1) {
 		return getArgLFLRData(arg1) + getArgDetails(arg1);
 	}
@@ -439,13 +414,6 @@ public class LTLogger {
 				return "S";
 			default:
 				return "?";
-		}
-	}
-
-	private static void writeRecords(LogicTable lt) throws IOException {
-		Iterator<LTRecord> lti = lt.getIterator();
-		while (lti.hasNext()) {
-			LTFileObject ltr = (LTFileObject) lti.next();
 		}
 	}
 
