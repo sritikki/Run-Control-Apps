@@ -18,12 +18,13 @@ package org.genevaers.genevaio.ltfile;
  */
 
 
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.math.BigInteger;
 
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
+import org.genevaers.genevaio.recordreader.FileRecord;
+import org.genevaers.genevaio.recordreader.RecordFileWriter;
 
 public abstract class LTFileObject {
 
@@ -32,9 +33,9 @@ public abstract class LTFileObject {
 	public abstract void readRecord(LTRecordReader reader, FileRecord rec) throws Exception;
    	public abstract void addRecordNodes(FieldNodeBase root, boolean compare);
 
-	public abstract void writeCSV(FileWriter csvFile) throws IOException;
-	public abstract void writeCSVHeader(FileWriter csvFile) throws IOException;
-	public abstract void fillTheWriteBuffer(RecordFileReaderWriter rw);
+	public abstract void writeCSV(Writer csvFile) throws IOException;
+	public abstract void writeCSVHeader(Writer fw) throws IOException;
+	public abstract void fillTheWriteBuffer(RecordFileWriter rw);
 
 	public static void setSpaces(String spaces) {
 		LTFileObject.spaces = spaces;
@@ -46,18 +47,21 @@ public abstract class LTFileObject {
             byte[] bytes = new byte[256];
             rec.bytes.get(bytes, 0, 256);
             StringBuilder result = new StringBuilder();
+            //result.append("0X");
             for (int i=0; i< Integer.BYTES; i++) {
                 result.append(String.format("%02X", bytes[i]));
             }
-            c.setIntegerData(result.toString());
-          } else {
+            int value = new BigInteger(result.toString(), 16).intValue();
+            c.setIntegerData(Integer.toString(value));
+            c.setValueLength(valueLength);
+        } else {
             rec.bytes.get(reader.getCleanStringBuffer(256), 0, 256);
             c.setIntegerData(reader.convertStringIfNeeded(reader.getStringBuffer(), 256).trim());
         }
         return c;
 	}
 
-	protected void cookieWriter(Cookie value, RecordFileReaderWriter readerWriter, FileRecord buffer) {
+	protected void cookieWriter(Cookie value, RecordFileWriter readerWriter, FileRecord buffer) {
         buffer.bytes.putInt(value.length());
         if(value.length() < 0) {
             buffer.bytes.put(value.getBytes(), 0, 256);

@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
 
-public class BinRecordWriter extends RecordWriter {
+public class BinRecordWriter extends RecordFileWriter {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	private RandomAccessFile wFile;
 	private int bytesWritten;

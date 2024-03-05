@@ -136,7 +136,7 @@
                             </platforms>
 							<programs>
 								<program>
-									<mainClass>org.genevaers.runcontrolanalyser.CommandLineHandler</mainClass>
+									<mainClass>org.genevaers.runcontrolanalyser.App</mainClass>
 									<id>gersrca</id>
 								</program>
 							</programs>

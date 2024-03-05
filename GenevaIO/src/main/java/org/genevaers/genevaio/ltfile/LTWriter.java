@@ -17,21 +17,21 @@ package org.genevaers.genevaio.ltfile;
  * under the License.
  */
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
 
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
+import org.genevaers.genevaio.recordreader.RecordFileWriter;
 
 
 public class LTWriter {
 
-	private RecordFileReaderWriter rr;
+	private RecordFileWriter rw;
 
 	public void write(LogicTable lt, Path output) throws IOException {
-		rr = new RecordFileReaderWriter();
-		rr.writeRecordsTo(output.toFile());
+		rw = RecordFileReaderWriter.getWriter();
+		rw.writeRecordsTo(output.toFile());
 		writeRecords(lt);
 	}
 
@@ -39,13 +39,13 @@ public class LTWriter {
 		Iterator<LTRecord> lti = lt.getIterator();
 		while(lti.hasNext()){
 			LTFileObject ltr = (LTFileObject) lti.next();
-			ltr.fillTheWriteBuffer(rr);
-			rr.writeAndClearTheRecord();
+			ltr.fillTheWriteBuffer(rw);
+			rw.writeAndClearTheRecord();
 		}
 	}
 
 	public void close() throws IOException {
-		rr.close();
+		rw.close();
 	}
 
 }

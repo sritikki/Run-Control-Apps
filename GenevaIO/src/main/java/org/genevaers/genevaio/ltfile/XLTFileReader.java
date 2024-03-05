@@ -20,35 +20,50 @@ package org.genevaers.genevaio.ltfile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
-import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.recordreader.FileRecord;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
+import org.genevaers.genevaio.recordreader.RecordFileReader;
 import org.genevaers.repository.components.enums.LtRecordType;
+import org.genevaers.utilities.GersConfigration;
+
+import com.google.common.flogger.FluentLogger;
 
 public class XLTFileReader {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private LTRecordReader recordReader = new LTRecordReader();
 	private MetadataNode recordsRoot;
 	private boolean compare;
 	
-	private RecordFileReaderWriter rr;
+	private RecordFileReader rr;
 	private File ltFile;
 	private int numrecords;
 	
 	private LogicTable  logicTable = new LogicTable ();
 	private boolean charSetRead = false;
 
+	public void open(Path root, String name) {
+		if(GersConfigration.isZos()) {
+			ltFile = new File(name);
+		} else {
+			ltFile = root.resolve(name).toFile();
+		}
+	}
+	
 	public LogicTable readLT() throws Exception {
-		rr = new RecordFileReaderWriter();
+		rr = RecordFileReaderWriter.getReader();
 		rr.readRecordsFrom(ltFile);
 		FileRecord rec = rr.readRecord();
+		logger.atFine().log("read LT record");
 		while (rr.isAtFileEnd() == false) {
 			numrecords++;
 			addToLTFromRecord(rec);
 			rec.bytes.clear();
 			rec = rr.readRecord();
+			logger.atFine().log("read LT record");
 		}
 		//rr.readRecord();
 		return logicTable;
@@ -56,7 +71,10 @@ public class XLTFileReader {
 
 	private void addToLTFromRecord(FileRecord rec) throws Exception {
 		determineCharacterSet(rec);
+		rec.bytes.rewind();
         int recType = rec.bytes.getInt(30);
+		rec.dump();
+		logger.atFine().log("Record Type %d",recType);
         if(recType == LtRecordType.HD.ordinal()) {
 			addHD(rec);
         } else if(recType == LtRecordType.NV.ordinal()) {
@@ -203,9 +221,6 @@ public class XLTFileReader {
 		logicTable.add(nvr);
 	}
 
-	public void open(String name) {
-		ltFile = new File(name);
-	}
 
 	public LogicTable makeLT() {
 		try {
@@ -222,6 +237,10 @@ public class XLTFileReader {
 
 	public int getNumberOfRecords() {
 		return numrecords;
+	}
+
+	public void close() {
+		rr.close();
 	}
 
 }

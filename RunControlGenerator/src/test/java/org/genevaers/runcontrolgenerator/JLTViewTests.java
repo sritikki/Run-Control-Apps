@@ -22,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Calendar;
+
 import org.genevaers.compilers.extract.astnodes.ExtractAST2Dot;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
@@ -43,6 +45,7 @@ public class JLTViewTests {
 
     @Test void testBuildSimpleJoinView() {
         //This test is at the JLTGenerator level
+        Repository.setGenerationTime(Calendar.getInstance().getTime());
         LogicTableEmitter jltEmitter = new LogicTableEmitter();
         JLTTreeGenerator jltg = new JLTTreeGenerator(jltEmitter);
 
@@ -57,7 +60,7 @@ public class JLTViewTests {
         LookupPath lk = new LookupPath();
         lk.setTargetLRid(lkTrgLR.getComponentId());
         lk.setTargetLFid(77);
-        Repository.getJoinViews().addJLTViewField(lk, r1);
+        Repository.getJoinViews().addJLTViewFromLookupField(lk, r1);
 
         ExtractBaseAST jr = jltg.buildJoinViews();
         assertNotNull(jr);

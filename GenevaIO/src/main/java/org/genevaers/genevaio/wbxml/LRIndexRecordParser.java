@@ -31,6 +31,7 @@ import org.genevaers.repository.components.LRIndex;
 public class LRIndexRecordParser extends RecordParser {
 
 	private int indexID;
+	private int lrid;
 	private int effStartFld;
 	private int effEndFld;
 
@@ -40,7 +41,6 @@ public class LRIndexRecordParser extends RecordParser {
 		int n = reader.next();
 		if (n == XMLEvent.CHARACTERS) {
 			String text = reader.getText();
-			int lrid = 0;
 			switch (part) {
 				case "LRINDEXID":
 					indexID = Integer.parseInt(text);

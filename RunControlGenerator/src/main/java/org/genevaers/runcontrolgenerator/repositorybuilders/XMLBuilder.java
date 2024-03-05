@@ -27,20 +27,17 @@ import com.ibm.jzos.ZFile;
 import com.ibm.jzos.ZFileConstants;
 import com.ibm.jzos.ZFileException;
 
-public abstract class XMLBuilder extends RepositoryBuilder{
+public abstract class XMLBuilder implements RepositoryBuilder{
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	protected BufferedInputStream inputBuffer;
+	private Status retval = Status.OK;
 
-    public XMLBuilder(RunControlConfigration rcc) {
-        super(rcc);
-        //TODO Auto-generated constructor stub
+    public XMLBuilder() {
     }
 
     @Override
     public Status run() {
-		String os = System.getProperty("os.name");
-		logger.atFine().log("Operating System %s", os);
-		if (os.startsWith("z")) {
+		if (RunControlConfigration.isZos()) {
 			readFromDataSet();
 		} else {
 			readFromDirectory();
@@ -49,8 +46,9 @@ public abstract class XMLBuilder extends RepositoryBuilder{
     }
     
 	protected void readFromDataSet() {
+		Status retval;
 		try {
-			String ddname = "//DD:" + rcc.getWBXMLDirectory();
+			String ddname = "//DD:" + RunControlConfigration.getWBXMLDirectory();
 			ZFile dd = new ZFile(ddname, "r");
 			// Problem here is that this will be a PDS and we need to iterate its memebers
 			int type = dd.getDsorg();
@@ -80,19 +78,12 @@ public abstract class XMLBuilder extends RepositoryBuilder{
 							inputBuffer.close();
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						retval = Status.ERROR;
 					}
 				}
 					break;
 				case ZFileConstants.DSORG_PDS_MEM:
-				// logger.atInfo().log("found PDS member");
-				// 	buildFromXML(dd.getInputStream());
-				// 	break;
 				case ZFileConstants.DSORG_PS:
-					// logger.atInfo().log("found DSOR PS");
-					// buildFromXML(dd.getInputStream());
-					// break;
 				default:
 					logger.atSevere().log("Unhandled DSORG " + type);
 			}
@@ -121,7 +112,6 @@ public abstract class XMLBuilder extends RepositoryBuilder{
 					ir.setMemberName(d.getName());
 					buildFromXML(ir);
 					Repository.addInputReport(ir);
-
 				} catch (FileNotFoundException e) {
 					logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
 					retval = Status.ERROR;

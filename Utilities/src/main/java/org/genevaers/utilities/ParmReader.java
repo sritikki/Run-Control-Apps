@@ -1,4 +1,4 @@
-package org.genevaers.runcontrolgenerator;
+package org.genevaers.utilities;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -29,12 +29,10 @@ import java.util.List;
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.ZFile;
 
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-
 public class ParmReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	RunControlConfigration rcc;
+	GersConfigration rcc;
 	List<String> linesRead = new ArrayList<>();
 
 	public enum PARM_RESULT {
@@ -43,7 +41,7 @@ public class ParmReader {
 
 	PARM_RESULT result = PARM_RESULT.OK;
 
-	public void setConfig(RunControlConfigration rcc) {
+	public void setConfig(GersConfigration rcc) {
 		this.rcc = rcc;
 	}
 
@@ -56,13 +54,12 @@ public class ParmReader {
 	}
 
 	private void readDDParm() throws IOException {
-		ZFile dd = null;
-			String ddname = "//DD:" + rcc.getZosParmFileName();
-			dd = new ZFile(ddname, "r");
-			BufferedReader br = new BufferedReader(new InputStreamReader(new ZFile(ddname, "r").getInputStream()));
-			logger.atInfo().log("Reading %s", ddname);
-			parseLines(br);
-			dd.close();
+		String ddname = "//DD:" + GersConfigration.getZosParmFileName();
+		logger.atInfo().log("Read %s", ddname);
+		BufferedReader br = new BufferedReader(new InputStreamReader(new ZFile(ddname, "r").getInputStream()));
+		logger.atInfo().log("Reading %s", ddname);
+		parseLines(br);
+		br.close();
 	}
 
 	private void readSuppliedParm(String parmName) {

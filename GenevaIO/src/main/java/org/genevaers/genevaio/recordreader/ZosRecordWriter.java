@@ -22,7 +22,10 @@ import java.nio.ByteBuffer;
 
 import org.apache.commons.lang.StringUtils;
 
-public class ZosRecordWriter extends RecordWriter {
+import com.google.common.flogger.FluentLogger;
+
+public class ZosRecordWriter extends RecordFileWriter {
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     com.ibm.jzos.RecordWriter writer = null;
 	protected static String spaces = StringUtils.repeat("@", 1536); //!!! Don't change this length  !!!!!
 

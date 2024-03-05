@@ -37,14 +37,12 @@ import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
 import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
-import org.postgresql.shaded.com.ongres.scram.common.message.ServerFinalMessage.Error;
-
 import com.google.common.flogger.FluentLogger;
 
 public class RunControlGenerator {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	RunControlConfigration rcc;
+	//RunControlConfigration rcc;
 	private FileWriter reportWriter;
 	ReportWriter rw = new ReportWriter();
 
@@ -57,29 +55,29 @@ public class RunControlGenerator {
 	private LogicTable extractLogicTable;
 	private LogicTable joinLogicTable;
 
-	public void runFromConfig(RunControlConfigration rcc) {
-		this.rcc = rcc;
+	public void runFromConfig() {
+		//this.rcc = rcc;
 
 		GenevaLog.writeHeader("Run Control Generator");
 
-		if(buildComponentRepositoryFromSelectedInput(rcc) != Status.ERROR) {
+		if(buildComponentRepositoryFromSelectedInput() != Status.ERROR) {
 			Repository.fixupMaxHeaderLines();
 			Repository.fixupPFDDNames();
 			Repository.allLFsNotRequired();
 			Repository.setGenerationTime(Calendar.getInstance().getTime());
-			singlePassOptimise(rcc);
-			runCompilers(rcc);
-			writeRunControlFiles(rcc);
-			rw.write(rcc);
+			singlePassOptimise();
+			runCompilers();
+			writeRunControlFiles();
+			rw.write();
 		} else {
 			logger.atSevere().log("Failed to build the component repository");
 		}
 	}
 
 
-	private void writeRunControlFiles(RunControlConfigration rcc) {
+	private void writeRunControlFiles() {
 		if(status != Status.ERROR) {
-			RunControlWriter rcw = new RunControlWriter(rcc);
+			RunControlWriter rcw = new RunControlWriter();
 			logger.atFine().log("Join Logic Table");
 			logger.atFine().log(LTLogger.logRecords(joinLogicTable));
 			logger.atFine().log("Extract Logic Table");
@@ -102,20 +100,20 @@ public class RunControlGenerator {
 	 * 
 	 * We also need to compile the format phase filter and column calculations.
 	 */
-	private void runCompilers(RunControlConfigration rcc) {
+	private void runCompilers() {
 		GenevaLog.logNow("runCompilers");
 		if(status != Status.ERROR) {
-			RepositoryCompiler comp = new RepositoryCompiler(rcc);
+			RepositoryCompiler comp = new RepositoryCompiler();
 			comp.setLogicGroups(logicGroups);
-			status =comp.run();
+			status = comp.run();
 			extractLogicTable = comp.getExtractLogicTable();
 			joinLogicTable = comp.getJoinLogicTable();
 		}
 	}
 
-	private void singlePassOptimise(RunControlConfigration rcc) {
+	private void singlePassOptimise() {
 		if(status != Status.ERROR) {
-			SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+			SinglePassOptimiser spo = new SinglePassOptimiser();
 			status = spo.run();
 			logicGroups = spo.getLogicGroups();
 			dumpLogicGroups();
@@ -127,14 +125,14 @@ public class RunControlGenerator {
 		logicGroups.stream().forEach(lg -> lg.logData());
 	}
 
-	private Status buildComponentRepositoryFromSelectedInput(RunControlConfigration rcc) {
-		RepositoryBuilder rb = RepositoryBuilderFactory.get(rcc);
+	private Status buildComponentRepositoryFromSelectedInput() {
+		RepositoryBuilder rb = RepositoryBuilderFactory.get();
 		return rb != null ? rb.run() : Status.ERROR;
 	}
 
 	private void openReportFile() {
 		try {
-			reportWriter = new FileWriter(new File(rcc.getReportFileName()));
+			reportWriter = new FileWriter(new File(RunControlConfigration.getReportFileName()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

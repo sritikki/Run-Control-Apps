@@ -23,19 +23,19 @@ import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 public class RepositoryBuilderFactory {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	public static RepositoryBuilder get(RunControlConfigration rcc) {
+	public static RepositoryBuilder get() {
 
-		switch (rcc.getInputType()) {
+		switch (RunControlConfigration.getInputType()) {
 			case "WBXML":
-				return new WBXMLBuilder(rcc);
+				return new WBXMLBuilder();
 			case "VDPXML":
-				return new VDPXMLBuilder(rcc);
+				return new VDPXMLBuilder();
 			case "DB2":
-				return new DB2Builder(rcc);
+				return new DB2Builder();
 			case "POSTGRES":
-				return new PostgresBuilder(rcc);
+				return new PostgresBuilder();
 			default:
-				logger.atSevere().log("Unknown Input Type %s", rcc.getInputType());
+				logger.atSevere().log("Unknown Input Type %s", RunControlConfigration.getInputType());
 				return null;
 		}
 	}

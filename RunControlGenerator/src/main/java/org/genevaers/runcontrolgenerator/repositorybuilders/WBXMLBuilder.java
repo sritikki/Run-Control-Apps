@@ -11,8 +11,7 @@ import com.google.common.flogger.StackSize;
 public class WBXMLBuilder extends XMLBuilder{
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public WBXMLBuilder(RunControlConfigration rcc) {
-        super(rcc);
+    public WBXMLBuilder() {
     }
 
     @Override
@@ -22,16 +21,14 @@ public class WBXMLBuilder extends XMLBuilder{
 			wbReader.setInputBuffer(inputBuffer);
 			wbReader.addToRepsitory();
 			ir.setGenerationID(wbReader.getGenerationID());
-			retval = Status.OK;
 		} catch (Exception e) {
 			logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
-			retval = Status.ERROR;
 		}
 	}
 
     @Override
     protected String getXMLDirectory() {
-        return rcc.getWBXMLDirectory();
+        return RunControlConfigration.getWBXMLDirectory();
     }
 
 

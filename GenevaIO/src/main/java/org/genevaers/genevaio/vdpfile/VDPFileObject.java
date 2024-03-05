@@ -22,8 +22,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
+import org.genevaers.genevaio.recordreader.FileRecord;
+import org.genevaers.genevaio.recordreader.RecordFileWriter;
 
 public abstract class VDPFileObject {
 
@@ -34,7 +34,7 @@ public abstract class VDPFileObject {
 	public abstract void addRecordNodes(FieldNodeBase root, boolean compare);
 	public abstract void writeCSV(FileWriter csvFile) throws IOException;
 	public abstract void writeCSVHeader(FileWriter csvFile) throws IOException;
-	public abstract void fillTheWriteBuffer(RecordFileReaderWriter rw) throws Exception;
+	public abstract void fillTheWriteBuffer(RecordFileWriter rw) throws Exception;
 
 	public static void setSpaces(String spaces) {
 		VDPFileObject.spaces = spaces;

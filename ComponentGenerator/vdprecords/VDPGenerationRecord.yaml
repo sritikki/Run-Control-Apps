@@ -52,6 +52,7 @@ fields:
 - name: padding1
   type: short
   padding : true
+  component_field: none
 - name: max_decimal_digits
   type: byte
 - name: max_decimal_places
@@ -59,6 +60,7 @@ fields:
 - name: padding2
   type: short
   padding : true
+  component_field: none
 - name: description
   type: string
   maxlength: 48
@@ -68,6 +70,7 @@ fields:
 - name: padding3
   type: byte
   default: 32
+  component_field: none
 - name: time
   type: string
   maxlength: 8
@@ -75,6 +78,7 @@ fields:
   type: string
   maxlength: 29
   padding : true
+  component_field: none
 - name: vdp_byte_count
   type: integer
 - name: record_count
@@ -83,3 +87,4 @@ fields:
   type: string
   maxlength: 55
   padding : true
+  component_field: none

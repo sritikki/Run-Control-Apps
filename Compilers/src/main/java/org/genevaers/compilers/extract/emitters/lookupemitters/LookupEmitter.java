@@ -196,7 +196,7 @@ public class LookupEmitter extends CodeEmitter {
             } else {
                 lfid = ExtractBaseAST.getLtEmitter().getFileId();
             }
-            LogicTableF2 lk = lkfe.emit(key, lookup.getStep(1).getSourceLR());
+            LogicTableF2 lk = lkfe.emit(key, lookup);
             ExtractBaseAST.getLtEmitter().addToLogicTable(lk);
         } else if(key.getSymbolicName().length() > 0) {
             LogicTableF1 lks = lkse.emit(key);

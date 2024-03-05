@@ -57,7 +57,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         LRField fld = targLR.findFromFieldsByName(fieldName);
         if(fld != null) {       
             ref = fld;
-            JLTView jv = Repository.getJoinViews().addJLTViewField(lookup, fld);
+            JLTView jv = Repository.getJoinViews().addJLTViewFromLookupField(lookup, fld);
             if(currentViewColumnSource != null) {
                 jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
             }

@@ -18,12 +18,7 @@ package org.genevaers.runcontrolanalyser;
  */
 
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.fusesource.jansi.AnsiConsole;
 import org.genevaers.runcontrolanalyser.menu.Menus;
-import org.genevaers.runcontrolanalyser.menu.RCAGenerationData;
 import org.genevaers.runcontrolanalyser.menu.dbgeneration.DBGenerationMenu;
 import org.genevaers.runcontrolanalyser.menu.ftpfetch.FTPFetchMenu;
 import org.genevaers.runcontrolanalyser.menu.localrcset.LocalRcMenu;
