@@ -367,4 +367,14 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     public int getAssignableLength() {
         return ref.getLength();
     }
+
+    @Override
+    public String getMessageName() {
+        return String.format("{%s.%s}",lookup.getName(),ref.getName());
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        return RepoHelper.getMaxNumberOfDigitsForType(getDataType(), ref.getLength());
+    }
 }
