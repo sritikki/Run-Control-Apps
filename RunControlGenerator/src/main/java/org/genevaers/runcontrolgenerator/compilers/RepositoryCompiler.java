@@ -217,8 +217,17 @@ public class RepositoryCompiler {
 	}
 
 	private void buildTheExtractLogicTable() {
-		ExtractBaseAST.setLogicTableEmitter(xltEmitter);
-		((EmittableASTNode)extractRoot).emit();
+		//Walk the AST and add the entries to the XLT
+		//We need to ensure there were no errors
+		if(ASTBase.getErrorCount() == 0) {
+			//Put an error count in the Base and check
+			//We also need to extract the Join information at this time
+			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
+			((EmittableASTNode)extractRoot).emit();
+		} else {
+			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", ASTBase.getErrorCount());
+			//walk the tree here and get the errors?
+		}
 	}
 
 	public void setLogicGroups(List<LogicGroup> lgs) {

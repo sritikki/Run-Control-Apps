@@ -365,7 +365,6 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
 
     @Override
     public int getAssignableLength() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAssignableLength'");
+        return ref.getLength();
     }
 }

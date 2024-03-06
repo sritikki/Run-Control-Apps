@@ -238,14 +238,12 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
     @Override
     public String getMessageName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMessageName'");
+        return lookup.getName();
     }
 
 
     @Override
     public int getMaxNumberOfDigits() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+        return 0;
     }
 }
