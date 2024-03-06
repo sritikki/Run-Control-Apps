@@ -47,7 +47,6 @@ import org.genevaers.compilers.extract.astnodes.IsFoundAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
-import org.genevaers.compilers.extract.astnodes.LookupPathHandler;
 import org.genevaers.compilers.extract.astnodes.LookupPathRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RepeatAST;

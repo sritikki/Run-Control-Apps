@@ -39,7 +39,7 @@ public class SFLPEmitter extends StringComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
 
-        lkf.emitJoin(false);
+        lkf.getLkEmitter().emitJoin(lkf, false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
         LogicTableF2 cflp = (LogicTableF2) ltFact.getSFLP(((LookupFieldRefAST) lhs).getRef(), ((FieldReferenceAST)rhs).getRef());
         LogicTableArg arg = cflp.getArg1();

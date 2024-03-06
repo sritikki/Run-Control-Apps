@@ -159,15 +159,15 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
             ExtractBaseAST opChild = (ExtractBaseAST) calcIterator.next().getChildIterator().next();
             if(setterChild.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
                 lkref = (LookupFieldRefAST)setterChild;
-                lkref.emitJoin(false);
+                lkref.getLkEmitter().emitJoin(lkref, false);
             }
             if(opChild.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
                 lkref = (LookupFieldRefAST)opChild;
-                lkref.emitJoin(false);
+                lkref.getLkEmitter().emitJoin(lkref, false);
             }
         } else if(c1.getType() == ASTFactory.Type.LOOKUPFIELDREF) {
             lkref = (LookupFieldRefAST) c1;
-            lkref.emitJoin(false);
+            lkref.getLkEmitter().emitJoin(lkref, false);
         }
         return lkref;
     }

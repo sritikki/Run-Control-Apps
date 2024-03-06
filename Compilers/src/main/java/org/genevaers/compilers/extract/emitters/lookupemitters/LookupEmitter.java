@@ -27,7 +27,7 @@ import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.astnodes.EffDateValue;
 import org.apache.commons.lang.StringUtils;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
-import org.genevaers.compilers.extract.astnodes.LookupPathHandler;
+import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
 import org.genevaers.compilers.extract.astnodes.SymbolList;
 import org.genevaers.compilers.extract.emitters.CodeEmitter;
@@ -57,7 +57,7 @@ public class LookupEmitter extends CodeEmitter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     boolean optimizable;
 
-    private LookupPathHandler parentAST;
+    private LookupPathAST parentAST;
     private LogicTableF1 firstLookupRecord;
     private LogicTableRE lusm;
     private LogicTableRE luex;
@@ -68,7 +68,7 @@ public class LookupEmitter extends CodeEmitter {
     List<LogicTableRE> lusms;
     private int sortTitleFieldId;
 
-    public LogicTableF1 emitJoin(LookupPathHandler lookupAST, boolean skt) {
+    public LogicTableF1 emitJoin(LookupPathAST lookupAST, boolean skt) {
         // We need to determine JOIN or LKLR
         // Then itereate through the steps to emit the key codes
         // and finally the lookup function
@@ -93,7 +93,7 @@ public class LookupEmitter extends CodeEmitter {
 
         while (si.hasNext()) {
             LookupPathStep step = si.next();
-            if (step.getStepNum() == 1 && optimizable && !skt) {
+            if (step.getStepNum() == 1 && optimizable && parentAST.getType() != Type.SORTTITLE) {
                 retEntry = addJOIN(lookup, skt, lookupAST.getNewJoinId());
                 retEntry.setSuffixSeqNbr(ExtractBaseAST.getCurrentColumnNumber());
                 firstLookupRecord = retEntry;
@@ -110,8 +110,8 @@ public class LookupEmitter extends CodeEmitter {
                 emitKey(lookupAST, lookup, ki);
             }
             emitEffectiveDateForStepIfNeeded(lookupAST, step);
-            if(skt) {
-                kslk = emitKSLK();
+            if(parentAST.getType() == Type.SORTTITLE) {
+                kslk = ((SortTitleAST)parentAST).emitKSLK();
                 kslk.getArg().setLogfileId(lookup.getTargetLFID());
                 kslk.setFileId(lookup.getTargetLFID());
                 ExtractBaseAST.getLtEmitter().addToLogicTable(kslk);
@@ -142,7 +142,7 @@ public class LookupEmitter extends CodeEmitter {
         return retEntry;
     }
 
-    private void emitEffectiveDateForStepIfNeeded(LookupPathHandler lookupAST, LookupPathStep step) {
+    private void emitEffectiveDateForStepIfNeeded(LookupPathAST lookupAST, LookupPathStep step) {
         if(RepoHelper.isLrEffectiveDated(step.getTargetLR())) {
             lookupAST.emitEffectiveDate();
         }
@@ -175,7 +175,7 @@ public class LookupEmitter extends CodeEmitter {
         return luex;
     }
 
-    private void emitKey(LookupPathHandler lookupAST, LookupPath lookup,
+    private void emitKey(LookupPathAST lookupAST, LookupPath lookup,
             Iterator<LookupPathKey> ki) {
         LookupPathKey key = ki.next();
         //C++ uses LPSourceKeyAST Nodes 

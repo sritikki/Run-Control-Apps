@@ -67,7 +67,7 @@ public class IsNullAST extends ExtractBaseAST implements EmittableASTNode{
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lkp;
 
-        lkf.emitJoin(false);
+        lkf.getLkEmitter().emitJoin(lkf, false);
         
         ltfo = fcf.getCXL(lkf.getRef());
         ((LogicTableF1)ltfo).getArg().setLogfileId(lkf.getLookup().getTargetLFID());

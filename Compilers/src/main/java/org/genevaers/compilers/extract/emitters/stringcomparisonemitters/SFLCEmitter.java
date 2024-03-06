@@ -40,7 +40,7 @@ public class SFLCEmitter extends StringComparisonEmitter{
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
         
 
-        lkf.emitJoin(false);
+        lkf.getLkEmitter().emitJoin(lkf, false);
         LogicTableF1 cflc = (LogicTableF1) ltFact.getSFLC(lkf.getRef(), ((GenevaERSValue)rhs).getValueString());
         LogicTableArg arg = cflc.getArg();
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);

@@ -30,16 +30,18 @@ import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
+import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.UniqueKeyData;
 import org.genevaers.repository.jltviews.UniqueKeys;
 
-public class LookupPathHandler {
+public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 
     protected LookupPath lookup;
     protected LookupEmitter lkEmitter = new LookupEmitter();
@@ -51,20 +53,14 @@ public class LookupPathHandler {
     protected EffDateValue effDateValue;
     private String uniqueKey;
 
-    public void emitJoin(boolean skt) {
-        lkEmitter.emitJoin(this, skt);
+    @Override
+    public void emit() {
+        goto1 = ExtractBaseAST.getLtEmitter().getNumberOfRecords();
     }
-
-    public void resolveGotos(Integer joinT, Integer joinF) {
-        lkEmitter.resolveGotos(joinT, joinF);
-    }
+    
 
     public LookupPath getLookup() {
         return lookup;
-    }
-
-    public void setLookup(LookupPath lookup) {
-        this.lookup = lookup;
     }
 
     public Integer getGoto1() {
@@ -75,8 +71,9 @@ public class LookupPathHandler {
         return goto2;
     }
 
-    public void setSortTitleFieldId(int sortTitleFieldId) {
-        lkEmitter.setSortTitleFieldId(sortTitleFieldId);
+    @Override
+    public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
+        lkEmitter.resolveGotos(joinT, joinF);
     }
 
     public String getSymbolValue(String symbolicName) {
@@ -146,6 +143,9 @@ public class LookupPathHandler {
         arg1.setFieldLength(f.getRef().getLength());
         arg1.setFieldFormat(f.getDataType());
         arg1.setJustifyId(JustifyId.NONE);
+        arg1.setLrId(f.getRef().getLrID());
+        arg1.setLogfileId(ltEmitter.getFileId());
+        arg1.setFieldId(f.getRef().getComponentId());
         arg1.setValue(new Cookie(""));
         lkde.setArg1(arg1);
 
@@ -159,7 +159,8 @@ public class LookupPathHandler {
         lkde.setArg2(arg2);
         lkde.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkde);
-    }
+}
+
 
     private void emitLKDC(String val) {
 
@@ -178,6 +179,7 @@ public class LookupPathHandler {
         } else {
             arg.setValue(new Cookie(val));
         }
+        arg.setLogfileId(ExtractBaseAST.getLtEmitter().getFileId());
         lkd.setArg(arg);
         lkd.setCompareType(LtCompareType.EQ);
         ExtractBaseAST.getLtEmitter().addToLogicTable(lkd);
@@ -187,6 +189,28 @@ public class LookupPathHandler {
         return lkEmitter;
     }
 
+    public void resolveLookup(LookupPath lk) {
+        JLTView jv = Repository.getJoinViews().addJLTView(lookup);
+        if(currentViewColumnSource != null) {
+            jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
+        }
+    }
+
+
+    @Override
+    public DataType getDataType() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    @Override
+    public DateCode getDateCode() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
     /* 
      * Lookups are considered unique based on the combination of
      * Effective date values and symbols
@@ -195,8 +219,10 @@ public class LookupPathHandler {
      */
     public void makeUnique() {
         uniqueKey = lookup.getID() + "_";
-        uniqueKey += effDateValue != null ? effDateValue.getUniqueKey() : "";
-        uniqueKey += symbols != null ? symbols.getUniqueKey() : "";
+        if(lookup.isOptimizable()) {
+            uniqueKey += effDateValue != null ? effDateValue.getUniqueKey() : "";
+            uniqueKey += symbols != null ? symbols.getUniqueKey() : "";
+        }
         UniqueKeyData uk = UniqueKeys.getOrMakeUniuUniqueKeyData(uniqueKey, lookup.getID());
         newJoinId = uk.getNewJoinId();
     }
@@ -209,9 +235,17 @@ public class LookupPathHandler {
         return uniqueKey;
     }
 
-    public void setFalseGotos(Integer pos) {
-        lkEmitter.setFalseGotos(pos);
+
+    @Override
+    public String getMessageName() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMessageName'");
     }
 
 
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
 }

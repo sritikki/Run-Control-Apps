@@ -39,7 +39,7 @@ public class CFLAEmitter extends ComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
 
-        lkf.emitJoin(false);
+        lkf.getLkEmitter().emitJoin(lkf, false);
         CalculationAST calcNode = ((CalculationAST) rhs);
         calcNode.emit();
 

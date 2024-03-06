@@ -479,7 +479,7 @@ public class ExtractAST2Dot {
 
     private static void dotLookupNode(ExtractBaseAST node) {
         LookupPathRefAST lkRef = (LookupPathRefAST) node;
-        label = lkRef.getName() + "\n" + lkRef.getUniqueKey() + " -> " + lkRef.getNewJoinId();
+        label = lkRef.getMessageName() + "\n" + lkRef.getUniqueKey() + " -> " + lkRef.getNewJoinId();
         colour = LKDATASOURCE;
         idString = "LK_" + nodeNum++;
         reverseArrow = true;

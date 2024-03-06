@@ -256,47 +256,10 @@ public class RunControlConfigration extends GersConfigration{
         return parmToValue.get(NUMBER_MODE).getValue().equalsIgnoreCase("STANDARD");      
     }
 
-    public void setLinesRead(List<String> linesRead) {
-        this.linesRead = linesRead;
-    }
-
-    public List<String> getLinesRead() {
-        return linesRead;
-    }
-
-    public List<String> getOptionsInEffect() {
-        List<String> optsInEfect = new ArrayList<>();
-        for(Entry<String, ConfigEntry> parm : parmToValue.entrySet()) {
-        switch(getInputType()) {
-            case "VDPXML":
-            case "WBXML":
-            hideDatabaseParms();
-            break;
-            case "DB2":
-            case "PG":
-            break;
-            default:
-            break;
-        }
-        if(!parm.getValue().isHidden() && !parm.getValue().getValue().isEmpty()) {
-            optsInEfect.add(String.format("%-33s = %s", parm.getKey(), parm.getValue().getValue()));
-        }
-        };
-        return optsInEfect;
-    }
-    
+   
     public static String getVDPXMLDirectory() {
         return VDP_XML_FILES_SOURCE;
     }
 
-
-
-    private void hideDatabaseParms() {
-       for(Entry<String, ConfigEntry> parm : parmToValue.entrySet()) {
-            if(parm.getKey().startsWith("DB")) {
-                parm.getValue().setHidden(true);
-            }
-       }
-    }
 
 }

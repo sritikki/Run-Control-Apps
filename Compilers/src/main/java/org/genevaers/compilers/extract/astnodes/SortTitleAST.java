@@ -24,11 +24,12 @@ import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.LookupPath;
 
-public class SortTitleAST extends ExtractBaseAST implements EmittableASTNode{
+public class SortTitleAST extends LookupPathAST {
 
     private int sortTitleLookupId;
-    private LookupPathHandler lookupHandler = new LookupPathHandler();
+    private int sortTitleFieldId;
 
     public SortTitleAST() {
         type = Type.SORTTITLE;
@@ -39,12 +40,16 @@ public class SortTitleAST extends ExtractBaseAST implements EmittableASTNode{
         System.out.println("emit sort title key generation");
         //Treat as though we are emitting an ordinary lookup
         //but do not generate an LUSM etc
-        lookupHandler.setLookup(Repository.getLookups().get(sortTitleLookupId));
-        lookupHandler.emitJoin(true);        
+        lookup =  Repository.getLookups().get(sortTitleLookupId);
+        lkEmitter.emitJoin(this, true);        
     }
 
     public void setSortTitleFieldId(int sortTitleFieldId) {
-        lookupHandler.setSortTitleFieldId(sortTitleFieldId);
+        this.sortTitleFieldId = sortTitleFieldId;
+    }
+
+    public int getSortTitleFieldId() {
+        return sortTitleFieldId;
     }
 
     public int getSortTitleLookupId() {
@@ -53,6 +58,12 @@ public class SortTitleAST extends ExtractBaseAST implements EmittableASTNode{
 
     public void setSortTitleLookupId(int sortTitleLookupId) {
         this.sortTitleLookupId = sortTitleLookupId;
+    }
+
+    public LogicTableF1 emitKSLK() {
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableF1 kslk = (LogicTableF1) ltFact.getKSLK(Repository.getFields().get(sortTitleFieldId));
+        return kslk;
     }
 
 }

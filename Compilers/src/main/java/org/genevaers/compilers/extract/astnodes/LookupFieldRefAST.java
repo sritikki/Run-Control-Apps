@@ -43,26 +43,18 @@ import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
 import org.genevaers.repository.jltviews.ReferenceJoin;
 
-public class LookupFieldRefAST extends FormattedASTNode implements Assignable, CalculationSource, Concatable{
+public class LookupFieldRefAST extends LookupPathAST implements Assignable, CalculationSource, Concatable{
 
     private LRField ref;
-    private LookupPathHandler lookupHandler = new LookupPathHandler();
-    private LookupPath lookup;
 
     public LookupFieldRefAST() {
         type = ASTFactory.Type.LOOKUPFIELDREF;
     }
-
-    @Override
-    public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        lookupHandler.resolveGotos(joinT, joinF);
-    }
  
     public void resolveField(LookupPath lk, String fieldName) {
-        lookup = lk;
-        lookupHandler.setLookup(lk);
         //get the targer LR
         //And look for the field in it
+        lookup = lk;
         LogicalRecord targLR = lk.getTargetLR();
         LRField fld = targLR.findFromFieldsByName(fieldName);
         if(fld != null) {       
@@ -72,7 +64,9 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
                 jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
             }
         } else {
-            addError("Unknown lookup field " + fieldName);
+            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+            err.addError("Unknown field " + fieldName);
+            addChildIfNotNull(err);
         }
     }
 
@@ -262,19 +256,19 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
         }
         ltgoto.setGotoRow1(ltEmitter.getNumberOfRecords());
         //Can now set the lkEmitter gotos
-        lookupHandler.setFalseGotos(null);
+        lkEmitter.setFalseGotos(null);
     }
 
-//     @Override
-//     public DataType getDataType() {
-//         // Casting may set the format to be something we are not
-//         return overriddenDataType != DataType.INVALID ? overriddenDataType : ref.getDatatype();
-//    }
+    @Override
+    public DataType getDataType() {
+        // Casting may set the format to be something we are not
+        return overriddenDataType != DataType.INVALID ? overriddenDataType : ref.getDatatype();
+   }
 
-//     @Override
-//     public DateCode getDateCode() {
-//         return (overriddenDateCode != null) ? overriddenDateCode : ref.getDateTimeFormat();
-//     }
+    @Override
+    public DateCode getDateCode() {
+        return (overriddenDateCode != null) ? overriddenDateCode : ref.getDateTimeFormat();
+    }
 
     private void flipDataTypeIfFieldAlphanumeric(LogicTableArg arg, LogicTableArg arg2) {
         if(arg2.getFieldFormat() != DataType.ALPHANUMERIC && arg.getFieldFormat() == DataType.ALPHANUMERIC) {
@@ -364,56 +358,14 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
         return length;
     }
 
-    @Override
-    public String getMessageName() {
-        return "{" + lookup.getName() + "." + ref.getName() +"}";
+    public void fixupGotos() {
+        //
+        goto2 = ltEmitter.getNumberOfRecords();
     }
 
     @Override
     public int getAssignableLength() {
-        return ref.getLength();
-    }
-
-    public void emitJoin(boolean b) {
-        lookupHandler.emitJoin(b);
-    }
-
-    @Override
-    public DataType getDataType() {
-        return (overriddenDataType != DataType.INVALID) ? overriddenDataType : ref.getDatatype();
-    }
-
-    @Override
-    public DateCode getDateCode() {
-        return (overriddenDateCode != null) ? overriddenDateCode : ref.getDateTimeFormat();
-    }
-
-    public LookupPath getLookup() {
-        return lookup;
-    }
-
-    public String getUniqueKey() {
-        return lookupHandler.getUniqueKey();
-    }
-
-    public int getNewJoinId() {
-        return lookupHandler.getNewJoinId();
-    }
-
-    public void setSymbols(SymbolList symbollist) {
-        lookupHandler.setSymbols(symbollist);
-    }
-
-    public void setEffDateValue(EffDateValue effDate) {
-        lookupHandler.setEffDateValue(effDate);
-    }
-
-    public void makeUnique() {
-        lookupHandler.makeUnique();
-    }
-
-    @Override
-    public int getMaxNumberOfDigits() {
-        return RepoHelper.getMaxNumberOfDigitsForType(getDataType(), ref.getLength());
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAssignableLength'");
     }
 }

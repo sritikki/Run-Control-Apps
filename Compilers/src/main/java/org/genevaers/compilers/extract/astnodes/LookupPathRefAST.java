@@ -23,49 +23,14 @@ import com.google.common.flogger.FluentLogger;
  */
 
 
-public class LookupPathRefAST extends ExtractBaseAST {
+public class LookupPathRefAST extends LookupPathAST {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-    private LookupPathHandler lookupHandler = new LookupPathHandler();
 
     public LookupPathRefAST() {
         type = ASTFactory.Type.LOOKUPREF;
     }
 
     public void setLookup(LookupPath lookup) {
-        lookupHandler.setLookup(lookup);
+        this.lookup = lookup;
     }
-
-    @Override
-    public void resolveGotos(Integer compT, Integer compF, Integer joinT, Integer joinF) {
-        lookupHandler.resolveGotos(joinT, joinF);
-    }
-
-    public void emitJoin(boolean skt) {
-        lookupHandler.emitJoin(skt);
-    }
-
-    public String getName() {
-        return lookupHandler.getLookup().getName();
-    }
-
-    public String getUniqueKey() {
-        return lookupHandler.getUniqueKey();
-    }
-
-    public int getNewJoinId() {
-        return lookupHandler.getNewJoinId();
-    }
-
-    public void setSymbols(SymbolList symbols) {
-        lookupHandler.setSymbols(symbols);
-    }
-
-    public void setEffDateValue(EffDateValue effDateValue) {
-        lookupHandler.setEffDateValue(effDateValue);
-    }
-
-    public void makeUnique() {
-        lookupHandler.makeUnique();
-    }
-
 }

@@ -40,8 +40,8 @@ public class CFLLEmitter extends ComparisonEmitter{
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
         LookupFieldRefAST rkf = (LookupFieldRefAST) rhs;
 
-        lkf.emitJoin(false);
-        rkf.emitJoin(false);
+        lkf.getLkEmitter().emitJoin(lkf, false);
+        rkf.getLkEmitter().emitJoin(rkf, false);
         ltFact.setLogFileId(getLtEmitter().getFileId());
         LogicTableF2 cfll = (LogicTableF2) ltFact.getCFLL(((LookupFieldRefAST) lhs).getRef(), ((LookupFieldRefAST) rhs).getRef(), op);
 
