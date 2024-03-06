@@ -72,6 +72,7 @@ public class ReportWriter {
             nodeMap.put("inputReports", Repository.getInputReports());
             nodeMap.put("compErrs", Repository.getCompilerErrors());
             nodeMap.put("warnings", Repository.getWarnings());
+            nodeMap.put("rcgversion", readVersion());
             if(Repository.getCompilerErrors().isEmpty()) {
                 nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
                 nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));

@@ -26,10 +26,27 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.JustifyId;
+import org.genevaers.repository.components.enums.PerformBreakLogic;
+import org.genevaers.repository.components.enums.SortBreakFooterOption;
 import org.genevaers.repository.components.enums.SortBreakHeaderOption;
+import org.genevaers.repository.components.enums.SortKeyDispOpt;
 import org.genevaers.repository.components.enums.SortOrder;
 
 public class DBSortKeyReader extends DBReaderBase {
+
+   	private void setDefault(ViewSortKey vsk) {
+		vsk.setDescDateCode(DateCode.NONE);
+		vsk.setDescDataType(DataType.ALPHANUMERIC);
+		vsk.setDescJustifyId(JustifyId.LEFT);
+		vsk.setLabel("");
+		vsk.setSkJustifyId(JustifyId.LEFT);
+		vsk.setSktDateCode(DateCode.NONE);
+		vsk.setSktDataType(DataType.ALPHANUMERIC);
+		vsk.setSktJustifyId(JustifyId.LEFT);
+		vsk.setSortKeyDateTimeFormat(DateCode.NONE);
+		vsk.setSortDisplay(SortKeyDispOpt.CATEGORIZE);
+	}
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
@@ -45,17 +62,35 @@ public class DBSortKeyReader extends DBReaderBase {
         ViewNode view = Repository.getViews().get(rs.getInt("VIEWID"));
         if(view != null) {
             ViewSortKey vsk = new ViewSortKey();
-            vsk.setComponentId(rs.getInt("VIEWSORTKEYID"));
+            setDefault(vsk);
+            vsk.setComponentId(rs.getInt("VIEWCOLUMNID"));
+            vsk.setColumnId(rs.getInt("VIEWCOLUMNID"));
             vsk.setViewSortKeyId(rs.getInt("VIEWSORTKEYID"));
             vsk.setSequenceNumber(rs.getShort("KEYSEQNBR"));
             vsk.setSortorder(SortOrder.fromdbcode(rs.getString("SORTSEQCD")));
+			int sbi = Integer.parseInt(rs.getString("SORTBRKIND"));
+            int footerMask = 0x0001;
+            int re = sbi & footerMask;
+            if (re > 0) {
+                vsk.setSortBreakFooterOption(SortBreakFooterOption.PRINT);
+            } else {
+                vsk.setSortBreakFooterOption(SortBreakFooterOption.NOPRINT);
+            }
+            int breakMask = 0x0002;
+            re = sbi & breakMask;
+            if (re > 0) {
+                vsk.setPerformBreakLogic(PerformBreakLogic.NOBREAK);
+            } else {
+                vsk.setPerformBreakLogic(PerformBreakLogic.BREAK);
+            }
+
             //vsk.setSortBreakFooterOption(sortBreakFooterOption);
             //There is a sort display option here that is not available 
             //Set via the SORTKEYDISPLAYCD
             vsk.setSortBreakHeaderOption(SortBreakHeaderOption.values()[rs.getInt("PAGEBRKIND")]);
             //vsk.setDisplaySubtotalCount(subtotalCountInd);
             vsk.setLabel(getDefaultedString(rs.getString("SORTKEYLABEL"), ""));
-            //vsk.setSortDisplay(sortKeyDispOptId);
+			vsk.setSortDisplay(SortKeyDispOpt.fromdbcode(getDefaultedString(rs.getString("SORTKEYDISPLAYCD"), "CAT")));
             vsk.setRtdLrFieldId(rs.getInt("SORTTITLELRFIELDID"));
             //vsk.setRtdJoinId(rtdJoinId);
             vsk.setSortKeyDataType(DataType.fromdbcode(rs.getString("SKFLDFMTCD")));
@@ -71,7 +106,7 @@ public class DBSortKeyReader extends DBReaderBase {
             // vsk.setSktDataType(sktDataType);
             // vsk.setSktSigned(sktSignedInd);
             // vsk.setSktStartPosition(sktStartPosition);
-            // vsk.setSktFieldLength(sktFieldLength);
+            //vsk.setSktFieldLength(sktFieldLength);
             // vsk.setSktOrdinalPosition(sktOrdinalPosition);
             // vsk.setSktDecimalCount(sktDecimalCount);
             // vsk.setSktRounding(sktRounding);
