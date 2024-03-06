@@ -3,6 +3,8 @@ package org.genevaers.runcontrolgenerator;
 import java.io.IOException;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.ParmReader;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -44,24 +46,21 @@ public class App {
     } 
 
     public static void run(String parmFile, String reportFile, String logFile, String vdpFile, String xltFile, String jltFile) {
-//        initLogger(logFile);
         RunControlGenerator rcg = new RunControlGenerator();
         ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        rcc.overrideParmFile(parmFile);
-        rcc.overrideReportFile(reportFile);
-        rcc.overrideLogFile(logFile);
-        rcc.overrideVDPFile(vdpFile);
-        rcc.overrideXLTFile(xltFile);
-        rcc.overrideJLTFile(jltFile);
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
+        pr.setConfig(new RunControlConfigration());
+        RunControlConfigration.overrideParmFile(parmFile);
+        RunControlConfigration.overrideReportFile(reportFile);
+        RunControlConfigration.overrideLogFile(logFile);
+        GersConfigration.overrideVDPFile(vdpFile);
+        GersConfigration.overrideXLTFile(xltFile);
+        GersConfigration.overrideJLTFile(jltFile);
         try {
-            pr.populateConfigFrom(rcc.getParmFileName());
-            rcc.setLinesRead(pr.getLinesRead());
-            if(rcc.isValid()) {
-                GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, rcc.getLogLevel());
-                rcg.runFromConfig(rcc);
+            pr.populateConfigFrom(RunControlConfigration.getParmFileName());
+            GersConfigration.setLinesRead(pr.getLinesRead());
+            if(RunControlConfigration.isValid()) {
+                GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, GersConfigration.getLogLevel());
+                rcg.runFromConfig();
             } else {
                 logger.atSevere().log("Invalid configuration processing stopped");
             }

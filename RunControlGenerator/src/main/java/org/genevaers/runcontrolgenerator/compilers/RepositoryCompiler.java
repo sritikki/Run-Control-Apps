@@ -68,15 +68,13 @@ public class RepositoryCompiler {
 	private List<LogicGroup> logicGroups;
 	private ExtractBaseAST extractRoot;
 	private ExtractBaseAST joinsRoot;
-	private RunControlConfigration rcc;
 	private LogicTableEmitter xltEmitter = new LogicTableEmitter();
 	private LogicTableEmitter jltEmitter = new LogicTableEmitter();
 	private FormatBaseAST formatRoot;
 	private FormatView currentFormatView;
 	private Status returnStatus;
 
-	public RepositoryCompiler(RunControlConfigration r) {
-		rcc = r;
+	public RepositoryCompiler() {
 	}
 
 	public Status run() {
@@ -129,9 +127,6 @@ public class RepositoryCompiler {
 		Iterator<ViewNode> vi = Repository.getViews().getIterator();
 		while(vi.hasNext()){
 			ViewNode v = vi.next();
-			if(v.getViewDefinition().getComponentId() == 4954) {
-				int bang = 0;
-			}
 			if(v.isFormat()) {
 				boolean addedToFormatRequired = true;
 				currentFormatView = (FormatView)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.FORMATVIEW);
@@ -149,7 +144,7 @@ public class RepositoryCompiler {
 	}
 
 	private void writeFormatAstIfEnabled() {
-		if(rcc.isFormatDotEnabled()) {
+		if(RunControlConfigration.isFormatDotEnabled()) {
         	FormatAST2Dot.write(formatRoot, Paths.get("target/Format.dot"));
 		}
 	}
@@ -196,7 +191,7 @@ public class RepositoryCompiler {
 	}
 
 	private void emitLogicTablesIfEnabled() {
-		if(rcc.isEmitEnabled()) {
+		if(RunControlConfigration.isEmitEnabled()) {
 			buildTheJoinLogicTable();
 			buildTheExtractLogicTable();
 		}
@@ -216,7 +211,7 @@ public class RepositoryCompiler {
 	}
 
 	private void writeJltDotIfEnabled() {
-		if(rcc.isJltDotEnabled()) {
+		if(RunControlConfigration.isJltDotEnabled()) {
         	ExtractAST2Dot.write(joinsRoot, Paths.get("target/JLT.dot"));
 		}
 	}
@@ -242,10 +237,10 @@ public class RepositoryCompiler {
 	}
 
 	private void writeXLTDotIfEnabled() {
-		if(rcc.isXltDotEnabled()) {
-			ExtractAST2Dot.setFilter(rcc.getViewDots().length() >0 || rcc.getColumnDots().length()>0);
-			ExtractAST2Dot.setViews(rcc.getViewDots().split(","));
-			ExtractAST2Dot.setCols(rcc.getColumnDots().split(","));
+		if(RunControlConfigration.isXltDotEnabled()) {
+			ExtractAST2Dot.setFilter(RunControlConfigration.getViewDots().length() >0 || RunControlConfigration.getColumnDots().length()>0);
+			ExtractAST2Dot.setViews(RunControlConfigration.getViewDots().split(","));
+			ExtractAST2Dot.setCols(RunControlConfigration.getColumnDots().split(","));
 			ExtractAST2Dot.write(extractRoot, Paths.get("target/XLT.dot"));
 		}
 	}
@@ -254,7 +249,7 @@ public class RepositoryCompiler {
 		lg.getLfID();
 		LFAstNode lfNode = (LFAstNode)ASTFactory.getNodeOfType(ASTFactory.Type.LF);
 		lfNode.setLogicalFile(lg.getLogicalFile());
-		if(rcc.isPFDotEnabled()) {
+		if(RunControlConfigration.isPFDotEnabled()) {
 			addPFNodes(lfNode);
 		} else {
 			extractRoot.addChildIfNotNull(lfNode);
@@ -271,6 +266,7 @@ public class RepositoryCompiler {
 			logger.atInfo().log("Compile view %d source %d", vs.getViewId(), vs.getSequenceNumber());
 			vsnode.setViewSource(vs);
 			lfNode.addChildIfNotNull(vsnode);
+			ExtractBaseAST.clearLastColumnWithAWrite();
 			if(vsnode.hasExtractFilterText()) {
 				addViewSourceNodes(vsnode);
 			}
@@ -314,16 +310,30 @@ public class RepositoryCompiler {
 	}
 
 	private void compileExtractOutputLogic(ViewSourceAstNode vsnode) {
-		ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
-		vsnode.addChildIfNotNull(eo);
-		ExtractOutputCompiler eoc = new ExtractOutputCompiler();
-		eoc.setViewSource(vsnode.getViewSource());
-		try {
-			eoc.processLogicAndAddNodes(eo);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		boolean runEOC = true;
+		if(RunControlConfigration.getInputType().equalsIgnoreCase("VDPXML")) {
+			if(noWriteStatementMissing(vsnode)) {
+				runEOC = false; //There must have been a write in the last column
+			}
+		}
+
+		//What if the extract output logic does not contain a write?
+		if(runEOC) {
+			ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
+			vsnode.addChildIfNotNull(eo);
+			ExtractOutputCompiler eoc = new ExtractOutputCompiler();
+			eoc.setViewSource(vsnode.getViewSource());
+			try {
+				eoc.processLogicAndAddNodes(eo);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+	}
+
+	private boolean noWriteStatementMissing(ViewSourceAstNode vsnode) {
+		return (ExtractBaseAST.getLastColumnWithAWrite() == vsnode.getNumberOfColumns());
 	}
 
 	private void compileColumn(ViewColumnSourceAstNode vcsn) {

@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
+import org.genevaers.genevaio.recordreader.RecordFileWriter;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.calculationstack.CalcStack;
@@ -58,7 +59,7 @@ public class VDPFileWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private File vdpFile;
-	private RecordFileReaderWriter VDPWriter;
+	private RecordFileWriter VDPWriter;
 	private int numrecords;
 	private VDPManagementRecords vdpMgmtRecs;
 
@@ -83,7 +84,7 @@ public class VDPFileWriter {
 	}
 
 	private void writeTheRecords() throws Exception {
-		VDPWriter = new RecordFileReaderWriter();
+		VDPWriter = RecordFileReaderWriter.getWriter();
 		VDPWriter.writeRecordsTo(vdpFile);
 
 		// We really need to walk the list of items to get the generation information
@@ -565,14 +566,18 @@ public class VDPFileWriter {
 	}
 
 	private void writeLRIndexes() {
-		Iterator<LRIndex> lrii = Repository.getIndexes().getIterator();
-		while (lrii.hasNext()) {
-			VDPLRIndex vi = new VDPLRIndex();
-			LRIndex lri = lrii.next();
-			logger.atFine().log("Write Index:%d %d %s", lri.getComponentId(), lri.getLrId(), lri.getName());
-			vi.fillFromComponent(lri);
-			vi.fillTheWriteBuffer(VDPWriter);
-			VDPWriter.writeAndClearTheRecord();
+		Iterator<LogicalRecord> lri = Repository.getLogicalRecords().getIterator();
+		while(lri.hasNext()) {
+			LogicalRecord lr = lri.next();
+			Iterator<LRIndex> ii = lr.getIteratorForIndexBySeq();
+			while (ii.hasNext()) {
+				VDPLRIndex vi = new VDPLRIndex();
+				LRIndex ndx = ii.next();
+				logger.atFine().log("Write Index:%d %d %s", ndx.getComponentId(), ndx.getLrId(), ndx.getName());
+				vi.fillFromComponent(ndx);
+				vi.fillTheWriteBuffer(VDPWriter);
+				VDPWriter.writeAndClearTheRecord();
+			}
 		}
 	}
 
@@ -603,7 +608,6 @@ public class VDPFileWriter {
 	private void writeGenerationRecord() {
 		logger.atFine().log("Write Generation");
 		VDPGenerationRecord gen = vdpMgmtRecs.getViewGeneration();
-		gen.setAsciiInd(true);
 		gen.setVersionInfo((short)13);
 		gen.setLrFieldCount(Repository.getFields().size());
 		gen.fillTheWriteBuffer(VDPWriter);

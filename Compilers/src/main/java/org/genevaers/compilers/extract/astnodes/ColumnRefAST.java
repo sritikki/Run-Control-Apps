@@ -101,7 +101,7 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
             LogicTableArg arg1 = ((LogicTableF2)dtx).getArg1();
             if(cr.getViewColumn().getExtractArea() == ExtractArea.AREACALC) {
                 short sp = (short) ((vc.getExtractAreaPosition() == 1 ? 0 :  vc.getExtractAreaPosition()) + 2);
-                arg1.setStartPosition(sp); //bonkers hard coding for the moment
+                arg1.setStartPosition(sp);
                 arg1.setFieldFormat(DataType.PACKED);
                 arg1.setDecimalCount((short)8); //Realy depends on number fromat
                 arg1.setJustifyId(JustifyId.LEFT);

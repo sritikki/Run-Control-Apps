@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract;
 
+import java.util.Iterator;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -82,6 +84,7 @@ import org.genevaers.grammar.GenevaERSParser.SymbollistContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
@@ -164,11 +167,38 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         return casnode;
     }
 
+	@Override public ExtractBaseAST visitColumnRefAssignment(GenevaERSParser.ColumnRefAssignmentContext ctx) { 
+        ColumnAssignmentASTNode colRefAss = (ColumnAssignmentASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNASSIGNMENT);
+        TerminalNode c = ctx.COL_REF();
+        colRefAss.addChildIfNotNull(visit(ctx.getChild(2)));
+        if(c.getSymbol().getType() == GenevaERSParser.COL_REF) {
+            String col = c.getText();
+            String[] bits = col.split("\\.");
+            ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+            ViewColumn vc = view.getColumnNumber(Integer.parseInt(bits[1])); 
+            ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(vc); // Change this to make column type more specific
+            colNode.setViewColumn(vc);
+            colRefAss.addChildIfNotNull(colNode);
+        }
+        return colRefAss;
+    }
+
 	@Override public ExtractBaseAST visitExprBoolOr(GenevaERSParser.ExprBoolOrContext ctx) { 
-        if(ctx.getChildCount() == 3) { //Must be an actual OR node
+        if(ctx.getChildCount() > 1) { 
+            Iterator<ParseTree> ci = ctx.children.iterator();
             BooleanOrAST boolOrNode = (BooleanOrAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLOR);
-            boolOrNode.addChildIfNotNull(visit(ctx.children.get(0))); //LHS operand
-            boolOrNode.addChildIfNotNull(visit(ctx.children.get(2))); //RHS Operand
+            int childNum = 0;
+            while (ci.hasNext()) {
+                ParseTree ctxEntry = ci.next();
+                if(ctxEntry.getText().equalsIgnoreCase("OR") && childNum > 2) {
+                    BooleanOrAST nextboolOrNode = (BooleanOrAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLOR);
+                    nextboolOrNode.addChildIfNotNull(boolOrNode);
+                    boolOrNode = nextboolOrNode;
+                } else {
+                    boolOrNode.addChildIfNotNull(visit(ctxEntry));
+                }
+                childNum ++;
+            }
             return boolOrNode; 
         } else {
             //Just passing through
@@ -234,10 +264,21 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
   
 
 	@Override public ExtractBaseAST visitExprBoolAnd(GenevaERSParser.ExprBoolAndContext ctx) { 
-        if(ctx.getChildCount() == 3) { //Must be an actual AND node
+        if(ctx.getChildCount() > 1) { 
+            Iterator<ParseTree> ci = ctx.children.iterator();
             BooleanAndAST boolAndNode = (BooleanAndAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLAND);
-            boolAndNode.addChildIfNotNull(visit(ctx.children.get(0))); //LHS operand
-            boolAndNode.addChildIfNotNull(visit(ctx.children.get(2))); //RHS Operand
+            int childNum = 0;
+            while (ci.hasNext()) {
+                ParseTree ctxEntry = ci.next();
+                if(ctxEntry.getText().equalsIgnoreCase("AND") && childNum > 2) {
+                    BooleanAndAST nextboolAndNode = (BooleanAndAST) ASTFactory.getNodeOfType(ASTFactory.Type.BOOLAND);
+                    nextboolAndNode.addChildIfNotNull(boolAndNode);
+                    boolAndNode = nextboolAndNode;
+                } else {
+                    boolAndNode.addChildIfNotNull(visit(ctxEntry));
+                }
+                childNum ++;
+            }
             return boolAndNode; 
         } else {
             //Just passing through
@@ -478,6 +519,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         LookupPath lookup =  Repository.getLookups().get(lkname);
 		if(lookup != null) {
             lkRef.setLookup(lookup);
+            lkRef.resolveLookup(lookup);
 		} else {
             lkRef.addError("Unknown Lookup " + lkname);
         }		
@@ -524,7 +566,10 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitSymbollist(GenevaERSParser.SymbollistContext ctx) { 
         SymbolList symList = (SymbolList) ASTFactory.getNodeOfType(ASTFactory.Type.SYMBOLLIST);
-        symList.addChildIfNotNull(visitChildren(ctx)); 
+        Iterator<ParseTree> ci = ctx.children.iterator();
+        while (ci.hasNext()) {
+            symList.addChildIfNotNull(visit(ci.next()));             
+        }
         return symList;
     }
 
@@ -556,7 +601,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitWriteStatement(GenevaERSParser.WriteStatementContext ctx) {
         WriteASTNode wr = (WriteASTNode)ASTFactory.getNodeOfType(ASTFactory.Type.WRITE);
+        ExtractBaseAST.setLastColumnWithAWrite();
         wr.setViewSource(viewSource);
+
         //Should we process here to see what the child nodes are?
         //Or just let the nodes do their own thing and sort it at emit time?
         for(int c=0; c<ctx.getChildCount(); c++) {

@@ -67,7 +67,7 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
         LRField fld = targLR.findFromFieldsByName(fieldName);
         if(fld != null) {       
             ref = fld;
-            JLTView jv = Repository.getJoinViews().addJLTViewField(lookup, fld);
+            JLTView jv = Repository.getJoinViews().addJLTViewFromLookupField(lookup, fld);
             if(currentViewColumnSource != null) {
                 jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
             }
@@ -213,21 +213,29 @@ public class LookupFieldRefAST extends FormattedASTNode implements Assignable, C
     public void emitLookupDefault() {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         // Emit goto followed by correct DTC
+        LTRecord lkEntry = ltEmitter.getLogicTable().getLastEntry();
         LogicTableF0 ltgoto = (LogicTableF0) fcf.getGOTO();
         ltEmitter.addToLogicTable((LTRecord) ltgoto);
 
         // we could let the fcf auto correc the DT type base on the column?
+        
         switch (currentViewColumn.getExtractArea()) {
             case AREADATA:
-                LogicTableF1 dtc;
-                if (currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                    dtc = (LogicTableF1)fcf.getDTC(" ", currentViewColumn);
-                } else {
+                LogicTableF1 dtc = null;
+                if(lkEntry.getFunctionCode().equals("DTL")) {
+                    DataType dtlDataType = ((LogicTableF2)lkEntry).getArg2().getFieldFormat();
+                    if (dtlDataType == DataType.ALPHANUMERIC) {
+                        dtc = (LogicTableF1)fcf.getDTC(" ", currentViewColumn);
+                    } else {
+                        dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
+                    }
+                    dtc.getArg().setFieldFormat(dtlDataType);
+                    if(currentViewColumn.getDateCode() == ref.getDateTimeFormat()) {
+                        dtc.getArg().setFieldContentId(DateCode.NONE);
+                    } 
+                } else if(lkEntry.getFunctionCode().equals("DTA")) {
                     dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
                 }
-                if(currentViewColumn.getDateCode() == ref.getDateTimeFormat()) {
-                    dtc.getArg().setFieldContentId(DateCode.NONE);
-                } 
                 ltEmitter.addToLogicTable((LTRecord)dtc );
                 break;
 

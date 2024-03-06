@@ -47,7 +47,7 @@ public class JLTEmitTests {
         lk.setTargetLRid(lkTrgLR.getComponentId());
         lk.setTargetLFid(77);
         //We haven't really made the LF referred too
-        Repository.getJoinViews().addJLTViewField(lk, r1);
+        Repository.getJoinViews().addJLTViewFromLookupField(lk, r1);
 
         jltg.emit();
     }

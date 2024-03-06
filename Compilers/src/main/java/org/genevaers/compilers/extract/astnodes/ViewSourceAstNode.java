@@ -34,6 +34,7 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private ViewSource vs;
     private ViewAreaValues areaValues = new ViewAreaValues();
+    private static short lfsourceNumber = 1; //C++ counts LF sources in the NV
 
     //Instead of this introduce a ScopedNode interface to hold the end point
     private Integer nextViewPosition = 0;
@@ -54,6 +55,7 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
     @Override
     public void emit() {
         currentViewSource = vs;
+        currentViewColumn = null;
         logger.atFine().log("Emit from view source %d:%s ", vs.getViewId(), vs.getSequenceNumber());
         ltEmitter.setViewId(vs.getViewId());
         LogicTableNV nv = emitNV();
@@ -89,7 +91,6 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
         nv.setRecordType(LtRecordType.NV);
         nv.setFunctionCode("NV");
         nv.setViewID(vs.getViewId());
-        nv.setViewId(vs.getViewId());
         //we should make the vs have a back ref to its view?
         //Nodes will need the repo...
         //Keep in the base as a static?
@@ -136,6 +137,14 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
 
     public ViewAreaValues getAreaValues() {
         return areaValues;
+    }
+
+    public int getNumberOfColumns() {
+        return vs.getValuesOfColumnSourcesByNumber().size();
+    }
+
+    public static void resetLfSourceNumber() {
+        lfsourceNumber = 1;
     }
 
 }

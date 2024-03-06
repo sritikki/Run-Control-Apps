@@ -60,6 +60,25 @@ public class Cookie {
         return vaString;
     }
 
+    public String getPrintString() {
+        switch (length) {
+            case LTDateRunDay:
+                return "RUNDAY(" + vaString + ")";
+            case LTDateFiscalDay:
+                return "FISCAL(" + vaString + ")";
+            case LTDateRunMonth:
+            return "RUNMONTH(" + vaString + ")";
+            case LTDateFiscalMonth:
+            return "FISCALMONTH(" + vaString + ")";
+            case LTDateRunYear:
+            return "RUNYEAR(" + vaString + ")";
+            case LTDateFiscalYear:
+            return "FISCALYEAR(" + vaString + ")";
+            default:
+                return vaString;
+        }
+    }
+
     public void setValueLength(int rawDateValue) {
         length = rawDateValue;
     }

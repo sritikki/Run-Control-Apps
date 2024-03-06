@@ -29,6 +29,8 @@ import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
+import org.genevaers.genevaio.ltfile.LogicTableF2;
+import org.genevaers.repository.components.enums.DateCode;
 
 public class EmitterArgHelper {
     
@@ -107,4 +109,24 @@ public class EmitterArgHelper {
         }
     }
 
+    public static void checkAndFixDateCodes(LogicTableF2 lk) {
+        LogicTableArg arg1 = lk.getArg1();
+        LogicTableArg arg2 = lk.getArg2();
+        DateCode dc1 = arg1.getFieldContentId();
+        DateCode dc2 = arg2.getFieldContentId();
+        if(arg1.getFieldFormat() == arg2.getFieldFormat()) {
+            if(dc1 == dc2) { //Strip the codes
+                stripDataCodes(arg1, arg2);
+            } else if(dc1 != DateCode.NONE && dc2 == DateCode.NONE) { 
+                stripDataCodes(arg1, arg2);
+            } else if(dc1 == DateCode.NONE && dc2 != DateCode.NONE) {
+                stripDataCodes(arg1, arg2);
+            }
+        }
+    }
+
+    public static void stripDataCodes(LogicTableArg arg1, LogicTableArg arg2) {
+        arg1.setFieldContentId(DateCode.NONE);
+        arg2.setFieldContentId(DateCode.NONE);
+    }
 }

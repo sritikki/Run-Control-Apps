@@ -38,10 +38,12 @@ import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
+import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.ParmReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -65,7 +67,6 @@ import org.junit.jupiter.api.TestInfo;
 public class SPOTests {
 
     private ParmReader pr;
-    RunControlConfigration rcc;
 
     @BeforeEach
     public void initEach(TestInfo info){
@@ -79,7 +80,7 @@ public class SPOTests {
     @Test public void testBaseSPO() {
         TestHelper.setupWithBaseView();
         readConfigAndBuildRepo();
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         assertEquals(1,  spo.getLogicGroups().size());
     }
@@ -89,7 +90,7 @@ public class SPOTests {
         TestHelper.setupWithBaseView();
         readConfigAndBuildRepo();
         TestHelper.addNoneOverlappingSource();
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         List<LogicGroup> lgs = spo.getLogicGroups();
         assert2LogicGroups(lgs);
@@ -101,7 +102,7 @@ public class SPOTests {
         TestHelper.setupWithBaseView();
         readConfigAndBuildRepo();
         TestHelper.addOverlappingSource();
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         List<LogicGroup> lgs = spo.getLogicGroups();
         assertOneLogicGroups(lgs);
@@ -114,7 +115,7 @@ public class SPOTests {
         readConfigAndBuildRepo();
         TestHelper.addNoneOverlappingSource();
         TestHelper.addSharedPFToViewSources();
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         List<LogicGroup> lgs = spo.getLogicGroups();
 		lgs.stream().forEach(lg -> lg.logData());
@@ -132,7 +133,7 @@ public class SPOTests {
         TestHelper.addNoneOverlappingSource();
         TestHelper.addSharedPFToViewSources();
         TestHelper.addSharedPFToViewSources();
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         List<LogicGroup> lgs = spo.getLogicGroups();
 		lgs.stream().forEach(lg -> lg.logData());
@@ -152,7 +153,7 @@ public class SPOTests {
         TestHelper.addNoneOverlappingSource();
         TestHelper.addSharedPFToViewSources();
         TestHelper.addSharedPFToViewSources();
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         List<LogicGroup> lgs = spo.getLogicGroups();
 		lgs.stream().forEach(lg -> lg.logData());
@@ -175,7 +176,7 @@ public class SPOTests {
         TestHelper.addNoneOverlappingSource();
         TestHelper.addSharedPFToViewSourcesStartAt(3);
         TestHelper.addSharedPFToViewSourcesStartAt(3);
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         List<LogicGroup> lgs = spo.getLogicGroups();
 		lgs.stream().forEach(lg -> lg.logData());
@@ -196,7 +197,7 @@ public class SPOTests {
         TestHelper.addNoneOverlappingSource();
         TestHelper.addSharedPFToViewSourcesStartAt(2);
         TestHelper.addSharedPFToViewSourcesStartAt(2);
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         List<LogicGroup> lgs = spo.getLogicGroups();
 		lgs.stream().forEach(lg -> lg.logData());
@@ -216,12 +217,11 @@ public class SPOTests {
 
     private void readConfigAndBuildRepo() {
         pr = new ParmReader();
-        rcc = new RunControlConfigration();
-        pr.setConfig(rcc);
+        pr.setConfig(new RunControlConfigration());
         try {
             pr.populateConfigFrom(TestHelper.getTestParmName());
             Repository.clearAndInitialise();
-            RepositoryBuilder rb = new RepositoryBuilder(rcc);
+            RepositoryBuilder rb = RepositoryBuilderFactory.get();
             rb.run();
         } catch (IOException e) {
             // TODO Auto-generated catch block

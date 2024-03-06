@@ -37,7 +37,6 @@ import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
 
@@ -50,7 +49,7 @@ public class SinglePassOptimiser {
 
 	List<LogicGroup> logicGroups = new ArrayList<>();
 
-	public SinglePassOptimiser(RunControlConfigration rcc) {
+	public SinglePassOptimiser() {
 	}
 
 	public Status run() {

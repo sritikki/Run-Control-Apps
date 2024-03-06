@@ -22,6 +22,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
 import org.genevaers.compilers.extract.astnodes.GenevaERSValue;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
+import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -39,17 +40,17 @@ public class CFLCEmitter extends ComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LookupFieldRefAST lkf = (LookupFieldRefAST) lhs;
         
-
-        lkf.emitJoin(false);
+        lkf.getLkEmitter().emitJoin(lkf, false);
         LogicTableF1 cflc = (LogicTableF1) ltFact.getCFLC(lkf.getRef(), ((GenevaERSValue)rhs).getValueString(), op);
         LogicTableArg arg = cflc.getArg();
+        EmitterArgHelper.setArgVal(rhs, arg);
         JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);
         LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());
         arg.setLogfileId(lkf.getLookup().getTargetLFID());
         arg.setLrId(lkf.getRef().getLrID());
         arg.setFieldId(lkf.getRef().getComponentId());
         arg.setStartPosition(redFld.getStartPosition());
-        arg.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
+        arg.setFieldContentId(redFld.getDateTimeFormat());
         cflc.setArg(arg);
 
         return cflc;  

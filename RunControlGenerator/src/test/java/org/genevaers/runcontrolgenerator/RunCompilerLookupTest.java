@@ -140,7 +140,7 @@ class RunCompilerLookupTest extends RunCompilerBase {
         LogicTable xlt = runFromXMLOverrideLogic(9829, TestHelper.LOOKUP_EXIT, "");
         assertTrue(Repository.getJoinViews().getExitJLTViews().getNumberOfJoins() > 0);
         LogicTableF1 lklr = (LogicTableF1)xlt.getFromPosition(5);
-        assertEquals(0, lklr.getGotoRow1());
+        assertEquals(8, lklr.getGotoRow1());
         LogicTableRE luex = (LogicTableRE)xlt.getFromPosition(7);
         assertEquals(8, luex.getGotoRow1());
     }

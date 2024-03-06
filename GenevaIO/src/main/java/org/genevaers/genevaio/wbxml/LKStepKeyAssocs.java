@@ -11,6 +11,6 @@ public class LKStepKeyAssocs {
 	}
 
 	public int getAssocID(int seqNum) {
-		return keyAssocs.get(seqNum);
+		return keyAssocs.get(seqNum) != null ? keyAssocs.get(seqNum) : 0;
 	}
 }

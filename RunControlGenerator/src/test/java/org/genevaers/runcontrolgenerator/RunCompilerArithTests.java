@@ -27,6 +27,7 @@ import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -302,7 +303,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestHelper.setupWithOneColumnView();
         readConfigAndBuildRepo();
         TestHelper.setColumn1Logic(9956, "COLUMN = {ZONED}");
-        rcc.setDotFilter("9956", "1,2", "N");
+        RunControlConfigration.setDotFilter("9956", "1,2", "N");
         ASTBase root = CompileAndGenerateDots();
         ASTBase fieldRef = root.getFirstLeafNode();
         ColumnAssignmentASTNode colAss = (ColumnAssignmentASTNode)fieldRef.getParent();
@@ -341,7 +342,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestHelper.setupWithOneColumnView();
         readConfigAndBuildRepo();
         TestHelper.setColumn1Logic(9956, "COLUMN = {Rubbish}");
-        rcc.setDotFilter("9956", "1", "N");
+        RunControlConfigration.setDotFilter("9956", "1", "N");
         ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
         assertTrue(Repository.getCompilerErrors().size() > 0);
     }
@@ -350,7 +351,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestHelper.setupWithOneColumnView();
         readConfigAndBuildRepo();
         TestHelper.setColumn1Logic(9956, "COLUMN = oops}");
-        rcc.setDotFilter("9956", "1", "N");
+        RunControlConfigration.setDotFilter("9956", "1", "N");
         ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
         assertTrue(Repository.getCompilerErrors().size() > 0);
     }

@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract.emitters.lookupemitters;
 
+import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -20,17 +22,21 @@ package org.genevaers.compilers.extract.emitters.lookupemitters;
 
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
+import org.genevaers.genevaio.ltfile.ArgHelper;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
+import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
+import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.jltviews.JLTView;
 
 public class LKFieldEmitter extends LookupEmitter {
 
     private int srcLFID;
 
-    public LogicTableF2 emit(LookupPathKey lkpkey) {
+    public LogicTableF2 emit(LookupPathKey lkpkey, LookupPath lookup) {
         // There should be a valid converson check done
 
 
@@ -41,13 +47,22 @@ public class LKFieldEmitter extends LookupEmitter {
             lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
         } else {
             //we need the the mapped field not the original
-            JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId());
-            LRField redfld = jltvOfTargetSourceStep.getRedFieldFromLookupField(lkpkey.getFieldId());
-            lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
-            if(redfld != null)
-                //lk.getArg1().setStartPosition((short)(redfld.getStartPosition() - jltv.getKeyLength())); // Remap to RED LR position
-                lk.getArg1().setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
+            int keyfieldLR = Repository.getFields().get(lkpkey.getFieldId()).getLrID();
+            //does key field come from the event LR?
+            if(keyfieldLR == lookup.getStep(1).getSourceLR()) {
+                lk = (LogicTableF2) ltfact.getLKE(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
+            } else { //Keyfield is from a previous step
+                JLTView jltvOfTargetSourceStep = Repository.getJoinViews().getJltViewFromKeyField(lkpkey.getFieldId(), lookup);
+                LRField redfld = jltvOfTargetSourceStep.getRedFieldFromLookupField(lkpkey.getFieldId());
+                lk = (LogicTableF2) ltfact.getLKL(Repository.getFields().get(lkpkey.getFieldId()), lkpkey);
+                if(redfld != null) {
+                    LogicTableArg arg1 = lk.getArg1();
+                    arg1.setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
+                    arg1.setLogfileId(jltvOfTargetSourceStep.getSourceLF());
+                }
+            }
         }
+        EmitterArgHelper.checkAndFixDateCodes(lk);
         return lk;
     }
 

@@ -222,7 +222,9 @@ public class Repository {
 		if(maxIndexID < lri.getComponentId())
 			maxIndexID = lri.getComponentId();
 		indexes.add(lri, lri.getComponentId());
-		lrs.get(lri.getLrId()).setPrimaryKey(lri.getComponentId());
+		LogicalRecord lr = lrs.get(lri.getLrId());
+		lr.setPrimaryKey(lri.getComponentId());
+		lr.addToIndexBySeq(lri);
 	}
 
 	public static void addLookupPathKey(LookupPathKey lpk) {
@@ -421,6 +423,20 @@ public class Repository {
 
 	public static int getNumberOfReferenceViews() {
 		return views.size() - numberOfExtractViews;
+	}
+
+	public static int getLrKeyLen(int id) {
+		int keylen = 0;;
+		LogicalRecord lr = lrs.get(id);
+		Iterator<LRIndex> ki = lr.getIteratorForIndexBySeq();
+		while (ki.hasNext()) {
+			LRIndex k = ki.next();
+			LRField keyField = fields.get(k.getFieldID());
+			if(keyField != null && !(k.isEffectiveDateStart() || k.isEffectiveDateEnd())) {
+				keylen += keyField.getLength();
+			}
+		}
+		return keylen;
 	}
 
 	public static void addErrorMessage(CompilerMessage err) {

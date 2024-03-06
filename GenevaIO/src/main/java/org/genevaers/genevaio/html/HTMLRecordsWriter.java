@@ -81,9 +81,9 @@ public abstract class HTMLRecordsWriter {
 		title = t;
 	}
 
-	public  void writeFromRecordNodes(Path cwd, MetadataNode recordsRoot, String filename) {
+	public  void writeFromRecordNodes( MetadataNode recordsRoot, String filename) {
 
-		File output = cwd.resolve(filename).toFile();
+		File output = new File(filename);
 		try {
 			
 			fw = new FileWriter(output);

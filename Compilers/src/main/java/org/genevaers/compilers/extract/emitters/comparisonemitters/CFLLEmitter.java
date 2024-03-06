@@ -21,6 +21,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
 
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
+import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -51,8 +52,7 @@ public class CFLLEmitter extends ComparisonEmitter{
         arg.setLrId(lkf.getRef().getLrID());
         arg.setFieldId(lkf.getRef().getComponentId());
         arg.setStartPosition(redFld.getStartPosition());
-        arg.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
-        cfll.setArg1(arg);
+        arg.setFieldContentId(redFld.getDateTimeFormat()); 
 
         LogicTableArg arg2 = cfll.getArg2();
         JLTView jv2 = Repository.getJoinViews().getJLTViewFromLookup(rkf.getLookup(), false);
@@ -61,8 +61,10 @@ public class CFLLEmitter extends ComparisonEmitter{
         arg2.setLrId(rkf.getRef().getLrID());
         arg2.setFieldId(rkf.getRef().getComponentId());
         arg2.setStartPosition(redFld2.getStartPosition());
-        arg2.setFieldContentId(DateCode.NONE); //TODO unsure is this is always the case?
-        cfll.setArg1(arg);
+        arg2.setFieldContentId(redFld2.getDateTimeFormat()); 
+        cfll.setArg2(arg2);
+
+        EmitterArgHelper.checkAndFixDateCodes(cfll);
 
         return cfll;
     }

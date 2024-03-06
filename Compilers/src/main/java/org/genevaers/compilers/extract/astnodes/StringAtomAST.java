@@ -7,6 +7,8 @@ import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
@@ -56,11 +58,15 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LTRecord ltr;
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
-            ltr = (LTRecord)fcf.getCTC(value, currentViewColumn);
+            ltr = (LTRecord)fcf.getCTC(value, lhs.getViewColumn());
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltr = (LTRecord)fcf.getDTC(value, currentViewColumn);
+            ltr = (LTRecord)fcf.getDTC(value, lhs.getViewColumn());
         } else {
-            ltr = (LTRecord)fcf.getSKC(value, currentViewColumn);
+            ltr = (LTRecord)fcf.getSKC(value, lhs.getViewColumn());
+            ViewSortKey sk = Repository.getViews().get(lhs.getViewColumn().getViewId()).getViewSortKeyFromColumnId(lhs.getViewColumn().getComponentId());
+            LogicTableArg arg = ((LogicTableF1)ltr).getArg();
+            arg.setFieldLength(sk.getSkFieldLength());
+            arg.setStartPosition(sk.getSkStartPosition());
         }
         ltr.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
         return (LTFileObject) ltr;

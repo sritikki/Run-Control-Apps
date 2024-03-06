@@ -18,8 +18,10 @@ package org.genevaers.repository.components;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.genevaers.repository.Repository;
 
@@ -31,6 +33,9 @@ public class LookupPath extends ComponentNode {
 	private int targetLRid = 0;
 	private int targetLFid = 0;
 	private int destLrLfid;
+	private Boolean optimizable;
+
+	private Map<Integer, Integer> lr2lf = new HashMap<>();
 
 	public LookupPath() {
 		// super.record = new LookupPathRecord();
@@ -98,9 +103,8 @@ public class LookupPath extends ComponentNode {
 	}
 
 	public int getTargetLRID() {
-		//If there are many steps this will be wrong!!!!
 		if(targetLRid == 0)
-			targetLRid = steps.get(0).getTargetLR();
+			targetLRid = steps.get(steps.size()-1).getTargetLR();
 		return targetLRid; 
 	}
 
@@ -114,7 +118,7 @@ public class LookupPath extends ComponentNode {
 
 	public int getTargetLFID() {
 		if(targetLFid == 0)
-			targetLFid = steps.get(0).getTargetLF();
+			targetLFid = steps.get(steps.size()-1).getTargetLF();
 		return targetLFid; 
 	}
 
@@ -123,7 +127,15 @@ public class LookupPath extends ComponentNode {
 	}
 
     public boolean isOptimizable() {
-        return false;
+		if(optimizable == null) {
+			int ei = Repository.getLogicalRecords().get(targetLRid).getLookupExitID();
+			if(ei > 0) {
+				optimizable = Repository.getUserExits().get(ei).isOptimizable();
+			} else {
+				optimizable = true;
+			}
+		}
+        return optimizable;
     }
 
 	public int getTargetLRIndexID() {
@@ -170,5 +182,13 @@ public class LookupPath extends ComponentNode {
 
 	public int getDestLrLfid() {
 		return destLrLfid;
+	}
+
+	public void saveLrLFPair(int lr, int lf) {
+		lr2lf.put(lr, lf);
+	}
+
+	public int getLfFromLr(int lr) {
+		return lr2lf.get(lr);
 	}
 }

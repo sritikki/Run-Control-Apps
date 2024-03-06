@@ -52,6 +52,7 @@ public abstract class ExtractBaseAST extends ASTBase{
     protected static ViewSource currentViewSource;
     protected static ViewColumn currentViewColumn;
     protected static ViewColumnSource currentViewColumnSource;
+    protected static int lastColumnWithAWrite = 0;
 
     protected ASTFactory.Type type = null;
     private boolean negative = false;
@@ -105,7 +106,7 @@ public abstract class ExtractBaseAST extends ASTBase{
     }
 
     public static short getCurrentColumnNumber() {
-        return currentColumnNumber;
+        return (short) currentViewColumnSource.getColumnNumber();
     }
 
     public static void setCurrentColumnNumber(short currentColumnNumber) {
@@ -188,6 +189,19 @@ public abstract class ExtractBaseAST extends ASTBase{
 
     public static ViewColumn getCurrentViewColumn() {
         return currentViewColumn;
+    }
+
+
+    public static int getLastColumnWithAWrite() {
+        return lastColumnWithAWrite;
+    }
+
+    public static void setLastColumnWithAWrite() {
+        ExtractBaseAST.lastColumnWithAWrite = currentViewColumnSource.getColumnNumber();
+    }
+
+    public static void clearLastColumnWithAWrite() {
+        ExtractBaseAST.lastColumnWithAWrite = 0;
     }
 
 }

@@ -1,6 +1,6 @@
 package org.genevaers.runcontrolgenerator;
 
-import java.io.File;
+
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -22,20 +22,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.FileHandler;
-import java.util.logging.StreamHandler;
-
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersEnvironment;
-import org.genevaers.utilities.ZFileHandler;
-
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.ZFile;
 
@@ -59,7 +53,7 @@ public class ReportWriter {
 
     private int vdpRecordsWritten;
 
-	public  void write(RunControlConfigration rcc){
+	public  void write(){
 		GersEnvironment.initialiseFromTheEnvironment();
 		configureFreeMarker();
         Template template;
@@ -73,9 +67,8 @@ public class ReportWriter {
             template = cfg.getTemplate(REPORT_TEMPLATE);
             Map<String, Object> nodeMap = new HashMap<>();
             nodeMap.put("env", "stuff");
-            nodeMap.put("rcgversion", readVersion());
-            nodeMap.put("parmsRead", rcc.getLinesRead());
-            nodeMap.put("optsInEffect", rcc.getOptionsInEffect());
+            nodeMap.put("parmsRead", RunControlConfigration.getLinesRead());
+            nodeMap.put("optsInEffect", RunControlConfigration.getOptionsInEffect());
             nodeMap.put("inputReports", Repository.getInputReports());
             nodeMap.put("compErrs", Repository.getCompilerErrors());
             nodeMap.put("warnings", Repository.getWarnings());
@@ -91,8 +84,8 @@ public class ReportWriter {
                 nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
             }
 
-            logger.atInfo().log(rcc.getReportFileName());
-            generateTemplatedOutput(template, nodeMap, rcc.getReportFileName());
+            logger.atInfo().log(RunControlConfigration.getReportFileName());
+            generateTemplatedOutput(template, nodeMap, RunControlConfigration.getReportFileName());
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

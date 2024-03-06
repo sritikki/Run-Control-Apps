@@ -43,6 +43,10 @@ import com.google.common.flogger.FluentLogger;
 
 /**
  * There be dragons here!
+ * A lookup in the workbench defines the Path to the reference data. 
+ * But it is only once we process views that use the reference data do we know how to build the JLT.
+ * Amd this class acts as an accumulator of that data
+ * 
  * So in an attempt to tame the beast I am creating this class
  * and throwing out some words (rather a lot... take heed).
  * 
@@ -169,7 +173,6 @@ public class JoinViewsManager {
     JLTViewMap<ReferenceJoin> referenceJoins;
     JLTViewMap<ExitJoin> exitJoins = new JLTViewMap<ExitJoin>();
     JLTViewMap<ExternalJoin> externalJoins = new JLTViewMap<ExternalJoin>();
-	private Map<Integer, Integer> lr2lf = new HashMap<>();
 	int totalNumberOfJoins = 0;
 
 	private Map<Integer, JLTView> keyFieldsToJoin = new TreeMap<>();
@@ -204,7 +207,21 @@ public class JoinViewsManager {
 	// 	jltv.addRefField(fld);
 	// }
 
-	public JLTView addJLTViewField(LookupPath lookup, LRField refField) {
+	/*
+	 * Logic refers to a lookup.
+	 */
+	public JLTView addJLTView(LookupPath lookup) {
+		JLTView jltv = getOrMakeJLTView(lookup);
+		jltv.addReason("Lookup Ref", lookup.getID(), 0);
+		//Need any internal source steps too
+		resolveLookupSourceKeys(lookup, false);
+		return jltv;
+	}
+
+	/*
+	 * Logic refers to a looked up field
+	 */
+	public JLTView addJLTViewFromLookupField(LookupPath lookup, LRField refField) {
 		JLTView jltv = getOrMakeJLTView(lookup);
 		jltv.addReason("Ref", lookup.getID(), refField.getComponentId());
 		//Need any internal source steps too
@@ -217,7 +234,7 @@ public class JoinViewsManager {
 	public void addSortKeyJLTViewField(LookupPath lookup, LRField refField) {
 		int lrid = lookup.getTargetLRID();
 		int lfid = lookup.getTargetLFID();
-		lr2lf.put(lrid, lfid);
+		lookup.saveLrLFPair(lrid, lfid);
 
 		referenceJoins = referenceDataSet.computeIfAbsent(lfid, k -> makeReferenceJoinMap(LookupType.SKT, lfid));
 
@@ -251,30 +268,10 @@ public class JoinViewsManager {
 		}
 	}
 
-	public JLTView getStepJLTViewFromKey(LookupPathKey key) {
-		int lrid = key.getTargetLrId();
-		int lfid = lr2lf.get(lrid);
-
-		LogicalRecord lr = Repository.getLogicalRecords().get(lrid);
-		if(lr.getLookupExitID() > 0) {
-			return exitJoins.getJLTView(lrid, false);
-		} else {
-			LogicalFile lf = Repository.getLogicalFiles().get(lfid);
-			if(lf.getPFIterator().next().getOutputDDName().startsWith("SS")) {
-				//External files have an output DDname starting with $$
-				//Go figure...
-				return externalJoins.getJLTView(lrid, false);
-			} else {
-				referenceJoins = referenceDataSet.computeIfAbsent(lfid, k -> makeReferenceJoinMap(LookupType.NORMAL, lfid));
-				return referenceJoins.getJLTView(lrid, false);
-			}
-		}
-	}
-
 	private JLTView getOrMakeJLTView(LookupPath lookup) {
 		int lrid = lookup.getTargetLRID();
 		int lfid = lookup.getTargetLFID();
-		lr2lf.put(lrid, lfid);
+		lookup.saveLrLFPair(lrid, lfid);
 
 		LogicalRecord lr = Repository.getLogicalRecords().get(lrid);
 		JLTView jltv;
@@ -302,11 +299,11 @@ public class JoinViewsManager {
 			while(si.hasNext()) {
 				LookupPathStep step = si.next();
 				int lrid = step.getTargetLR();
+				int lfid = step.getTargetLF();
 				ReferenceJoin normJoin = null;
 				if(step.getStepNum() <= lookup.getNumberOfSteps()) { //This is an internal step 
-					int lfid = step.getTargetLF();
-					lr2lf.put(lrid, lfid);
-					if(Repository.getLogicalRecords().get(step.getTargetLR()).getLookupExit() == null) {
+					lookup.saveLrLFPair(lrid, lfid);
+					if(Repository.getLogicalRecords().get(step.getTargetLR()).getLookupExitID() == 0) {
 						if(skt) {
 							referenceJoins = referenceDataSet.computeIfAbsent(lfid, k -> makeReferenceJoinMap(LookupType.SKT, lfid));							
 							referenceJoins.getOrAddJoinifAbsent(LookupType.SKT, step.getTargetLR(), lookup.getID());
@@ -316,7 +313,7 @@ public class JoinViewsManager {
 							normJoin.addReason("SrcKeyStep" + step.getStepNum(), lookup.getID(), 0);
 						}
 					} else {
-						exitJoins.getOrAddJoinifAbsent(LookupType.NORMAL, step.getTargetLR(), lookup.getID());
+						exitJoins.getOrAddJoinifAbsent(LookupType.EXIT, step.getTargetLR(), lookup.getID());
 					}
 				}
 				if(step.getStepNum() > 1) {
@@ -335,26 +332,34 @@ public class JoinViewsManager {
 			int keyfldID = srcKey.getFieldId();
 			if(keyfldID != 0) { //where does the field come from?
 				int keyLrId = Repository.getFields().get(keyfldID).getLrID();
-				Integer keyLf = lr2lf.get(keyLrId);
+				Integer keyLf = lookup.getLfFromLr(keyLrId);
 				//need to find a JLTView that has this LF LR
 				//a problem with lookup records is that we do not have the LF of the source
 				//CPP solution was to maintain a map of LRs to LFs
 				//built up as we process Lookup steps
 				if(keyLf != null) {
-					JLTView jltv;
+					JLTView jltv = null;;
 					//add the intermediate target join if needed
-					if(Repository.getLogicalRecords().get(step.getTargetLR()).getLookupExit() == null) {
-						referenceJoins = referenceDataSet.computeIfAbsent(keyLf, k -> makeReferenceJoinMap(LookupType.NORMAL, keyLf));
-						jltv = referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, keyLrId, lookup.getID());
-						jltv.addReason("KeyField", lookup.getID(), keyfldID);
-						keyFieldsToJoin.put(keyfldID, jltv);
+					if(Repository.getLogicalRecords().get(step.getTargetLR()).getLookupExitID() == 0) {
+						if(Repository.getLogicalRecords().get(keyLrId).getLookupExitID() == 0) {
+							referenceJoins = referenceDataSet.computeIfAbsent(keyLf, k -> makeReferenceJoinMap(LookupType.NORMAL, keyLf));
+							jltv = referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, keyLrId, lookup.getID());
+							jltv.addReason("KeyField", lookup.getID(), keyfldID);
+						} else {
+							//key field comes from a lookup exit
+							jltv = exitJoins.getOrAddJoinifAbsent(LookupType.EXIT, keyLrId, lookup.getID());
+							jltv.addReason("KeyField", lookup.getID(), keyfldID);
+						}
 					} else {
 						jltv = exitJoins.getOrAddJoinifAbsent(LookupType.EXIT, keyLrId, lookup.getID());
+					}
+					if(jltv != null) {
+						keyFieldsToJoin.put(keyfldID, jltv);
 					}
 
 					//Since we're here (keyLF not null)
 					//There must be an existing jltv for the key
-					if(Repository.getLogicalRecords().get(keyLrId).getLookupExit() == null) {
+					if(Repository.getLogicalRecords().get(keyLrId).getLookupExitID() == 0) {
 						referenceJoins = referenceDataSet.computeIfAbsent(keyLf, k -> makeReferenceJoinMap(LookupType.NORMAL, keyLf));
 						jltv = referenceJoins.getOrAddJoinifAbsent(LookupType.NORMAL, keyLrId, lookup.getID());
 					} else {
@@ -396,6 +401,16 @@ public class JoinViewsManager {
 		while (k2ji.hasNext()) {
 			Entry<Integer, JLTView> k2j = k2ji.next();
 			logger.atFine().log("%d -> %d", k2j.getKey(), k2j.getValue().getRefViewNum());
+		}
+		logger.atFine().log("Exit Joins");
+		Iterator<ExitJoin> eji = exitJoins.getIterator();
+		while (eji.hasNext()) {
+			ExitJoin ej = eji.next();
+			logger.atFine().log("Orig ID %d", ej.getOrginalLookupId());
+			
+		}
+		for (Entry<String, UniqueKeyData> ukv : UniqueKeys.keysMap.entrySet()) {
+			logger.atFine().log("Unique Join Key %s, %d -> %d", ukv.getKey(), ukv.getValue().getOriginalJoinId(), ukv.getValue().getNewJoinId());			
 		}
     }
 
@@ -483,11 +498,18 @@ public class JoinViewsManager {
 		return joinTargets.iterator();
 	}
 
-	public int getLfidFromJoinLR(int lrid) {
-		return lr2lf.get(lrid);
-	}
-
-	public JLTView getJltViewFromKeyField(int keyfld) {
-		return keyFieldsToJoin.get(keyfld);
+	public JLTView getJltViewFromKeyField(int keyfld, LookupPath lookup) {
+		LRField kf = Repository.getFields().get(keyfld);
+		int lridOfkf = kf.getLrID();
+		Integer lfOfKey = lookup.getLfFromLr(lridOfkf);
+		JLTView jv;
+		if(Repository.getLogicalRecords().get(lridOfkf).getLookupExitID() == 0) {
+			JLTViewMap<ReferenceJoin> jvs = referenceDataSet.get(lfOfKey);
+			jv = jvs.getJLTView(lridOfkf, false);
+		} else {
+			jv = exitJoins.getJLTView(lridOfkf, false);
+		}
+		jv.setSourceLFID(lfOfKey);
+		return jv;
 	}
 }

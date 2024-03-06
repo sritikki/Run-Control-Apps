@@ -39,9 +39,11 @@ import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.compilers.RepositoryCompiler;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
+import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
 import org.genevaers.runcontrolgenerator.utility.Status;
+import org.genevaers.utilities.ParmReader;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -52,17 +54,15 @@ class RunCompilerBase {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     protected ParmReader pr;
-    protected RunControlConfigration rcc;
     protected Repository repo;
     protected RepositoryCompiler comp;
 
     protected void readConfigAndBuildRepo() {
         pr = new ParmReader();
-        rcc = new RunControlConfigration();
-        pr.setConfig(rcc);
+        pr.setConfig(new RunControlConfigration());
         try {
             pr.populateConfigFrom(TestHelper.getTestParmName());
-            RepositoryBuilder rb = new RepositoryBuilder(rcc);
+            RepositoryBuilder rb = RepositoryBuilderFactory.get();
             Status retval = rb.run();
             assertEquals(Status.OK, retval);
         } catch (IOException e) {
@@ -75,13 +75,13 @@ class RunCompilerBase {
     }
 
     protected ASTBase CompileAndGenerateDots() {
-        ExtractAST2Dot.setFilter(rcc.isXltDotEnabled());
-        ExtractAST2Dot.setViews(rcc.getViewDots().split(","));
-        ExtractAST2Dot.setCols(rcc.getColumnDots().split(","));
+        ExtractAST2Dot.setFilter(RunControlConfigration.isXltDotEnabled());
+        ExtractAST2Dot.setViews(RunControlConfigration.getViewDots().split(","));
+        ExtractAST2Dot.setCols(RunControlConfigration.getColumnDots().split(","));
         ExtractAST2Dot.writeRawSources(TestHelper.getMR91origdotPath());
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
-        comp = new RepositoryCompiler(rcc);
+        comp = new RepositoryCompiler();
         List<LogicGroup> lgs = spo.getLogicGroups();
         comp.setLogicGroups(lgs);
         comp.run();
@@ -93,7 +93,7 @@ class RunCompilerBase {
     protected SinglePassOptimiser runSPO() throws IOException {
         TestHelper.setupWithBaseView();
         readConfigAndBuildRepo();
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
         return spo;
     }
@@ -118,8 +118,8 @@ class RunCompilerBase {
         readConfigAndBuildRepo();
         if (logic.length() > 0)
             TestHelper.setColumn1Logic(viewNum, logic);
-        rcc.setDotFilter(Integer.toString(viewNum), "", "N");
-        rcc.setJltDotFilter("", "", "");
+        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
+        RunControlConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
         return comp.getExtractLogicTable();
     }
@@ -127,10 +127,11 @@ class RunCompilerBase {
     protected LogicTable runFromXMLOverrideColNLogic(int viewNum, String fileName, int c, String logic) {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();
-        if (logic.length() > 0)
+        if (logic.length() > 0){
             TestHelper.setColumnNLogic(viewNum, logic, c);
-        rcc.setDotFilter(Integer.toString(viewNum), "", "N");
-        rcc.setJltDotFilter("", "", "");
+        }
+        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
+        RunControlConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
         return comp.getExtractLogicTable();
     }
@@ -138,10 +139,11 @@ class RunCompilerBase {
     protected LogicTable runFromXMLOverrideFilter(int viewNum, String fileName, String logic) {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();
-        if (logic.length() > 0)
+        if (logic.length() > 0) {
             TestHelper.setExtractFilter(viewNum, logic);
-        rcc.setDotFilter(Integer.toString(viewNum), "1,2", "N");
-        rcc.setJltDotFilter("", "", "");
+        }
+        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1,2", "N");
+        RunControlConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
         return comp.getExtractLogicTable();
     }
@@ -149,9 +151,10 @@ class RunCompilerBase {
     protected LogicTable runFromXMLOverrideOutputLogic(int viewNum, String fileName, String logic)  {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();
-        if (logic.length() > 0)
+        if (logic.length() > 0) {
             TestHelper.setOutputLogic(viewNum, logic);
-        rcc.setDotFilter(Integer.toString(viewNum), "1", "N");
+        }
+        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
         CompileAndGenerateDots();
         return comp.getExtractLogicTable();
     }
@@ -159,17 +162,18 @@ class RunCompilerBase {
     protected FormatBaseAST runFromXMLOverrideFormatFilter(int viewNum, String fileName, String logic) {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();
-        if (logic.length() > 0)
+        if (logic.length() > 0) {
             TestHelper.setFormatFilter(viewNum, logic);
-        rcc.setDotFilter(Integer.toString(viewNum), "1", "N");
+        }
+        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
 
         return formatCompileAndGenerateDots();
     }
 
     private FormatBaseAST formatCompileAndGenerateDots() {
-        SinglePassOptimiser spo = new SinglePassOptimiser(rcc);
+        SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
-        comp = new RepositoryCompiler(rcc);
+        comp = new RepositoryCompiler();
         List<LogicGroup> lgs = spo.getLogicGroups();
         comp.setLogicGroups(lgs);
         comp.run();
@@ -179,9 +183,10 @@ class RunCompilerBase {
     protected FormatBaseAST runFromXMLOverrideColumnCalculation(int viewNum, String fileName, int colNum, String logic)  {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();
-        if (logic.length() > 0)
+        if (logic.length() > 0) {
             TestHelper.setColumnCalculation(viewNum, colNum, logic);
-        rcc.setDotFilter(Integer.toString(viewNum), "1", "N");
+        }
+        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
 
         return formatCompileAndGenerateDots();
     }

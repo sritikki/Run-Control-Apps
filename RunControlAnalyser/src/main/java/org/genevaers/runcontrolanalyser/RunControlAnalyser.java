@@ -31,7 +31,6 @@ import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.dots.LookupGenerationDotWriter;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
-import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.html.VDPHTMLWriter;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
@@ -39,7 +38,9 @@ import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.vdpfile.VDPFileReader;
 import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.CommandRunner;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.visualisation.GraphVizRunner;
 
 public class RunControlAnalyser {
@@ -57,14 +58,14 @@ public class RunControlAnalyser {
 		trg = Paths.get("RunControls");
 	}
 
-	public void readVDP(Path vdpPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) throws Exception {
-		logger.atInfo().log("Read VDP %s csv flag %s", vdpPath, Boolean.toString(withCSV));
+	public void readVDP(Path vdpPath, String ddName, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
+		logger.atInfo().log("Read VDP %s csv flag %s", ddName, Boolean.toString(withCSV));
 		if(vdpPath.toFile().exists()) {
 			VDPFileReader vdpr = new VDPFileReader();
 			vdpr.setCsvPath(trg);
 			vdpr.setRecordsRoot(recordsRoot);
 			vdpr.setCompare(compare);
-			vdpr.open(vdpPath);
+			vdpr.open(vdpPath, ddName);
 			vdpr.addToRepsitory(withCSV);
 			vmrs = vdpr.getViewManagementRecords();
 		} else {
@@ -78,16 +79,8 @@ public class RunControlAnalyser {
 		XLTFileReader xltr = new XLTFileReader();
 		xltr.setCompare(compare);
 		xltr.setRecordsRoot(recordsRoot);
-		xltr.open(xltPath.toString());
+		xltr.open(xltPath, GersConfigration.XLT_DDNAME);
 		xlt = xltr.makeLT();
-		if(withCSV) {
-			try {
-				writeXLTCSV("XLT");
-			} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void readJLT(Path jltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
@@ -96,16 +89,8 @@ public class RunControlAnalyser {
 			XLTFileReader jltr = new XLTFileReader();
 			jltr.setCompare(compare);
 			jltr.setRecordsRoot(recordsRoot);
-			jltr.open(jltPath.toString());
+			jltr.open(jltPath, GersConfigration.JLT_DDNAME);
 			jlt = jltr.makeLT();
-			if(withCSV) {
-				try {
-					writeJLTCSV("JLT");
-				} catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		} else {
 			logger.atInfo().log("No JLT found");
 		}
@@ -174,18 +159,12 @@ public class RunControlAnalyser {
 		htmlFileName = name;
 	}
 
-	public void writeXLTCSV(String xltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		Path output = trg.resolve(xltName + ".csv");
-		LTCSVWriter csvw = new LTCSVWriter();
-		csvw.write(xlt, output);
-		csvw.close();
+	public void writeLtCSV(String ltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		LTCSVWriter.write(xlt, ltName);
 	}
 
 	public void writeJLTCSV(String jltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		Path output = trg.resolve(jltName + ".csv");
-		LTCSVWriter csvw = new LTCSVWriter();
-		csvw.write(jlt, output);
-		csvw.close();
+		LTCSVWriter.write(jlt, jltName);
 	}
 
 	public void setTargetDirectory(Path trgPath) {
@@ -211,7 +190,7 @@ public class RunControlAnalyser {
 			logger.atInfo().log("Read JLT File %s", jltName);
 			logger.atInfo().log("Write to %s", htmlFileName);
 
-			readVDP(vdpName, withCSV, null, false);
+			readVDP(vdpName, GersConfigration.VDP_DDNAME, withCSV, null, false);
 			readXLT(xltName, withCSV, null, false);
 			readJLT(jltName, withCSV, null, false);
 			writeHTML(joinsFilter);
@@ -244,4 +223,9 @@ public class RunControlAnalyser {
 		CommandRunner cmdRunner = new CommandRunner();
 		cmdRunner.run("cmd /C " + showme.toString(), showme.getParent().toFile());
 	}
+
+    public void runFromConfig(RcaConfigration rcac) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'runFromConfig'");
+    }
 }

@@ -68,6 +68,10 @@ public class FieldNodeBase {
         return children;
     }
 
+    public FieldNodeBase  getChildrenByName(String n) {
+        return childrenByName.get(n);
+    }
+    
     public void setChildren(List<FieldNodeBase> children) {
         this.children = children;
     }

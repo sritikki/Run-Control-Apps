@@ -21,7 +21,8 @@ package org.genevaers.runcontrolgenerator;
 public enum InputType {
     WBXML("Workbench XML"),
     DB2("DB2"),
-    POSTGRES("PG");
+    POSTGRES("PG"),
+    VDPXML("VDP XML");
 
     String name;
     private InputType(String name) {

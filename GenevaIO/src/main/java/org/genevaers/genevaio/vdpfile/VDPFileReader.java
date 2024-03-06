@@ -26,13 +26,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.common.flogger.StackSize;
 
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.RootTypeFactory;
 import org.genevaers.genevaio.fieldnodes.ViewFieldNode;
+import org.genevaers.genevaio.recordreader.FileRecord;
+import org.genevaers.genevaio.recordreader.RecordFileReader;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
-import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.calculationstack.CalcStack;
@@ -52,6 +54,7 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.JustifyId;
+import org.genevaers.utilities.GersConfigration;
 
 public class VDPFileReader{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -61,7 +64,7 @@ public class VDPFileReader{
 	private boolean compare;
 	
 	private File vdpFile;
-	private RecordFileReaderWriter rr;
+	private RecordFileReader rr;
 	private int numrecords;
 
 	private ViewNode currentView;
@@ -90,12 +93,16 @@ public class VDPFileReader{
 	
 	public VDPFileReader() {}
 
-	public void addToRepsitory(boolean withCSV) throws Exception {
+	public void addToRepsitory(boolean withCSV) {
 		writeCSV = withCSV;
 		if(withCSV) {
 			openCSVFile();
 		}
-		readVDP();
+		try {
+			readVDP();
+		} catch (Exception e) {
+			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
+		}
 		//componentRepo.fixupPFExits();
 	}
 
@@ -120,13 +127,17 @@ public class VDPFileReader{
 		this.csvPath = csvPath;
 	}
 
-	public void open(Path readme) {
-		filePath = readme;
-		vdpFile = readme.toFile();
+	public void open(Path root, String name) {
+		if(GersConfigration.isZos()) {
+			vdpFile = new File(name);
+		} else {
+			filePath = root.resolve(name);
+			vdpFile = filePath.toFile();
+		}
 	}
 	
 	private void readVDP() throws Exception {
-		rr = new RecordFileReaderWriter();
+		rr = RecordFileReaderWriter.getReader();
 		rr.readRecordsFrom(vdpFile);
 		FileRecord rec = rr.readRecord();
 		while (rr.isAtFileEnd() == false) {
@@ -136,12 +147,17 @@ public class VDPFileReader{
 			rec = rr.readRecord();
 		}
 		//addVDPRecordToRepo(rec);
+		logger.atInfo().log("Read %d VDP records", numrecords);
+		rr.close();
 	}
 
 	private void addVDPRecordToRepo(FileRecord rec) throws Exception{
 		VDPFileObject vdpObject = null;
+		rec.dump();
 		int viewID = rec.bytes.getInt(2);
 		short recType = rec.bytes.getShort(14);
+		logger.atFine().log("RecType %d", recType);
+		rec.bytes.rewind();
 		switch(recType) {
 		case VDPRecord.VDP_GENERATION:
 			vdpObject = makeAndStoreGenerationRecord(recordReader, rec);
@@ -568,9 +584,11 @@ public class VDPFileReader{
 		} else {
 			VDPFileRecordReader.setEBCDICText();
 		}
+		logger.atInfo().log("Text is %s", VDPFileRecordReader.isASCIItext() ? "ASCII" : "EBCDIC");
 		VDPGenerationRecord vgen = new VDPGenerationRecord();
 		vgen.readRecord(recordReader, rec);
 		vdpManagementRecords.setViewGeneration(vgen);
+		logger.atInfo().log("gen from %s", vgen.getDescription());
 		return vgen;
 	}
 

@@ -90,8 +90,13 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
     }
 
     private void generateAccumulatorName() {
-        if(accName == null)
-            accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(currentViewSource, currentViewColumn.getColumnNumber());
+        if(accName == null) {
+            if(currentViewColumn != null) {
+                accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(currentViewSource, currentViewColumn.getColumnNumber());
+            } else {
+                accName = LtFactoryHolder.getLtFunctionCodeFactory().generateAccumulatorName(currentViewSource, 0);
+            }
+        }
     }
 
     @Override
