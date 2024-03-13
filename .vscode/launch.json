@@ -6,6 +6,19 @@
     "configurations": [
         {
             "type": "java",
+            "request": "attach",
+            "name": "Attach by Process ID",
+            "processId": "${command:PickJavaProcess}"
+        },
+        {
+            "type": "java",
+            "name": "Attach",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": "9091"
+        },
+        {
+            "type": "java",
             "name": "Launch Component Generator",
             "request": "launch",
             "mainClass": "ComponentGenerator.CommandLineHandler",
@@ -45,6 +58,14 @@
             "projectName": "runcontrolanalyser",
             "cwd": "${workspaceFolder}/../../RunControlPlayPen",
             "args": "-d"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCA from Playpen RC2",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.App",
+            "projectName": "runcontrolanalyser",
+            "cwd": "${workspaceFolder}/../../../../RunControlPlayPen/RC2"
         },
         {
             "type": "java",
@@ -111,7 +132,7 @@
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolgenerator.App",
             "projectName": "runcontrolgenerator",
-            "cwd": "${workspaceFolder}../../../RunControlPlayPen/RC2"
+            "cwd": "${workspaceFolder}../../../../RunControlPlayPen/RC2"
         },
         {
             "type": "java",

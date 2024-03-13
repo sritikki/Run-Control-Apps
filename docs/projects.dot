@@ -22,6 +22,11 @@ subgraph cluster_fa { label="Run Control Analyser" node [shape=plaintext]
     FA[label="Run Control Analyser" shape=rect style=filled color=PaleGreen]
 }
 
+subgraph cluster_wb { label="Workbench Interface" node [shape=plaintext]
+    VI[label="View Interface" shape=rect style=filled color=PaleGreen]
+    CI[label="Compiler Interface" shape=rect style=filled color=PaleGreen]
+}
+
 //Libraries
 
 subgraph cluster_gio { label="GenevaIO" node [shape=plaintext]
@@ -40,9 +45,9 @@ subgraph cluster_gio { label="GenevaIO" node [shape=plaintext]
 
     subgraph cluster_gior { label="Readers" node [shape=plaintext]
         WB[label="WBXML" shape=rect style=filled color="lightblue1" ]
-        DB2[label="DB2 Reader" shape=rect style=filled color="pink" ]
-        PG[label="Postgres Reader" shape=rect style=filled color="pink" ]
-        VX[label="VDP XML Reader" shape=rect style=filled color="pink" ]
+        DB2[label="DB2 Reader" shape=rect style=filled color="lightblue1" ]
+        PG[label="Postgres Reader" shape=rect style=filled color="lightblue1" ]
+        VX[label="VDP XML Reader" shape=rect style=filled color="lightblue1" ]
     }
 
     subgraph cluster_giow { label="Writers" node [shape=plaintext]
@@ -73,6 +78,11 @@ RCG -> SPO
 RCG -> FPF
 RCG -> EPF
 RCG -> JLT
+
+VI -> DB2
+CI -> EPF
+
+DB2 -> REPOM [lhead=cluster_repo]
 
 
 EPF  -> { REPOC} [lhead=cluster_repo, ltail=cluster_rcg]
