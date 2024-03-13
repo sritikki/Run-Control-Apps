@@ -14,6 +14,7 @@ import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +47,7 @@ class RunFunctionsTest extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         ExtractBaseAST.setCurrentColumnNumber((short)0);
         Repository.setGenerationTime(Calendar.getInstance().getTime());

@@ -19,6 +19,7 @@ import org.genevaers.genevaio.ltfile.LogicTableRE;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +56,7 @@ class RunCompilerLookupTest extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         RecordParser.clearAndInitialise();
@@ -108,7 +110,7 @@ class RunCompilerLookupTest extends RunCompilerBase {
         String[] expected = new String[]{ "JOIN", "LKE", "LUSM", "DTL", "GOTO", "DTC" };
         int expectedGotos[][] = {{4,7,9},{6,7,9},{8,10,0}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
         String[] jexpected = new String[]{ "HD", "DIM4", "SETC", "RENX" };
         int jexpectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(1, jexpected, jexpectedGotos, jlt);

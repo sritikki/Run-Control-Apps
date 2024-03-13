@@ -1,0 +1,130 @@
+package org.genevaers.runcontrolgenerator.compilers;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.List;
+
+import org.genevaers.compilers.base.ASTBase;
+import org.genevaers.compilers.format.FormatAST2Dot;
+import org.genevaers.compilers.format.FormatCompiler;
+import org.genevaers.compilers.format.astnodes.ColumnCalculation;
+import org.genevaers.compilers.format.astnodes.FormatASTFactory;
+import org.genevaers.compilers.format.astnodes.FormatBaseAST;
+import org.genevaers.compilers.format.astnodes.FormatFilterAST;
+import org.genevaers.compilers.format.astnodes.FormatView;
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewNode;
+import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+
+import com.google.common.flogger.FluentLogger;
+
+public class FormatRecordsBuilder {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+    
+	private static FormatView currentFormatView;
+	private static FormatBaseAST formatRoot;
+
+    public static FormatBaseAST run() {
+		buildFormatAST();
+		emitFormatRecordsIfNeeded();
+		return formatRoot;
+	}
+
+	private static void buildFormatAST() {
+		formatRoot = FormatASTFactory.getNodeOfType(FormatASTFactory.Type.FORMATROOT);
+		Iterator<ViewNode> vi = Repository.getViews().getIterator();
+		while(vi.hasNext()){
+			ViewNode v = vi.next();
+			if(v.isFormat()) {
+				boolean addedToFormatRequired = true;
+				currentFormatView = (FormatView)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.FORMATVIEW);
+				currentFormatView.addView(v);
+				if(v.getFormatFilterLogic() != null && v.getFormatFilterLogic().length() > 0) {
+					formatRoot.addChildIfNotNull(currentFormatView);
+					compileFormatFilter(v);
+					addedToFormatRequired = false;
+				}
+				Repository.getFormatViews().add(v, v.getID(), v.getName());
+				addColumnCalculations(v, addedToFormatRequired);
+			}
+		}
+		writeFormatAstIfEnabled();
+	}
+
+	private static void writeFormatAstIfEnabled() {
+		if(RunControlConfigration.isFormatDotEnabled()) {
+        	FormatAST2Dot.write(formatRoot, Paths.get("target/Format.dot"));
+		}
+	}
+
+	private static void addColumnCalculations(ViewNode v, boolean addedToFormatRequired) {
+		Iterator<ViewColumn> vci = v.getColumnIterator();
+		while(vci.hasNext()) {
+			ViewColumn vc = vci.next();
+			if(vc.getColumnCalculation() != null && vc.getColumnCalculation().length() > 0) {
+				ColumnCalculation cc = (ColumnCalculation)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.COLCALC);
+				cc.addViewColumn(vc);
+				currentFormatView.addChildIfNotNull(cc);
+				if(addedToFormatRequired) {
+					formatRoot.addChildIfNotNull(currentFormatView);
+					addedToFormatRequired = false;
+				}
+				FormatCompiler fc = new FormatCompiler();
+				try {
+					cc.addChildIfNotNull(fc.processLogic(vc.getColumnCalculation(), false));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+	}
+
+	private static void compileFormatFilter(ViewNode view) {
+		FormatCompiler ffc = new FormatCompiler();
+		try {
+			FormatFilterAST ff = (FormatFilterAST) ffc.processLogic(view.getFormatFilterLogic(), true);
+			ff.setView(view);
+			currentFormatView.addChildIfNotNull(ff);
+			if(ffc.hasErrors()) {
+
+			} else {
+
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+   	private static void emitFormatRecordsIfNeeded() {
+		//Walk the format root and build the format records
+		//where are the calc stacks to be defined?
+		//In the view node or the view column node
+		if(ASTBase.getErrorCount() > 0) {
+			logger.atSevere().log("Number of format logic errors found: %d", ASTBase.getErrorCount());
+		} else {
+			if(formatRoot != null) {
+				Iterator<ASTBase> fi = formatRoot.getChildIterator();
+				while(fi.hasNext()) {
+					FormatBaseAST fn = (FormatBaseAST)fi.next();
+					FormatBaseAST.resetOffset()	;
+					fn.emit(true);
+				}
+			}
+		}
+	}
+
+    public static FormatBaseAST getFFRoot() {
+		return formatRoot;
+    }
+
+    public static void reset() {
+		formatRoot = null;        
+    }
+
+
+}

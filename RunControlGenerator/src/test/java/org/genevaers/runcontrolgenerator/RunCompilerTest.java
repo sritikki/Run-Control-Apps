@@ -32,6 +32,7 @@ import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.repository.jltviews.UniqueKeys;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +69,7 @@ class RunCompilerTest extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         ExtractBaseAST.setCurrentColumnNumber((short)0);
         ExtractBaseAST.setCurrentAccumNumber(0);
@@ -295,7 +297,7 @@ class RunCompilerTest extends RunCompilerBase {
         LogicTableF2 dtl = (LogicTableF2) xlt.getFromPosition(8);
         assertEquals(DateCode.NONE, dtl.getArg1().getFieldContentId());
         assertEquals(DateCode.NONE, dtl.getArg2().getFieldContentId());
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
         LogicTableF2 dte =(LogicTableF2) jlt.getFromPosition(7);
         assertEquals(DateCode.NONE, dte.getArg1().getFieldContentId());
         assertEquals(DateCode.NONE, dte.getArg2().getFieldContentId());
@@ -317,7 +319,7 @@ class RunCompilerTest extends RunCompilerBase {
         LogicTableF1 skc = (LogicTableF1) xlt.getFromPosition(11);
         assertEquals("SKC", skc.getFunctionCode());
 
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
         LogicTableF2 dte = (LogicTableF2) jlt.getFromPosition(8);
         assertEquals(400618, dte.getArg1().getFieldId());
         LogicTableF1 dtc = (LogicTableF1) jlt.getFromPosition(20);
@@ -333,7 +335,7 @@ class RunCompilerTest extends RunCompilerBase {
         assertEquals("2", join2.getArg().getValue().getString());
         LogicTableF1 join = (LogicTableF1) xlt.getFromPosition(32);
         assertEquals("JOIN", join.getFunctionCode());
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
         LogicTableF2 dte = (LogicTableF2) jlt.getFromPosition(7);
         assertEquals(DateCode.NONE, dte.getArg1().getFieldContentId());
         assertEquals(DateCode.NONE, dte.getArg2().getFieldContentId());
@@ -365,7 +367,7 @@ class RunCompilerTest extends RunCompilerBase {
         assertEquals(400585, lkl.getArg1().getFieldId());
         assertEquals(1, lkl.getArg1().getStartPosition());
 
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
 //        assertEquals(75, jlt.getNumberOfRecords());
     }
 
@@ -392,7 +394,7 @@ class RunCompilerTest extends RunCompilerBase {
         assertEquals("0", lklr.getArg().getValue().getString());
         LogicTableF1 kslk = (LogicTableF1) xlt.getFromPosition(7);
         assertEquals("KSLK", kslk.getFunctionCode());
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
         LogicTableNV jnv = (LogicTableNV)jlt.getFromPosition(15);
         assertEquals(0, jnv.getSuffixSeqNbr());
         LogicTableF0 es = (LogicTableF0)jlt.getFromPosition(36);

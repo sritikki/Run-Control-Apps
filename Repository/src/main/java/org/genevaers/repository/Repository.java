@@ -202,7 +202,7 @@ public class Repository {
 		if(maxFieldID < lrf.getComponentId())
 			maxFieldID = lrf.getComponentId();
 		fields.add(lrf, lrf.getComponentId(), lrf.getName());
-		if (lrf.getLrID() != currentLRID) {
+		if (lrf.getLrID() != currentLRID || currentLR == null) {
 			currentLRID = lrf.getLrID();
 			currentLR = lrs.get(currentLRID);
 		}

@@ -151,4 +151,8 @@ public abstract class FormatBaseAST extends ASTBase{
         negative = true;
     }
 
+    public static void resetStack() {
+        calcStack = null;
+    }
+
 }

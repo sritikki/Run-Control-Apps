@@ -36,7 +36,8 @@ import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.repository.Repository;
-import org.genevaers.runcontrolgenerator.compilers.RepositoryCompiler;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
@@ -55,7 +56,6 @@ class RunCompilerBase {
 
     protected ParmReader pr;
     protected Repository repo;
-    protected RepositoryCompiler comp;
 
     protected void readConfigAndBuildRepo() {
         pr = new ParmReader();
@@ -81,13 +81,11 @@ class RunCompilerBase {
         ExtractAST2Dot.writeRawSources(TestHelper.getMR91origdotPath());
         SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
-        comp = new RepositoryCompiler();
         List<LogicGroup> lgs = spo.getLogicGroups();
-        comp.setLogicGroups(lgs);
-        comp.run();
-        ExtractAST2Dot.write(comp.getXltRoot(), TestHelper.getMR91dotPath());
+        ExtractPhaseCompiler.run(lgs);
+        ExtractAST2Dot.write(ExtractPhaseCompiler.getXltRoot(), TestHelper.getMR91dotPath());
         assertTrue(TestHelper.getMR91dotPath().toFile().exists());
-        return comp.getXltRoot();
+        return ExtractPhaseCompiler.getXltRoot();
     }
 
     protected SinglePassOptimiser runSPO() throws IOException {
@@ -98,21 +96,6 @@ class RunCompilerBase {
         return spo;
     }
 
-    protected LTFileObject getLogicTableRecordFunctionCode(String func) {
-        LogicTable lt = comp.getExtractLogicTable();
-        assertNotNull(lt);
-        assertTrue(lt.getNumberOfRecords() > 0);
-        Iterator<LTRecord> lti = lt.getIterator();
-        LTFileObject lto = null;
-        while (lto == null && lti.hasNext()) {
-            LTRecord entry = lti.next();
-            if (entry.getFunctionCode().startsWith(func)) {
-                lto = (LTFileObject) entry;
-            }
-        }
-        return lto;
-    }
-
     protected LogicTable runFromXMLOverrideLogic(int viewNum, String fileName, String logic) {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();
@@ -121,7 +104,7 @@ class RunCompilerBase {
         RunControlConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
         RunControlConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
-        return comp.getExtractLogicTable();
+        return ExtractPhaseCompiler.getExtractLogicTable();
     }
 
     protected LogicTable runFromXMLOverrideColNLogic(int viewNum, String fileName, int c, String logic) {
@@ -133,7 +116,7 @@ class RunCompilerBase {
         RunControlConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
         RunControlConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
-        return comp.getExtractLogicTable();
+        return ExtractPhaseCompiler.getExtractLogicTable();
     }
 
     protected LogicTable runFromXMLOverrideFilter(int viewNum, String fileName, String logic) {
@@ -145,7 +128,7 @@ class RunCompilerBase {
         RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1,2", "N");
         RunControlConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
-        return comp.getExtractLogicTable();
+        return ExtractPhaseCompiler.getExtractLogicTable();
     }
 
     protected LogicTable runFromXMLOverrideOutputLogic(int viewNum, String fileName, String logic)  {
@@ -156,7 +139,7 @@ class RunCompilerBase {
         }
         RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
         CompileAndGenerateDots();
-        return comp.getExtractLogicTable();
+        return ExtractPhaseCompiler.getExtractLogicTable();
     }
 
     protected FormatBaseAST runFromXMLOverrideFormatFilter(int viewNum, String fileName, String logic) {
@@ -167,17 +150,7 @@ class RunCompilerBase {
         }
         RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
 
-        return formatCompileAndGenerateDots();
-    }
-
-    private FormatBaseAST formatCompileAndGenerateDots() {
-        SinglePassOptimiser spo = new SinglePassOptimiser();
-        spo.run();
-        comp = new RepositoryCompiler();
-        List<LogicGroup> lgs = spo.getLogicGroups();
-        comp.setLogicGroups(lgs);
-        comp.run();
-        return comp.getFFRoot();
+        return FormatRecordsBuilder.run();
     }
 
     protected FormatBaseAST runFromXMLOverrideColumnCalculation(int viewNum, String fileName, int colNum, String logic)  {
@@ -188,7 +161,7 @@ class RunCompilerBase {
         }
         RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
 
-        return formatCompileAndGenerateDots();
+        return FormatRecordsBuilder.run();
     }
 
 }

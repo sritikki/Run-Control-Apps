@@ -26,6 +26,7 @@ import java.io.File;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.genevaio.wbxml.RecordParserData;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ public class AppTest {
     
     @BeforeEach
     public void initEach(){
+        ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         RecordParser.clearAndInitialise();
     }

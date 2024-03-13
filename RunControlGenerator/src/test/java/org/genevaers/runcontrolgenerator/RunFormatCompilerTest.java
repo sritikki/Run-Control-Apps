@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 
 import org.genevaers.compilers.base.ASTBase;
+import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.format.FormatAST2Dot;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
@@ -18,9 +19,12 @@ import org.genevaers.repository.calculationstack.CalcStack;
 import org.genevaers.repository.calculationstack.CalcStackEntry;
 import org.genevaers.repository.calculationstack.CalcStack.CalcStackOpcode;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -42,13 +46,19 @@ import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
+@TestMethodOrder(OrderAnnotation.class)
 class RunFormatCompilerTest extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        FormatRecordsBuilder.reset();
         Repository.clearAndInitialise();
+        //FormatBaseAST.resetStack();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
+        ExtractBaseAST.setCurrentColumnNumber((short)0);
         RecordParser.clearAndInitialise();
         LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
         java.nio.file.Path target = Paths.get("target/test-logs/");
@@ -61,7 +71,8 @@ class RunFormatCompilerTest extends RunCompilerBase {
 		GenevaLog.closeLogger(RunFormatCompilerTest.class.getName());
     }
     
-    @Test void testFormatFilterGT() {
+    @Test  @Order(1)    
+    void testFormatFilterGT() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_COMPILE, "");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -72,7 +83,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertStackEntry(cs, 4, CalcStackOpcode.CalcStackBranchAlways, "180");
     }
 
-    @Test void testFormatFilterGE() {
+    @Test  @Order(1)    void testFormatFilterGE() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_COMPILE, "SELECTIF( COL.2  >= 10 )");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -83,7 +94,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertStackEntry(cs, 4, CalcStackOpcode.CalcStackBranchAlways, "180");
     }
 
-    @Test void testFormatFilterEQ() {
+    @Test  @Order(1)    void testFormatFilterEQ() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_COMPILE, "SELECTIF( COL.2  = 10 )");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -94,7 +105,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertStackEntry(cs, 4, CalcStackOpcode.CalcStackBranchAlways, "180");
     }
 
-    @Test void testFormatFilterNE() {
+    @Test  @Order(3)    void testFormatFilterNE() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_COMPILE, "SELECTIF( COL.2  <> 10 )");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -105,7 +116,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertStackEntry(cs, 4, CalcStackOpcode.CalcStackBranchAlways, "180");
     }
 
-    @Test void testFormatFilterLE() {
+    @Test  @Order(4)    void testFormatFilterLE() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_COMPILE, "SELECTIF( COL.2  <= 10 )");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -115,7 +126,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertStackEntry(cs, 2, CalcStackOpcode.CalcStackBranchGT, "128");
         assertStackEntry(cs, 4, CalcStackOpcode.CalcStackBranchAlways, "180");
     }
-    @Test void testFormatFilterLT() {
+    @Test  @Order(5)    void testFormatFilterLT() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_COMPILE, "SELECTIF( COL.2  < 10 )");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -130,7 +141,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
      * Important point here is to check the exit from the first condition
      * Which has the opposite logic to the OR case following
      */
-    @Test void testFormatFilterWithAND() {
+    @Test  @Order(6)    void testFormatFilterWithAND() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_AND_COMPILE, "");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -144,7 +155,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
      * Important point here is to check the exit from the first condition
      * Which has the opposite logic to the AND case preceding
      */
-    @Test void testFormatFilterWithOR() {
+    @Test  @Order(7)    void testFormatFilterWithOR() {
         FormatBaseAST ffTree = runFromXMLOverrideFormatFilter(12087, TestHelper.FORMAT_OR_COMPILE, "");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
@@ -154,14 +165,14 @@ class RunFormatCompilerTest extends RunCompilerBase {
         assertStackEntry(cs, 5, CalcStackOpcode.CalcStackBranchGE, "196");
     }
 
-    @Test void testColumnCalculation() {
+    @Test  @Order(8)    void testColumnCalculation() {
         FormatBaseAST ffTree = runFromXMLOverrideColumnCalculation(12087, TestHelper.FORMAT_OR_COMPILE, 3, "");
         assertNotNull(ffTree);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
         ViewNode v = Repository.getViews().get(12087);
     }
 
-    @Test void testColumnCalculationIfElse() {
+    @Test  @Order(9)    void testColumnCalculationIfElse() {
         FormatBaseAST ffTree = runFromXMLOverrideColumnCalculation(12087, TestHelper.FORMAT_OR_COMPILE, 3, "IF col.2 > 10 AND col.2 < 100 THEN " +
             " COLUMN = COL.2 / 4 " +
             " ELSE COLUMN = COL.2 * 3 ENDIF ");
@@ -174,7 +185,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
     }
 
-    @Test void testColumnCalculationIfNoElse() {
+    @Test  @Order(10)    void testColumnCalculationIfNoElse() {
         FormatBaseAST ffTree = runFromXMLOverrideColumnCalculation(12087, TestHelper.FORMAT_OR_COMPILE, 3, "IF col.2 > 10 AND col.2 < 100 THEN " +
             " COLUMN = COL.2 / 4 ENDIF");
         assertNotNull(ffTree);
@@ -185,7 +196,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
     }
 
-    @Test void testColumnCalculationNestedIf() {
+    @Test  @Order(11)    void testColumnCalculationNestedIf() {
         FormatBaseAST ffTree = runFromXMLOverrideColumnCalculation(12087, TestHelper.FORMAT_OR_COMPILE, 3, "IF col.2 > 10 AND col.2 < 100 THEN \n" +
             " IF Col.2 > 50 THEN COLUMN = COL.2 / 4 ELSE COLUMN = Col.2 - 33 ENDIF ENDIF");
         assertNotNull(ffTree);
@@ -198,7 +209,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
     }
 
-    @Test void testColumnCalculationError() {
+    @Test  @Order(12)    void testColumnCalculationError() {
         FormatBaseAST ffTree = runFromXMLOverrideColumnCalculation(12087, TestHelper.FORMAT_OR_COMPILE, 3, "IF rubbish");
         assertNotNull(ffTree);
         assertTrue(ASTBase.getErrorCount() > 0);

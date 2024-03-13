@@ -27,6 +27,7 @@ import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
@@ -64,6 +65,7 @@ class RunCompilerArithTests extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
@@ -152,7 +154,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         String[] expected = new String[]{ "DIMN", "SETE", "ADDL", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
         String[] jexpected = new String[]{ "HD", "DIM4", "SETC", "RENX" };
         int jexpectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(1, jexpected, jexpectedGotos, jlt);
