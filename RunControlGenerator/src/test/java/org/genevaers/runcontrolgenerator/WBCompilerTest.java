@@ -6,6 +6,7 @@ package org.genevaers.runcontrolgenerator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -30,11 +31,21 @@ import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalRecord;
+import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewColumnSource;
+import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.components.enums.ColumnSourceType;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
+import org.genevaers.repository.components.enums.ViewType;
 import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.repository.jltviews.UniqueKeys;
+import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.runcontrolgenerator.workbenchinterface.ColumnInfo;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBCompilerFactory;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBCompilerType;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBExtractColumnCompiler;
@@ -75,6 +86,8 @@ class WBCompilerTest extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        new RunControlConfigration();
+        RunControlConfigration.set(RunControlConfigration.DOT_XLT, "Y");
         Repository.clearAndInitialise();
         ExtractBaseAST.setCurrentColumnNumber((short)0);
         ExtractBaseAST.setCurrentAccumNumber(0);
@@ -92,35 +105,162 @@ class WBCompilerTest extends RunCompilerBase {
     }
 
     
-    @Test void testAssignField() {
-        // Not from CompilerBase.... make a WBCompilerBase?
-        // Add a source LR in the way WB will
+    @Test void testAssignField() throws IOException {
+      new RunControlConfigration();
+        LogicalRecord rcgLR = makeLR(777, "TestLR");
+
+        String fieldName = "TestAlnumField";
+        LRField lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
+
+        ViewNode view = makeView(999, "TestView");
+        createAndAddViewSourceToView(rcgLR, view);
+        ViewColumn vc = makeAndAddColumntoView(view, 111);
+        ViewColumnSource vcs = addViewColumnSourceToView(rcgLR, lrf, view, vc, "COLUMN = {" + lrf.getName() + "}");
+
         WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
-
-        LogicalRecord rcgLR = new LogicalRecord();
-		rcgLR.setComponentId(777);
-		rcgLR.setName("WBSourceLR1");
-		extractCompiler.addLR(rcgLR);
-        LRField lrf = makeField(777, 33, "TestAlnumField", DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
+        extractCompiler.setViewDetails(1, view.getID(), ViewType.EXTRACT);
+		    extractCompiler.addLR(rcgLR);
         extractCompiler.addField(lrf);
-
-        // Going to need a view and view column which uses the above LR Field in the column
-        // Can't just read a WB XML as it will populate the repo
-        // We want to simulate a lazy VDP getting just what it needs
         
-        // Or do we use a PG database as a test - need to be preloaded etc
+        ColumnInfo ci = getColumnInfo(vc);
+        extractCompiler.setColumnInfo(ci);
 
-        // so from the WB Activator's pov how does the view info get in there?
-        // What is needed?
+        extractCompiler.compileViewColumnSource(vcs);
+        assertEquals(0, Repository.getCompilerErrors().size());
 
-        // What do we call to do the compilation?
+        LogicTable xlt = extractCompiler.getXlt();
+        System.out.println(LTLogger.logRecords(xlt));
+        
+    }
 
-        // The compilation should build the AST and add it to the VS node under the LF node.
-        // Then we emit from the base node
+    @Test void testBadField() throws IOException {
+      LogicalRecord rcgLR = makeLR(777, "TestLR");
 
-        // Call WBExtractColumnCompiler in way WB will
+      String fieldName = "TestAlnumField";
+      LRField lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
 
-        // Look for result and dependencies
+      ViewNode view = makeView(999, "TestView");
+      createAndAddViewSourceToView(rcgLR, view);
+      ViewColumn vc = makeAndAddColumntoView(view, 111);
+      ViewColumnSource vcs = addViewColumnSourceToView(rcgLR, lrf, view, vc, "COLUMN = {Bad}");
+
+      WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+      extractCompiler.setViewDetails(1, view.getID(), ViewType.EXTRACT);
+      extractCompiler.addLR(rcgLR);
+      extractCompiler.addField(lrf);
+      
+      ColumnInfo ci = getColumnInfo(vc);
+      extractCompiler.setColumnInfo(ci);
+
+      extractCompiler.compileViewColumnSource(vcs);
+      assertEquals(1, Repository.getCompilerErrors().size());
+      assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("Unknown field {Bad}"));
+    }
+
+    @Test void testBadSyntax() throws IOException {
+      LogicalRecord rcgLR = makeLR(777, "TestLR");
+
+      String fieldName = "TestAlnumField";
+      LRField lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
+
+      ViewNode view = makeView(999, "TestView");
+      createAndAddViewSourceToView(rcgLR, view);
+      ViewColumn vc = makeAndAddColumntoView(view, 111);
+      ViewColumnSource vcs = addViewColumnSourceToView(rcgLR, lrf, view, vc, "COLUMN = gobbledegook");
+
+      WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+      extractCompiler.setViewDetails(1, view.getID(), ViewType.EXTRACT);
+      extractCompiler.addLR(rcgLR);
+      extractCompiler.addField(lrf);
+      
+      ColumnInfo ci = getColumnInfo(vc);
+      extractCompiler.setColumnInfo(ci);
+
+      extractCompiler.compileViewColumnSource(vcs);
+      assertEquals(1, Repository.getCompilerErrors().size());
+      assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("gobbledegook"));
+    }
+
+  private ColumnInfo getColumnInfo(ViewColumn vc) {
+      ColumnInfo ci = new ColumnInfo();
+      ci.setColumnId(vc.getComponentId());
+      ci.setColumnNumber(vc.getColumnNumber());
+      ci.setDataType(vc.getDataType());
+      ci.setDateCode(vc.getDateCode());
+      ci.setExtractArea(vc.getExtractArea());
+      ci.setLength(vc.getFieldId());
+      ci.setAlignment(vc.getJustifyId());
+      ci.setNumDecimalPlaces(vc.getDecimalCount());
+      ci.setRounding(vc.getRounding());
+      ci.setSigned(vc.isSigned());
+      ci.setStartPosition(vc.getStartPosition());
+      return ci;
+    }
+
+    private ViewColumnSource addViewColumnSourceToView(LogicalRecord rcgLR, LRField lrf, ViewNode view, ViewColumn vc, String logicText) {
+      ViewColumnSource vcs = new ViewColumnSource();
+      vcs.setColumnID(vc.getComponentId());
+      vcs.setColumnNumber(vc.getColumnNumber());
+      vcs.setComponentId(123);
+//        vcs.setLogicText("COLUMN = {" + fieldName + "}");
+      vcs.setLogicText(logicText);
+      vcs.setSequenceNumber((short)1);
+      vcs.setSourceType(ColumnSourceType.LOGICTEXT);
+      vcs.setViewSourceId(1);
+      vcs.setViewId(view.getID());
+      vcs.setViewSrcLrFieldId(lrf.getComponentId());
+      vcs.setViewSrcLrId(rcgLR.getComponentId());
+      
+      view.addViewColumnSource(vcs);
+      return vcs;
+    }
+
+    private ViewColumn makeAndAddColumntoView(ViewNode view, int colID) {
+      //Auto inc Id and column Numbers?
+      //Could manage postions too
+      ViewColumn vc = new ViewColumn();
+      vc.setColumnNumber(1);
+      vc.setComponentId(colID);
+      vc.setDataType(DataType.ALPHANUMERIC);
+      vc.setDateCode(DateCode.NONE);
+      vc.setDecimalCount((short)0);
+      vc.setExtractArea(ExtractArea.AREADATA);
+      vc.setExtractAreaPosition((short)1);
+      vc.setFieldLength((short)19);
+      vc.setFieldName("Test Field");
+      vc.setHeaderJustifyId(JustifyId.NONE);
+      vc.setRounding((short)0);
+      vc.setSigned(false);
+      vc.setStartPosition((short)1);
+      vc.setViewId(view.getID());
+      view.addViewColumn(vc);
+      return vc;
+    }
+
+    private ViewSource createAndAddViewSourceToView(LogicalRecord rcgLR, ViewNode view) {
+      ViewSource vs = new ViewSource();
+      vs.setComponentId(1);
+      vs.setViewId(view.getID());
+      vs.setExtractFilter("");
+      vs.setSequenceNumber((short)1);
+      vs.setSourceLRID(rcgLR.getComponentId());
+      view.addViewSource(vs);
+      return vs;
+    }
+
+    private ViewNode makeView(int viewID, String name) {
+      ViewDefinition vd = new ViewDefinition();
+      vd.setComponentId(viewID);
+      vd.setName(name);
+      vd.setViewType(ViewType.EXTRACT);
+      return Repository.getViewNodeMakeIfDoesNotExist(vd);
+    }
+
+    private LogicalRecord makeLR(int id, String name) {
+      LogicalRecord lr = new LogicalRecord();
+      lr.setComponentId(id);
+      lr.setName(name);
+      return lr;
     }
 
     private LRField makeField(int lrid, int id, String name, DataType type, DateCode dateCode, short length, short position, short decimals, short scaling, boolean signed) {

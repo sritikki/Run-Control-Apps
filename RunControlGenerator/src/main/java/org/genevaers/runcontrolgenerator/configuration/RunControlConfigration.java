@@ -261,5 +261,10 @@ public class RunControlConfigration extends GersConfigration{
         return VDP_XML_FILES_SOURCE;
     }
 
+    public static void set(String parm, String val) {
+        ConfigEntry pv = parmToValue.get(parm);
+        pv.setValue(val);
+    }
+
 
 }

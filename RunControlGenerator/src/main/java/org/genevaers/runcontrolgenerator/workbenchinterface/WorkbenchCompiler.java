@@ -31,14 +31,18 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.genevaio.dataprovider.CompilerDataProvider;
+import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.grammar.GenevaERSLexer;
 import org.genevaers.grammar.GenevaERSParser;
 import org.genevaers.grammar.GenevaERSParser.GoalContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalRecord;
+import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.enums.ViewType;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 
 public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
@@ -48,6 +52,10 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 	private ExtractDependencyAnalyser dependencyAnalyser = new ExtractDependencyAnalyser();
 	private ParseErrorListener errorListener;
 	private CompilerDataProvider dataProvider;
+	private int envId;
+	private ViewType viewType;
+	private ColumnInfo columnInfo;
+	private LogicTable xlt;
 
 	public WorkbenchCompiler() {
 	}
@@ -58,12 +66,32 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
     
 
     public void setViewDetails(int environmentId, int viewNum, ViewType type) {
-        
+        envId = environmentId;
+		int viewID = viewNum;
+		viewType = type;
+
     }
 
     public void  setColumnInfo(ColumnInfo ci) {
-        
+        columnInfo = ci;
     }
+
+	public void compileViewColumnSource(ViewColumnSource vcs) {
+		try {
+			syntaxCheckLogic(vcs.getLogicText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(errorListener.getErrors().size() == 0) {
+			ExtractBaseAST.setCurrentColumnNumber((short)vcs.getColumnNumber());
+			ExtractPhaseCompiler.buildViewColumnSourceAST(vcs);
+			if(Repository.getCompilerErrors().size() == 0) {
+				ExtractPhaseCompiler.buildTheLogicTables();
+				xlt = ExtractPhaseCompiler.getExtractLogicTable();
+			}
+		}
+	}
 
 	public void syntaxCheckLogic(String logicText) throws IOException {
         InputStream is = new ByteArrayInputStream(logicText.getBytes());
@@ -74,6 +102,10 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
         errorListener = new ParseErrorListener();
         parser.addErrorListener(errorListener); // add ours
         tree = parser.goal(); // parse
+	}
+
+	public LogicTable getXlt() {
+		return xlt;
 	}
 
 	@Override
@@ -88,6 +120,8 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
 	@Override
 	public void generateDependencies() {
+		// Mr91 compiler will need to add the dependencies
+
         ParseTreeWalker walker = new ParseTreeWalker(); // create standard walker
 		dependencyAnalyser.setSycadaType(type);
         walker.walk(dependencyAnalyser, tree); // initiate walk of tree with listener		

@@ -34,7 +34,7 @@ public class ErrorAST extends ExtractBaseAST {
     public void setError(String e) {
         error = e ;
         error = e ;
-        errMessage = new CompilerMessage(currentViewSource.getViewId(), CompilerMessageSource.COLUMN,  currentViewSource.getSourceLRID(), currentViewSource.getSourceLFID(), currentViewColumn.getColumnNumber(), e);
+        errMessage = new CompilerMessage(currentViewSource.getViewId(), CompilerMessageSource.COLUMN,  currentViewSource.getSourceLRID(), currentViewSource.getSourceLFID(), currentColumnNumber, e);
         Repository.addErrorMessage(errMessage);              
     }
 

@@ -146,6 +146,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     //Let's just visit a column node
 	@Override public ExtractBaseAST visitColumnAssignment(GenevaERSParser.ColumnAssignmentContext ctx) { 
         ColumnAssignmentASTNode casnode = (ColumnAssignmentASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNASSIGNMENT);
+        ExtractBaseAST.setCurrentColumnNumber((short)viewColumnSource.getColumnNumber());
         TerminalNode eq = ctx.EQ();
         casnode.setLineNumber(eq.getSymbol().getLine());
         casnode.setCharPostionInLine(eq.getSymbol().getCharPositionInLine());

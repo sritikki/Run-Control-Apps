@@ -38,6 +38,7 @@ public abstract class ColumnAST extends ExtractBaseAST implements EmittableASTNo
     }
 
     public void setViewColumn(ViewColumn vc) {
+        currentViewColumn = vc;
         this.vc = vc;
     }
 

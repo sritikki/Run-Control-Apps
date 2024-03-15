@@ -61,7 +61,7 @@ public class ExtractPhaseCompiler {
 			//to generate the JLT
 			//This has to be done before building the XLT
 			//since the lookup numbers are changed when we generate the JLT
-			emitLogicTablesIfEnabled();
+			buildTheLogicTables();
 		} else{
 			status = Status.ERROR;
 		}
@@ -76,6 +76,18 @@ public class ExtractPhaseCompiler {
 			addNodesFromLogicGroup(lg);
 		}
 		Repository.saveNumberOfExtractViews();
+		writeXLTDotIfEnabled();
+	}
+
+    public static void buildViewColumnSourceAST(ViewColumnSource vcs) {
+		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
+		vsnode.setViewSource(Repository.getViews().get(vcs.getViewId()).getViewSource(vcs.getSequenceNumber()));
+		extractRoot.addChildIfNotNull(vsnode);
+		ViewColumnSourceAstNode vcsn = (ViewColumnSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWCOLUMNSOURCE);
+		vcsn.setViewColumnSource(vcs);
+		vsnode.addChildIfNotNull(vcsn);
+		compileColumn(vcsn);		
 		writeXLTDotIfEnabled();
 	}
 
@@ -208,7 +220,7 @@ public class ExtractPhaseCompiler {
         }
     }
 
-    	private static void emitLogicTablesIfEnabled() {
+    public static void buildTheLogicTables() {
 		if(RunControlConfigration.isEmitEnabled()) {
 			buildTheJoinLogicTable();
 			buildTheExtractLogicTable();
