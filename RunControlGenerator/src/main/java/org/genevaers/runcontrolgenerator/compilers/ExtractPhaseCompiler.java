@@ -61,7 +61,8 @@ public class ExtractPhaseCompiler {
 			//to generate the JLT
 			//This has to be done before building the XLT
 			//since the lookup numbers are changed when we generate the JLT
-			buildTheLogicTables();
+			buildTheJoinLogicTable();
+			buildTheExtractLogicTable();
 		} else{
 			status = Status.ERROR;
 		}
@@ -90,6 +91,41 @@ public class ExtractPhaseCompiler {
 		compileColumn(vcsn);		
 		writeXLTDotIfEnabled();
 	}
+
+    public static void buildViewSourceAST(ViewSource vs) {
+		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
+		vsnode.setViewSource(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
+		extractRoot.addChildIfNotNull(vsnode);
+		ExtractFilterAST ef = (ExtractFilterAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRFILTER);
+		vsnode.addChildIfNotNull(ef);
+		ExtractFilterCompiler efc = new ExtractFilterCompiler();
+		efc.setViewSource(vsnode.getViewSource());
+		try {
+			efc.processLogicAndAddNodes(ef);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void buildViewOutputAST(ViewSource vs) {
+		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
+		vsnode.setViewSource(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
+		extractRoot.addChildIfNotNull(vsnode);
+		ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
+		vsnode.addChildIfNotNull(eo);
+		ExtractOutputCompiler eoc = new ExtractOutputCompiler();
+		eoc.setViewSource(vsnode.getViewSource());
+		try {
+			eoc.processLogicAndAddNodes(eo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	private static void writeXLTDotIfEnabled() {
 		if(RunControlConfigration.isXltDotEnabled()) {
@@ -220,14 +256,7 @@ public class ExtractPhaseCompiler {
         }
     }
 
-    public static void buildTheLogicTables() {
-		if(RunControlConfigration.isEmitEnabled()) {
-			buildTheJoinLogicTable();
-			buildTheExtractLogicTable();
-		}
-	}
-
-	private static void buildTheJoinLogicTable() {
+	public static void buildTheJoinLogicTable() {
 		//To do this use a JLT generator
 		//Which knows how to take the Repo data and make the beast
 		//All of the required Join data should have been accumulated
@@ -246,7 +275,7 @@ public class ExtractPhaseCompiler {
 		}
 	}
 
-	private static void buildTheExtractLogicTable() {
+	public static void buildTheExtractLogicTable() {
 		//Walk the AST and add the entries to the XLT
 		//We need to ensure there were no errors
 		if(ASTBase.getErrorCount() == 0) {

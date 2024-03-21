@@ -1,25 +1,30 @@
 package org.genevaers.runcontrolgenerator.workbenchinterface;
 
-import org.genevaers.repository.components.enums.DataType;
-import org.genevaers.repository.components.enums.DateCode;
-import org.genevaers.repository.components.enums.ExtractArea;
-import org.genevaers.repository.components.enums.JustifyId;
-
-public class ColumnInfo {
+public class ColumnData {
+    int viewID;
     int columnNumber;
     int columnId;
-    ExtractArea extractArea;
-    DataType dataType; // May have to set via ordinal
+    int extractAreaValue;
+    int dataTypeValue; // May have to set via ordinal
     boolean signed;
     int length;
     int numDecimalPlaces;
-    DateCode dateCode;
+    int dateCodeValue;
     int rounding;
-    JustifyId alignment;
+    int alignmentValue;
     String numericMask; // Needed?
     int startPosition;
     int ordinal;
+    String name;
 
+    public int getViewID() {
+        return viewID;
+    }
+
+    public void setViewID(int viewID) {
+        this.viewID = viewID;
+    }
+    
     public int getColumnNumber() {
         return columnNumber;
     }
@@ -36,20 +41,20 @@ public class ColumnInfo {
         this.columnId = columnId;
     }
 
-    public ExtractArea getExtractArea() {
-        return extractArea;
+    public int getExtractAreaValue() {
+        return extractAreaValue;
     }
 
-    public void setExtractArea(ExtractArea extractArea) {
-        this.extractArea = extractArea;
+    public void setExtractAreaValue(int extractArea) {
+        this.extractAreaValue = extractArea;
     }
 
-    public DataType getDataType() {
-        return dataType;
+    public int getDataTypeValue() {
+        return dataTypeValue;
     }
 
-    public void setDataType(DataType dataType) {
-        this.dataType = dataType;
+    public void setDataTypeValue(int dataType) {
+        this.dataTypeValue = dataType;
     }
 
     public boolean isSigned() {
@@ -76,12 +81,12 @@ public class ColumnInfo {
         this.numDecimalPlaces = numDecimalPlaces;
     }
 
-    public DateCode getDateCode() {
-        return dateCode;
+    public int getDateCodeValue() {
+        return dateCodeValue;
     }
 
-    public void setDateCode(DateCode dateCode) {
-        this.dateCode = dateCode;
+    public void setDateCodeValue(int dateCode) {
+        this.dateCodeValue = dateCode;
     }
 
     public int getRounding() {
@@ -92,12 +97,12 @@ public class ColumnInfo {
         this.rounding = rounding;
     }
 
-    public JustifyId getAlignment() {
-        return alignment;
+    public int getAlignment() {
+        return alignmentValue;
     }
 
-    public void setAlignment(JustifyId alignment) {
-        this.alignment = alignment;
+    public void setAlignment(int alignment) {
+        this.alignmentValue = alignment;
     }
 
     public String getNumericMask() {
@@ -122,6 +127,14 @@ public class ColumnInfo {
 
     public void setOrdinal(int ordinal) {
         this.ordinal = ordinal;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

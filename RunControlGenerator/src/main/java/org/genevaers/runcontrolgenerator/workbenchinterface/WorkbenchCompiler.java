@@ -21,6 +21,9 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -31,6 +34,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.fusesource.jansi.AnsiRenderer.Code;
+import org.genevaers.compilers.extract.ExtractCompiler;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.genevaio.dataprovider.CompilerDataProvider;
 import org.genevaers.genevaio.ltfile.LogicTable;
@@ -40,8 +45,18 @@ import org.genevaers.grammar.GenevaERSParser.GoalContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalRecord;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
+import org.genevaers.repository.components.ViewDefinition;
+import org.genevaers.repository.components.ViewNode;
+import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.components.enums.ColumnSourceType;
+import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.ExtractArea;
+import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.ViewType;
+import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 
@@ -54,8 +69,11 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 	private CompilerDataProvider dataProvider;
 	private int envId;
 	private ViewType viewType;
-	private ColumnInfo columnInfo;
+	private ColumnData columnData;
 	private LogicTable xlt;
+	private static ViewNode currentView;
+	private static ViewColumnSource vcs;
+	private static ViewSource vs;
 
 	public WorkbenchCompiler() {
 	}
@@ -72,11 +90,82 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
     }
 
-    public void  setColumnInfo(ColumnInfo ci) {
-        columnInfo = ci;
+	public static void addView(ViewData vd) {
+    	ViewDefinition vdef = new ViewDefinition();
+        vdef.setComponentId(vd.getId());
+        vdef.setName(vd.getName());
+        vdef.setViewType(ViewType.values()[vd.getTypeValue()]);
+        currentView = Repository.getViewNodeMakeIfDoesNotExist(vdef);
+	}
+
+	public static void addLR(LRData lrd) {
+		LogicalRecord rcgLR = new LogicalRecord();
+		rcgLR.setComponentId(lrd.getId());
+		rcgLR.setName(lrd.getName());
+		Repository.addLogicalRecord(rcgLR);
+	}
+
+	public static void addLRField(LRFieldData lrfd) {
+		LRField lrf = new LRField();
+		lrf.setComponentId(lrfd.getId());
+		lrf.setDatatype(DataType.values()[lrfd.getDataTypeValue()]);
+		lrf.setDateTimeFormat(DateCode.values()[lrfd.getDateCodeValue()]);
+		lrf.setLength((short)lrfd.getLength());
+		lrf.setLrID(lrfd.getLrId());
+		lrf.setName(lrfd.getName());
+		lrf.setNumDecimalPlaces((short)lrfd.getNumDecimals());
+		lrf.setRounding((short)lrfd.getRounding());
+		lrf.setSigned(lrfd.isSigned());
+		int p = lrfd.getPosition();
+		lrf.setStartPosition((short)p);
+		Repository.addLRField(lrf);
+	}
+
+    public static void addColumn(ColumnData ci) {
+    	ViewColumn vc = new ViewColumn();
+        vc.setColumnNumber(1);
+        vc.setComponentId(ci.getColumnId());
+        vc.setDataType(DataType.values()[ci.getDataTypeValue()]);
+        vc.setDateCode(DateCode.values()[ci.getDateCodeValue()]);
+        vc.setDecimalCount((short)ci.getNumDecimalPlaces());
+        vc.setExtractArea(ExtractArea.values()[ci.getExtractAreaValue()]);
+        vc.setExtractAreaPosition((short)ci.getStartPosition());
+        vc.setFieldLength((short)ci.getLength());
+        vc.setFieldName(ci.getName());
+        vc.setHeaderJustifyId(JustifyId.values()[ci.getAlignment()]);
+        vc.setRounding((short)ci.getRounding());
+        vc.setSigned(ci.isSigned());
+        vc.setStartPosition((short)ci.getStartPosition());
+        vc.setViewId(ci.getViewID());
+        currentView.addViewColumn(vc);
     }
 
-	public void compileViewColumnSource(ViewColumnSource vcs) {
+	public static void addViewSource(ViewSourceData vsd) {
+    	vs = new ViewSource();
+        vs.setComponentId(vsd.getId());
+        vs.setViewId(vsd.getViewID());
+        vs.setExtractFilter(vsd.getExtractFilter());
+		vs.setExtractOutputLogic(vsd.getOutputLogic());
+        vs.setSequenceNumber((short)vsd.getSequenceNumber());
+        vs.setSourceLRID(vsd.getSourceLrId());
+        currentView.addViewSource(vs);
+	}
+
+	public static void addViewColumnSource(ViewColumnSourceData vcsd) {
+    	vcs = new ViewColumnSource();
+        vcs.setColumnID(vcsd.getColumnId());
+        vcs.setColumnNumber(vcsd.getColumnNumber());
+        vcs.setComponentId(vcsd.getColumnId());
+        vcs.setLogicText(vcsd.getLogicText());
+        vcs.setSequenceNumber((short)vcsd.getSequenceNumber());
+        vcs.setSourceType(ColumnSourceType.LOGICTEXT);
+        vcs.setViewSourceId(vcsd.getViewSourceId());
+        vcs.setViewId(vcsd.getViewID());
+        vcs.setViewSrcLrId(vcsd.getViewSourceLrId());
+        currentView.addViewColumnSource(vcs);
+	}
+
+	public void compileViewColumnSource() {
 		try {
 			syntaxCheckLogic(vcs.getLogicText());
 		} catch (IOException e) {
@@ -87,11 +176,46 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 			ExtractBaseAST.setCurrentColumnNumber((short)vcs.getColumnNumber());
 			ExtractPhaseCompiler.buildViewColumnSourceAST(vcs);
 			if(Repository.getCompilerErrors().size() == 0) {
-				ExtractPhaseCompiler.buildTheLogicTables();
+				ExtractPhaseCompiler.buildTheExtractLogicTable();
 				xlt = ExtractPhaseCompiler.getExtractLogicTable();
 			}
 		}
 	}
+
+	public void compileExtractFilter() {
+		try {
+			syntaxCheckLogic(vs.getExtractFilter());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(errorListener.getErrors().size() == 0) {
+			ExtractBaseAST.setCurrentColumnNumber((short)0);
+			ExtractPhaseCompiler.buildViewSourceAST(vs);
+			if(Repository.getCompilerErrors().size() == 0) {
+				ExtractPhaseCompiler.buildTheExtractLogicTable();
+				xlt = ExtractPhaseCompiler.getExtractLogicTable();
+			}
+		}
+	}
+
+	public void compileExtractOutput() {
+		try {
+			syntaxCheckLogic(vs.getExtractOutputLogic());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(errorListener.getErrors().size() == 0) {
+			ExtractBaseAST.setCurrentColumnNumber((short)0);
+			ExtractPhaseCompiler.buildViewOutputAST(vs);
+			if(Repository.getCompilerErrors().size() == 0) {
+				ExtractPhaseCompiler.buildTheExtractLogicTable();
+				xlt = ExtractPhaseCompiler.getExtractLogicTable();
+			}
+		}
+    }
+
 
 	public void syntaxCheckLogic(String logicText) throws IOException {
         InputStream is = new ByteArrayInputStream(logicText.getBytes());
@@ -107,6 +231,35 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 	public LogicTable getXlt() {
 		return xlt;
 	}
+
+	public boolean hasErrors() {
+		return Repository.getCompilerErrors().size() > 0;
+	}
+
+	public List<String> getErrors() {
+		List<String> errs = new ArrayList<String>();
+		Iterator<CompilerMessage> ei = Repository.getCompilerErrors().iterator();
+		while(ei.hasNext()) {
+			CompilerMessage e = ei.next();
+			errs.add(e.getDetail());
+		}
+		return errs;
+	}
+
+	public boolean hasWarnings() {
+		return Repository.getWarnings().size() > 0;
+	}
+
+	public List<String> getWarnings() {
+		List<String> warns = new ArrayList<String>();
+		Iterator<CompilerMessage> wi = Repository.getWarnings().iterator();
+		while(wi.hasNext()) {
+			CompilerMessage w = wi.next();
+			warns.add(w.getDetail());
+		}
+		return warns;
+	}
+
 
 	@Override
 	public ParseTree getParseTree() {
@@ -174,8 +327,12 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 		dependencyAnalyser.getErrors().clear();
 	}
 
-	public void clearDependencies() {
-		dependencyAnalyser.clear();
+	public static void reset() {
+		Repository.clearAndInitialise();
+        ExtractPhaseCompiler.reset();
+        Repository.setGenerationTime(Calendar.getInstance().getTime());
+		vcs = null;
+		currentView = null;
 	}
 
 	public String getDependenciesAsString() {
@@ -201,9 +358,9 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties();
 		String ver = "";
-		try (InputStream resourceStream = loader.getResourceAsStream("sycadas.properties")) {
+		try (InputStream resourceStream = loader.getResourceAsStream("application.properties")) {
 			properties.load(resourceStream);
-			ver = properties.getProperty("library.name") + ": " + properties.getProperty("build.version");
+			ver = "RCG" + ": " + properties.getProperty("build.version");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

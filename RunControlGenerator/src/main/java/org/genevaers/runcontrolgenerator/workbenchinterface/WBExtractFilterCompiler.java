@@ -27,4 +27,5 @@ public class WBExtractFilterCompiler extends WorkbenchCompiler  {
 		type = WBCompilerType.EXTRACT_FILTER;
     }
 
+
 }
