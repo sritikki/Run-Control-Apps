@@ -123,7 +123,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
     public static void addColumn(ColumnData ci) {
     	ViewColumn vc = new ViewColumn();
-        vc.setColumnNumber(1);
+        vc.setColumnNumber(ci.getColumnNumber());
         vc.setComponentId(ci.getColumnId());
         vc.setDataType(DataType.values()[ci.getDataTypeValue()]);
         vc.setDateCode(DateCode.values()[ci.getDateCodeValue()]);
