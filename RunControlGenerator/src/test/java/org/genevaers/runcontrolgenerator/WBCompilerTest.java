@@ -114,7 +114,7 @@ class WBCompilerTest extends RunCompilerBase {
         WorkbenchCompiler.addViewColumnSource(vcs);
         WorkbenchCompiler.addColumn(cd);
 
-        extractCompiler.compileViewColumnSource();
+        extractCompiler.run();
         assertEquals(0, Repository.getCompilerErrors().size());
 
         LogicTable xlt = extractCompiler.getXlt();
@@ -131,7 +131,6 @@ class WBCompilerTest extends RunCompilerBase {
       ViewData view = makeView(999, "TestView");
       ColumnData cd = makeColumnData(view, 111);
       ViewSourceData vsd = makeViewSource(rcgLR, view);
-      
 
       ViewColumnSourceData vcs = makeViewColumnSource(rcgLR, lrf, view, cd, "COLUMN = {Bad}");
 
@@ -143,7 +142,7 @@ class WBCompilerTest extends RunCompilerBase {
       WorkbenchCompiler.addViewColumnSource(vcs);
       WorkbenchCompiler.addColumn(cd);
 
-      extractCompiler.compileViewColumnSource();
+      extractCompiler.run();
       assertEquals(1, Repository.getCompilerErrors().size());
       assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("Unknown field {Bad}"));
     }
@@ -169,7 +168,7 @@ class WBCompilerTest extends RunCompilerBase {
       WorkbenchCompiler.addViewColumnSource(vcs);
       WorkbenchCompiler.addColumn(cd);
 
-      extractCompiler.compileViewColumnSource();
+      extractCompiler.run();
       assertEquals(1, Repository.getCompilerErrors().size());
       assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("gobbledegook"));
     }
@@ -192,7 +191,7 @@ class WBCompilerTest extends RunCompilerBase {
         WorkbenchCompiler.addView(view);
         WorkbenchCompiler.addViewSource(vsd);
 
-        extractCompiler.compileExtractOutput();
+        extractCompiler.run();
         assertEquals(0, Repository.getCompilerErrors().size());
 
         LogicTable xlt = extractCompiler.getXlt();
@@ -218,14 +217,39 @@ class WBCompilerTest extends RunCompilerBase {
         WorkbenchCompiler.addView(view);
         WorkbenchCompiler.addViewSource(vsd);
 
-        extractCompiler.compileExtractOutput();
+        extractCompiler.run();
         assertEquals(0, Repository.getCompilerErrors().size());
 
         LogicTable xlt = extractCompiler.getXlt();
         System.out.println(LTLogger.logRecords(xlt));
-        
     }
 
+    @Test void testSELECTIFContext() throws IOException {
+      new RunControlConfigration();
+        LRData rcgLR = makeLRData(777, "TestLR");
+
+        String fieldName = "TestAlnumField";
+        LRFieldData lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
+
+        ViewData view = makeView(999, "TestView");
+        ColumnData cd = makeColumnData(view, 111);
+        ViewSourceData vsd = makeViewSource(rcgLR, view);
+        
+
+        ViewColumnSourceData vcs = makeViewColumnSource(rcgLR, lrf, view, cd, "SELECTIF({field} > 0)\n COLUMN = {" + lrf.getName() + "}");
+
+        WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+		    WorkbenchCompiler.addLR(rcgLR);
+        WorkbenchCompiler.addLRField(lrf);
+        WorkbenchCompiler.addView(view);
+        WorkbenchCompiler.addViewSource(vsd);
+        WorkbenchCompiler.addViewColumnSource(vcs);
+        WorkbenchCompiler.addColumn(cd);
+
+        extractCompiler.run();
+        assertEquals(1, Repository.getCompilerErrors().size());
+        assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("SELECTIF"));        
+    }
 
 
     private ViewColumnSourceData makeViewColumnSource(LRData rcgLR, LRFieldData lrf, ViewData view, ColumnData vc, String logicText) {

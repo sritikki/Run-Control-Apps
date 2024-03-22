@@ -60,20 +60,20 @@ import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 
-public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
+public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
 	protected WBCompilerType type;
 	private GoalContext tree;
 	private ExtractDependencyAnalyser dependencyAnalyser = new ExtractDependencyAnalyser();
-	private ParseErrorListener errorListener;
+	protected ParseErrorListener errorListener;
 	private CompilerDataProvider dataProvider;
 	private int envId;
 	private ViewType viewType;
 	private ColumnData columnData;
-	private LogicTable xlt;
+	protected LogicTable xlt;
 	private static ViewNode currentView;
-	private static ViewColumnSource vcs;
-	private static ViewSource vs;
+	protected static ViewColumnSource currentViewColumnSource;
+	protected static ViewSource currentViewSource;
 
 	public WorkbenchCompiler() {
 	}
@@ -141,81 +141,31 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
     }
 
 	public static void addViewSource(ViewSourceData vsd) {
-    	vs = new ViewSource();
-        vs.setComponentId(vsd.getId());
-        vs.setViewId(vsd.getViewID());
-        vs.setExtractFilter(vsd.getExtractFilter());
-		vs.setExtractOutputLogic(vsd.getOutputLogic());
-        vs.setSequenceNumber((short)vsd.getSequenceNumber());
-        vs.setSourceLRID(vsd.getSourceLrId());
-        currentView.addViewSource(vs);
+    	currentViewSource = new ViewSource();
+        currentViewSource.setComponentId(vsd.getId());
+        currentViewSource.setViewId(vsd.getViewID());
+        currentViewSource.setExtractFilter(vsd.getExtractFilter());
+		currentViewSource.setExtractOutputLogic(vsd.getOutputLogic());
+        currentViewSource.setSequenceNumber((short)vsd.getSequenceNumber());
+        currentViewSource.setSourceLRID(vsd.getSourceLrId());
+        currentView.addViewSource(currentViewSource);
 	}
 
 	public static void addViewColumnSource(ViewColumnSourceData vcsd) {
-    	vcs = new ViewColumnSource();
-        vcs.setColumnID(vcsd.getColumnId());
-        vcs.setColumnNumber(vcsd.getColumnNumber());
-        vcs.setComponentId(vcsd.getColumnId());
-        vcs.setLogicText(vcsd.getLogicText());
-        vcs.setSequenceNumber((short)vcsd.getSequenceNumber());
-        vcs.setSourceType(ColumnSourceType.LOGICTEXT);
-        vcs.setViewSourceId(vcsd.getViewSourceId());
-        vcs.setViewId(vcsd.getViewID());
-        vcs.setViewSrcLrId(vcsd.getViewSourceLrId());
-        currentView.addViewColumnSource(vcs);
+    	currentViewColumnSource = new ViewColumnSource();
+        currentViewColumnSource.setColumnID(vcsd.getColumnId());
+        currentViewColumnSource.setColumnNumber(vcsd.getColumnNumber());
+        currentViewColumnSource.setComponentId(vcsd.getColumnId());
+        currentViewColumnSource.setLogicText(vcsd.getLogicText());
+        currentViewColumnSource.setSequenceNumber((short)vcsd.getSequenceNumber());
+        currentViewColumnSource.setSourceType(ColumnSourceType.LOGICTEXT);
+        currentViewColumnSource.setViewSourceId(vcsd.getViewSourceId());
+        currentViewColumnSource.setViewId(vcsd.getViewID());
+        currentViewColumnSource.setViewSrcLrId(vcsd.getViewSourceLrId());
+        currentView.addViewColumnSource(currentViewColumnSource);
 	}
 
-	public void compileViewColumnSource() {
-		try {
-			syntaxCheckLogic(vcs.getLogicText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(errorListener.getErrors().size() == 0) {
-			ExtractBaseAST.setCurrentColumnNumber((short)vcs.getColumnNumber());
-			ExtractPhaseCompiler.buildViewColumnSourceAST(vcs);
-			if(Repository.getCompilerErrors().size() == 0) {
-				ExtractPhaseCompiler.buildTheExtractLogicTable();
-				xlt = ExtractPhaseCompiler.getExtractLogicTable();
-			}
-		}
-	}
-
-	public void compileExtractFilter() {
-		try {
-			syntaxCheckLogic(vs.getExtractFilter());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(errorListener.getErrors().size() == 0) {
-			ExtractBaseAST.setCurrentColumnNumber((short)0);
-			ExtractPhaseCompiler.buildViewSourceAST(vs);
-			if(Repository.getCompilerErrors().size() == 0) {
-				ExtractPhaseCompiler.buildTheExtractLogicTable();
-				xlt = ExtractPhaseCompiler.getExtractLogicTable();
-			}
-		}
-	}
-
-	public void compileExtractOutput() {
-		try {
-			syntaxCheckLogic(vs.getExtractOutputLogic());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(errorListener.getErrors().size() == 0) {
-			ExtractBaseAST.setCurrentColumnNumber((short)0);
-			ExtractPhaseCompiler.buildViewOutputAST(vs);
-			if(Repository.getCompilerErrors().size() == 0) {
-				ExtractPhaseCompiler.buildTheExtractLogicTable();
-				xlt = ExtractPhaseCompiler.getExtractLogicTable();
-			}
-		}
-    }
-
+	public abstract void run();
 
 	public void syntaxCheckLogic(String logicText) throws IOException {
         InputStream is = new ByteArrayInputStream(logicText.getBytes());
@@ -226,6 +176,13 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
         errorListener = new ParseErrorListener();
         parser.addErrorListener(errorListener); // add ours
         tree = parser.goal(); // parse
+	}
+
+	public void buildTheExtractTableIfThereAreNoErrors() {
+		if(Repository.getCompilerErrors().size() == 0) {
+			ExtractPhaseCompiler.buildTheExtractLogicTable();
+			xlt = ExtractPhaseCompiler.getExtractLogicTable();
+		}
 	}
 
 	public LogicTable getXlt() {
@@ -331,7 +288,7 @@ public class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 		Repository.clearAndInitialise();
         ExtractPhaseCompiler.reset();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
-		vcs = null;
+		currentViewColumnSource = null;
 		currentView = null;
 	}
 

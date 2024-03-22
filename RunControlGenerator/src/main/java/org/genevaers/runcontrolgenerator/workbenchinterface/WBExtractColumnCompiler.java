@@ -1,5 +1,13 @@
 package org.genevaers.runcontrolgenerator.workbenchinterface;
 
+import static org.genevaers.runcontrolgenerator.workbenchinterface.WorkbenchCompiler.currentViewColumnSource;
+
+import java.io.IOException;
+
+import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2023.
  * 
@@ -25,4 +33,19 @@ public class WBExtractColumnCompiler extends WorkbenchCompiler {
 		type = WBCompilerType.EXTRACT_COLUMN;
 	}
 
+	@Override
+	public void run() {
+		try {
+			syntaxCheckLogic(currentViewColumnSource.getLogicText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(errorListener.getErrors().size() == 0) {
+			ExtractBaseAST.setCurrentColumnNumber((short)currentViewColumnSource.getColumnNumber());
+			ExtractPhaseCompiler.buildViewColumnSourceAST(currentViewColumnSource);
+			buildTheExtractTableIfThereAreNoErrors();
+		}
+	}
+	
 }
