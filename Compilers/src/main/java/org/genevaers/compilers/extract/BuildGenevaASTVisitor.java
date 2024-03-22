@@ -133,7 +133,11 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     
     @Override public ExtractBaseAST visitSelectIf(GenevaERSParser.SelectIfContext ctx) { 
         SelectIfAST sfn = (SelectIfAST)ASTFactory.getNodeOfType(ASTFactory.Type.SELECTIF);
-        sfn.addChildIfNotNull(visit(ctx.getChild(2)));
+        if(extractContext == ExtractContext.FILTER) {
+            sfn.addChildIfNotNull(visit(ctx.getChild(2)));
+        } else {
+            sfn.addError("SELECTIF cannot be used here");
+        }
         return sfn; 
     }
 
