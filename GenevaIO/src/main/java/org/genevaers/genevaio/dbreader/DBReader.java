@@ -71,6 +71,18 @@ public class DBReader {
         }
     }
 
+    /** 
+     * Funtion to aid the workbench compiler
+     * Problem is that the view source may not have been saved
+     * Therefore just want the LR?
+     * 
+     * WB will supply a DataProvider - which is just a wrapper for the database connection
+     * 
+     */
+    // public boolean loadViewSource(int envID, int view, int sourceNumber) {
+
+    // }
+
     private DatabaseConnection setConnectionType(DatabaseConnectionParams params) throws ClassNotFoundException {
         switch(params.getDbType()) {
             case DB2:

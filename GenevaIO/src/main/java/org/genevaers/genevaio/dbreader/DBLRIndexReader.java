@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -39,7 +41,7 @@ public class DBLRIndexReader extends DBReaderBase{
             + "from " + params.getSchema() + ".lrindex i "
             + "inner join  " + params.getSchema() + ".lrindexfld f "
             + "on(f.environid = i.environid and f.lrindexid = i.lrindexid) "
-            + "where i.ENVIRONID = " + params.getEnvironmenID() + " and i.logrecid in(" + getIds(requiredLRs) + ") "
+            + "where i.ENVIRONID = " + params.getEnvironmentID() + " and i.logrecid in(" + getIds(requiredLRs) + ") "
             + "order by logrecid;";
 
         executeAndWriteToRepo(dbConnection, query);
@@ -70,5 +72,22 @@ public class DBLRIndexReader extends DBReaderBase{
         }
         Repository.addLRIndex(lri);
     }
+
+    public void addLRToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID,
+            int sourceLR) {
+                String query = "select distinct "
+                + "i.lrindexid, "
+                + "i.logrecid, "
+                + "f.lrindexfldid, "
+                + "f.fldseqnbr, "
+                + "f.lrfieldid, "
+                + "effdatestartfldid, "
+                + "effdateendfldid "
+                + "from " + params.getSchema() + ".lrindex i "
+                + "inner join  " + params.getSchema() + ".lrindexfld f "
+                + "on(f.environid = i.environid and f.lrindexid = i.lrindexid) "
+                + "where i.ENVIRONID = " + environmentID + " and i.logrecid = " + sourceLR + "; ";
+                executeAndWriteToRepo(dbConnection, query);
+            }
     
 }

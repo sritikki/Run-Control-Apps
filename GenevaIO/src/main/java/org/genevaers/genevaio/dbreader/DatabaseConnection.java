@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -38,5 +40,7 @@ public interface DatabaseConnection {
     public List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException;
 
     public ResultSet getResults(String viewsQuery) throws SQLException;
+
+    public Connection getConnection();
 
 }

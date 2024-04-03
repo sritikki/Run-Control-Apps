@@ -40,7 +40,7 @@ public class DBExitReader extends DBReaderBase {
             + "programtypecd, "
             + "e.optimizeind "
             + "FROM " + params.getSchema() + ".exit e "
-            + "where e.environid = " + params.getEnvironmenID() + " and e.exitid in(" + getIds(requiredExits) + ") ";
+            + "where e.environid = " + params.getEnvironmentID() + " and e.exitid in(" + getIds(requiredExits) + ") ";
 
             executeAndWriteToRepo(dbConnection, query);
         }

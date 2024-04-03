@@ -68,7 +68,7 @@ public class DB2Connection implements DatabaseConnection{
         folderQuery = "select VIEWFOLDERID from ";
         folderQuery += params.getSchema();
         folderQuery += ".viewfolder v where ENVIRONID = ";
-        folderQuery += params.getEnvironmenID();
+        folderQuery += params.getEnvironmentID();
         folderQuery += " and VIEWFOLDERID IN(";
         folderQuery += params.getFolderIds();
         folderQuery += ")";
@@ -85,7 +85,7 @@ public class DB2Connection implements DatabaseConnection{
     @Override
     public List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException {
         String viewsQuery = "select viewid  from " + params.getSchema() + ".vfvassoc vf "
-        + "where vf.environid = " + params.getEnvironmenID() + " and vf.viewfolderid in(" + params.getFolderIds() + ");";
+        + "where vf.environid = " + params.getEnvironmentID() + " and vf.viewfolderid in(" + params.getFolderIds() + ");";
         PreparedStatement ps = con.prepareStatement(viewsQuery);
 
         ResultSet rs = ps.executeQuery();
@@ -100,5 +100,10 @@ public class DB2Connection implements DatabaseConnection{
     public ResultSet getResults(String query) throws SQLException {
         PreparedStatement ps = con.prepareStatement(query);
         return ps.executeQuery();
+    }
+
+    @Override
+    public Connection getConnection() {
+        return con;
     }
 }

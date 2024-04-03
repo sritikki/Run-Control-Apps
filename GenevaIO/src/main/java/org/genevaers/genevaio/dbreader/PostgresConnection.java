@@ -30,7 +30,7 @@ public class PostgresConnection implements DatabaseConnection {
     private DatabaseConnectionParams params;
     private Connection con;
 
-    PostgresConnection(DatabaseConnectionParams params) {
+    public PostgresConnection(DatabaseConnectionParams params) {
         this.params = params;
     }
 
@@ -73,6 +73,11 @@ public class PostgresConnection implements DatabaseConnection {
     public ResultSet getResults(String query) throws SQLException {
         PreparedStatement ps = con.prepareStatement(query);
         return ps.executeQuery();
+    }
+
+    @Override
+    public Connection getConnection() {
+        return con;
     }
 
 }

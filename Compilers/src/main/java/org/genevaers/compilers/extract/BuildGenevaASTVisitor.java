@@ -26,6 +26,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.extract.astnodes.BetweenFunc;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+import org.genevaers.genevaio.dataprovider.CompilerDataProvider;
 import org.genevaers.compilers.extract.astnodes.BooleanAndAST;
 import org.genevaers.compilers.extract.astnodes.BooleanNotAST;
 import org.genevaers.compilers.extract.astnodes.BooleanOrAST;
@@ -92,6 +93,8 @@ import com.google.common.flogger.FluentLogger;
 
 public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private static CompilerDataProvider dataProvider;
     
     private ViewColumnSource viewColumnSource;
     private ViewSource viewSource;
@@ -157,7 +160,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         TerminalNode c = ctx.COLUMN();
         if(c.getSymbol().getType() == GenevaERSParser.COLUMN) {
             casnode.addChildIfNotNull(visitChildren(ctx));
-            ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+            ViewNode view = dataProvider.getView(viewColumnSource.getViewId());
             ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(view.getColumnByID(viewColumnSource.getColumnID())); // Change this to make column type more specific
             colNode.setViewColumn(view.getColumnByID(viewColumnSource.getColumnID()));
             casnode.addChildIfNotNull(colNode);
@@ -178,7 +181,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         if(c.getSymbol().getType() == GenevaERSParser.COL_REF) {
             String col = c.getText();
             String[] bits = col.split("\\.");
-            ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+            ViewNode view = dataProvider.getView(viewColumnSource.getViewId());
             ViewColumn vc = view.getColumnNumber(Integer.parseInt(bits[1])); 
             ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(vc); // Change this to make column type more specific
             colNode.setViewColumn(vc);
@@ -446,7 +449,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
 	@Override public ExtractBaseAST visitLrField(GenevaERSParser.LrFieldContext ctx) { 
         FieldReferenceAST fieldRef = makeCurrentOrPriorFieldReferenceAST(ctx);
-        LogicalRecord lr = Repository.getLogicalRecords().get(viewSource.getSourceLRID());
+        LogicalRecord lr = dataProvider.getLogicalRecord(viewSource.getSourceLRID());
         fieldRef.resolveField(lr, stripBraces(ctx.CURLED_NAME().getText()));
         return fieldRef; 
     }
@@ -520,7 +523,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
      }
 
 	private void addLookupReferenceToNode(LookupPathRefAST lkRef, String lkname) {
-        LookupPath lookup =  Repository.getLookups().get(lkname);
+        LookupPath lookup =  dataProvider.getLookup(lkname);
 		if(lookup != null) {
             lkRef.setLookup(lookup);
             lkRef.resolveLookup(lookup);
@@ -533,7 +536,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPFIELDREF);
 		String fullName = ctx.getChild(1).getText();
 		String[] parts = fullName.split("\\.");
-        LookupPath lookup =  Repository.getLookups().get(parts[0]);
+        LookupPath lookup =  dataProvider.getLookup(parts[0]);
 		if(lookup != null) {
             lkfieldRef.resolveField(lookup, parts[1]);
 		} else {
@@ -549,7 +552,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             lkfieldRef.addChildIfNotNull(visitEffDate(ctx.effDate()));
             lkfieldRef.setEffDateValue((EffDateValue) visitEffDate(ctx.effDate()));
         }
-        lkfieldRef.makeUnique();
+		if(lookup != null) {
+            lkfieldRef.makeUnique();
+        }
         return lkfieldRef;
     }
 
@@ -801,7 +806,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         ColumnRefAST colRef = (ColumnRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNREF);
         String col = ctx.getText();
         String[] bits = col.split("\\.");
-        ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+        ViewNode view = dataProvider.getView(viewColumnSource.getViewId());
         //ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(view.getColumnByID(Integer.parseInt(bits[1]))); // Change this to make column type more specific
         colRef.setViewColumn(view.getColumnNumber(Integer.parseInt(bits[1])));
         return colRef; 
@@ -835,7 +840,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         this.viewColumnSource = viewColumnSource;
         int vsid = viewColumnSource.getViewSourceId();
         int viewID = viewColumnSource.getViewId();
-        this.viewSource = Repository.getViews().get(viewID).getViewSourceById(vsid);
+        this.viewSource = dataProvider.getView(viewID).getViewSourceById(vsid);
     }
 
     public void setViewSource(ViewSource viewSource) {
@@ -844,6 +849,10 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     public void setParent(ExtractBaseAST parent) {
         this.parent = parent;
+    }
+
+    public static void setDataProvider(CompilerDataProvider dp) {
+        dataProvider = dp;
     }
 
 }

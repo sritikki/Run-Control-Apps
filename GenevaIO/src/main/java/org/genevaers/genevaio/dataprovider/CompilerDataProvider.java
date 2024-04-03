@@ -3,6 +3,11 @@ package org.genevaers.genevaio.dataprovider;
 import java.util.List;
 import java.util.Map;
 
+import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
+import org.genevaers.repository.components.LogicalRecord;
+import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.ViewNode;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2023.
  * 
@@ -30,6 +35,7 @@ public interface CompilerDataProvider {
 		public int fieldid;
 	}
 
+
 	public Integer findExitID(String string, boolean procedure);
 	public Integer findPFAssocID(String lfName, String pfName);
 	public Map<String, Integer> getFieldsFromLr(int id);
@@ -39,7 +45,11 @@ public interface CompilerDataProvider {
 	public int getEnvironmentID();
 
 	public void setLogicalRecordID(int lrid);
-	public int getLogicalRecordID();
+	public LogicalRecord getLogicalRecord(int id);
+	public void loadLR(int environmentID, int sourceLR);
+	public LookupPath getLookup(String name);
+
+	public ViewNode getView(int id);
 
 
 }

@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -50,7 +52,7 @@ public class DBFieldReader extends DBReaderBase{
             + "from " + params.getSchema() + ".LRFIELD f "
             + "INNER JOIN " + params.getSchema() + ".LRFIELDATTR a "
             + "ON a.LRFIELDID = f.LRFIELDID and a.ENVIRONID = f.ENVIRONID "
-            + "where f.ENVIRONID = " + params.getEnvironmenID() + " and f.logrecid in(" + getIds(requiredLRs) + ") ";
+            + "where f.ENVIRONID = " + params.getEnvironmentID() + " and f.logrecid in(" + getIds(requiredLRs) + ") ";
         
         executeAndWriteToRepo(dbConnection, query);
         return hasErrors;
@@ -81,5 +83,29 @@ public class DBFieldReader extends DBReaderBase{
         lrf.setDbColName("");
         Repository.addLRField(lrf);
     }
+
+    public void addLRToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID,
+            int sourceLR) {
+                String query = "select "
+                + "f.LRFIELDID, "
+                + "f.LOGRECID, "
+                + "f.NAME, "
+                + "DBMSCOLNAME, "
+                + "FIXEDSTARTPOS, "
+                + "ORDINALPOS, "
+                + "ORDINALOFFSET, "
+                + "FLDFMTCD, "
+                + "SIGNEDIND, "
+                + "MAXLEN, "
+                + "DECIMALCNT, "
+                + "ROUNDING, "
+                + "FLDCONTENTCD, "
+                + "JUSTIFYCD "
+                + "from " + params.getSchema() + ".LRFIELD f "
+                + "INNER JOIN " + params.getSchema() + ".LRFIELDATTR a "
+                + "ON a.LRFIELDID = f.LRFIELDID and a.ENVIRONID = f.ENVIRONID "
+                + "where f.ENVIRONID = " + environmentID + " and f.logrecid = " + sourceLR + ";";
+                executeAndWriteToRepo(dbConnection, query);
+        }
     
 }

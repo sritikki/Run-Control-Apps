@@ -48,7 +48,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
         updateRequiredPfs(dbConnection, params);
         //Then get the PFs
         String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-        + "where PHYFILEID in (" + getIds(requiredPFs) + ") and ENVIRONID= " + params.getEnvironmenID() + ";";
+        + "where PHYFILEID in (" + getIds(requiredPFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
         executeAndWriteToRepo(dbConnection, pfRecs);
         //Note this relies on the LFs having been added first
         addPfsToLfs();
@@ -57,7 +57,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
 
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
-                + "where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID=" + params.getEnvironmenID() + ";";
+                + "where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID=" + params.getEnvironmentID() + ";";
         try {
             ResultSet rs = dbConnection.getResults(pfsFromLfs);
             while (rs.next()) {

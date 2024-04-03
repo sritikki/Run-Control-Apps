@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
+import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
 import org.genevaers.compilers.extract.ExtractColumnCompiler;
 import org.genevaers.compilers.extract.ExtractFilterCompiler;
 import org.genevaers.compilers.extract.ExtractOutputCompiler;
@@ -20,6 +21,7 @@ import org.genevaers.compilers.extract.astnodes.PFAstNode;
 import org.genevaers.compilers.extract.astnodes.ViewColumnSourceAstNode;
 import org.genevaers.compilers.extract.astnodes.ViewSourceAstNode;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
+import org.genevaers.genevaio.dataprovider.RepoDataProvider;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
@@ -71,6 +73,7 @@ public class ExtractPhaseCompiler {
 
     public static void buildTheAST() {
 		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		BuildGenevaASTVisitor.setDataProvider(new RepoDataProvider());
 		Iterator<LogicGroup> lgi = logicGroups.iterator();
 		while(lgi.hasNext()) {
 			LogicGroup lg = lgi.next();

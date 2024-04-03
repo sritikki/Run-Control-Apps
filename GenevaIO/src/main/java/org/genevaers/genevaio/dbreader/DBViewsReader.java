@@ -84,7 +84,7 @@ public class DBViewsReader extends DBReaderBase {
     private boolean verifyViewsExist(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         boolean allExist = true;
         String viewsQuery = "select VIEWID from " + params.getSchema() + ".view where ENVIRONID = "
-                + params.getEnvironmenID() + " and VIEWID IN(" + params.getViewIds() + ")";
+                + params.getEnvironmentID() + " and VIEWID IN(" + params.getViewIds() + ")";
         try {
             ResultSet rs = dbConnection.getResults(viewsQuery);
             List<Integer> views = new ArrayList<>();
@@ -118,7 +118,7 @@ public class DBViewsReader extends DBReaderBase {
     private void addViewsToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String viewsQuery = queryBase + " from " + params.getSchema() + ".View v " 
         + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
-        + "where viewid IN(" + viewIds + ") and v.environid = " + params.getEnvironmenID() + ";";
+        + "where viewid IN(" + viewIds + ") and v.environid = " + params.getEnvironmentID() + ";";
 
         executeAndWriteToRepo(dbConnection, viewsQuery);
     }

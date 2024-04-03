@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -24,12 +26,13 @@ import java.sql.SQLException;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalFile;
 
+
 public class DBLogicalFileReader extends DBReaderBase{
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String query = "select * from " + params.getSchema() +".LOGFILE "
-        + " where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID= " + params.getEnvironmenID() + ";";
+        + " where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
         executeAndWriteToRepo(dbConnection, query);
         return false;
     }
@@ -41,4 +44,13 @@ public class DBLogicalFileReader extends DBReaderBase{
         lf.setName(rs.getString("NAME"));
         Repository.getLogicalFiles().add(lf, lf.getID(), lf.getName());
     }    
+
+    public boolean addLFtoRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID, int lfid) {
+        String query = "select * from " + params.getSchema() +".LOGFILE "
+        + " where LOGFILEID = " + lfid + " and ENVIRONID= " + params.getEnvironmentID() + ";";
+        executeAndWriteToRepo(dbConnection, query);
+        return false;
+    }
+
+
 }

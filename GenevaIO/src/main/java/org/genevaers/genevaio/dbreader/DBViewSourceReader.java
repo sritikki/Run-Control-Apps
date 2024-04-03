@@ -47,7 +47,7 @@ public class DBViewSourceReader extends DBReaderBase{
             + "ON v.INLRLFASSOCID = i.LRLFASSOCID and v.ENVIRONID = i.ENVIRONID "
             + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC o "
             + "ON v.OUTLFPFASSOCID = o.LFPFASSOCID and v.ENVIRONID = o.ENVIRONID "
-            + "where v.ENVIRONID = " + params.getEnvironmenID() + " and VIEWID in(" + params.getViewIds() + "); ";
+            + "where v.ENVIRONID = " + params.getEnvironmentID() + " and VIEWID in(" + params.getViewIds() + "); ";
     
             executeAndWriteToRepo(dbConnection, query);
 

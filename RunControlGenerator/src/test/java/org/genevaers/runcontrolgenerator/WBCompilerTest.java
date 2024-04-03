@@ -4,14 +4,23 @@
 package org.genevaers.runcontrolgenerator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
 
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.genevaio.dbreader.DatabaseConnection.DbType;
+import org.genevaers.genevaio.dbreader.DatabaseConnection;
+import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
+import org.genevaers.genevaio.dbreader.LazyDBReader;
+import org.genevaers.genevaio.dbreader.PostgresConnection;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
@@ -57,272 +66,321 @@ import org.junit.jupiter.api.BeforeEach;
  * under the License.
  */
 
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
 import com.google.common.flogger.FluentLogger;
 
 /**
- *  Build on the SPO Tests
- *  Check the AST Tree built as a result
+ * Build on the SPO Tests
+ * Check the AST Tree built as a result
  */
 class WBCompilerTest extends RunCompilerBase {
-    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private int environmentid;
+  private int lrid;
+  private int lfid;
 
-    @BeforeEach
-    public void initEach(TestInfo info){
-        new RunControlConfigration();
-        WorkbenchCompiler.reset();
-        RunControlConfigration.set(RunControlConfigration.DOT_XLT, "Y");
-        Repository.clearAndInitialise();
-        ExtractBaseAST.setCurrentColumnNumber((short)0);
-        ExtractBaseAST.setCurrentAccumNumber(0);
-        Repository.setGenerationTime(Calendar.getInstance().getTime());
-        RecordParser.clearAndInitialise();
-        LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
-        java.nio.file.Path target = Paths.get("target/test-logs/");
-        target.toFile().mkdirs();
-        GenevaLog.initLogger(WBCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);
+  @BeforeEach
+  public void initEach(TestInfo info) {
+    new RunControlConfigration();
+    Repository.clearAndInitialise();
+    ExtractBaseAST.setCurrentColumnNumber((short) 0);
+    ExtractBaseAST.setCurrentAccumNumber(0);
+    Repository.setGenerationTime(Calendar.getInstance().getTime());
+    RecordParser.clearAndInitialise();
+
+    WorkbenchCompiler.reset();
+    environmentid = 3;
+    lrid = 1762;
+    lfid = 1506;
+    DatabaseConnectionParams params = getPostgresParams();
+    params.setEnvironmentID(Integer.toString(environmentid));
+    WorkbenchCompiler.setSQLConnection(getTestDatabaseConnection(params));
+    WorkbenchCompiler.setSchema("gendev");
+    WorkbenchCompiler.setEnvironment(environmentid);
+    WorkbenchCompiler.setSourceLRID(lrid);
+    WorkbenchCompiler.setSourceLFID(lfid);
+
+    RunControlConfigration.set(RunControlConfigration.DOT_XLT, "Y");
+    LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
+    java.nio.file.Path target = Paths.get("target/test-logs/");
+    target.toFile().mkdirs();
+    GenevaLog.initLogger(WBCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);
+  }
+
+  @AfterEach
+  public void afterEach(TestInfo info) {
+    GenevaLog.closeLogger(WBCompilerTest.class.getName());
+  }
+
+  @Test
+  void testAssignField() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8}");
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+
+    LogicTable xlt = extractCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+  }
+
+  @Test
+  void testBadField() throws IOException {
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Bad}");
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(1, Repository.getCompilerErrors().size());
+    assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("Unknown field {Bad}"));
+  }
+
+  @Test
+  void testBadSyntax() throws IOException {
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = gobbledegook");
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(1, Repository.getCompilerErrors().size());
+    assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("gobbledegook"));
+  }
+
+  @Test
+  void testFilter() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    ViewSourceData vsd = makeViewSource(lrid, view);
+    vsd.setExtractFilter("SELECTIF({Packed} > 0)");
+    vsd.setOutputLogic("");
+
+    WBExtractFilterCompiler extractCompiler = (WBExtractFilterCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_FILTER);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+
+    LogicTable xlt = extractCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+  }
+
+  @Test
+  void testOutput() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+    vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=DEFAULT)");
+
+    WBExtractOutputCompiler extractCompiler = (WBExtractOutputCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_OUTPUT);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+
+    LogicTable xlt = extractCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+  }
+
+  @Test
+  void testSELECTIFContext() throws IOException {
+    new RunControlConfigration();
+     ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd,
+        "SELECTIF({field} > 0)\n COLUMN = {Zoned}");
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(1, Repository.getCompilerErrors().size());
+    assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("SELECTIF"));
+  }
+
+  @Test
+  void testAssignLookupField() throws IOException {
+    new RunControlConfigration();
+    // This will require a DB connection
+    // And preloaded view... use OneCollookup
+    // Probably should have a script that preloads a given database with the data we
+    // want
+
+    // Not making any of the metadata - it should all be there in the database
+    // We tell the compiler which to use and supply the logic and view column source
+    // DatabaseConnectionParams postgresParms = getPostgresParams();
+    assertEquals(1, Repository.getLogicalRecords().size());
+    assertEquals(18, Repository.getFields().size());
+
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(1762, view);
+
+    ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1}");
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+    LogicTable xlt = extractCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+  }
+
+  private ViewColumnSourceData makeViewColumnSource(int rcgLR, ViewData view, ColumnData vc,
+      String logicText) {
+    ViewColumnSourceData vcsd = new ViewColumnSourceData();
+    vcsd.setColumnId(vc.getColumnId());
+    vcsd.setColumnNumber(vc.getColumnNumber());
+    vcsd.setLogicText(logicText);
+    vcsd.setSequenceNumber((short) 1);
+    vcsd.setSourceTypeValue(ColumnSourceType.LOGICTEXT.ordinal());
+    vcsd.setViewSourceId(1);
+    vcsd.setViewID(view.getId());
+    vcsd.setViewSourceLrId(rcgLR);
+    return vcsd;
+  }
+
+  private ColumnData makeColumnData(ViewData view, int colID) {
+    ColumnData ci = new ColumnData();
+    ci.setColumnNumber(1);
+    ci.setColumnId(colID);
+    ci.setDataTypeValue(DataType.ALPHANUMERIC.ordinal());
+    ci.setDateCodeValue(DateCode.NONE.ordinal());
+    ci.setNumDecimalPlaces((short) 0);
+    ci.setExtractAreaValue(ExtractArea.AREADATA.ordinal());
+    ci.setStartPosition((short) 1);
+    ci.setLength((short) 19);
+    ci.setName("Test Field");
+    ci.setAlignment(JustifyId.NONE.ordinal());
+    ci.setRounding((short) 0);
+    ci.setSigned(false);
+    ci.setStartPosition((short) 1);
+    ci.setViewID(view.getId());
+    return ci;
+  }
+
+  private ViewSourceData makeViewSource(int rcgLR, ViewData view) {
+    ViewSourceData vs = new ViewSourceData();
+    vs.setId(1);
+    vs.setViewID(view.getId());
+    vs.setExtractFilter("");
+    vs.setSequenceNumber((short) 1);
+    vs.setSourceLrId(rcgLR);
+    return vs;
+  }
+
+  private ViewData makeView(int viewID, String name) {
+    ViewData vd = new ViewData();
+    vd.setId(viewID);
+    vd.setName(name);
+    vd.setTypeValue(ViewType.EXTRACT.ordinal());
+    return vd;
+  }
+
+  private LRData makeLRData(int id, String name) {
+    LRData lr = new LRData();
+    lr.setId(id);
+    lr.setName(name);
+    return lr;
+  }
+
+  private LRFieldData makeField(int lrid, int id, String name, DataType type, DateCode dateCode, short length,
+      short position, short decimals, short scaling, boolean signed) {
+    LRFieldData lrf = new LRFieldData();
+    lrf.setId(id);
+    lrf.setDataTypeValue(type.ordinal());
+    lrf.setDateCodeValue(dateCode.ordinal());
+    lrf.setLength(length);
+    lrf.setLrId(lrid);
+    lrf.setName(name);
+    lrf.setNumDecimals(decimals);
+    lrf.setRounding(scaling);
+    lrf.setSigned(signed);
+    lrf.setPosition(position);
+    return lrf;
+  }
+
+  public static DatabaseConnectionParams getPostgresParams() {
+    DatabaseConnectionParams params = new DatabaseConnectionParams();
+    params.setDbType(DbType.POSTGRES);
+    params.setDatabase("genevaers");
+    params.setPort("5432");
+    params.setSchema("gendev");
+    params.setServer("localhost");
+    params.setUsername("postgres");
+    params.setPassword("postgres");
+    return params;
+  }
+
+  public static Connection getTestDatabaseConnection(DatabaseConnectionParams params) {
+    DatabaseConnection pgCon = new PostgresConnection(params);
+    try {
+      pgCon.connect();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-
-    @AfterEach
-    public void afterEach(TestInfo info){
-		GenevaLog.closeLogger(WBCompilerTest.class.getName());
-    }
-
-    
-    @Test void testAssignField() throws IOException {
-      new RunControlConfigration();
-        LRData rcgLR = makeLRData(777, "TestLR");
-
-        String fieldName = "TestAlnumField";
-        LRFieldData lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
-
-        ViewData view = makeView(999, "TestView");
-        ColumnData cd = makeColumnData(view, 111);
-        ViewSourceData vsd = makeViewSource(rcgLR, view);
-        
-
-        ViewColumnSourceData vcs = makeViewColumnSource(rcgLR, lrf, view, cd, "COLUMN = {" + lrf.getName() + "}");
-
-        WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
-		    WorkbenchCompiler.addLR(rcgLR);
-        WorkbenchCompiler.addLRField(lrf);
-        WorkbenchCompiler.addView(view);
-        WorkbenchCompiler.addViewSource(vsd);
-        WorkbenchCompiler.addViewColumnSource(vcs);
-        WorkbenchCompiler.addColumn(cd);
-
-        extractCompiler.run();
-        assertEquals(0, Repository.getCompilerErrors().size());
-
-        LogicTable xlt = extractCompiler.getXlt();
-        System.out.println(LTLogger.logRecords(xlt));
-        
-    }
-
-    @Test void testBadField() throws IOException {
-      LRData rcgLR = makeLRData(777, "TestLR");
-
-      String fieldName = "TestAlnumField";
-      LRFieldData lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
-
-      ViewData view = makeView(999, "TestView");
-      ColumnData cd = makeColumnData(view, 111);
-      ViewSourceData vsd = makeViewSource(rcgLR, view);
-
-      ViewColumnSourceData vcs = makeViewColumnSource(rcgLR, lrf, view, cd, "COLUMN = {Bad}");
-
-      WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
-      WorkbenchCompiler.addLR(rcgLR);
-      WorkbenchCompiler.addLRField(lrf);
-      WorkbenchCompiler.addView(view);
-      WorkbenchCompiler.addViewSource(vsd);
-      WorkbenchCompiler.addViewColumnSource(vcs);
-      WorkbenchCompiler.addColumn(cd);
-
-      extractCompiler.run();
-      assertEquals(1, Repository.getCompilerErrors().size());
-      assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("Unknown field {Bad}"));
-    }
-
-    @Test void testBadSyntax() throws IOException {
-      LRData rcgLR = makeLRData(777, "TestLR");
-
-      String fieldName = "TestAlnumField";
-      LRFieldData lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
-
-      ViewData view = makeView(999, "TestView");
-      ColumnData cd = makeColumnData(view, 111);
-      ViewSourceData vsd = makeViewSource(rcgLR, view);
-      
-
-      ViewColumnSourceData vcs = makeViewColumnSource(rcgLR, lrf, view, cd, "COLUMN = gobbledegook");
-
-      WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
-      WorkbenchCompiler.addLR(rcgLR);
-      WorkbenchCompiler.addLRField(lrf);
-      WorkbenchCompiler.addView(view);
-      WorkbenchCompiler.addViewSource(vsd);
-      WorkbenchCompiler.addViewColumnSource(vcs);
-      WorkbenchCompiler.addColumn(cd);
-
-      extractCompiler.run();
-      assertEquals(1, Repository.getCompilerErrors().size());
-      assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("gobbledegook"));
-    }
-
-    @Test void testFilter() throws IOException {
-      new RunControlConfigration();
-        LRData rcgLR = makeLRData(777, "TestLR");
-
-        String fieldName = "TestAlnumField";
-        LRFieldData lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
-
-        ViewData view = makeView(999, "TestView");
-        ViewSourceData vsd = makeViewSource(rcgLR, view);
-        vsd.setExtractFilter("SELECTIF({TestAlnumField} > 0)");
-        vsd.setOutputLogic("");
-        
-        WBExtractFilterCompiler extractCompiler = (WBExtractFilterCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_FILTER);
-		    WorkbenchCompiler.addLR(rcgLR);
-        WorkbenchCompiler.addLRField(lrf);
-        WorkbenchCompiler.addView(view);
-        WorkbenchCompiler.addViewSource(vsd);
-
-        extractCompiler.run();
-        assertEquals(0, Repository.getCompilerErrors().size());
-
-        LogicTable xlt = extractCompiler.getXlt();
-        System.out.println(LTLogger.logRecords(xlt));
-        
-    }
-
-    @Test void testOutput() throws IOException {
-      new RunControlConfigration();
-        LRData rcgLR = makeLRData(777, "TestLR");
-
-        String fieldName = "TestAlnumField";
-        LRFieldData lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
-
-        ViewData view = makeView(999, "TestView");
-        ColumnData cd = makeColumnData(view, 111);
-        ViewSourceData vsd = makeViewSource(rcgLR, view);
-        vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=DEFAULT)");
-        
-        WBExtractOutputCompiler extractCompiler = (WBExtractOutputCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_OUTPUT);
-		    WorkbenchCompiler.addLR(rcgLR);
-        WorkbenchCompiler.addLRField(lrf);
-        WorkbenchCompiler.addView(view);
-        WorkbenchCompiler.addViewSource(vsd);
-
-        extractCompiler.run();
-        assertEquals(0, Repository.getCompilerErrors().size());
-
-        LogicTable xlt = extractCompiler.getXlt();
-        System.out.println(LTLogger.logRecords(xlt));
-    }
-
-    @Test void testSELECTIFContext() throws IOException {
-      new RunControlConfigration();
-        LRData rcgLR = makeLRData(777, "TestLR");
-
-        String fieldName = "TestAlnumField";
-        LRFieldData lrf = makeField(777, 33, fieldName, DataType.ALPHANUMERIC, DateCode.NONE, (short)19, (short)3, (short)0, (short)0, false);
-
-        ViewData view = makeView(999, "TestView");
-        ColumnData cd = makeColumnData(view, 111);
-        ViewSourceData vsd = makeViewSource(rcgLR, view);
-        
-
-        ViewColumnSourceData vcs = makeViewColumnSource(rcgLR, lrf, view, cd, "SELECTIF({field} > 0)\n COLUMN = {" + lrf.getName() + "}");
-
-        WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
-		    WorkbenchCompiler.addLR(rcgLR);
-        WorkbenchCompiler.addLRField(lrf);
-        WorkbenchCompiler.addView(view);
-        WorkbenchCompiler.addViewSource(vsd);
-        WorkbenchCompiler.addViewColumnSource(vcs);
-        WorkbenchCompiler.addColumn(cd);
-
-        extractCompiler.run();
-        assertEquals(1, Repository.getCompilerErrors().size());
-        assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("SELECTIF"));        
-    }
-
-
-    private ViewColumnSourceData makeViewColumnSource(LRData rcgLR, LRFieldData lrf, ViewData view, ColumnData vc, String logicText) {
-      ViewColumnSourceData vcsd = new ViewColumnSourceData();
-      vcsd.setColumnId(vc.getColumnId());
-      vcsd.setColumnNumber(vc.getColumnNumber());
-      vcsd.setLogicText(logicText);
-      vcsd.setSequenceNumber((short)1);
-      vcsd.setSourceTypeValue(ColumnSourceType.LOGICTEXT.ordinal());
-      vcsd.setViewSourceId(1);
-      vcsd.setViewID(view.getId());
-      vcsd.setViewSourceLrId(rcgLR.getId());
-      return vcsd;
-    }
-
-    private ColumnData makeColumnData(ViewData view, int colID) {
-      ColumnData ci = new ColumnData();
-      ci.setColumnNumber(1);
-      ci.setColumnId(colID);
-      ci.setDataTypeValue(DataType.ALPHANUMERIC.ordinal());
-      ci.setDateCodeValue(DateCode.NONE.ordinal());
-      ci.setNumDecimalPlaces((short)0);
-      ci.setExtractAreaValue(ExtractArea.AREADATA.ordinal());
-      ci.setStartPosition((short)1);
-      ci.setLength((short)19);
-      ci.setName("Test Field");
-      ci.setAlignment(JustifyId.NONE.ordinal());
-      ci.setRounding((short)0);
-      ci.setSigned(false);
-      ci.setStartPosition((short)1);
-      ci.setViewID(view.getId());
-      return ci;
-    }
-
-    private ViewSourceData makeViewSource(LRData rcgLR, ViewData view) {
-      ViewSourceData vs = new ViewSourceData();
-      vs.setId(1);
-      vs.setViewID(view.getId());
-      vs.setExtractFilter("");
-      vs.setSequenceNumber((short)1);
-      vs.setSourceLrId(rcgLR.getId());
-      return vs;
-    }
-
-    private ViewData makeView(int viewID, String name) {
-      ViewData vd = new ViewData();
-      vd.setId(viewID);
-      vd.setName(name);
-      vd.setTypeValue(ViewType.EXTRACT.ordinal());
-      return vd;
-    }
-
-    private LRData makeLRData(int id, String name) {
-      LRData lr = new LRData();
-      lr.setId(id);
-      lr.setName(name);
-      return lr;
-    }
-
-    private LRFieldData makeField(int lrid, int id, String name, DataType type, DateCode dateCode, short length, short position, short decimals, short scaling, boolean signed) {
-		LRFieldData lrf = new LRFieldData();
-		lrf.setId(id);
-		lrf.setDataTypeValue(type.ordinal());
-		lrf.setDateCodeValue(dateCode.ordinal());
-		lrf.setLength(length);
-		lrf.setLrId(lrid);
-		lrf.setName(name);
-		lrf.setNumDecimals(decimals);
-		lrf.setRounding(scaling);
-		lrf.setSigned(signed);
-		lrf.setPosition(position);
-		return lrf;
-    }
-
+    return pgCon.getConnection();
+    // String url = "jdbc:postgresql://"
+    // + params.getServer() +":" + params.getPort() + "/" + params.getDatabase()
+    // + "?user=" + params.getUsername()
+    // + "&password=" +params.getPassword()
+    // + "&ssl=false"
+    // + "&currentSchema=" + params.getSchema();
+    // try {
+    // return DriverManager.getConnection(url);
+    // } catch (SQLException e) {
+    // logger.atSevere().log("Unable to connect to database");
+    // return null;
+    // }
+  }
 
 }

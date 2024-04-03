@@ -124,13 +124,6 @@ public class ExtractDependencyCache {
 	}
 
 	public static void setDataProvider(CompilerDataProvider dataFromHere) {
-		if(dataProvider == null) {
-			dataProvider = dataFromHere;	
-		} else if(dataProvider.getEnvironmentID() != dataFromHere.getEnvironmentID() 
-			|| dataProvider.getLogicalRecordID() != dataFromHere.getLogicalRecordID() ) {
-			dataProvider = dataFromHere;	
-			clear();
-		} 
 	}
 
 	public static void setLRFieldNameIds(Map<String, Integer> fieldsFromLr) {

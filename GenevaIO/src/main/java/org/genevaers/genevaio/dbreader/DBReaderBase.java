@@ -1,5 +1,8 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -42,6 +45,19 @@ public abstract class DBReaderBase {
     protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query) {
         try {
             ResultSet rs = dbConnection.getResults(query);
+            while(rs.next()) {
+                addComponentToRepo(rs);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    protected void executeAndWriteToRepo(Connection dbConnection, String query) {
+        try {
+            PreparedStatement ps = dbConnection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 addComponentToRepo(rs);
             }

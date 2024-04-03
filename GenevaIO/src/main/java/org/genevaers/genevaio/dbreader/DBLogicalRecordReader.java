@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -39,7 +41,7 @@ public class DBLogicalRecordReader extends DBReaderBase {
             + "r.LOOKUPEXITID, "
             + "r.LOOKUPEXITSTARTUP "
             + "from " + params.getSchema() + ".LOGREC r " 
-            + "where r.ENVIRONID = " + params.getEnvironmenID() + " and r.LOGRECID in(" + getIds(requiredLRs) + ") "
+            + "where r.ENVIRONID = " + params.getEnvironmentID() + " and r.LOGRECID in(" + getIds(requiredLRs) + ") "
             + "order by r.LOGRECID; ";
         executeAndWriteToRepo(dbConnection, query);
     
@@ -57,4 +59,35 @@ public class DBLogicalRecordReader extends DBReaderBase {
         Repository.addLogicalRecord(lr);
     }
     
+    public boolean addNamedToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, String name) {
+        String query = "select "
+            + "r.ENVIRONID, "
+            + "r.LOGRECID, "
+            + "r.NAME, "
+            + "r.LRTYPECD, "
+            + "r.LRSTATUSCD, "
+            + "r.LOOKUPEXITID, "
+            + "r.LOOKUPEXITSTARTUP "
+            + "from " + params.getSchema() + ".LOGREC r " 
+            + "where r.ENVIRONID = " + params.getEnvironmentID() + " and r.NAME = " + name + " "
+            + "order by r.LOGRECID; ";
+        executeAndWriteToRepo(dbConnection, query);
+    
+        return false;
+    }
+
+    public void addLRToRepo(DatabaseConnection sqlConnection, DatabaseConnectionParams params, int environmentID, int sourceLR) {
+                String query = "select "
+                + "r.ENVIRONID, "
+                + "r.LOGRECID, "
+                + "r.NAME, "
+                + "r.LRTYPECD, "
+                + "r.LRSTATUSCD, "
+                + "r.LOOKUPEXITID, "
+                + "r.LOOKUPEXITSTARTUP "
+                + "from " + params.getSchema() + ".LOGREC r " 
+                + "where r.ENVIRONID = " + environmentID + " and r.LOGRECID = " + sourceLR + ";";
+            executeAndWriteToRepo(sqlConnection, query);
+    }
+
 }

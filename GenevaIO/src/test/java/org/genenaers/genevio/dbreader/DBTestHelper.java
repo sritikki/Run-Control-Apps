@@ -30,7 +30,7 @@ public class DBTestHelper {
         DatabaseConnectionParams params = new DatabaseConnectionParams();
         params.setDbType(DbType.POSTGRES);
         params.setDatabase("genevaers");
-        params.setEnvironmenID("1");
+        params.setEnvironmentID("1");
         params.setPort("5432");
         params.setSchema("gendev");
         params.setServer("localhost");
@@ -46,7 +46,7 @@ public class DBTestHelper {
         DatabaseConnectionParams params = new DatabaseConnectionParams();
         params.setDbType(DbType.DB2);
         params.setDatabase("DM12");
-        params.setEnvironmenID("308");
+        params.setEnvironmentID("308");
         params.setPort("5033");
         params.setSchema("SAFRWBGD");
         params.setServer("sp13.svl.ibm.com");

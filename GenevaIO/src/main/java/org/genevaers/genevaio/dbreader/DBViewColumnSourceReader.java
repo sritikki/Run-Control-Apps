@@ -43,7 +43,7 @@ public class DBViewColumnSourceReader extends DBReaderBase{
             + "SORTTITLELRFIELDID, "
             + "EXTRACTCALCLOGIC "
             + "from " + params.getSchema() + ".viewcolumnsource "
-            + "where environid = " + params.getEnvironmenID() + " and viewid in(" + viewIds + ") ";
+            + "where environid = " + params.getEnvironmentID() + " and viewid in(" + viewIds + ") ";
 
         executeAndWriteToRepo(dbConnection, query);
         return hasErrors;

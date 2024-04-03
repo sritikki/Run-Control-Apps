@@ -21,6 +21,7 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -35,9 +36,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.fusesource.jansi.AnsiRenderer.Code;
+import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
 import org.genevaers.compilers.extract.ExtractCompiler;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.genevaio.dataprovider.CompilerDataProvider;
+import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
+import org.genevaers.genevaio.dbreader.LazyDBReader;
+import org.genevaers.genevaio.dbreader.WBConnection;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.grammar.GenevaERSLexer;
 import org.genevaers.grammar.GenevaERSParser;
@@ -62,11 +67,12 @@ import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
+	private static DatabaseConnectionParams params = new DatabaseConnectionParams();
 	protected WBCompilerType type;
 	private GoalContext tree;
 	private ExtractDependencyAnalyser dependencyAnalyser = new ExtractDependencyAnalyser();
 	protected ParseErrorListener errorListener;
-	private CompilerDataProvider dataProvider;
+	private static LazyDBReader dataProvider = new LazyDBReader();;
 	private int envId;
 	private ViewType viewType;
 	private ColumnData columnData;
@@ -74,20 +80,40 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	private static ViewNode currentView;
 	protected static ViewColumnSource currentViewColumnSource;
 	protected static ViewSource currentViewSource;
+	private static int environmentID;
+	private static int sourceLR;
+	private static int sourceLF;
 
-	public WorkbenchCompiler() {
-	}
-
-    public String greetings() {
-        return "Greetings from the Run Control Generator.\nWatch this space.";
+	//Common setup functions
+    public static void setSQLConnection(Connection c) {
+		dataProvider.setDatabaseConnection(new WBConnection(c));
+		dataProvider.setParams(params);
+		BuildGenevaASTVisitor.setDataProvider(dataProvider);
     }
-    
+
+	public static void setSchema(String schema) {
+		params.setSchema(schema);
+	}
 
     public void setViewDetails(int environmentId, int viewNum, ViewType type) {
         envId = environmentId;
 		int viewID = viewNum;
 		viewType = type;
+    }
 
+	public static void setEnvironment(int i) {
+		environmentID = i;
+		params.setEnvironmentID(Integer.toString(i));
+		dataProvider.setEnvironmentID(i);
+	}
+
+    public static void setSourceLRID(int i) {
+        sourceLR = i;
+		dataProvider.loadLR(environmentID, sourceLR);
+    }
+
+    public static void setSourceLFID(int id) {
+        sourceLF = id;
     }
 
 	public static void addView(ViewData vd) {
@@ -96,29 +122,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         vdef.setName(vd.getName());
         vdef.setViewType(ViewType.values()[vd.getTypeValue()]);
         currentView = Repository.getViewNodeMakeIfDoesNotExist(vdef);
-	}
-
-	public static void addLR(LRData lrd) {
-		LogicalRecord rcgLR = new LogicalRecord();
-		rcgLR.setComponentId(lrd.getId());
-		rcgLR.setName(lrd.getName());
-		Repository.addLogicalRecord(rcgLR);
-	}
-
-	public static void addLRField(LRFieldData lrfd) {
-		LRField lrf = new LRField();
-		lrf.setComponentId(lrfd.getId());
-		lrf.setDatatype(DataType.values()[lrfd.getDataTypeValue()]);
-		lrf.setDateTimeFormat(DateCode.values()[lrfd.getDateCodeValue()]);
-		lrf.setLength((short)lrfd.getLength());
-		lrf.setLrID(lrfd.getLrId());
-		lrf.setName(lrfd.getName());
-		lrf.setNumDecimalPlaces((short)lrfd.getNumDecimals());
-		lrf.setRounding((short)lrfd.getRounding());
-		lrf.setSigned(lrfd.isSigned());
-		int p = lrfd.getPosition();
-		lrf.setStartPosition((short)p);
-		Repository.addLRField(lrf);
 	}
 
     public static void addColumn(ColumnData ci) {
@@ -180,6 +183,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	public void buildTheExtractTableIfThereAreNoErrors() {
 		if(Repository.getCompilerErrors().size() == 0) {
+			ExtractPhaseCompiler.buildTheJoinLogicTable();
 			ExtractPhaseCompiler.buildTheExtractLogicTable();
 			xlt = ExtractPhaseCompiler.getExtractLogicTable();
 		}
@@ -221,11 +225,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	@Override
 	public ParseTree getParseTree() {
 		return tree;
-	}
-
-	public void setDataProvider(CompilerDataProvider dataFromHere) {
-		dataProvider = dataFromHere;
-		dependencyAnalyser.setDataProvider(dataFromHere);
 	}
 
 	@Override
@@ -324,11 +323,8 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		return ver;
 	}
 
-	public void addLR(LogicalRecord lr) {
-		Repository.addLogicalRecord(lr);
+	public static void setDataProvider(LazyDBReader dp) {
+		dataProvider = dp;
 	}
 
-	public void addField(LRField f) {
-		Repository.addLRField(f);
-	}
 }
