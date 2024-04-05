@@ -32,17 +32,11 @@ public class WBExtractFilterCompiler extends WorkbenchCompiler  {
     }
 
 	@Override
-	public void run() {
-		try {
-			syntaxCheckLogic(currentViewSource.getExtractFilter());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void buildAST() {
+		syntaxCheckLogic(currentViewSource.getExtractFilter());
 		if(errorListener.getErrors().size() == 0) {
 			ExtractBaseAST.setCurrentColumnNumber((short)0);
 			ExtractPhaseCompiler.buildViewSourceAST(currentViewSource);
-			buildTheExtractTableIfThereAreNoErrors();
 		}
 	}
 

@@ -19,15 +19,12 @@ public class RepoDataProvider implements CompilerDataProvider{
 
     @Override
     public Integer findExitID(String string, boolean procedure) {
-        
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findExitID'");
+        return 0;
     }
 
     @Override
     public Integer findPFAssocID(String lfName, String pfName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findPFAssocID'");
+        return 0;
     }
 
     @Override

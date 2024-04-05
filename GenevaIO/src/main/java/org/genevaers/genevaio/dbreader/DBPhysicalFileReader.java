@@ -124,4 +124,11 @@ public class DBPhysicalFileReader extends DBReaderBase {
             }
         }
     }
+
+    public void addToRepoByName(DatabaseConnection databaseConnection, DatabaseConnectionParams params, String pfName) {
+        //Then get the PFs
+        String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
+        + "where NAME = '" + pfName + "' and ENVIRONID= " + params.getEnvironmentID() + ";";
+        executeAndWriteToRepo(databaseConnection, pfRecs);
+     }
 }

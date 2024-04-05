@@ -52,5 +52,11 @@ public class DBLogicalFileReader extends DBReaderBase{
         return false;
     }
 
+    public boolean addToRepoByName(DatabaseConnection dbConnection, DatabaseConnectionParams params, String name) {
+        String query = "select * from " + params.getSchema() +".LOGFILE "
+        + " where NAME = '" + name + "' and ENVIRONID= " + params.getEnvironmentID() + ";";
+        executeAndWriteToRepo(dbConnection, query);
+        return false;
+    }
 
 }

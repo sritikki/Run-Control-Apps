@@ -29,6 +29,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewNode;
 
 public class LazyDBReader implements CompilerDataProvider {
@@ -68,15 +69,26 @@ public class LazyDBReader implements CompilerDataProvider {
     }
 
     @Override
-    public Integer findExitID(String string, boolean procedure) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findExitID'");
+    public Integer findExitID(String name, boolean procedure) {
+        DBExitReader exitReader = new DBExitReader();
+        exitReader.addToRepoByName(databaseConnection, params, name, procedure);
+        return 0;
     }
 
     @Override
     public Integer findPFAssocID(String lfName, String pfName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findPFAssocID'");
+        DBLogicalFileReader lfReader = new DBLogicalFileReader();
+        lfReader.addToRepoByName(databaseConnection, params, lfName);
+        DBPhysicalFileReader pFileReader = new DBPhysicalFileReader();
+        pFileReader.addToRepoByName(databaseConnection, params, pfName);
+        LogicalFile lf = Repository.getLogicalFiles().get(lfName);
+        if(lf != null) {
+            PhysicalFile pf = Repository.getPhysicalFiles().get(pfName);
+            if(pf != null) {
+                lf.addPF(pf);
+            }
+        }
+        return 0; // To be derived
     }
 
     @Override

@@ -50,12 +50,13 @@ public class ExtractCompiler {
     }
 
     public void processLogicAndAddNodesToParent(ExtractBaseAST parent, String logic, BuildGenevaASTVisitor.ExtractContext exContext) throws IOException {
-
-        parseTheLogicAndBuildParseTree(logic);
-        if (parser.getNumberOfSyntaxErrors() == 0) {
-            buildASTAndAddToParent(parent, exContext);
-        } else {
-            handleParserErrors(parent);
+        if(logic != null) {
+            parseTheLogicAndBuildParseTree(logic);
+            if (parser.getNumberOfSyntaxErrors() == 0) {
+                buildASTAndAddToParent(parent, exContext);
+            } else {
+                handleParserErrors(parent);
+            }
         }
     }
 

@@ -102,6 +102,8 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     private ExtractBaseAST parent;
 
+    private boolean procedure;
+
     public enum ExtractContext {
         FILTER,
         COLUMN,
@@ -609,6 +611,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
     @Override public ExtractBaseAST visitWriteStatement(GenevaERSParser.WriteStatementContext ctx) {
+        procedure = false;
         WriteASTNode wr = (WriteASTNode)ASTFactory.getNodeOfType(ASTFactory.Type.WRITE);
         ExtractBaseAST.setLastColumnWithAWrite();
         wr.setViewSource(viewSource);
@@ -656,6 +659,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitFile(GenevaERSParser.FileContext ctx) { 
         LFAstNode lf =  (LFAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.LF);
+        String lfpf = ctx.children.get(1).getText();
+		String[] parts = lfpf.split("\\.");
+        dataProvider.findPFAssocID(parts[0], parts[1]);
         //Resolve the LF.PF name
         lf.resolve(ctx.children.get(1).getText());
         return lf; 
@@ -677,9 +683,18 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         WriteExitNode we =  (WriteExitNode) ASTFactory.getNodeOfType(ASTFactory.Type.WRITEEXIT);
         String exitName = ctx.getText().replace("{", "");
         exitName = exitName.replace("}", ""); //Must be a better way of doing this
-        we.resolveExit(exitName);
+        dataProvider.findExitID(exitName, procedure);
+        we.resolveExit(exitName, procedure);
         return we; 
     }
+
+    @Override public ExtractBaseAST visitProcedure(GenevaERSParser.ProcedureContext ctx) {
+        if(ctx.getChild(0).getText().equalsIgnoreCase("PROCEDURE")) {
+            procedure = true;
+        }
+        return visitChildren(ctx); 
+    }
+  
 
     @Override 
     public ExtractBaseAST visitDateConstant(GenevaERSParser.DateConstantContext ctx) {

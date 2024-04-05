@@ -43,6 +43,7 @@ public class ExtractPhaseCompiler {
 	private static ExtractBaseAST joinsRoot;
 	private static LogicTableEmitter xltEmitter = new LogicTableEmitter();
 	private static LogicTableEmitter jltEmitter = new LogicTableEmitter();
+	private static ViewSourceAstNode vsnode;
     
    	public ExtractPhaseCompiler(List<LogicGroup> lgs) {
 		logicGroups = lgs;
@@ -83,23 +84,8 @@ public class ExtractPhaseCompiler {
 		writeXLTDotIfEnabled();
 	}
 
-    public static void buildViewColumnSourceAST(ViewColumnSource vcs) {
-		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
-		ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
-		vsnode.setViewSource(Repository.getViews().get(vcs.getViewId()).getViewSource(vcs.getSequenceNumber()));
-		extractRoot.addChildIfNotNull(vsnode);
-		ViewColumnSourceAstNode vcsn = (ViewColumnSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWCOLUMNSOURCE);
-		vcsn.setViewColumnSource(vcs);
-		vsnode.addChildIfNotNull(vcsn);
-		compileColumn(vcsn);		
-		writeXLTDotIfEnabled();
-	}
-
     public static void buildViewSourceAST(ViewSource vs) {
-		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
-		ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
-		vsnode.setViewSource(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
-		extractRoot.addChildIfNotNull(vsnode);
+		vsnode = buildVSNodeAndAddToRoot(vs);
 		ExtractFilterAST ef = (ExtractFilterAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRFILTER);
 		vsnode.addChildIfNotNull(ef);
 		ExtractFilterCompiler efc = new ExtractFilterCompiler();
@@ -112,11 +98,21 @@ public class ExtractPhaseCompiler {
 		}
 	}
 
+    public static void buildViewColumnSourceAST(ViewColumnSource vcs) {
+		if(vsnode == null) {
+			buildVSNodeAndAddToRoot(Repository.getViews().get(vcs.getViewId()).getViewSource(vcs.getSequenceNumber()));
+		}
+		ViewColumnSourceAstNode vcsn = (ViewColumnSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWCOLUMNSOURCE);
+		vcsn.setViewColumnSource(vcs);
+		vsnode.addChildIfNotNull(vcsn);
+		compileColumn(vcsn);		
+		writeXLTDotIfEnabled();
+	}
+
 	public static void buildViewOutputAST(ViewSource vs) {
-		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
-		ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
-		vsnode.setViewSource(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
-		extractRoot.addChildIfNotNull(vsnode);
+		if(vsnode == null) {
+			buildVSNodeAndAddToRoot(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
+		}
 		ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
 		vsnode.addChildIfNotNull(eo);
 		ExtractOutputCompiler eoc = new ExtractOutputCompiler();
@@ -127,6 +123,14 @@ public class ExtractPhaseCompiler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private static ViewSourceAstNode buildVSNodeAndAddToRoot(ViewSource vs) {
+		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
+		vsnode.setViewSource(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
+		extractRoot.addChildIfNotNull(vsnode);
+		return vsnode;
 	}
 
 

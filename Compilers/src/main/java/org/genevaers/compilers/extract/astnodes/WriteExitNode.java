@@ -32,9 +32,14 @@ public class WriteExitNode extends ExtractBaseAST {
         type = ASTFactory.Type.WRITEEXIT;
     }
 
-    public void resolveExit(String exitName) {
+    public void resolveExit(String exitName, boolean procedure) {
         name = exitName;
-        UserExit exit = Repository.getUserExits().get(exitName);
+        UserExit exit = null;
+        if(procedure) {
+            exit = Repository.getProcedures().get(exitName);
+        } else {
+            exit = Repository.getUserExits().get(exitName);
+        }
         if(exit != null) {       
             ref = exit;
         } else {

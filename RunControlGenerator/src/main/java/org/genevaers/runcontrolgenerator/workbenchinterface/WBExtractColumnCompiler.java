@@ -34,17 +34,11 @@ public class WBExtractColumnCompiler extends WorkbenchCompiler {
 	}
 
 	@Override
-	public void run() {
-		try {
-			syntaxCheckLogic(currentViewColumnSource.getLogicText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void buildAST() {
+		syntaxCheckLogic(currentViewColumnSource.getLogicText());
 		if(errorListener.getErrors().size() == 0) {
 			ExtractBaseAST.setCurrentColumnNumber((short)currentViewColumnSource.getColumnNumber());
 			ExtractPhaseCompiler.buildViewColumnSourceAST(currentViewColumnSource);
-			buildTheExtractTableIfThereAreNoErrors();
 		}
 	}
 	

@@ -24,10 +24,6 @@ import java.util.stream.Stream;
 
 public interface DependencyAnalyser {
 
-	public void getSourceLr(int lrid);
-	public void generateDependencies();
-	public boolean hasDataErrors();
-	public List<String> getDataErrors();
 	public Stream<Integer> getFieldIDs();
 	public Map<Integer, List<Integer>> getLookupIDs();
 	public Stream<LookupRef> getLookupsStream();

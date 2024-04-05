@@ -34,12 +34,7 @@ import java.util.stream.Stream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.fusesource.jansi.AnsiRenderer.Code;
 import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
-import org.genevaers.compilers.extract.ExtractCompiler;
-import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
-import org.genevaers.genevaio.dataprovider.CompilerDataProvider;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.LazyDBReader;
 import org.genevaers.genevaio.dbreader.WBConnection;
@@ -48,8 +43,6 @@ import org.genevaers.grammar.GenevaERSLexer;
 import org.genevaers.grammar.GenevaERSParser;
 import org.genevaers.grammar.GenevaERSParser.GoalContext;
 import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.LRField;
-import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewDefinition;
@@ -76,7 +69,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	private int envId;
 	private ViewType viewType;
 	private ColumnData columnData;
-	protected LogicTable xlt;
 	private static ViewNode currentView;
 	protected static ViewColumnSource currentViewColumnSource;
 	protected static ViewSource currentViewSource;
@@ -168,36 +160,46 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         currentView.addViewColumnSource(currentViewColumnSource);
 	}
 
-	public abstract void run();
-
-	public void syntaxCheckLogic(String logicText) throws IOException {
-        InputStream is = new ByteArrayInputStream(logicText.getBytes());
-        GenevaERSLexer lexer = new GenevaERSLexer(CharStreams.fromStream(is));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        GenevaERSParser parser = new GenevaERSParser(tokens);
-        parser.removeErrorListeners(); // remove ConsoleErrorListener
-        errorListener = new ParseErrorListener();
-        parser.addErrorListener(errorListener); // add ours
-        tree = parser.goal(); // parse
+	public void run() {
+		buildAST();
+		buildTheExtractTableIfThereAreNoErrors();
 	}
 
-	public void buildTheExtractTableIfThereAreNoErrors() {
-		if(Repository.getCompilerErrors().size() == 0) {
-			ExtractPhaseCompiler.buildTheJoinLogicTable();
-			ExtractPhaseCompiler.buildTheExtractLogicTable();
-			xlt = ExtractPhaseCompiler.getExtractLogicTable();
+	public abstract void buildAST();
+
+	public void syntaxCheckLogic(String logicText){
+        InputStream is = new ByteArrayInputStream(logicText.getBytes());
+        GenevaERSLexer lexer;
+		try {
+			lexer = new GenevaERSLexer(CharStreams.fromStream(is));
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			GenevaERSParser parser = new GenevaERSParser(tokens);
+			parser.removeErrorListeners(); // remove ConsoleErrorListener
+			errorListener = new ParseErrorListener();
+			parser.addErrorListener(errorListener); // add ours
+			tree = parser.goal(); // parse
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
-	public LogicTable getXlt() {
-		return xlt;
+	public static void buildTheExtractTableIfThereAreNoErrors() {
+		if(Repository.getCompilerErrors().size() == 0) {
+			ExtractPhaseCompiler.buildTheJoinLogicTable();
+			ExtractPhaseCompiler.buildTheExtractLogicTable();
+		}
 	}
 
-	public boolean hasErrors() {
+	public static LogicTable getXlt() {
+		return ExtractPhaseCompiler.getExtractLogicTable();
+	}
+
+	public static boolean hasErrors() {
 		return Repository.getCompilerErrors().size() > 0;
 	}
 
-	public List<String> getErrors() {
+	public static List<String> getErrors() {
 		List<String> errs = new ArrayList<String>();
 		Iterator<CompilerMessage> ei = Repository.getCompilerErrors().iterator();
 		while(ei.hasNext()) {
@@ -207,11 +209,11 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		return errs;
 	}
 
-	public boolean hasWarnings() {
+	public static boolean hasWarnings() {
 		return Repository.getWarnings().size() > 0;
 	}
 
-	public List<String> getWarnings() {
+	public static List<String> getWarnings() {
 		List<String> warns = new ArrayList<String>();
 		Iterator<CompilerMessage> wi = Repository.getWarnings().iterator();
 		while(wi.hasNext()) {
@@ -225,15 +227,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	@Override
 	public ParseTree getParseTree() {
 		return tree;
-	}
-
-	@Override
-	public void generateDependencies() {
-		// Mr91 compiler will need to add the dependencies
-
-        ParseTreeWalker walker = new ParseTreeWalker(); // create standard walker
-		dependencyAnalyser.setSycadaType(type);
-        walker.walk(dependencyAnalyser, tree); // initiate walk of tree with listener		
 	}
 
 	@Override
@@ -252,16 +245,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		return 0;
 	}
 
-	@Override
-	public boolean hasDataErrors() {
-		return dependencyAnalyser.hasErrors();
-	}
-
-	@Override
-	public List<String> getDataErrors() {
-		return dependencyAnalyser.getErrors();
-	}
-	
 	@Override
 	public Stream<Integer> getFieldIDs() {
 		return dependencyAnalyser.getFieldIDs();
@@ -299,15 +282,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	@Override
 	public Map<Integer, List<Integer>> getLookupIDs() {
 		throw new UnsupportedOperationException("Unimplemented method 'getLookupIDs'");
-	}
-
-	@Override
-	public void getSourceLr(int lrid) {
-		//Add the LR to the repo
-		//Don't want to know about WB transfer objects here?
-
-		//dataProvider.g
-		dependencyAnalyser.preloadCacheFromLR(lrid);
 	}
 
 	public static String getVersion() {

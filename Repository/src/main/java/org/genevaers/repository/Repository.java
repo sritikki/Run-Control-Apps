@@ -73,6 +73,7 @@ public class Repository {
 	private static ComponentCollection<LogicalFile> lfs = new ComponentCollection<LogicalFile>();
 	private static ComponentCollection<PhysicalFile> pfs = new ComponentCollection<PhysicalFile>();
 	private static ComponentCollection<UserExit> exits = new ComponentCollection<UserExit>();
+	private static ComponentCollection<UserExit> procedures = new ComponentCollection<UserExit>();
 	private static ComponentCollection<LogicalRecord> lrs = new ComponentCollection<LogicalRecord>();
 	private static ComponentCollection<LRField> fields = new ComponentCollection<LRField>();
 	private static ComponentCollection<LRIndex> indexes = new ComponentCollection<LRIndex>();
@@ -94,6 +95,7 @@ public class Repository {
 		lfs = new ComponentCollection<LogicalFile>();
 		pfs = new ComponentCollection<PhysicalFile>();
 		exits = new ComponentCollection<UserExit>();
+		procedures = new ComponentCollection<UserExit>();
 		lrs = new ComponentCollection<LogicalRecord>();
 		fields = new ComponentCollection<LRField>();
 		indexes = new ComponentCollection<LRIndex>();
@@ -139,6 +141,10 @@ public class Repository {
 
 	public static ComponentCollection<UserExit> getUserExits() {
 		return exits;
+	}
+
+	public static ComponentCollection<UserExit> getProcedures() {
+		return procedures;
 	}
 
 	public static ComponentCollection<LogicalRecord> getLogicalRecords() {

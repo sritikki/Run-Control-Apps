@@ -48,6 +48,7 @@ import org.genevaers.runcontrolgenerator.workbenchinterface.WorkbenchCompiler;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -88,8 +89,6 @@ class WBCompilerTest extends RunCompilerBase {
     ExtractBaseAST.setCurrentColumnNumber((short) 0);
     ExtractBaseAST.setCurrentAccumNumber(0);
     Repository.setGenerationTime(Calendar.getInstance().getTime());
-    RecordParser.clearAndInitialise();
-
     WorkbenchCompiler.reset();
     environmentid = 3;
     lrid = 1762;
@@ -114,7 +113,7 @@ class WBCompilerTest extends RunCompilerBase {
     GenevaLog.closeLogger(WBCompilerTest.class.getName());
   }
 
-  @Test
+  @Test @Order(1)    
   void testAssignField() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
@@ -138,7 +137,7 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
-  @Test
+  @Test @Order(2)
   void testBadField() throws IOException {
     ViewData view = makeView(999, "TestView");
     ColumnData cd = makeColumnData(view, 111);
@@ -157,7 +156,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("Unknown field {Bad}"));
   }
 
-  @Test
+  @Test  @Order(3)
   void testBadSyntax() throws IOException {
     ViewData view = makeView(999, "TestView");
     ColumnData cd = makeColumnData(view, 111);
@@ -177,7 +176,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("gobbledegook"));
   }
 
-  @Test
+  @Test  @Order(4)
   void testFilter() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
@@ -198,7 +197,7 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
-  @Test
+  @Test  @Order(5)
   void testOutput() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
@@ -218,7 +217,7 @@ class WBCompilerTest extends RunCompilerBase {
     System.out.println(LTLogger.logRecords(xlt));
   }
 
-  @Test
+  @Test  @Order(6)
   void testSELECTIFContext() throws IOException {
     new RunControlConfigration();
      ViewData view = makeView(999, "TestView");
@@ -240,7 +239,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("SELECTIF"));
   }
 
-  @Test
+  @Test @Order(7)
   void testAssignLookupField() throws IOException {
     new RunControlConfigration();
     // This will require a DB connection
@@ -262,6 +261,80 @@ class WBCompilerTest extends RunCompilerBase {
 
     WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
         .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+    LogicTable xlt = extractCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+  }
+
+  @Test @Order(8)
+  void testWriteExit() throws IOException {
+    new RunControlConfigration();
+    WorkbenchCompiler.reset();
+    environmentid = 4;
+    lrid = 1762;
+    lfid = 1506;
+    DatabaseConnectionParams params = getPostgresParams();
+    params.setEnvironmentID(Integer.toString(environmentid));
+    WorkbenchCompiler.setSQLConnection(getTestDatabaseConnection(params));
+    WorkbenchCompiler.setSchema("gendev");
+    WorkbenchCompiler.setEnvironment(environmentid);
+    WorkbenchCompiler.setSourceLRID(lrid);
+    WorkbenchCompiler.setSourceLFID(lfid);assertEquals(1, Repository.getLogicalRecords().size());
+    assertEquals(18, Repository.getFields().size());
+
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(1762, view);
+    vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=FILE={ExtractOut.ExtractOut}, USEREXIT={writeExit})");
+
+    ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1}");
+
+    WBExtractOutputCompiler extractCompiler = (WBExtractOutputCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_OUTPUT);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+    LogicTable xlt = extractCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+  }
+
+  @Test @Order(9)
+  void testWriteExitModule() throws IOException {
+    new RunControlConfigration();
+    WorkbenchCompiler.reset();
+    environmentid = 4;
+    lrid = 1762;
+    lfid = 1506;
+    DatabaseConnectionParams params = getPostgresParams();
+    params.setEnvironmentID(Integer.toString(environmentid));
+    WorkbenchCompiler.setSQLConnection(getTestDatabaseConnection(params));
+    WorkbenchCompiler.setSchema("gendev");
+    WorkbenchCompiler.setEnvironment(environmentid);
+    WorkbenchCompiler.setSourceLRID(lrid);
+    WorkbenchCompiler.setSourceLFID(lfid);assertEquals(1, Repository.getLogicalRecords().size());
+    assertEquals(18, Repository.getFields().size());
+
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(1762, view);
+    vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=FILE={ExtractOut.ExtractOut}, PROCEDURE={ginger})");
+
+    ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1}");
+
+    WBExtractOutputCompiler extractCompiler = (WBExtractOutputCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_OUTPUT);
     WorkbenchCompiler.addView(view);
     WorkbenchCompiler.addViewSource(vsd);
     WorkbenchCompiler.addViewColumnSource(vcs);
