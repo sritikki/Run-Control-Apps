@@ -529,6 +529,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 		if(lookup != null) {
             lkRef.setLookup(lookup);
             lkRef.resolveLookup(lookup);
+            Repository.getDependencyCache().addLookupIfAbsent(lkname, lookup);
 		} else {
             lkRef.addError("Unknown Lookup " + lkname);
         }		
@@ -661,7 +662,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         LFAstNode lf =  (LFAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.LF);
         String lfpf = ctx.children.get(1).getText();
 		String[] parts = lfpf.split("\\.");
-        dataProvider.findPFAssocID(parts[0], parts[1]);
+        Repository.getDependencyCache().setNamedLfPfAssoc(lfpf, dataProvider.findPFAssocID(parts[0], parts[1]));
         //Resolve the LF.PF name
         lf.resolve(ctx.children.get(1).getText());
         return lf; 

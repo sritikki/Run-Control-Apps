@@ -34,6 +34,8 @@ import org.genevaers.grammar.GenevaERSParser.LookupContext;
 import org.genevaers.grammar.GenevaERSParser.LrFieldContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
+import org.genevaers.repository.data.ExtractDependencyCache;
+import org.genevaers.repository.data.LookupRef;
 
 
 public class ExtractDependencyAnalyser extends GenevaERSBaseListener {
@@ -92,15 +94,15 @@ public class ExtractDependencyAnalyser extends GenevaERSBaseListener {
 		//This is  wrong want to build the analysers picture from the cache
 		//on an as referred too basis
 		// so the dependecyA lookupsByName will grow as fields are analysed
-		Integer lkid = ExtractDependencyCache.getLookup(name);
-		if(lkid != null ) {
-				lkref = new LookupRef();
-				lkref.setId(lkid);
-				lkref.setName(name);
-		}
-		if(lkref == null) {
-			errors.add("Lookup " + name + " not found");			
-		}
+		// Integer lkid = ExtractDependencyCache.getLookup(name);
+		// if(lkid != null ) {
+		// 		lkref = new LookupRef();
+		// 		lkref.setId(lkid);
+		// 		lkref.setName(name);
+		// }
+		// if(lkref == null) {
+		// 	errors.add("Lookup " + name + " not found");			
+		// }
 		return lkref;
 	}
 
@@ -143,10 +145,11 @@ public class ExtractDependencyAnalyser extends GenevaERSBaseListener {
 	}
 
 	private Integer getLkField(LookupRef lkref, String fieldName) {
-		Integer lkfield = ExtractDependencyCache.getNamedLookupField(lkref.getName(), fieldName);
-		if(lkfield == null) {
-			errors.add("Lookup " + lkref.getName() + " does not reference field " + fieldName);								
-		}
+		Integer lkfield = 0;
+		// ExtractDependencyCache.getNamedLookupField(lkref.getName(), fieldName);
+		// if(lkfield == null) {
+		// 	errors.add("Lookup " + lkref.getName() + " does not reference field " + fieldName);								
+		// }
 		return lkfield;
 	}
 
@@ -167,9 +170,9 @@ public class ExtractDependencyAnalyser extends GenevaERSBaseListener {
 		Integer exitId = null;
 		String name = sb.toString();
 		if(procedure) {
-			exitId = ExtractDependencyCache.getProcedure(name);
+			exitId = 0; //ExtractDependencyCache.getProcedure(name);
 		} else {
-			exitId = ExtractDependencyCache.getWriteExit(name);
+			exitId = 0; //ExtractDependencyCache.getWriteExit(name);
 		}
 		if(exitId != null) {
 			writeExits.add(exitId);
@@ -194,15 +197,11 @@ public class ExtractDependencyAnalyser extends GenevaERSBaseListener {
 	}
 
 	private Integer getPfAssocID(String fullName) {
-		Integer pfID = ExtractDependencyCache.getNamedLfPfAssoc(fullName);
+		Integer pfID = 0; //ExtractDependencyCache.getNamedLfPfAssoc(fullName);
 		if(pfID == null) {
 			errors.add("Output File " + fullName + " not found");						
 		}
 		return pfID;
-	}
-
-	public void setDataProvider(CompilerDataProvider dataFromHere) {
-		ExtractDependencyCache.setDataProvider(dataFromHere);
 	}
 
 	public boolean hasErrors() {
@@ -266,11 +265,6 @@ public class ExtractDependencyAnalyser extends GenevaERSBaseListener {
 	// public void useCache(ExtractDependencyCache edc) {
 	// 	cache = edc;
 	// }
-
-	//This can be called once the data provider is set
-	public void preloadCacheFromLR(int id) { 
-		ExtractDependencyCache.preloadCacheFromLR(id);
-	}
 
 	//Call this as soon as we get an Lookup name
 	public void preloadCacheFromLookup(String name){

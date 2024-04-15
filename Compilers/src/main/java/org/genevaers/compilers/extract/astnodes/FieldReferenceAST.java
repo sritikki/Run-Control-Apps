@@ -32,6 +32,7 @@ import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
 import org.genevaers.repository.RepoHelper;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.ViewColumn;
@@ -71,6 +72,7 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         name = fieldName;
         if(fld != null) {       
             ref = fld;
+            Repository.getDependencyCache().addNamedField(fieldName, ref.getComponentId());
         } else {
             addError("Unknown field {" + fieldName +"}");
         }

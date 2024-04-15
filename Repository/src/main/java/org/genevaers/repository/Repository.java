@@ -43,6 +43,7 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.enums.LrStatus;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.ComponentCollection;
+import org.genevaers.repository.data.ExtractDependencyCache;
 import org.genevaers.repository.data.InputReport;
 import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
@@ -81,6 +82,8 @@ public class Repository {
 	private static ComponentCollection<ViewNode> views = new ComponentCollection<ViewNode>();
 	private static ComponentCollection<ViewNode> formatViews = new ComponentCollection<ViewNode>();
 	private static JoinViewsManager jvm = new JoinViewsManager();
+
+	private static ExtractDependencyCache dependencyCache = new ExtractDependencyCache();
 
 	private static List<InputReport> inputReports = new ArrayList<>();
 	private static List<CompilerMessage> warnings = new ArrayList<>();
@@ -459,6 +462,10 @@ public class Repository {
 
 	public static List<CompilerMessage> getWarnings() {
 		return warnings;
+	}
+
+	public static ExtractDependencyCache getDependencyCache() {
+		return dependencyCache;
 	}
 
 }

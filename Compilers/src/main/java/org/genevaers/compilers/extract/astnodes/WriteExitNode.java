@@ -41,6 +41,7 @@ public class WriteExitNode extends ExtractBaseAST {
             exit = Repository.getUserExits().get(exitName);
         }
         if(exit != null) {       
+            Repository.getDependencyCache().addExitID(exit.getComponentId());
             ref = exit;
         } else {
             addError("Unknown exit " + exitName);

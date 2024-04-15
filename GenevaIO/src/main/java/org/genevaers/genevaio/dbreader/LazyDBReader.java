@@ -88,7 +88,7 @@ public class LazyDBReader implements CompilerDataProvider {
                 lf.addPF(pf);
             }
         }
-        return 0; // To be derived
+        return lfReader.getLFPFAssocID(databaseConnection, params, lfName, pfName); // To be derived
     }
 
     @Override

@@ -5,6 +5,7 @@ package org.genevaers.runcontrolgenerator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.ViewType;
+import org.genevaers.repository.data.ExtractDependencyCache;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.workbenchinterface.ColumnData;
 import org.genevaers.runcontrolgenerator.workbenchinterface.LRData;
@@ -135,6 +137,8 @@ class WBCompilerTest extends RunCompilerBase {
     LogicTable xlt = extractCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 
+    assertEquals(96729, Repository.getDependencyCache().getNamedField("Binary8"));
+
   }
 
   @Test @Order(2)
@@ -154,6 +158,7 @@ class WBCompilerTest extends RunCompilerBase {
     extractCompiler.run();
     assertEquals(1, Repository.getCompilerErrors().size());
     assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("Unknown field {Bad}"));
+    assertNull(Repository.getDependencyCache().getNamedField("Bad"));
   }
 
   @Test  @Order(3)
@@ -174,6 +179,7 @@ class WBCompilerTest extends RunCompilerBase {
     extractCompiler.run();
     assertEquals(1, Repository.getCompilerErrors().size());
     assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("gobbledegook"));
+    assertNull(Repository.getDependencyCache().getNamedField("gobbledegook"));
   }
 
   @Test  @Order(4)
@@ -191,8 +197,9 @@ class WBCompilerTest extends RunCompilerBase {
 
     extractCompiler.run();
     assertEquals(0, Repository.getCompilerErrors().size());
+    assertEquals(96736, Repository.getDependencyCache().getNamedField("Packed"));
 
-    LogicTable xlt = extractCompiler.getXlt();
+    LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 
   }
@@ -268,7 +275,9 @@ class WBCompilerTest extends RunCompilerBase {
 
     extractCompiler.run();
     assertEquals(0, Repository.getCompilerErrors().size());
-    LogicTable xlt = extractCompiler.getXlt();
+    assertEquals(96891, Repository.getDependencyCache().getNamedLookupField("AllTypeLookup", "Binary1"));
+
+    LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 
   }
@@ -305,7 +314,10 @@ class WBCompilerTest extends RunCompilerBase {
 
     extractCompiler.run();
     assertEquals(0, Repository.getCompilerErrors().size());
-    LogicTable xlt = extractCompiler.getXlt();
+    assertEquals(14544, Repository.getDependencyCache().getPfAssocID("ExtractOut.ExtractOut"));
+    assertEquals(472, Repository.getDependencyCache().getExitIDs().iterator().next());
+
+    LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 
   }
@@ -342,6 +354,8 @@ class WBCompilerTest extends RunCompilerBase {
 
     extractCompiler.run();
     assertEquals(0, Repository.getCompilerErrors().size());
+    assertEquals(14544, Repository.getDependencyCache().getPfAssocID("ExtractOut.ExtractOut"));
+    assertEquals(472, Repository.getDependencyCache().getExitIDs().iterator().next());
     LogicTable xlt = extractCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 

@@ -62,6 +62,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             JLTView jv = Repository.getJoinViews().addJLTViewFromLookupField(lookup, fld);
             if(currentViewColumnSource != null) {
                 jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
+                Repository.getDependencyCache().addNamedLookupField(lookup.getName(), fld);
             }
         } else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);

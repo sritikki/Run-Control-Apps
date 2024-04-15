@@ -1,4 +1,4 @@
-package org.genevaers.runcontrolgenerator.workbenchinterface;
+package org.genevaers.repository.data;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2023

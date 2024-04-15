@@ -55,6 +55,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.ViewType;
 import org.genevaers.repository.data.CompilerMessage;
+import org.genevaers.repository.data.LookupRef;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 

@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.genevaers.repository.data.LookupRef;
+
 public interface DependencyAnalyser {
 
 	public Stream<Integer> getFieldIDs();
