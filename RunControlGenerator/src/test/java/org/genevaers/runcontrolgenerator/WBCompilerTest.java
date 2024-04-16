@@ -115,7 +115,7 @@ class WBCompilerTest extends RunCompilerBase {
     GenevaLog.closeLogger(WBCompilerTest.class.getName());
   }
 
-  @Test @Order(1)    
+  @Test //@Order(1)    
   void testAssignField() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
@@ -141,7 +141,7 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
-  @Test @Order(2)
+  @Test //@Order(2)
   void testBadField() throws IOException {
     ViewData view = makeView(999, "TestView");
     ColumnData cd = makeColumnData(view, 111);
@@ -161,7 +161,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertNull(Repository.getDependencyCache().getNamedField("Bad"));
   }
 
-  @Test  @Order(3)
+  @Test  //@Order(3)
   void testBadSyntax() throws IOException {
     ViewData view = makeView(999, "TestView");
     ColumnData cd = makeColumnData(view, 111);
@@ -182,7 +182,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertNull(Repository.getDependencyCache().getNamedField("gobbledegook"));
   }
 
-  @Test  @Order(4)
+  @Test  //@Order(4)
   void testFilter() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
@@ -204,7 +204,7 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
-  @Test  @Order(5)
+  @Test  //@Order(5)
   void testOutput() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
@@ -224,7 +224,7 @@ class WBCompilerTest extends RunCompilerBase {
     System.out.println(LTLogger.logRecords(xlt));
   }
 
-  @Test  @Order(6)
+  @Test  //@Order(6)
   void testSELECTIFContext() throws IOException {
     new RunControlConfigration();
      ViewData view = makeView(999, "TestView");
@@ -246,7 +246,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("SELECTIF"));
   }
 
-  @Test @Order(7)
+  @Test //@Order(7)
   void testAssignLookupField() throws IOException {
     new RunControlConfigration();
     // This will require a DB connection
@@ -282,7 +282,7 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
-  @Test @Order(8)
+  @Test //@Order(8)
   void testWriteExit() throws IOException {
     new RunControlConfigration();
     WorkbenchCompiler.reset();
@@ -322,7 +322,7 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
-  @Test @Order(9)
+  @Test //@Order(9)
   void testWriteExitModule() throws IOException {
     new RunControlConfigration();
     WorkbenchCompiler.reset();
@@ -356,7 +356,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(0, Repository.getCompilerErrors().size());
     assertEquals(14544, Repository.getDependencyCache().getPfAssocID("ExtractOut.ExtractOut"));
     assertEquals(472, Repository.getDependencyCache().getExitIDs().iterator().next());
-    LogicTable xlt = extractCompiler.getXlt();
+    LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 
   }

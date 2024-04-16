@@ -108,6 +108,7 @@ public class Repository {
 		jvm = new JoinViewsManager();	
 		compilerErrors.clear();
 		warnings.clear();
+		dependencyCache.clear();
 
 		UniqueKeys.reset();
 

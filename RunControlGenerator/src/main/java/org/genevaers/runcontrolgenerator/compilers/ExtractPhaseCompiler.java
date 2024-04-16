@@ -52,6 +52,7 @@ public class ExtractPhaseCompiler {
     public static void reset() {
         xltEmitter = new LogicTableEmitter();
         jltEmitter = new LogicTableEmitter();
+		vsnode = null;
     }
 
     public static Status run(List<LogicGroup> lgs) {

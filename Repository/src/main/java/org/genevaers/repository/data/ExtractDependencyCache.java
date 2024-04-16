@@ -44,6 +44,7 @@ public class ExtractDependencyCache {
 		procsByName.clear();
 		fieldsByName.clear();
 		lookupsByName.clear();
+		writeExits.clear();
 	}
 
 	public Integer addLookupIfAbsent(String name, LookupPath lk) {
