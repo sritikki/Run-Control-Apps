@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 /*
@@ -35,6 +36,8 @@ public class WBExtractColumnCompiler extends WorkbenchCompiler {
 
 	@Override
 	public void buildAST() {
+		Repository.getDependencyCache().setCurrenLogicType(LogicType.EXTRACT_COLUMN_ASSIGNMENT);
+		Repository.getDependencyCache().setCurrentParentId(currentViewColumnSource.getComponentId());
 		syntaxCheckLogic(currentViewColumnSource.getLogicText());
 		if(errorListener.getErrors().size() == 0) {
 			ExtractBaseAST.setCurrentColumnNumber((short)currentViewColumnSource.getColumnNumber());

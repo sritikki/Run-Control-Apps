@@ -1,7 +1,9 @@
 package org.genevaers.repository.data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2023.
@@ -25,11 +27,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 
 public class ExtractDependencyCache {
+
+	private List<ViewLogicDependency> dependencies = new ArrayList<>();
 
 	private Map<String, Integer> pfsByName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	private Map<String, Integer> exitsByName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -38,13 +44,21 @@ public class ExtractDependencyCache {
 	private Map<String, LookupRef> lookupsByName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	private Set<Integer> writeExits = new HashSet<>();
 
-	public void clear() {
+	private LogicType currenLogicType;
+	private int currentParentId;
+
+	public void clearNamedEntries() {
 		pfsByName.clear();
 		exitsByName.clear();
 		procsByName.clear();
 		fieldsByName.clear();
 		lookupsByName.clear();
 		writeExits.clear();
+	}
+
+	public void clear() {
+		clearNamedEntries();
+		dependencies.clear();
 	}
 
 	public Integer addLookupIfAbsent(String name, LookupPath lk) {
@@ -68,8 +82,16 @@ public class ExtractDependencyCache {
 		return lkref;
 	}
 
+	/*
+	 * Add the named field within the context of the parent component
+	 * That is say only one dependenct on a given field per column
+	 */
 	public Integer addNamedField(String name, int id) {
-		return fieldsByName.putIfAbsent(name, Integer.valueOf(id));
+		Integer fid = fieldsByName.putIfAbsent(name, Integer.valueOf(id));
+		if(fid == null) {
+			dependencies.add(new ViewLogicDependency(currenLogicType, null, null, id, null, null, currentParentId));
+		}
+		return id;
 
 	}
 
@@ -77,9 +99,12 @@ public class ExtractDependencyCache {
 		return fieldsByName.get(fieldName);
 	}
 
-	public Integer addNamedLookupField(String lkname, LRField fld){
-		LookupRef localLkref = lookupsByName.computeIfAbsent(lkname, s -> getLookupRefByName(s, 0));
-		Integer r = localLkref.getLookupFieldsByName().computeIfAbsent(fld.getName(), s -> getLkField(localLkref, fld));
+	public Integer addNamedLookupField(LookupPath lookup, LRField fld){
+		LookupRef localLkref = lookupsByName.computeIfAbsent(lookup.getName(), s -> getLookupRefByName(s, lookup.getID()));
+		Integer r = localLkref.getLookupFieldsByName().putIfAbsent(fld.getName(), fld.getComponentId());
+		if(r == null) {
+			dependencies.add(new ViewLogicDependency(currenLogicType, null, lookup.getID(), fld.getComponentId(), null, null, currentParentId));
+		}
 		return r;
 	}
 
@@ -109,7 +134,11 @@ public class ExtractDependencyCache {
 	}
 
 	public Integer setNamedLfPfAssoc(String fullName, int id) { 
-		return pfsByName.putIfAbsent(fullName, id);
+		Integer pfid = pfsByName.putIfAbsent(fullName, id);
+		if(pfid == null) {
+			dependencies.add(new ViewLogicDependency(currenLogicType, null, null, null, null, id, currentParentId));
+		}
+		return id;
 	}
 
 	public Integer getPfAssocID(String fullName) {
@@ -125,11 +154,45 @@ public class ExtractDependencyCache {
 	}
 
 	public void addExitID(int componentId) {
-		writeExits.add(componentId);
+		if(writeExits.add(componentId)) {
+			dependencies.add(new ViewLogicDependency(currenLogicType, null, null, null, componentId, null, currentParentId));
+		}
 	}
 
 	public Set<Integer> getExitIDs() {		
 		return writeExits;
+	}
+
+    public Stream<Integer> getFieldIDs() {
+		return fieldsByName.values().stream();
+    }
+
+	public Stream<LookupRef> getLookupsStream() {
+		return lookupsByName.values().stream();
+	}
+
+	public Stream<Integer> getLFPFAssocIDs() {
+		return pfsByName.values().stream();
+	}
+
+	public Stream<ViewLogicDependency> getDependenciesStream() {
+		return dependencies.stream();
+	}
+
+	public void setCurrenLogicType(LogicType currenLogicType) {
+		this.currenLogicType = currenLogicType;
+	}
+
+	public LogicType getCurrenLogicType() {
+		return currenLogicType;
+	}
+
+	public void setCurrentParentId(int currentParentId) {
+		this.currentParentId = currentParentId;
+	}
+
+	public int getCurrentParentId() {
+		return currentParentId;
 	}
 
 }

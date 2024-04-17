@@ -1,6 +1,7 @@
 package org.genevaers.runcontrolgenerator.workbenchinterface;
 
 public class ViewColumnSourceData {
+    int componentId;
     int columnId;
     int columnNumber;
     int viewID;
@@ -9,6 +10,14 @@ public class ViewColumnSourceData {
     int sourceTypeValue;
     int viewSourceId;
     int viewSourceLrId;
+
+    public int getComponentId() {
+        return componentId;
+    }
+
+    public void setComponentId(int componentId) {
+        this.componentId = componentId;
+    }
 
     public int getColumnId() {
         return columnId;

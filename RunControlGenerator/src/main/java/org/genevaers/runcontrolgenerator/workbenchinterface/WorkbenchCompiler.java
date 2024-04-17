@@ -56,6 +56,7 @@ import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.ViewType;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.LookupRef;
+import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 
@@ -64,7 +65,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	private static DatabaseConnectionParams params = new DatabaseConnectionParams();
 	protected WBCompilerType type;
 	private GoalContext tree;
-	private ExtractDependencyAnalyser dependencyAnalyser = new ExtractDependencyAnalyser();
 	protected ParseErrorListener errorListener;
 	private static LazyDBReader dataProvider = new LazyDBReader();;
 	private int envId;
@@ -145,6 +145,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         currentViewSource.setSequenceNumber((short)vsd.getSequenceNumber());
         currentViewSource.setSourceLRID(vsd.getSourceLrId());
         currentView.addViewSource(currentViewSource);
+		Repository.getDependencyCache().setCurrentParentId(currentViewSource.getComponentId());
 	}
 
 	public static void addViewColumnSource(ViewColumnSourceData vcsd) {
@@ -159,9 +160,11 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         currentViewColumnSource.setViewId(vcsd.getViewID());
         currentViewColumnSource.setViewSrcLrId(vcsd.getViewSourceLrId());
         currentView.addViewColumnSource(currentViewColumnSource);
+		Repository.getDependencyCache().setCurrentParentId(currentViewColumnSource.getComponentId());
 	}
 
 	public void run() {
+		Repository.getDependencyCache().clearNamedEntries();
 		buildAST();
 		buildTheExtractTableIfThereAreNoErrors();
 	}
@@ -224,7 +227,6 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		return warns;
 	}
 
-
 	@Override
 	public ParseTree getParseTree() {
 		return tree;
@@ -248,23 +250,22 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	@Override
 	public Stream<Integer> getFieldIDs() {
-		return dependencyAnalyser.getFieldIDs();
+		return Repository.getDependencyCache().getFieldIDs();
 	}
 
 	public Stream<LookupRef> getLookupsStream() {
-		return dependencyAnalyser.getLookupsStream();
+		return Repository.getDependencyCache().getLookupsStream();
 	}
 
 	public Set<Integer> getExitIDs() {
-		return dependencyAnalyser.getExitIDs();
+		return Repository.getDependencyCache().getExitIDs();
 	}
 
 	public Stream<Integer> getLFPFAssocIDs() {
-		return dependencyAnalyser.getLFPFAssocIDs();
+		return Repository.getDependencyCache().getLFPFAssocIDs();
 	}
 
 	public void clearErrors() {
-		dependencyAnalyser.getErrors().clear();
 	}
 
 	public static void reset() {
@@ -276,7 +277,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	}
 
 	public String getDependenciesAsString() {
-		return dependencyAnalyser.getDependenciesAsString();
+		return "";
 	}
 
 

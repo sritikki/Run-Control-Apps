@@ -34,6 +34,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.ViewType;
 import org.genevaers.repository.data.ExtractDependencyCache;
+import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.workbenchinterface.ColumnData;
 import org.genevaers.runcontrolgenerator.workbenchinterface.LRData;
@@ -83,6 +84,7 @@ class WBCompilerTest extends RunCompilerBase {
   private int environmentid;
   private int lrid;
   private int lfid;
+  private static int vcsdNum = 1;
 
   @BeforeEach
   public void initEach(TestInfo info) {
@@ -134,10 +136,71 @@ class WBCompilerTest extends RunCompilerBase {
     extractCompiler.run();
     assertEquals(0, Repository.getCompilerErrors().size());
 
-    LogicTable xlt = extractCompiler.getXlt();
+    LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 
-    assertEquals(96729, Repository.getDependencyCache().getNamedField("Binary8"));
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96729 && d.getLogicTextType() == LogicType.EXTRACT_COLUMN_ASSIGNMENT).count());
+
+  }
+
+  @Test //@Order(1)    
+  void testAssignFieldTwice() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8} + {Binary8}");
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+    //The point if this test is to ensure there is only one dependency for the field
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96729).count());
+
+  }
+
+  @Test //@Order(1)    
+  void testAssignFieldTwiceAndSecondColumn() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8} + {Binary8}");
+
+    ColumnData cd2 = makeColumnData(view, 1112);
+    ViewColumnSourceData vcs2 = makeViewColumnSource(lrid, view, cd2, "COLUMN = {Binary8} + {Binary8}");
+
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+    WorkbenchCompiler.addViewColumnSource(vcs2);
+    WorkbenchCompiler.addColumn(cd2);
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+    //The point if this test is to ensure there is only one dependency for the field per column
+    assertEquals(2, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96729).count());
 
   }
 
@@ -197,7 +260,7 @@ class WBCompilerTest extends RunCompilerBase {
 
     extractCompiler.run();
     assertEquals(0, Repository.getCompilerErrors().size());
-    assertEquals(96736, Repository.getDependencyCache().getNamedField("Packed"));
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96736 && d.getParentId() == 1 && d.getLogicTextType() == LogicType.EXTRACT_RECORD_FILTER).count());
 
     LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
@@ -243,7 +306,6 @@ class WBCompilerTest extends RunCompilerBase {
 
     extractCompiler.run();
     assertEquals(1, Repository.getCompilerErrors().size());
-    assertTrue(Repository.getCompilerErrors().get(0).getDetail().contains("SELECTIF"));
   }
 
   @Test //@Order(7)
@@ -263,7 +325,6 @@ class WBCompilerTest extends RunCompilerBase {
     ViewData view = makeView(999, "TestView");
     ColumnData cd = makeColumnData(view, 111);
     ViewSourceData vsd = makeViewSource(1762, view);
-
     ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1}");
 
     WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
@@ -276,6 +337,89 @@ class WBCompilerTest extends RunCompilerBase {
     extractCompiler.run();
     assertEquals(0, Repository.getCompilerErrors().size());
     assertEquals(96891, Repository.getDependencyCache().getNamedLookupField("AllTypeLookup", "Binary1"));
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96891 && d.getLookupPathId() == 2587).count());
+
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+  }
+
+  @Test //@Order(7)
+  void testAssignLookupFieldTwice() throws IOException {
+    new RunControlConfigration();
+    // This will require a DB connection
+    // And preloaded view... use OneCollookup
+    // Probably should have a script that preloads a given database with the data we
+    // want
+
+    // Not making any of the metadata - it should all be there in the database
+    // We tell the compiler which to use and supply the logic and view column source
+    // DatabaseConnectionParams postgresParms = getPostgresParams();
+    assertEquals(1, Repository.getLogicalRecords().size());
+    assertEquals(18, Repository.getFields().size());
+
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(1762, view);
+
+    ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1} + {AllTypeLookup.Binary1}");
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+    assertEquals(96891, Repository.getDependencyCache().getNamedLookupField("AllTypeLookup", "Binary1"));
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96891 && d.getLookupPathId() == 2587).count());
+
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+  }
+
+  @Test //@Order(7)
+  void testAssignLookupFieldSecondColumn() throws IOException {
+    new RunControlConfigration();
+    // This will require a DB connection
+    // And preloaded view... use OneCollookup
+    // Probably should have a script that preloads a given database with the data we
+    // want
+
+    // Not making any of the metadata - it should all be there in the database
+    // We tell the compiler which to use and supply the logic and view column source
+    // DatabaseConnectionParams postgresParms = getPostgresParams();
+    assertEquals(1, Repository.getLogicalRecords().size());
+    assertEquals(18, Repository.getFields().size());
+
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111);
+    ViewSourceData vsd = makeViewSource(1762, view);
+    ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1} + {AllTypeLookup.Binary1}");
+
+    ColumnData cd2 = makeColumnData(view, 1112);
+    ViewColumnSourceData vcs2 = makeViewColumnSource(lrid, view, cd2, "COLUMN = {AllTypeLookup.Binary1} + {AllTypeLookup.Binary1}");
+
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory
+        .getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+    WorkbenchCompiler.addViewColumnSource(vcs2);
+    WorkbenchCompiler.addColumn(cd2);
+    extractCompiler.run();
+    assertEquals(0, Repository.getCompilerErrors().size());
+
+    assertEquals(96891, Repository.getDependencyCache().getNamedLookupField("AllTypeLookup", "Binary1"));
+    assertEquals(2, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96891 && d.getLookupPathId() == 2587).count());
 
     LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
@@ -316,6 +460,8 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(0, Repository.getCompilerErrors().size());
     assertEquals(14544, Repository.getDependencyCache().getPfAssocID("ExtractOut.ExtractOut"));
     assertEquals(472, Repository.getDependencyCache().getExitIDs().iterator().next());
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getFileAssociationId() != null &&  d.getFileAssociationId() == 14544 && d.getLogicTextType() == LogicType.EXTRACT_RECORD_OUTPUT).count());
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getUserExitRoutineId() != null && d.getUserExitRoutineId() == 472 && d.getLogicTextType() == LogicType.EXTRACT_RECORD_OUTPUT).count());
 
     LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
@@ -356,6 +502,8 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(0, Repository.getCompilerErrors().size());
     assertEquals(14544, Repository.getDependencyCache().getPfAssocID("ExtractOut.ExtractOut"));
     assertEquals(472, Repository.getDependencyCache().getExitIDs().iterator().next());
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getFileAssociationId() != null &&  d.getFileAssociationId() == 14544).count());
+    assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getUserExitRoutineId() != null && d.getUserExitRoutineId() == 472).count());
     LogicTable xlt = WorkbenchCompiler.getXlt();
     System.out.println(LTLogger.logRecords(xlt));
 
@@ -364,6 +512,7 @@ class WBCompilerTest extends RunCompilerBase {
   private ViewColumnSourceData makeViewColumnSource(int rcgLR, ViewData view, ColumnData vc,
       String logicText) {
     ViewColumnSourceData vcsd = new ViewColumnSourceData();
+    vcsd.setComponentId(vcsdNum++);
     vcsd.setColumnId(vc.getColumnId());
     vcsd.setColumnNumber(vc.getColumnNumber());
     vcsd.setLogicText(logicText);

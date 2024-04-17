@@ -6,6 +6,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalRecord;
+import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
 /*
@@ -33,6 +34,8 @@ public class WBExtractFilterCompiler extends WorkbenchCompiler  {
 
 	@Override
 	public void buildAST() {
+		Repository.getDependencyCache().setCurrenLogicType(LogicType.EXTRACT_RECORD_FILTER);
+		Repository.getDependencyCache().setCurrentParentId(currentViewSource.getComponentId());
 		syntaxCheckLogic(currentViewSource.getExtractFilter());
 		if(errorListener.getErrors().size() == 0) {
 			ExtractBaseAST.setCurrentColumnNumber((short)0);
