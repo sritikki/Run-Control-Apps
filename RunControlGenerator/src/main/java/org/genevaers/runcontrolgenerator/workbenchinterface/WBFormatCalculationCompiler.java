@@ -49,6 +49,7 @@ public class WBFormatCalculationCompiler implements SyntaxChecker {
 
 	private ParseErrorListener errorListener;
 	private GoalContext tree;
+	private Set<Integer> columnRefs;
 
 	private FormatCalculationListener formatListener = new FormatCalculationListener();
 
@@ -64,6 +65,7 @@ public class WBFormatCalculationCompiler implements SyntaxChecker {
 			if(fc.hasErrors()) {
 				cs = "Syntax Errors found";
 			} else {
+				columnRefs = fc.getColumnRefs();
 				cc.emit(true);
 				cs = vc.getColumnCalculationStack().toString();
 			}
@@ -73,26 +75,6 @@ public class WBFormatCalculationCompiler implements SyntaxChecker {
 		return cs;
 	}
 
-
-
-	// @Override
-	// public void syntaxCheckLogic(String logicText) {
-    //     InputStream is = new ByteArrayInputStream(logicText.getBytes());
-	// 	ANTLRInputStream input;
-	// 	try {
-	// 		input = new ANTLRInputStream(is);
-	//         FormatCalculationLexer lexer = new FormatCalculationLexer(input);
-	//         CommonTokenStream tokens = new CommonTokenStream(lexer);
-	//         FormatCalculationParser parser = new FormatCalculationParser(tokens);
-	//         parser.removeErrorListeners(); // remove ConsoleErrorListener
-	//         errorListener = new ParseErrorListener();
-	//         parser.addErrorListener(errorListener); // add ours
-	//         tree = parser.goal(); // parse
-	// 	} catch (IOException e) {
-	// 		// TODO Auto-generated catch block
-	// 		e.printStackTrace();
-	// 	}
-	// }
 
 	@Override
 	public ParseTree getParseTree() {
@@ -122,10 +104,8 @@ public class WBFormatCalculationCompiler implements SyntaxChecker {
 	}
 
     public Set<Integer> getColumnRefs() {
-       	ParseTreeWalker walker = new ParseTreeWalker(); // create standard walker
-       	walker.walk(formatListener, tree); // initiate walk of tree with listener		
-		return formatListener.getColumnRefs();
-    }
+		return columnRefs;
+   	}
 
 
 }

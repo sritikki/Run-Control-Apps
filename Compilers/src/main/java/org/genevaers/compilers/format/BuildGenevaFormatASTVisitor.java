@@ -1,5 +1,8 @@
 package org.genevaers.compilers.format;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.format.astnodes.AndOp;
 import org.genevaers.compilers.format.astnodes.ColRef;
@@ -35,11 +38,11 @@ import org.genevaers.compilers.format.astnodes.FormatErrorAST;
 import org.genevaers.compilers.format.astnodes.NotOP;
 import org.genevaers.compilers.format.astnodes.NumConst;
 import org.genevaers.compilers.format.astnodes.OrOP;
-import org.genevaers.repository.Repository;
 
 public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatBaseAST>{
 
     private boolean fromFilter;
+	private Set<Integer> columnRefs = new TreeSet<>();
 
     BuildGenevaFormatASTVisitor(boolean fromFilter) {
         this.fromFilter = fromFilter;
@@ -286,6 +289,8 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
         ColRef cr = (ColRef) FormatASTFactory.getNodeOfType(Type.COLREF);
         String colText = ctx.getText();
         cr.setText(colText);
+        String[] bits = colText.split("\\.");
+        columnRefs.add(Integer.valueOf(bits[1]));
         return cr; 
     }
 
@@ -295,5 +300,8 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
         return nc; 
     }
 
+    public Set<Integer> getColumnRefs() {
+        return columnRefs;
+    }
 
 }

@@ -582,6 +582,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(0, Repository.getCompilerErrors().size());
     CalcStack calcStack = Repository.getViews().get(999).getColumnNumber(3).getColumnCalculationStack();
     assertEquals(4, calcStack.getNumEntries());
+    assertEquals(1, fcc.getColumnRefs().size());
   }
 
   @Test 

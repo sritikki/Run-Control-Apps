@@ -20,27 +20,27 @@ package org.genevaers.compilers.format;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.extract.ParseErrorListener;
-import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
 import org.genevaers.compilers.format.astnodes.FormatErrorAST;
 import org.genevaers.grammar.GenevaFormatLexer;
 import org.genevaers.grammar.GenevaFormatParser;
 import org.genevaers.grammar.GenevaFormatParser.GoalContext;
-import org.genevaers.repository.Repository;
-
 import com.google.common.flogger.FluentLogger;
 
 public class FormatCompiler {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private ParseErrorListener errorListener;
+	private Set<Integer> columnRefs;
 
     public FormatCompiler() {
     }
@@ -61,6 +61,7 @@ public class FormatCompiler {
         if (parser.getNumberOfSyntaxErrors() == 0) {
             BuildGenevaFormatASTVisitor astBuilder = new BuildGenevaFormatASTVisitor(fromFilter);
             astTree = astBuilder.visit(tree);
+            columnRefs = astBuilder.getColumnRefs();
         } else {
             logger.atSevere().log("Syntax Errors detected");
             Iterator<String> ei = errorListener.getErrors().iterator();
@@ -78,5 +79,9 @@ public class FormatCompiler {
 
     public boolean hasErrors() {
         return errorListener.getErrors().size() > 0;
+    }
+
+    public Set<Integer> getColumnRefs() {
+        return columnRefs;
     }
 }
