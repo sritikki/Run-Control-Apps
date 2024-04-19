@@ -31,7 +31,7 @@ public class WBCompilerFactory {
 		case FORMAT_FILTER:
 			return new FormatFilterSyntaxChecker();
 		case FORMAT_CALCULATION:
-			return new FormatCalculationSyntaxChecker();
+			return new WBFormatCalculationCompiler();
 		default:
 			return null;
 		}

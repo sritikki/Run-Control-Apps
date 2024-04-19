@@ -160,7 +160,7 @@ class RunCompilerBase {
             TestHelper.setColumnCalculation(viewNum, colNum, logic);
         }
         RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
-
+        FormatBaseAST.setCurrentViewSource(Repository.getViews().get(viewNum).getViewSource((short)1));
         return FormatRecordsBuilder.run();
     }
 

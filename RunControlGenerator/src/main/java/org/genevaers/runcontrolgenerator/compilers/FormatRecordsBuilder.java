@@ -73,7 +73,12 @@ public class FormatRecordsBuilder {
 				}
 				FormatCompiler fc = new FormatCompiler();
 				try {
-					cc.addChildIfNotNull(fc.processLogic(vc.getColumnCalculation(), false));
+					FormatBaseAST ccast = fc.processLogic(vc.getColumnCalculation(), false);
+					if(fc.hasErrors()) {
+						
+					} else {
+						cc.addChildIfNotNull(ccast);
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

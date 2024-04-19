@@ -35,6 +35,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
+import org.genevaers.compilers.format.astnodes.FormatBaseAST;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.LazyDBReader;
 import org.genevaers.genevaio.dbreader.WBConnection;
@@ -47,6 +48,7 @@ import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.ColumnSourceType;
 import org.genevaers.repository.components.enums.DataType;
@@ -56,6 +58,7 @@ import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.ViewType;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.LookupRef;
+import org.genevaers.repository.data.ViewLogicDependency;
 import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
@@ -125,6 +128,9 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         vc.setDateCode(DateCode.values()[ci.getDateCodeValue()]);
         vc.setDecimalCount((short)ci.getNumDecimalPlaces());
         vc.setExtractArea(ExtractArea.values()[ci.getExtractAreaValue()]);
+		if(vc.getExtractArea() == ExtractArea.SORTKEY) {
+			addSortkeyToRepo(ci);
+		}
         vc.setExtractAreaPosition((short)ci.getStartPosition());
         vc.setFieldLength((short)ci.getLength());
         vc.setFieldName(ci.getName());
@@ -133,8 +139,28 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         vc.setSigned(ci.isSigned());
         vc.setStartPosition((short)ci.getStartPosition());
         vc.setViewId(ci.getViewID());
+		vc.setColumnCalculation(ci.getColumnCalculation());
         currentView.addViewColumn(vc);
+		FormatBaseAST.setCurrentColumnNumber(vc.getColumnNumber());
     }
+
+	//Derving the SK from the column isn't quite going to work
+	//The key values can be overridden in the workbench
+	//Workbench should supply SKData
+	private static void addSortkeyToRepo(ColumnData ci) {
+		ViewSortKey vsk = new ViewSortKey();
+		vsk.setColumnId(ci.getColumnId());
+        vsk.setComponentId(ci.getColumnId());
+        vsk.setSortKeyDataType(DataType.values()[ci.getDataTypeValue()]);
+        vsk.setSortKeyDateTimeFormat(DateCode.values()[ci.getDateCodeValue()]);
+        vsk.setSkDecimalCount((short)ci.getNumDecimalPlaces());
+        vsk.setSkFieldLength((short)ci.getLength());
+        vsk.setSkRounding((short)ci.getRounding());
+        vsk.setSortKeySigned(ci.isSigned());
+        vsk.setSkStartPosition((short)ci.getStartPosition());
+        vsk.setViewSortKeyId(ci.getColumnId());
+		currentView.addViewSortKey(vsk);
+	}
 
 	public static void addViewSource(ViewSourceData vsd) {
     	currentViewSource = new ViewSource();
@@ -145,6 +171,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         currentViewSource.setSequenceNumber((short)vsd.getSequenceNumber());
         currentViewSource.setSourceLRID(vsd.getSourceLrId());
         currentView.addViewSource(currentViewSource);
+		FormatBaseAST.setCurrentViewSource(currentViewSource);
 		Repository.getDependencyCache().setCurrentParentId(currentViewSource.getComponentId());
 	}
 
@@ -164,29 +191,11 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	}
 
 	public void run() {
-		Repository.getDependencyCache().clearNamedEntries();
 		buildAST();
 		buildTheExtractTableIfThereAreNoErrors();
 	}
 
 	public abstract void buildAST();
-
-	public void syntaxCheckLogic(String logicText){
-        InputStream is = new ByteArrayInputStream(logicText.getBytes());
-        GenevaERSLexer lexer;
-		try {
-			lexer = new GenevaERSLexer(CharStreams.fromStream(is));
-			CommonTokenStream tokens = new CommonTokenStream(lexer);
-			GenevaERSParser parser = new GenevaERSParser(tokens);
-			parser.removeErrorListeners(); // remove ConsoleErrorListener
-			errorListener = new ParseErrorListener();
-			parser.addErrorListener(errorListener); // add ours
-			tree = parser.goal(); // parse
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public static void buildTheExtractTableIfThereAreNoErrors() {
 		if(Repository.getCompilerErrors().size() == 0) {
@@ -276,8 +285,48 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		currentView = null;
 	}
 
-	public String getDependenciesAsString() {
-		return "";
+	public static String getDependenciesAsString() {
+		Iterator<ViewLogicDependency> depsi = Repository.getDependencyCache().getDependenciesStream().iterator();
+		String deps = "Dependencies\n";
+		while (depsi.hasNext()) {
+			ViewLogicDependency dep = depsi.next();
+			switch (dep.getLogicTextType()) {
+				case EXTRACT_RECORD_FILTER:
+					deps += "Filter ";
+					break;
+				case EXTRACT_COLUMN_ASSIGNMENT:
+				deps += "Assignment ";
+				break;
+				case EXTRACT_RECORD_OUTPUT:
+				deps += "Output ";
+					break;
+				case FORMAT_COLUMN_CALCULATION:
+					break;
+				case FORMAT_RECORD_FILTER:
+					break;
+				case INVALID:
+					break;
+				default:
+					break;
+			
+			}
+			deps += dep.getParentId();
+			if(dep.getFileAssociationId() != null) {
+				deps += " File assoc " + dep.getFileAssociationId();
+			} else if(dep.getLookupPathId() != null) {
+				deps += " Lookup " + dep.getLookupPathId() + " Field " + dep.getLrFieldId();
+			} else if(dep.getLrFieldId() != null) {
+				deps += " Field " + dep.getLrFieldId();
+			} else if(dep.getUserExitRoutineId() != null) {
+				deps += " Exit " + dep.getUserExitRoutineId();
+			}
+			deps += "\n";
+		}
+		return deps;
+	}
+
+	public static Stream<ViewLogicDependency> getDependenciesStream() {
+		return Repository.getDependencyCache().getDependenciesStream();
 	}
 
 

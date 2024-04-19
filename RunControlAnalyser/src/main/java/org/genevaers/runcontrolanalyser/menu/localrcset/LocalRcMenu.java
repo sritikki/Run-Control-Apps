@@ -18,10 +18,6 @@ package org.genevaers.runcontrolanalyser.menu.localrcset;
  */
 
 
-import java.io.File;
-import java.util.Scanner;
-
-import org.apache.commons.lang.StringUtils;
 import org.genevaers.utilities.menu.Menu;
 import org.genevaers.utilities.menu.MenuItem;
 import org.genevaers.utilities.menu.MenuSetting;

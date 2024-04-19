@@ -24,7 +24,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public interface SyntaxChecker {
 
-	public void syntaxCheckLogic(String logicText) throws IOException;
 	public List<String> getSyntaxErrors();
 	public int getNumberOfSyntaxWarningss();
 

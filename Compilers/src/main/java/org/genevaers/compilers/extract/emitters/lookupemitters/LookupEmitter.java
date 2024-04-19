@@ -24,17 +24,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
-import org.genevaers.compilers.extract.astnodes.EffDateValue;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
-import org.genevaers.compilers.extract.astnodes.SymbolList;
 import org.genevaers.compilers.extract.emitters.CodeEmitter;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
-import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;

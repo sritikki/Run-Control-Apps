@@ -27,6 +27,7 @@ import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.calculationstack.CalcStack;
 import org.genevaers.repository.components.enums.ColumnSourceType;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
@@ -47,6 +48,7 @@ import org.genevaers.runcontrolgenerator.workbenchinterface.WBCompilerType;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBExtractColumnCompiler;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBExtractFilterCompiler;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBExtractOutputCompiler;
+import org.genevaers.runcontrolgenerator.workbenchinterface.WBFormatCalculationCompiler;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WorkbenchCompiler;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
@@ -121,7 +123,7 @@ class WBCompilerTest extends RunCompilerBase {
   void testAssignField() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(lrid, view);
 
     ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8}");
@@ -147,7 +149,7 @@ class WBCompilerTest extends RunCompilerBase {
   void testAssignFieldTwice() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(lrid, view);
 
     ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8} + {Binary8}");
@@ -174,11 +176,11 @@ class WBCompilerTest extends RunCompilerBase {
   void testAssignFieldTwiceAndSecondColumn() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(lrid, view);
     ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8} + {Binary8}");
 
-    ColumnData cd2 = makeColumnData(view, 1112);
+    ColumnData cd2 = makeColumnData(view, 1112, 2);
     ViewColumnSourceData vcs2 = makeViewColumnSource(lrid, view, cd2, "COLUMN = {Binary8} + {Binary8}");
 
 
@@ -207,7 +209,7 @@ class WBCompilerTest extends RunCompilerBase {
   @Test //@Order(2)
   void testBadField() throws IOException {
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(lrid, view);
 
     ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Bad}");
@@ -227,7 +229,7 @@ class WBCompilerTest extends RunCompilerBase {
   @Test  //@Order(3)
   void testBadSyntax() throws IOException {
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(lrid, view);
 
     ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = gobbledegook");
@@ -271,7 +273,7 @@ class WBCompilerTest extends RunCompilerBase {
   void testOutput() throws IOException {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(lrid, view);
     vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=DEFAULT)");
 
@@ -291,7 +293,7 @@ class WBCompilerTest extends RunCompilerBase {
   void testSELECTIFContext() throws IOException {
     new RunControlConfigration();
      ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(lrid, view);
 
     ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd,
@@ -323,7 +325,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(18, Repository.getFields().size());
 
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(1762, view);
     ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1}");
 
@@ -359,7 +361,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(18, Repository.getFields().size());
 
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(1762, view);
 
     ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1} + {AllTypeLookup.Binary1}");
@@ -396,11 +398,11 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(18, Repository.getFields().size());
 
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(1762, view);
     ViewColumnSourceData vcs = makeViewColumnSource(1762, view, cd, "COLUMN = {AllTypeLookup.Binary1} + {AllTypeLookup.Binary1}");
 
-    ColumnData cd2 = makeColumnData(view, 1112);
+    ColumnData cd2 = makeColumnData(view, 1112, 2);
     ViewColumnSourceData vcs2 = makeViewColumnSource(lrid, view, cd2, "COLUMN = {AllTypeLookup.Binary1} + {AllTypeLookup.Binary1}");
 
 
@@ -443,7 +445,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(18, Repository.getFields().size());
 
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(1762, view);
     vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=FILE={ExtractOut.ExtractOut}, USEREXIT={writeExit})");
 
@@ -485,7 +487,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(18, Repository.getFields().size());
 
     ViewData view = makeView(999, "TestView");
-    ColumnData cd = makeColumnData(view, 111);
+    ColumnData cd = makeColumnData(view, 111, 1);
     ViewSourceData vsd = makeViewSource(1762, view);
     vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=FILE={ExtractOut.ExtractOut}, PROCEDURE={ginger})");
 
@@ -509,6 +511,101 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
+  @Test //@Order(1)    
+  void testViewSimulation() throws IOException {
+    WorkbenchCompiler.reset();
+    environmentid = 4;
+    lrid = 1762;
+    lfid = 1506;
+    DatabaseConnectionParams params = getPostgresParams();
+    params.setEnvironmentID(Integer.toString(environmentid));
+    WorkbenchCompiler.setSQLConnection(getTestDatabaseConnection(params));
+    WorkbenchCompiler.setSchema("gendev");
+    WorkbenchCompiler.setEnvironment(environmentid);
+    WorkbenchCompiler.setSourceLRID(lrid);
+    WorkbenchCompiler.setSourceLFID(lfid);
+
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111, 1);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8}");
+    ColumnData cd2 = makeColumnData(view, 112, 2);
+    ViewColumnSourceData vcs2 = makeViewColumnSource(1762, view, cd2, "COLUMN = {Binary1}");
+    vsd.setExtractFilter("SELECTIF({Packed} > 0)");
+    vsd.setOutputLogic("WRITE(SOURCE=DATA,DEST=FILE={ExtractOut.ExtractOut}, PROCEDURE={ginger})");
+
+    WBExtractFilterCompiler filterCompiler = (WBExtractFilterCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_FILTER);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    filterCompiler.buildAST();
+
+    WBExtractColumnCompiler extractCompiler = (WBExtractColumnCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_COLUMN);
+    WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+    extractCompiler.buildAST();
+    WorkbenchCompiler.addViewColumnSource(vcs2);
+    WorkbenchCompiler.addColumn(cd2);
+    extractCompiler.buildAST();
+  
+    WBExtractOutputCompiler outputCompiler = (WBExtractOutputCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_OUTPUT);
+    outputCompiler.buildAST();
+
+    assertEquals(0, Repository.getCompilerErrors().size());
+    WorkbenchCompiler.buildTheExtractTableIfThereAreNoErrors();
+
+    System.out.println(WorkbenchCompiler.getDependenciesAsString());
+
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+
+    assertEquals(5, WorkbenchCompiler.getDependenciesStream().count());
+
+  }
+
+  @Test 
+  void testFormatCalculation() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111, 3);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+    cd.setColumnCalculation("COLUMN = Col.1 + 1");
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8}");
+
+    WBFormatCalculationCompiler fcc = (WBFormatCalculationCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.FORMAT_CALCULATION);
+    WorkbenchCompiler.addView(view);
+    //WorkbenchCompiler.addViewSource(vsd);
+    //WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+
+    System.out.println(fcc.generateCalcStack(999, 3));
+
+    assertEquals(0, Repository.getCompilerErrors().size());
+    CalcStack calcStack = Repository.getViews().get(999).getColumnNumber(3).getColumnCalculationStack();
+    assertEquals(4, calcStack.getNumEntries());
+  }
+
+  @Test 
+  void testFormatCalculationBad() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    ColumnData cd = makeColumnData(view, 111, 3);
+    ViewSourceData vsd = makeViewSource(lrid, view);
+    cd.setColumnCalculation("COLUMN = Col.1 + !");
+    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8}");
+
+    WBFormatCalculationCompiler fcc = (WBFormatCalculationCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.FORMAT_CALCULATION);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    //WorkbenchCompiler.addViewColumnSource(vcs);
+    WorkbenchCompiler.addColumn(cd);
+    fcc.generateCalcStack(999, 3);
+    assertTrue(fcc.hasSyntaxErrors());
+    assertEquals(1, fcc.getSyntaxErrors().size());
+
+  }
+
+
+
   private ViewColumnSourceData makeViewColumnSource(int rcgLR, ViewData view, ColumnData vc,
       String logicText) {
     ViewColumnSourceData vcsd = new ViewColumnSourceData();
@@ -524,9 +621,9 @@ class WBCompilerTest extends RunCompilerBase {
     return vcsd;
   }
 
-  private ColumnData makeColumnData(ViewData view, int colID) {
+  private ColumnData makeColumnData(ViewData view, int colID, int columnNum) {
     ColumnData ci = new ColumnData();
-    ci.setColumnNumber(1);
+    ci.setColumnNumber(columnNum);
     ci.setColumnId(colID);
     ci.setDataTypeValue(DataType.ALPHANUMERIC.ordinal());
     ci.setDateCodeValue(DateCode.NONE.ordinal());

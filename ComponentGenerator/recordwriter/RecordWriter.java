@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import javax.lang.model.util.ElementScanner6;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class RecordWriter {
     com.ibm.jzos.RecordWriter writer = null;

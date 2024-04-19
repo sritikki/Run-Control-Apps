@@ -171,7 +171,7 @@ public class BuildGenevaFormatASTVisitor extends GenevaFormatBaseVisitor<FormatB
              return notop;
          } else {
              FormatErrorAST errs = (FormatErrorAST) FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ERRORS);
-             errs.setErrors(null);
+             errs.setError(null);
             return errs;
          }
      }

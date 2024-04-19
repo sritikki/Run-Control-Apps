@@ -238,11 +238,7 @@ public class FormatAST2Dot {
 
     private static void dotErrorNode(FormatBaseAST node) {
         FormatErrorAST errs = (FormatErrorAST) node;
-        label = errs.getErrors().size() + " Errors\n";
-        Iterator<String> ei = errs.getErrors().iterator();
-        while (ei.hasNext()) {
-            label += ei.next() + "\n";
-        }
+        label = errs.getError();
         colour = "red";
         shape = "octagon";
         idString = "err_" + nodeNum++;

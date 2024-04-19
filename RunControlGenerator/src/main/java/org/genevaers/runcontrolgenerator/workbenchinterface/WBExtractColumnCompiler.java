@@ -36,13 +36,11 @@ public class WBExtractColumnCompiler extends WorkbenchCompiler {
 
 	@Override
 	public void buildAST() {
+		Repository.getDependencyCache().clearNamedEntries();
 		Repository.getDependencyCache().setCurrenLogicType(LogicType.EXTRACT_COLUMN_ASSIGNMENT);
 		Repository.getDependencyCache().setCurrentParentId(currentViewColumnSource.getComponentId());
-		syntaxCheckLogic(currentViewColumnSource.getLogicText());
-		if(errorListener.getErrors().size() == 0) {
-			ExtractBaseAST.setCurrentColumnNumber((short)currentViewColumnSource.getColumnNumber());
-			ExtractPhaseCompiler.buildViewColumnSourceAST(currentViewColumnSource);
-		}
+		ExtractBaseAST.setCurrentColumnNumber((short)currentViewColumnSource.getColumnNumber());
+		ExtractPhaseCompiler.buildViewColumnSourceAST(currentViewColumnSource);
 	}
 	
 }

@@ -16,6 +16,7 @@ public class ColumnData {
     int startPosition;
     int ordinal;
     String name;
+    String columnCalculation;
 
     public int getViewID() {
         return viewID;
@@ -135,6 +136,14 @@ public class ColumnData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getColumnCalculation() {
+        return columnCalculation;
+    }
+
+    public void setColumnCalculation(String columnCalculation) {
+        this.columnCalculation = columnCalculation;
     }
 
 }

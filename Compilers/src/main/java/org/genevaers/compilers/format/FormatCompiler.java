@@ -49,7 +49,7 @@ public class FormatCompiler {
         CodePointCharStream stream = CharStreams.fromString(text);
         FormatBaseAST astTree = null;
 
-        logger.atInfo().log("Format Logic to be proecessed: " + text);
+        logger.atInfo().log("Format Logic to be processed: " + text);
 
         GenevaFormatLexer lexer = new GenevaFormatLexer(stream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -66,11 +66,12 @@ public class FormatCompiler {
             Iterator<String> ei = errorListener.getErrors().iterator();
             while(ei.hasNext()) {
                 //Want to add these to an Error AST Node
-                logger.atSevere().log(ei.next());
+                String err = ei.next();
+                logger.atSevere().log(err);
+                astTree = (FormatBaseAST)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ERRORS);
+                ((FormatErrorAST)astTree).setError(err);
+                ASTBase.addToErrorCount(errorListener.getErrors().size());
             }
-            astTree = (FormatBaseAST)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ERRORS);
-            ((FormatErrorAST)astTree).setErrors(errorListener.getErrors());
-            ASTBase.addToErrorCount(errorListener.getErrors().size());
         }
         return astTree;
     }
