@@ -171,7 +171,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         if(c.getSymbol().getType() == GenevaERSParser.COL_REF) {
             String col = c.getText();
             String[] bits = col.split("\\.");
-            ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+            ViewNode view = Repository.getViews().get(viewSource.getViewId());
             ViewColumn vc = view.getColumnNumber(Integer.parseInt(bits[1])); 
             ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(vc); // Change this to make column type more specific
             colNode.setViewColumn(vc);
@@ -796,7 +796,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         ColumnRefAST colRef = (ColumnRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNREF);
         String col = ctx.getText();
         String[] bits = col.split("\\.");
-        ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+        ViewNode view = Repository.getViews().get(viewSource.getViewId());
         //ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(view.getColumnByID(Integer.parseInt(bits[1]))); // Change this to make column type more specific
         colRef.setViewColumn(view.getColumnNumber(Integer.parseInt(bits[1])));
         return colRef; 
