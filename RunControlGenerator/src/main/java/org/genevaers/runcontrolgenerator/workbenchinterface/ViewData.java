@@ -2,9 +2,10 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
 
 public class ViewData {
 
-    int id;
-    String name;
-    int typeValue;
+    private int id;
+    private String name;
+    private int typeValue;
+    private String formatFilter;
 
     public int getId() {
         return id;
@@ -28,6 +29,14 @@ public class ViewData {
 
     public void setTypeValue(int typeValue) {
         this.typeValue = typeValue;
+    }
+
+    public void setFormatFilter(String formatFilter) {
+        this.formatFilter = formatFilter;
+    }
+
+    public String getFormatFilter() {
+        return formatFilter;
     }
 
 }

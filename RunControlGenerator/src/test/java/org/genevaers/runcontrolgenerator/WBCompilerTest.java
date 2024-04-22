@@ -49,6 +49,7 @@ import org.genevaers.runcontrolgenerator.workbenchinterface.WBExtractColumnCompi
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBExtractFilterCompiler;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBExtractOutputCompiler;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WBFormatCalculationCompiler;
+import org.genevaers.runcontrolgenerator.workbenchinterface.WBFormatFilterCompiler;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WorkbenchCompiler;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
@@ -567,19 +568,15 @@ class WBCompilerTest extends RunCompilerBase {
     new RunControlConfigration();
     ViewData view = makeView(999, "TestView");
     ColumnData cd = makeColumnData(view, 111, 3);
-    ViewSourceData vsd = makeViewSource(lrid, view);
     cd.setColumnCalculation("COLUMN = Col.1 + 1");
-    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8}");
 
     WBFormatCalculationCompiler fcc = (WBFormatCalculationCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.FORMAT_CALCULATION);
     WorkbenchCompiler.addView(view);
-    //WorkbenchCompiler.addViewSource(vsd);
-    //WorkbenchCompiler.addViewColumnSource(vcs);
     WorkbenchCompiler.addColumn(cd);
 
     System.out.println(fcc.generateCalcStack(999, 3));
 
-    assertEquals(0, Repository.getCompilerErrors().size());
+    assertEquals(0, WorkbenchCompiler.getErrors().size());
     CalcStack calcStack = Repository.getViews().get(999).getColumnNumber(3).getColumnCalculationStack();
     assertEquals(4, calcStack.getNumEntries());
     assertEquals(1, fcc.getColumnRefs().size());
@@ -592,7 +589,6 @@ class WBCompilerTest extends RunCompilerBase {
     ColumnData cd = makeColumnData(view, 111, 3);
     ViewSourceData vsd = makeViewSource(lrid, view);
     cd.setColumnCalculation("COLUMN = Col.1 + !");
-    ViewColumnSourceData vcs = makeViewColumnSource(lrid, view, cd, "COLUMN = {Binary8}");
 
     WBFormatCalculationCompiler fcc = (WBFormatCalculationCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.FORMAT_CALCULATION);
     WorkbenchCompiler.addView(view);
@@ -605,7 +601,38 @@ class WBCompilerTest extends RunCompilerBase {
 
   }
 
+  @Test 
+  void testFormatFilter() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    view.setFormatFilter("SKIPIF(COL.1 < 1 and COL.3 > 5)");
 
+    WBFormatFilterCompiler ffc = (WBFormatFilterCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.FORMAT_FILTER);
+    WorkbenchCompiler.addView(view);
+
+    System.out.println(ffc.generateCalcStack(999));
+
+    assertEquals(0, Repository.getCompilerErrors().size());
+    CalcStack calcStack = Repository.getViews().get(999).getFormatFilterCalcStack();
+    assertEquals(10, calcStack.getNumEntries());
+    assertEquals(2, ffc.getColumnRefs().size());
+  }
+
+  @Test 
+  void testFormatFilterBad() throws IOException {
+    new RunControlConfigration();
+    ViewData view = makeView(999, "TestView");
+    view.setFormatFilter("SKIPIF(COL.1 < ! and COL.3 > 5)");
+    ViewSourceData vsd = makeViewSource(lrid, view);
+
+    WBFormatFilterCompiler ffc = (WBFormatFilterCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.FORMAT_FILTER);
+    WorkbenchCompiler.addView(view);
+    WorkbenchCompiler.addViewSource(vsd);
+    ffc.generateCalcStack(999);
+
+    assertTrue(ffc.hasSyntaxErrors());
+    assertEquals(2, Repository.getCompilerErrors().size());
+  }
 
   private ViewColumnSourceData makeViewColumnSource(int rcgLR, ViewData view, ColumnData vc,
       String logicText) {

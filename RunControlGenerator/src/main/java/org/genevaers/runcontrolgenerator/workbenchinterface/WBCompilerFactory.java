@@ -29,7 +29,7 @@ public class WBCompilerFactory {
 		case EXTRACT_OUTPUT:
 			return new WBExtractOutputCompiler();
 		case FORMAT_FILTER:
-			return new FormatFilterSyntaxChecker();
+			return new WBFormatFilterCompiler();
 		case FORMAT_CALCULATION:
 			return new WBFormatCalculationCompiler();
 		default:

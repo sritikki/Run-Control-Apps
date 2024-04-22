@@ -5,7 +5,8 @@ public enum CompilerMessageSource {
     EXTRACT_FILTER("ExtFilter"), 
     EXTRACT_OUTPUT("ExtrOut"), 
     COLUMN("ColAssign"),
-    COLUMN_CALC("ColCalc");
+    COLUMN_CALC("ColCalc"), 
+    FORMAT_FILTER("FormatFilter");
 
     private final String value;
 

@@ -34,9 +34,10 @@ public class FormatErrorAST extends FormatBaseAST{
         type = Type.ERRORS;
     }
 
-    public void setError(String err) {
+    public void setError(String err, boolean fromFilter) {
         this.error = err;
-        CompilerMessage errMessage = new CompilerMessage(currentViewSource.getViewId(), CompilerMessageSource.COLUMN_CALC,  0, 0, currentColumnNumber, err);
+        CompilerMessage errMessage = new CompilerMessage(currentViewSource.getViewId(), 
+        fromFilter ? CompilerMessageSource.FORMAT_FILTER : CompilerMessageSource.COLUMN_CALC,  0, 0, currentColumnNumber, err);
         Repository.addErrorMessage(errMessage);              
     }
 

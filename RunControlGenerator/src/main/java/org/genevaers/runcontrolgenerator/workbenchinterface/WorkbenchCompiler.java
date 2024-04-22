@@ -62,6 +62,8 @@ import org.genevaers.repository.data.ViewLogicDependency;
 import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
+import com.ibm.db2.jcc.am.cu;
+
 
 public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
@@ -118,6 +120,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         vdef.setName(vd.getName());
         vdef.setViewType(ViewType.values()[vd.getTypeValue()]);
         currentView = Repository.getViewNodeMakeIfDoesNotExist(vdef);
+		currentView.setFormatFilterLogic(vd.getFormatFilter());
 	}
 
     public static void addColumn(ColumnData ci) {

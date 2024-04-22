@@ -70,7 +70,7 @@ public class FormatCompiler {
                 String err = ei.next();
                 logger.atSevere().log(err);
                 astTree = (FormatBaseAST)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ERRORS);
-                ((FormatErrorAST)astTree).setError(err);
+                ((FormatErrorAST)astTree).setError(err, fromFilter);
                 ASTBase.addToErrorCount(errorListener.getErrors().size());
             }
         }
