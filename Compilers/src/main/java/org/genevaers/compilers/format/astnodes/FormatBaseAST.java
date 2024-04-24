@@ -37,7 +37,7 @@ public abstract class FormatBaseAST extends ASTBase{
     protected CalcStackEntry calcStackEntry;
     protected boolean negative;
     protected static int currentColumnNumber = 0;
-    protected static ViewSource currentViewSource;
+    protected static int currentView;
 
     public FormatASTFactory.Type getType() {
         return type;
@@ -162,8 +162,8 @@ public abstract class FormatBaseAST extends ASTBase{
         FormatBaseAST.currentColumnNumber = currentColumnNumber;
     }
 
-    public static void setCurrentViewSource(ViewSource currentViewSource) {
-        FormatBaseAST.currentViewSource = currentViewSource;
+    public static void setCurrentView(int currentView) {
+        FormatBaseAST.currentView = currentView;
     }
 
 }

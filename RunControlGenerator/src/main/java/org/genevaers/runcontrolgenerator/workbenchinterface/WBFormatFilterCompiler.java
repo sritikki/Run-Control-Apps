@@ -18,26 +18,19 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
  */
 
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.genevaers.compilers.format.FormatCompiler;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
 import org.genevaers.compilers.format.astnodes.FormatFilterAST;
-import org.genevaers.compilers.format.astnodes.FormatRoot;
 import org.genevaers.compilers.format.astnodes.FormatView;
-import org.genevaers.grammar.FormatFilterLexer;
-import org.genevaers.grammar.FormatFilterParser;
 import org.genevaers.grammar.FormatFilterParser.GoalContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewNode;
@@ -46,7 +39,9 @@ import org.genevaers.repository.data.CompilerMessage;
 public class WBFormatFilterCompiler implements SyntaxChecker {
 
 	private GoalContext tree;
-	private Set<Integer> columnRefs;
+	private Set<Integer> columnRefs = new HashSet<Integer>() {
+		
+	};
 
 	@Override
 	public ParseTree getParseTree() {

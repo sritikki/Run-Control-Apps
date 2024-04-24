@@ -35,11 +35,6 @@ public class ViewLogicDependency {
 		}
 	}	
 
-	/*
-	 * Note, this class has no ID or name attributes, so those fields in the
-	 * superclass hierarchy will have null values.
-	 */
-
 	private LogicType logicTextType; // LOGICTYPECD
 	private Integer sequenceNo; // DEPENDID
 	private Integer lookupPathId; // LOOKUPID

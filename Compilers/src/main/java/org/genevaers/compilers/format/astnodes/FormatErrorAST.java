@@ -18,11 +18,8 @@ package org.genevaers.compilers.format.astnodes;
  */
 
 
-import java.util.List;
-
 import org.genevaers.compilers.format.astnodes.FormatASTFactory.Type;
 import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.CompilerMessageSource;
 
@@ -36,8 +33,8 @@ public class FormatErrorAST extends FormatBaseAST{
 
     public void setError(String err, boolean fromFilter) {
         this.error = err;
-        CompilerMessage errMessage = new CompilerMessage(currentViewSource.getViewId(), 
-        fromFilter ? CompilerMessageSource.FORMAT_FILTER : CompilerMessageSource.COLUMN_CALC,  0, 0, currentColumnNumber, err);
+        CompilerMessage errMessage = new CompilerMessage(currentView, 
+        fromFilter ? CompilerMessageSource.FORMAT_FILTER : CompilerMessageSource.COLUMN_CALC,  0, 0, fromFilter ? 0 : currentColumnNumber, err);
         Repository.addErrorMessage(errMessage);              
     }
 

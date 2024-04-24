@@ -18,7 +18,6 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
  */
 
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -31,17 +30,14 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.LazyDBReader;
 import org.genevaers.genevaio.dbreader.WBConnection;
+import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
-import org.genevaers.grammar.GenevaERSLexer;
-import org.genevaers.grammar.GenevaERSParser;
 import org.genevaers.grammar.GenevaERSParser.GoalContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
@@ -59,10 +55,7 @@ import org.genevaers.repository.components.enums.ViewType;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.LookupRef;
 import org.genevaers.repository.data.ViewLogicDependency;
-import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
-
-import com.ibm.db2.jcc.am.cu;
 
 
 public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
@@ -174,7 +167,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         currentViewSource.setSequenceNumber((short)vsd.getSequenceNumber());
         currentViewSource.setSourceLRID(vsd.getSourceLrId());
         currentView.addViewSource(currentViewSource);
-		FormatBaseAST.setCurrentViewSource(currentViewSource);
+		FormatBaseAST.setCurrentView(currentView.getID());
 		Repository.getDependencyCache().setCurrentParentId(currentViewSource.getComponentId());
 	}
 
@@ -211,8 +204,16 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		return ExtractPhaseCompiler.getExtractLogicTable();
 	}
 
+	public static String getLogicTableLog() {
+		return LTLogger.logRecords(getXlt());
+	}
+
 	public static boolean hasErrors() {
 		return Repository.getCompilerErrors().size() > 0;
+	}
+
+	public static List<CompilerMessage> getErrorMessages() {
+		return Repository.getCompilerErrors();
 	}
 
 	public static List<String> getErrors() {
@@ -237,6 +238,10 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 			warns.add(w.getDetail());
 		}
 		return warns;
+	}
+
+	public static List<CompilerMessage> getWarningMessages() {
+		return Repository.getWarnings();
 	}
 
 	@Override
@@ -330,6 +335,14 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	public static Stream<ViewLogicDependency> getDependenciesStream() {
 		return Repository.getDependencyCache().getDependenciesStream();
+	}
+
+	public static Stream<CompilerMessage> getErrorMessageStream() {
+		return Repository.getCompilerErrors().stream();
+	}
+
+	public static Stream<CompilerMessage> getWarningMessageStream() {
+		return Repository.getWarnings().stream();
 	}
 
 
