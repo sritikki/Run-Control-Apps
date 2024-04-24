@@ -18,29 +18,20 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
  */
 
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.genevaers.compilers.format.FormatCompiler;
 import org.genevaers.compilers.format.astnodes.ColumnCalculation;
 import org.genevaers.compilers.format.astnodes.FormatASTFactory;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
-import org.genevaers.grammar.FormatCalculationLexer;
-import org.genevaers.grammar.FormatCalculationParser;
 import org.genevaers.grammar.FormatCalculationParser.GoalContext;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.data.CompilerMessage;
-
-import com.ibm.db2.jcc.a.c;
 
 /*
  * Wrap the FormatRecordsBuilder for the workbench
