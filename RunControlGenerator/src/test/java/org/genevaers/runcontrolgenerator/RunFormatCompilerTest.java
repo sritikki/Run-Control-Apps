@@ -57,7 +57,6 @@ class RunFormatCompilerTest extends RunCompilerBase {
         FormatRecordsBuilder.reset();
         Repository.clearAndInitialise();
         FormatBaseAST.resetStack();
-        ASTBase.clearErrorCount();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         ExtractBaseAST.setCurrentColumnNumber((short)0);
         LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
@@ -224,7 +223,7 @@ class RunFormatCompilerTest extends RunCompilerBase {
     void testColumnCalculationError() {
         FormatBaseAST ffTree = runFromXMLOverrideColumnCalculation(12087, TestHelper.FORMAT_OR_COMPILE, 3, "IF rubbish");
         assertNotNull(ffTree);
-        assertTrue(ASTBase.getErrorCount() > 0);
+        assertTrue(Repository.newErrorsDetected());
         ViewNode v = Repository.getViews().get(12087);
         FormatAST2Dot.write(ffTree, Paths.get("target/ff.dot"));
     }

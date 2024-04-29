@@ -52,13 +52,13 @@ public class ExtractPhaseCompiler {
     public static void reset() {
         xltEmitter = new LogicTableEmitter();
         jltEmitter = new LogicTableEmitter();
+		extractRoot = null;
 		vsnode = null;
     }
 
     public static Status run(List<LogicGroup> lgs) {
         Status status = Status.OK;
 		logicGroups = lgs;
-		ASTBase.clearErrorCount();
 		buildTheAST();
 		if(Repository.getCompilerErrors().size() == 0) {
 			//once the AST is built we now have enough data
@@ -240,9 +240,8 @@ public class ExtractPhaseCompiler {
 		ExtractColumnCompiler ecc = new ExtractColumnCompiler();
 		try {
 			ecc.processLogicAndAddNodes(vcsn);
-			
-			if(ecc.hasErrors()) {
-				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", ASTBase.getErrorCount());
+			if(Repository.newErrorsDetected()) {
+				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -286,13 +285,13 @@ public class ExtractPhaseCompiler {
 	public static void buildTheExtractLogicTable() {
 		//Walk the AST and add the entries to the XLT
 		//We need to ensure there were no errors
-		if(ASTBase.getErrorCount() == 0) {
+		if(Repository.newErrorsDetected() == false) {
 			//Put an error count in the Base and check
 			//We also need to extract the Join information at this time
 			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
 			((EmittableASTNode)extractRoot).emit();
 		} else {
-			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", ASTBase.getErrorCount());
+			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
 			//walk the tree here and get the errors?
 		}
 	}

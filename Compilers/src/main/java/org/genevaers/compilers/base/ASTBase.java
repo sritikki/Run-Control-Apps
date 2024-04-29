@@ -31,7 +31,6 @@ import java.util.List;
 public abstract class ASTBase {
     protected List<ASTBase> children = new ArrayList<>();
     protected ASTBase parent;
-    protected static int errorCount = 0;
     private int charPositionInLine;
     private int lineNumber;
 
@@ -81,18 +80,6 @@ public abstract class ASTBase {
 
     public ASTBase getParent() {
         return parent;
-    }
-
-    public static int getErrorCount() {
-        return errorCount;
-    }
-
-    public static void addToErrorCount(int errorCount) {
-        ASTBase.errorCount += errorCount;
-    }
-
-    public static void clearErrorCount() {
-        ASTBase.errorCount = 0;
     }
 
     public void setCharPostionInLine(int charPositionInLine) {

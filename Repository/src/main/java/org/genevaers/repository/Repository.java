@@ -92,6 +92,7 @@ public class Repository {
 	private static Date generationTime;
 
 	private static int numberOfExtractViews;
+	private static int numErrors;
 
 	public static void clearAndInitialise() {
 		crs = new ComponentCollection<ControlRecord>();
@@ -469,4 +470,11 @@ public class Repository {
 		return dependencyCache;
 	}
 
+	public static void clearNewErrorsDetected() {
+		numErrors = compilerErrors.size();
+	}
+
+	public static boolean newErrorsDetected() {
+		return compilerErrors.size() > numErrors;
+	}
 }

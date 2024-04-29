@@ -109,8 +109,8 @@ public class FormatRecordsBuilder {
 		//Walk the format root and build the format records
 		//where are the calc stacks to be defined?
 		//In the view node or the view column node
-		if(ASTBase.getErrorCount() > 0) {
-			logger.atSevere().log("Number of format logic errors found: %d", ASTBase.getErrorCount());
+		if(Repository.newErrorsDetected()) {
+			logger.atSevere().log("Number of format logic errors found: %d", Repository.getCompilerErrors().size());
 		} else {
 			if(formatRoot != null) {
 				Iterator<ASTBase> fi = formatRoot.getChildIterator();

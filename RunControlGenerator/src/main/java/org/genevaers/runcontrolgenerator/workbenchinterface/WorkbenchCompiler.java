@@ -53,10 +53,10 @@ import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.ViewType;
 import org.genevaers.repository.data.CompilerMessage;
+import org.genevaers.repository.data.CompilerMessageSource;
 import org.genevaers.repository.data.LookupRef;
 import org.genevaers.repository.data.ViewLogicDependency;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
-
 
 public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
@@ -74,7 +74,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	private static int environmentID;
 	private static int sourceLR;
 	private static int sourceLF;
-
+	private static int currentColumnNumber;
 	//Common setup functions
     public static void setSQLConnection(Connection c) {
 		dataProvider.setDatabaseConnection(new WBConnection(c));
@@ -138,6 +138,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		vc.setColumnCalculation(ci.getColumnCalculation());
         currentView.addViewColumn(vc);
 		FormatBaseAST.setCurrentColumnNumber(vc.getColumnNumber());
+		currentColumnNumber = vc.getColumnNumber();
     }
 
 	//Derving the SK from the column isn't quite going to work
@@ -194,7 +195,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	public abstract void buildAST();
 
 	public static void buildTheExtractTableIfThereAreNoErrors() {
-		if(Repository.getCompilerErrors().size() == 0) {
+		if(Repository.newErrorsDetected() == false) {
 			ExtractPhaseCompiler.buildTheJoinLogicTable();
 			ExtractPhaseCompiler.buildTheExtractLogicTable();
 		}
@@ -290,7 +291,9 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         ExtractPhaseCompiler.reset();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
 		currentViewColumnSource = null;
+		currentViewSource = null;
 		currentView = null;
+		currentColumnNumber = 0;
 	}
 
 	public static String getDependenciesAsString() {
@@ -366,6 +369,27 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	public static void setDataProvider(LazyDBReader dp) {
 		dataProvider = dp;
+	}
+
+	public static void addViewPropertiesErrorMessage(String msg) {
+		Repository.addErrorMessage(new CompilerMessage(environmentID, CompilerMessageSource.VIEW_PROPS, sourceLR, sourceLF, currentColumnNumber, msg));
+	}
+
+	public static int getCurrentColumnNumber() {
+		return currentColumnNumber;
+	}
+
+	public static void setCurrentColumnNumber(int currentColumnNumber) {
+		WorkbenchCompiler.currentColumnNumber = currentColumnNumber;
+		FormatBaseAST.setCurrentColumnNumber(currentColumnNumber);
+	}
+
+	public static void clearNewErrorsDetected() {
+		Repository.clearNewErrorsDetected();
+	}
+
+	public static boolean newErrorsDetected() {
+		return Repository.newErrorsDetected();
 	}
 
 }

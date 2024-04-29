@@ -71,7 +71,6 @@ public class FormatCompiler {
                 logger.atSevere().log(err);
                 astTree = (FormatBaseAST)FormatASTFactory.getNodeOfType(FormatASTFactory.Type.ERRORS);
                 ((FormatErrorAST)astTree).setError(err, fromFilter);
-                ASTBase.addToErrorCount(errorListener.getErrors().size());
             }
         }
         return astTree;

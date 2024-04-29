@@ -2,6 +2,7 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
 
 import java.io.IOException;
 
+import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
