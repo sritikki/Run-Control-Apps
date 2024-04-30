@@ -124,6 +124,7 @@ public class Repository {
 		maxComponentLRID = 0;
 		maxFieldID = 0;
 		maxIndexID = 0;
+		numErrors = 0;
 	
 		extractFileNubers = new TreeSet<>();
 	}
