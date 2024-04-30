@@ -387,6 +387,10 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		Repository.addErrorMessage(new CompilerMessage(environmentID, CompilerMessageSource.FORMAT_FILTER, sourceLR, sourceLF, 0, msg));
 	}
 
+	public static void addColumnAssignmentErrorMessage(String msg) {
+		Repository.addErrorMessage(new CompilerMessage(environmentID, CompilerMessageSource.COLUMN, sourceLR, sourceLF, 0, msg));
+	}
+
 	public static int getCurrentColumnNumber() {
 		return currentColumnNumber;
 	}
