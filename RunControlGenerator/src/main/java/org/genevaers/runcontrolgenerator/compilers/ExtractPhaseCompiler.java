@@ -29,6 +29,8 @@ import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.data.CompilerMessage;
+import org.genevaers.repository.data.CompilerMessageSource;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
@@ -290,13 +292,25 @@ public class ExtractPhaseCompiler {
 			//We also need to extract the Join information at this time
 			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
 			((EmittableASTNode)extractRoot).emit();
+			checkWriteStatements(extractRoot);
 		} else {
 			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
 			//walk the tree here and get the errors?
 		}
 	}
 
-    public static LogicTable getExtractLogicTable() {
+    private static void checkWriteStatements(ExtractBaseAST root) {
+		ViewSourceAstNode localvsnode = vsnode == null ? (ViewSourceAstNode) root.getChildIterator().next().getChildIterator().next() : vsnode;
+		if(noWriteStatementMissing(localvsnode)) {
+			logger.atSevere().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
+		} else {
+			CompilerMessage errMessage = new CompilerMessage(localvsnode.getViewSource().getViewId(), CompilerMessageSource.EXTRACT_OUTPUT,  
+			localvsnode.getViewSource().getSourceLRID(), localvsnode.getViewSource().getSourceLFID(), 0, "No write statements were found");
+			Repository.addErrorMessage(errMessage);              			
+		}
+}
+
+	public static LogicTable getExtractLogicTable() {
         return xltEmitter.getLogicTable();
     }
 
