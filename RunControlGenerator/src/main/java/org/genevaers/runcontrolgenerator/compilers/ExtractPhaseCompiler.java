@@ -56,7 +56,7 @@ public class ExtractPhaseCompiler {
     public static void reset() {
         xltEmitter = new LogicTableEmitter();
         jltEmitter = new LogicTableEmitter();
-		extractRoot = null;
+		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
 		vsnode = null;
     }
 
@@ -131,7 +131,6 @@ public class ExtractPhaseCompiler {
 	}
 
 	private static ViewSourceAstNode buildVSNodeAndAddToRoot(ViewSource vs) {
-		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
 		vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
 		vsnode.setViewSource(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
 		extractRoot.addChildIfNotNull(vsnode);
