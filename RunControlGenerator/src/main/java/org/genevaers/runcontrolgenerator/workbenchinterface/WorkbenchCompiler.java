@@ -20,6 +20,7 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
+import org.genevaers.compilers.extract.astnodes.ExtractAST2Dot;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.LazyDBReader;
@@ -57,6 +59,8 @@ import org.genevaers.repository.data.CompilerMessageSource;
 import org.genevaers.repository.data.LookupRef;
 import org.genevaers.repository.data.ViewLogicDependency;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+
+import com.ibm.db2.jcc.am.v;
 
 public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
@@ -406,6 +410,22 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	public static boolean newErrorsDetected() {
 		return Repository.newErrorsDetected();
+	}
+
+	public static void dotTo(Path dir) {
+		ExtractPhaseCompiler.dotTo(dir);
+	}
+
+	public static void setDotFilter() {
+		ExtractAST2Dot.setFilter(true);
+	}
+
+	public static void setDotViews(String views) {
+		ExtractAST2Dot.setViews(views.split(","));
+	}
+
+	public static void setDotCols(String cols) {
+		ExtractAST2Dot.setCols(cols.split(","));
 	}
 
 }

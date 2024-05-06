@@ -1,6 +1,7 @@
 package org.genevaers.runcontrolgenerator.compilers;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
 import org.genevaers.runcontrolgenerator.utility.Status;
+import org.genevaers.visualisation.GraphVizRunner;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -300,9 +302,9 @@ public class ExtractPhaseCompiler {
 	}
 
     private static void checkWriteStatements(ExtractBaseAST root) {
-		ViewSourceAstNode localvsnode = vsnode == null ? (ViewSourceAstNode) root.getChildIterator().next().getChildIterator().next() : vsnode;
+		ViewSourceAstNode localvsnode = (vsnode == null ? (ViewSourceAstNode) root.getChildIterator().next().getChildIterator().next() : vsnode);
 		if(noWriteStatementMissing(localvsnode)) {
-			logger.atSevere().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
+			logger.atInfo().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
 		} else {
 			CompilerMessage errMessage = new CompilerMessage(localvsnode.getViewSource().getViewId(), CompilerMessageSource.EXTRACT_OUTPUT,  
 			localvsnode.getViewSource().getSourceLRID(), localvsnode.getViewSource().getSourceLFID(), 0, "No write statements were found");
@@ -317,5 +319,13 @@ public class ExtractPhaseCompiler {
     public static LogicTable getJoinLogicTable() {
         return jltEmitter.getLogicTable();
     }
+
+	public static void dotTo(Path dotfile) {
+		ExtractAST2Dot.write(extractRoot, dotfile);
+		//Maybe WB Compiler should be above the RCG and RCA
+		//So it can use them
+		GraphVizRunner gr = new GraphVizRunner();
+		gr.processDot(dotfile.toFile());
+	}
 
 }
