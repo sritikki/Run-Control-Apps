@@ -57,6 +57,7 @@ public class ExtractPhaseCompiler {
         xltEmitter = new LogicTableEmitter();
         jltEmitter = new LogicTableEmitter();
 		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		ExtractBaseAST.clearLastColumnWithAWrite();
 		vsnode = null;
     }
 
@@ -309,7 +310,7 @@ public class ExtractPhaseCompiler {
 			localvsnode.getViewSource().getSourceLRID(), localvsnode.getViewSource().getSourceLFID(), 0, "No write statements were found");
 			Repository.addErrorMessage(errMessage);              			
 		}
-}
+	}
 
 	public static LogicTable getExtractLogicTable() {
         return xltEmitter.getLogicTable();
