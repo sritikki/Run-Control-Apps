@@ -60,7 +60,6 @@ import org.genevaers.repository.data.LookupRef;
 import org.genevaers.repository.data.ViewLogicDependency;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 
-import com.ibm.db2.jcc.am.v;
 
 public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnalyser {
 
@@ -187,6 +186,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         currentViewColumnSource.setViewSourceId(vcsd.getViewSourceId());
         currentViewColumnSource.setViewId(vcsd.getViewID());
         currentViewColumnSource.setViewSrcLrId(vcsd.getViewSourceLrId());
+		currentViewSource.addToColumnSourcesByNumber(currentViewColumnSource);
         currentView.addViewColumnSource(currentViewColumnSource);
 		Repository.getDependencyCache().setCurrentParentId(currentViewColumnSource.getComponentId());
 	}
