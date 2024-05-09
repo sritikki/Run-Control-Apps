@@ -402,6 +402,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	public static void setCurrentColumnNumber(int currentColumnNumber) {
 		WorkbenchCompiler.currentColumnNumber = currentColumnNumber;
 		FormatBaseAST.setCurrentColumnNumber(currentColumnNumber);
+		currentViewColumnSource = currentViewSource.findFromColumnSourcesByNumber(currentColumnNumber);
 	}
 
 	public static void clearNewErrorsDetected() {
@@ -426,6 +427,10 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	public static void setDotCols(String cols) {
 		ExtractAST2Dot.setCols(cols.split(","));
+	}
+
+	public static void setCurrentViewSource(ViewSource vs) {
+		currentViewSource = vs;
 	}
 
 }

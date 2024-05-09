@@ -66,6 +66,8 @@ public class RunControlConfigration extends GersConfigration{
 
     public RunControlConfigration() {
         //Map preloaded with expect names and default values
+        super();
+        parmToValue.clear();
         parmToValue.put(INPUT_TYPE, new ConfigEntry("", false));
         parmToValue.put(OUTPUT_RUN_CONTROL_FILES, new ConfigEntry("", false));
         parmToValue.put(OUTPUT_WB_XML_FILES, new ConfigEntry("", false));
