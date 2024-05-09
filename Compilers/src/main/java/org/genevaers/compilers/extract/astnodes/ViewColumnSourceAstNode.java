@@ -3,15 +3,19 @@ package org.genevaers.compilers.extract.astnodes;
 import java.util.Iterator;
 import java.util.List;
 
+import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRIndex;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
+import org.genevaers.repository.data.CompilerMessage;
+import org.genevaers.repository.data.CompilerMessageSource;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -115,6 +119,32 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
 
     public void checkAssigned() {
         List<ExtractBaseAST> cas = getChildNodesOfType(Type.COLUMNASSIGNMENT);
-        assignedTo = (cas.size() > 0) ? true : false;
+        Iterator<ExtractBaseAST> casi = cas.iterator();
+        while (casi.hasNext()) {
+             ColumnAssignmentASTNode ass = (ColumnAssignmentASTNode)casi.next();
+             ViewColumn vc = ass.getColumn();
+             int colnum = vc.getColumnNumber();
+             if(colnum == vcs.getColumnNumber()) {
+                assignedTo = true;
+             } else {
+                //assignment to another column
+                int lrid = ((ViewSourceAstNode)parent).getViewSource().getSourceLRID();
+                int lfid = ((ViewSourceAstNode)parent).getViewSource().getSourceLFID();
+                ViewColumnSourceAstNode othervcs = (ViewColumnSourceAstNode) parent.getChild(colnum);
+                if(othervcs.getType() == Type.VIEWCOLUMNSOURCE) {
+                    if( colnum == othervcs.getViewColumnSource().getColumnNumber() ) {
+                        if(othervcs.isAssignedTo()) {
+                            CompilerMessage message = new CompilerMessage(vcs.getViewId(), CompilerMessageSource.COLUMN, lrid, lfid, vcs.getColumnNumber(), "Overwriting column " + colnum + " value");
+                            Repository.addWarningMessage(message);              				    
+                        } else {
+                            othervcs.setAssignedTo(true);
+                        }
+                    } else {
+ 				        CompilerMessage message = new CompilerMessage(vcs.getViewId(), CompilerMessageSource.COLUMN, 0, 0, colnum, "Cannot set assigned for column");
+				        Repository.addErrorMessage(message);              				
+                    }
+                }
+             }
+        }
     }
 }

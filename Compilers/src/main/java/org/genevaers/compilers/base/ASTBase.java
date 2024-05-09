@@ -97,5 +97,13 @@ public abstract class ASTBase {
     public int getLineNumber() {
         return lineNumber;
     }
+
+    public ASTBase getChild(int num) {
+        if(num < children.size() - 1) {
+            return children.get(num);
+        } else {
+            return null;
+        }
+    }
     
 }

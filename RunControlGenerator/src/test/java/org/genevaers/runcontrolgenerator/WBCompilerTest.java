@@ -264,6 +264,47 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(WorkbenchCompiler.getWarningMessages().get(0).getSource() == CompilerMessageSource.COLUMN);
   }
 
+  @Test
+  void testColumnAssignedViaReference() throws IOException {
+    loadRepoFrom(TestHelper.WBCOMPILER_TEST);
+    assertEquals(1, Repository.getViews().size());
+
+    // Change logic content of a column
+    ViewSource vs = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1); 
+    ViewColumnSource vcs = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1).findFromColumnSourcesByNumber(4);
+    vcs.setLogicText("'assigned from col 5");
+    ViewColumnSource vcs5 = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1).findFromColumnSourcesByNumber(5);
+    vcs5.setLogicText("COLUMN = 77\n COL.4=23");
+
+    simulateActivationOfTheTestView();
+    ExtractAST2Dot.write(ExtractPhaseCompiler.getXltRoot(), TestHelper.getMR91dotPath());
+    assertEquals(0, Repository.getCompilerErrors().size());
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+    assertEquals(0, WorkbenchCompiler.getWarnings().size());
+  }
+
+  @Test
+  void testColumnOverwriteViaReference() throws IOException {
+    loadRepoFrom(TestHelper.WBCOMPILER_TEST);
+    assertEquals(1, Repository.getViews().size());
+
+    // Change logic content of a column
+    ViewSource vs = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1); 
+    ViewColumnSource vcs = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1).findFromColumnSourcesByNumber(4);
+    vcs.setLogicText("COLUMN = 77");
+    ViewColumnSource vcs5 = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1).findFromColumnSourcesByNumber(5);
+    vcs5.setLogicText("COLUMN = 77\n COL.4=23");
+
+    simulateActivationOfTheTestView();
+    ExtractAST2Dot.write(ExtractPhaseCompiler.getXltRoot(), TestHelper.getMR91dotPath());
+    assertEquals(0, Repository.getCompilerErrors().size());
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+    assertEquals(1, WorkbenchCompiler.getWarnings().size());
+    assertTrue(WorkbenchCompiler.getWarningMessages().get(0).getDetail().contains("Overwriting column 4"));
+    assertTrue(WorkbenchCompiler.getWarningMessages().get(0).getColumnNumber() == 5);
+  }
 
   @Test  @Disabled
   void testWriteExit() throws IOException {

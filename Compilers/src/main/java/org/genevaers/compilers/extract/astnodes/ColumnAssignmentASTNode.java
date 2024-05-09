@@ -211,4 +211,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         return f0;
     }
 
+    public ViewColumn getColumn() {
+        ColumnAST col = (ColumnAST)children.get(1);
+        return col.getViewColumn();
+    }
+
 }
