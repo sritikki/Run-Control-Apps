@@ -152,7 +152,7 @@ public abstract class ExtractBaseAST extends ASTBase{
     public List<ExtractBaseAST> addNodesOfType(ASTFactory.Type t, List<ExtractBaseAST> nodes) {
         ExtractBaseAST leaf = null;
         Iterator<ASTBase> ci = children.iterator();
-        while(leaf == null && ci.hasNext()) {
+        while(ci.hasNext()) {
             leaf = (ExtractBaseAST) ci.next();
             if(leaf.getType() == t) {
                 nodes.add(leaf);

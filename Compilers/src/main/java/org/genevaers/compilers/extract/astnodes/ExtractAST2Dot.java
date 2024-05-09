@@ -446,8 +446,8 @@ public class ExtractAST2Dot {
     private static void dotColumnNode(ExtractBaseAST node) {
         ColumnAST col = (ColumnAST) node;
         label = "Column " + col.getViewColumn().getColumnNumber();
-        colour = COLUMNDATA;
         idString = "col_" + col.getViewColumn().getComponentId() + nodeNum;
+        colour = COLUMNDATA;
         dataflow = true;
     }
 
@@ -559,7 +559,12 @@ public class ExtractAST2Dot {
                 + vcs.getComponentId();
         String escLogic = vcs.getLogicText().replace("\"", "'");
         label = "Column " + vcs.getColumnNumber() + "\n" + escLogic;
-        colour = "lightblue";
+        if(vcsn.isAssignedTo()) {
+            colour = "lightblue";
+        } else {
+            colour = LIGHTGREY;
+            shape = EMITABLE;
+        }
     }
 
     private static void dotViewSourceNode(ExtractBaseAST node) {

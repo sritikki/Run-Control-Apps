@@ -1,8 +1,10 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.genevaers.compilers.base.EmittableASTNode;
+import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRIndex;
 import org.genevaers.repository.components.LogicalRecord;
@@ -35,6 +37,7 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private ViewColumnSource vcs;
+    private boolean assignedTo = false;
 
     ViewColumnSourceAstNode() {
         type = ASTFactory.Type.VIEWCOLUMNSOURCE;
@@ -102,4 +105,16 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
      private void emitSortTitleLookup(int i) {
     }
 
+    public void setAssignedTo(boolean assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public boolean isAssignedTo() {
+        return assignedTo;
+    }
+
+    public void checkAssigned() {
+        List<ExtractBaseAST> cas = getChildNodesOfType(Type.COLUMNASSIGNMENT);
+        assignedTo = (cas.size() > 0) ? true : false;
+    }
 }

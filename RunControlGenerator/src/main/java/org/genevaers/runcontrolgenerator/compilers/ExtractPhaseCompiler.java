@@ -21,6 +21,7 @@ import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.PFAstNode;
 import org.genevaers.compilers.extract.astnodes.ViewColumnSourceAstNode;
 import org.genevaers.compilers.extract.astnodes.ViewSourceAstNode;
+import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
 import org.genevaers.genevaio.dataprovider.RepoDataProvider;
 import org.genevaers.genevaio.ltfile.LogicTable;
@@ -112,6 +113,7 @@ public class ExtractPhaseCompiler {
 		vcsn.setViewColumnSource(vcs);
 		vsnode.addChildIfNotNull(vcsn);
 		compileColumn(vcsn);		
+		vcsn.checkAssigned();
 		writeXLTDotIfEnabled();
 	}
 
@@ -199,6 +201,7 @@ public class ExtractPhaseCompiler {
 			vsnode.addChildIfNotNull(vcsn);
 			compileColumn(vcsn);
 			resolveSortKeyTitleLookups(vcs);
+			vcsn.checkAssigned();
 		}
 		compileExtractOutputLogic(vsnode);
 	}
@@ -299,9 +302,31 @@ public class ExtractPhaseCompiler {
 			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
 			//walk the tree here and get the errors?
 		}
+		checkAssignmentStatements();
 	}
 
-    private static void checkWriteStatements(ExtractBaseAST root) {
+    private static void checkAssignmentStatements() {
+		lookForNoAssignments();
+	}
+
+	private static void lookForNoAssignments() {
+		//Start at the root find the VCS node and see if any have not assigned
+		List<ExtractBaseAST> vcsNodes = extractRoot.getChildNodesOfType(Type.VIEWCOLUMNSOURCE);
+		Iterator<ExtractBaseAST> vcsi = vcsNodes.iterator();
+		while (vcsi.hasNext()) {
+			ViewColumnSourceAstNode vcs = (ViewColumnSourceAstNode) vcsi.next();
+			if(vcs.isAssignedTo()) {
+
+			} else {
+				ViewSourceAstNode vs = (ViewSourceAstNode)vcs.getParent();
+				CompilerMessage message = new CompilerMessage(vcs.getViewColumnSource().getViewId(), CompilerMessageSource.COLUMN,  
+				vs.getViewSource().getSourceLRID(), vs.getViewSource().getSourceLFID(), vcs.getViewColumnSource().getColumnNumber(), "Column not assigned");
+				Repository.addWarningMessage(message);              				
+			}
+		}
+	}
+
+	private static void checkWriteStatements(ExtractBaseAST root) {
 		ViewSourceAstNode localvsnode = (vsnode == null ? (ViewSourceAstNode) root.getChildIterator().next().getChildIterator().next() : vsnode);
 		if(noWriteStatementMissing(localvsnode)) {
 			logger.atInfo().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
