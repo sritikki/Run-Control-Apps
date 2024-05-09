@@ -46,32 +46,36 @@ public class DBPhysicalFileReader extends DBReaderBase {
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         //get the required PFs via a query and add to the set
         updateRequiredPfs(dbConnection, params);
-        //Then get the PFs
-        String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-        + "where PHYFILEID in (" + getIds(requiredPFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
-        executeAndWriteToRepo(dbConnection, pfRecs);
-        //Note this relies on the LFs having been added first
-        addPfsToLfs();
+        if(requiredPFs.size() > 0) { 
+            //Then get the PFs
+            String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
+            + "where PHYFILEID in (" + getIds(requiredPFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
+            executeAndWriteToRepo(dbConnection, pfRecs);
+            //Note this relies on the LFs having been added first
+            addPfsToLfs();
+        }
         return false;
     }
 
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
-                + "where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID=" + params.getEnvironmentID() + ";";
-        try {
-            ResultSet rs = dbConnection.getResults(pfsFromLfs);
-            while (rs.next()) {
-                requiredPFs.add(rs.getInt("PHYFILEID"));
-                List<Integer> pfs = lf2pf.get(rs.getInt("LOGFILEID"));
-                if(pfs == null) {
-                    pfs = new ArrayList<>();
-                    lf2pf.put(rs.getInt("LOGFILEID"), pfs);
+        if(requiredLFs.size() > 0) {
+            String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
+                    + "where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID=" + params.getEnvironmentID() + ";";
+            try {
+                ResultSet rs = dbConnection.getResults(pfsFromLfs);
+                while (rs.next()) {
+                    requiredPFs.add(rs.getInt("PHYFILEID"));
+                    List<Integer> pfs = lf2pf.get(rs.getInt("LOGFILEID"));
+                    if(pfs == null) {
+                        pfs = new ArrayList<>();
+                        lf2pf.put(rs.getInt("LOGFILEID"), pfs);
+                    }
+                    pfs.add(rs.getInt("PHYFILEID"));
                 }
-                pfs.add(rs.getInt("PHYFILEID"));
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
     

@@ -35,9 +35,11 @@ public class DBLogicalFileReader extends DBReaderBase{
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        String query = "select * from " + params.getSchema() +".LOGFILE "
-        + " where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
-        executeAndWriteToRepo(dbConnection, query);
+		if(requiredLFs.size() > 0) {
+			String query = "select * from " + params.getSchema() +".LOGFILE "
+			+ " where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
+			executeAndWriteToRepo(dbConnection, query);
+		}
         return false;
     }
 
