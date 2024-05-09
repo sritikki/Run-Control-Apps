@@ -164,4 +164,9 @@ class RunCompilerBase {
         return FormatRecordsBuilder.run();
     }
 
+    protected void loadRepoFrom(String fileName) {
+        TestHelper.setupWithView(fileName);
+        readConfigAndBuildRepo();
+    }
+
 }
