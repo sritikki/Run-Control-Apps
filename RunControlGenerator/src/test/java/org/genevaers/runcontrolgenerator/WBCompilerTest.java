@@ -86,55 +86,36 @@ import org.junit.jupiter.api.TestInfo;
 
 import com.google.common.flogger.FluentLogger;
 
-/**
- * Build on the SPO Tests
- * Check the AST Tree built as a result
- */
-class WBCompilerTest extends RunCompilerBase {
+  /* 
+   * !!!!!  READ ME !!!!!!!!!!!!!
+   * 
+   * These test cheat in that they builds the Repository from the WB XML 
+   * which replaces all the WB calls building the repo.
+   * Then it calls the compiler on the different extract sections
+   * The WBCompiler will then interact with the database.
+   * This means that before the tests can be run the WBCompilerTest.xml 
+   * file must be imported into a workbench environment.
+   * The TEST_ENVIRONMENT and TEST_ENVIRONMENT_NUM constants must be set to
+   * 
+   * By default the tests are Disabled. 
+   * Remove/comment out the Disabled tag to run
+   * 
+   * !!!!!  READ ME !!!!!!!!!!!!!
+   */
+  class WBCompilerTest extends RunCompilerBase {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private int environmentid;
   private int lrid;
   private int lfid;
   private static int vcsdNum = 1;
 
-  // Import WBCompiletTest into a database
-  // Then set Test Environment before running these tests
-
   private static final String TEST_ENVIRONMENT = "7";
   private static final int TEST_ENVIRONMENT_NUM = 7;
-  private static final String TEST_VIEW = "12044";
   private static final int TEST_VIEW_NUM = 12044;
-  private static final int TEST_LR_NUM = 1762;
-  private static final int TEST_LF_NUM = 1506;
-  // INPUT_TYPE=PG            # WBXML or VDPML or DB2
-  // #INPUT_TYPE=WBXML            # WBXML or VDPML or DB2
-  // #INPUT_TYPE=WBXML            # WBXML or VDPML or DB2
-  // DB2_ENVIRONMENT_ID=1
-  // DB2_SCHEMA=gwndwv
-  // DB2_PORT=5432
-  // DB2_SERVER=localhost
-  // DB2_DATABASE=genevaers
-  
-  // DBVIEWS=12044
-  
-  // #Outputs
-  // OUTPUT_RUN_CONTROL_FILES=Y
+
   @BeforeEach
   public void initEach(TestInfo info) {
     new RunControlConfigration();
-    // Repository.clearAndInitialise();
-    // ExtractPhaseCompiler.reset();
-
-    // RunControlConfigration.set(RunControlConfigration.INPUT_TYPE, "POSTGRES");
-    // RunControlConfigration.set(RunControlConfigration.DB2_SCHEMA, "gendev");
-    // RunControlConfigration.set(RunControlConfigration.DB2_ENVIRONMENT_ID, TEST_ENVIRONMENT);
-    // RunControlConfigration.set(RunControlConfigration.DB2_PORT, "5432");
-    // RunControlConfigration.set(RunControlConfigration.DB2_SERVER, "localhost");
-    // RunControlConfigration.set(RunControlConfigration.DB2_DATABASE, "genevaers");
-    // RunControlConfigration.set(RunControlConfigration.DBVIEWS, TEST_VIEW);
-
-    // RepositoryBuilder rb = RepositoryBuilderFactory.get();
-    // Status retval = rb.run();
     Repository.setGenerationTime(Calendar.getInstance().getTime());
     RecordParser.clearAndInitialise();
     LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
@@ -142,24 +123,12 @@ class WBCompilerTest extends RunCompilerBase {
     target.toFile().mkdirs();
     GenevaLog.initLogger(RunCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);
 
-
-    // ExtractBaseAST.setCurrentColumnNumber((short) 0);
-    // ExtractBaseAST.setCurrentAccumNumber(0);
-    // Repository.setGenerationTime(Calendar.getInstance().getTime());
     WorkbenchCompiler.reset();
     DatabaseConnectionParams params = getPostgresParams();
     params.setEnvironmentID(TEST_ENVIRONMENT);
     WorkbenchCompiler.setSQLConnection(getTestDatabaseConnection(params));
     WorkbenchCompiler.setSchema("gendev");
     WorkbenchCompiler.setEnvironment(TEST_ENVIRONMENT_NUM);
-    // WorkbenchCompiler.setSourceLRID(TEST_LR_NUM);
-    // WorkbenchCompiler.setSourceLFID(TEST_LF_NUM);
-
-    // RunControlConfigration.set(RunControlConfigration.DOT_XLT, "Y");
-    // LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
-    // java.nio.file.Path target = Paths.get("target/test-logs/");
-    // target.toFile().mkdirs();
-    // GenevaLog.initLogger(WBCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);
   }
 
   @AfterEach
@@ -167,11 +136,7 @@ class WBCompilerTest extends RunCompilerBase {
     GenevaLog.closeLogger(WBCompilerTest.class.getName());
   }
 
-  /* This test cheats in that it builds the Repository from the WB XML 
-   * which replaces all the WB calls building the repo.
-   * The it calls the compiler on the different extract sections
-   */
-  @Test  
+  @Test  @Disabled
   void testWBCompileView() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
@@ -182,7 +147,7 @@ class WBCompilerTest extends RunCompilerBase {
     System.out.println(LTLogger.logRecords(xlt));
   }
 
-  @Test
+  @Test  @Disabled
   void testAssignFieldTwice() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
@@ -198,7 +163,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(1, Repository.getDependencyCache().getDependenciesStream().filter(d -> d.getLrFieldId() == 96729).count());
   }
 
-  @Test
+  @Test  @Disabled
   void testBadField() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
@@ -215,7 +180,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertNull(Repository.getDependencyCache().getNamedField("Bad"));
   }
 
-  @Test
+  @Test  @Disabled
   void testBadSyntax() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
@@ -230,7 +195,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(WorkbenchCompiler.getErrors().get(0).contains("gobbledegook"));
   }
 
-  @Test
+  @Test  @Disabled
   void testNoWrite() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
@@ -244,7 +209,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(WorkbenchCompiler.getErrors().get(0).contains("No write"));
   }
 
-  @Test
+  @Test  @Disabled
   void testColumnNotAssigned() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
@@ -264,7 +229,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertTrue(WorkbenchCompiler.getWarningMessages().get(0).getSource() == CompilerMessageSource.COLUMN);
   }
 
-  @Test
+  @Test  @Disabled
   void testColumnAssignedViaReference() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
@@ -284,7 +249,7 @@ class WBCompilerTest extends RunCompilerBase {
     assertEquals(0, WorkbenchCompiler.getWarnings().size());
   }
 
-  @Test
+  @Test  @Disabled
   void testColumnOverwriteViaReference() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());
