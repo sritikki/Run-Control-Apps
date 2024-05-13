@@ -5,16 +5,13 @@ import java.util.List;
 
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
-import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
-import org.genevaers.compilers.extract.emitters.rules.ColumnZonedMaxLength;
 import org.genevaers.compilers.extract.emitters.rules.ConstStringToDateColumnError;
 import org.genevaers.compilers.extract.emitters.rules.FieldZonedMaxLength;
 import org.genevaers.compilers.extract.emitters.rules.Rule;
 import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
-import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.CompilerMessageSource;
 

@@ -230,6 +230,12 @@ class ErrorAndWarningTest extends RunCompilerBase {
         assertTrue(errs.get(0).getDetail().contains("Truncation"));
     }
 
+    @Test void testAssignmentTruncationFilppedZoned() {
+        runFromXMLOverrideColNLogic(12156, TestHelper.ALL_TYPES_TARGET, 1,  "COLUMN = 12345678");
+        assertEquals(1, Repository.getWarnings().size());
+        assertEquals(1, Repository.getCompilerErrors().size());
+    }
+
     @Test void testAssignmentBin8ToZoned() {
         TestHelper.setupWithView(TestHelper.ALL_TYPES_TARGET);
         readConfigAndBuildRepo();
