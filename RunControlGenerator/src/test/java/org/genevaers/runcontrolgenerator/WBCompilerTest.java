@@ -250,6 +250,26 @@ import com.google.common.flogger.FluentLogger;
   }
 
   @Test  @Disabled
+  void testColumnAssignedViaInvalidReference() throws IOException {
+    loadRepoFrom(TestHelper.WBCOMPILER_TEST);
+    assertEquals(1, Repository.getViews().size());
+
+    // Change logic content of a column
+    ViewSource vs = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1); 
+    ViewColumnSource vcs = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1).findFromColumnSourcesByNumber(4);
+    vcs.setLogicText("'assigned from col 5");
+    ViewColumnSource vcs5 = Repository.getViews().get(TEST_VIEW_NUM).getViewSource((short)1).findFromColumnSourcesByNumber(5);
+    vcs5.setLogicText("COLUMN = 77\n COL.0=23");
+
+    simulateActivationOfTheTestView();
+    ExtractAST2Dot.write(ExtractPhaseCompiler.getXltRoot(), TestHelper.getMR91dotPath());
+    assertEquals(1, Repository.getCompilerErrors().size());
+    LogicTable xlt = WorkbenchCompiler.getXlt();
+    System.out.println(LTLogger.logRecords(xlt));
+    assertEquals(0, WorkbenchCompiler.getWarnings().size());
+  }
+
+  @Test  @Disabled
   void testColumnOverwriteViaReference() throws IOException {
     loadRepoFrom(TestHelper.WBCOMPILER_TEST);
     assertEquals(1, Repository.getViews().size());

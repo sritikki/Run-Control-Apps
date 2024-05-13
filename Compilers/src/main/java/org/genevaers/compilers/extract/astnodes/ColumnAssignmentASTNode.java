@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
+import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesChecker;
 import org.genevaers.compilers.extract.emitters.assignmentemitters.AssignmentRulesCheckerFactory;
 import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
@@ -212,8 +213,13 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
     }
 
     public ViewColumn getColumn() {
-        ColumnAST col = (ColumnAST)children.get(1);
-        return col.getViewColumn();
+        ExtractBaseAST colnode = (ExtractBaseAST)children.get(1);
+        if(colnode.getType() == Type.ERRORS) {
+            return null;
+        } else {
+            ColumnAST col = (ColumnAST)children.get(1);
+            return col.getViewColumn();
+        }
     }
 
 }
