@@ -193,15 +193,20 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	public void run() {
 		buildAST();
-		buildTheExtractTableIfThereAreNoErrors();
+		buildTheExtractTableIfThereAreNoErrors(true);
+	}
+
+	public void validate() {
+		buildAST();
+		buildTheExtractTableIfThereAreNoErrors(false);
 	}
 
 	public abstract void buildAST();
 
-	public static void buildTheExtractTableIfThereAreNoErrors() {
+	public static void buildTheExtractTableIfThereAreNoErrors(boolean validation) {
 		if(Repository.newErrorsDetected() == false) {
 			ExtractPhaseCompiler.buildTheJoinLogicTable();
-			ExtractPhaseCompiler.buildTheExtractLogicTable();
+			ExtractPhaseCompiler.buildTheExtractLogicTable(validation);
 		}
 	}
 

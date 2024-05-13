@@ -72,7 +72,7 @@ public class ExtractPhaseCompiler {
 			//This has to be done before building the XLT
 			//since the lookup numbers are changed when we generate the JLT
 			buildTheJoinLogicTable();
-			buildTheExtractLogicTable();
+			buildTheExtractLogicTable(true);
 		} else{
 			status = Status.ERROR;
 		}
@@ -289,20 +289,19 @@ public class ExtractPhaseCompiler {
 		}
 	}
 
-	public static void buildTheExtractLogicTable() {
-		//Walk the AST and add the entries to the XLT
-		//We need to ensure there were no errors
-		if(Repository.newErrorsDetected() == false) {
-			//Put an error count in the Base and check
-			//We also need to extract the Join information at this time
+	public static void buildTheExtractLogicTable(boolean activation) {
+		if(Repository.newErrorsDetected()) {
+			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+		} else {
 			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
 			((EmittableASTNode)extractRoot).emit();
-			checkWriteStatements(extractRoot);
-		} else {
-			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
-			//walk the tree here and get the errors?
+			if(activation) {
+				checkWriteStatements(extractRoot);
+			}
 		}
-		checkAssignmentStatements();
+		if(activation) {
+			checkAssignmentStatements();
+		}
 	}
 
     private static void checkAssignmentStatements() {

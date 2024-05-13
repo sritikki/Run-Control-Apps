@@ -487,7 +487,7 @@ import com.google.common.flogger.FluentLogger;
     WBExtractOutputCompiler recordCompiler = (WBExtractOutputCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_OUTPUT);
     recordCompiler.buildAST();
 
-    WorkbenchCompiler.buildTheExtractTableIfThereAreNoErrors();
+    WorkbenchCompiler.buildTheExtractTableIfThereAreNoErrors(true);
   }
 
 }
