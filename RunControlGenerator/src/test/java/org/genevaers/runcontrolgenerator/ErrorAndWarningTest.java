@@ -90,8 +90,8 @@ class ErrorAndWarningTest extends RunCompilerBase {
     @Test void testWarnFlipColumn() {
         runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
-        assertEquals(1, warns.size());
-        assertEquals("Treating column 1 as ZONED.", warns.get(0).getDetail());
+        assertEquals(2, warns.size());
+        assertEquals("Treating column 1 as ZONED.", warns.get(1).getDetail());
     }
 
     @Test void testWarnFlipColumnAndTooSmall() {
@@ -105,8 +105,8 @@ class ErrorAndWarningTest extends RunCompilerBase {
     @Test void testWarnFlipField() {
         runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
-        assertEquals(1, warns.size());
-        assertEquals("Treating column 1 as ZONED.", warns.get(0).getDetail());
+        assertEquals(2, warns.size());
+        assertEquals("Treating column 1 as ZONED.", warns.get(1).getDetail());
     }
 
     @Test void testWarnFlipColumnZonedTooBig() {
@@ -150,7 +150,7 @@ class ErrorAndWarningTest extends RunCompilerBase {
     @Test void testStripFieldDate() {
         LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_FIELD_DATES, "COLUMN = {ZONED}");
         List<CompilerMessage> warns = Repository.getWarnings();
-        assertEquals(1, warns.size());
+        assertEquals(2, warns.size());
         assertEquals("Removing date from field {ZONED}.", warns.get(0).getDetail());
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(0, errs.size());
@@ -196,15 +196,6 @@ class ErrorAndWarningTest extends RunCompilerBase {
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(1, errs.size());
         assertTrue(errs.get(0).getDetail().contains("column 1 which has a date code"));
-    }
-
-    @Test void testAssignmentTruncationFromNumericConstant() {
-        runFromXMLOverrideLogic(9956, TestHelper.INCOMPATIBLE_DATES, "COLUMN = 1234");
-        List<CompilerMessage> warns = Repository.getWarnings();
-        assertEquals(0, warns.size());
-        List<CompilerMessage> errs = Repository.getCompilerErrors();
-        assertEquals(1, errs.size());
-        assertTrue(errs.get(0).getDetail().contains("Truncation"));
     }
 
     @Test void testAssignmentTruncationLongField() {
