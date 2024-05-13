@@ -180,6 +180,10 @@ public class RepoHelper {
             case EDITED:
                 numDigits = length;
                 break;
+            case MASKED:
+                //Need to consider the code and presence of decimals?
+                numDigits = length;
+                break;
             case BCD:
                 numDigits = length * 2;
                 break;
@@ -210,7 +214,6 @@ public class RepoHelper {
             case FLOAT:
             case GENEVANUMBER:
             case INVALID:
-            case MASKED:
                 break;
             case PSORT:
             case PACKED:

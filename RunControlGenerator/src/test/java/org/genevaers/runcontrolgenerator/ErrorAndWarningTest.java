@@ -18,6 +18,7 @@ import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
@@ -245,6 +246,22 @@ class ErrorAndWarningTest extends RunCompilerBase {
         CompileAndGenerateDots();
 
         assertEquals(0, Repository.getWarnings().size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+    }
+
+    @Test void testAssignmentToMasked() {
+        TestHelper.setupWithView(TestHelper.ALL_TYPES_TARGET);
+        readConfigAndBuildRepo();
+        ViewColumn vc = Repository.getViews().get(12156).getColumnNumber(10);
+        vc.setFieldLength((short)4);
+        vc.setDataType(DataType.MASKED);
+        TestHelper.setColumnNLogic(12156, "COLUMN = {Binary2}", 10);
+        CompileAndGenerateDots();
+
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(1, warns.size());
+        assertTrue(warns.get(0).getDetail().contains("truncation"));
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(0, errs.size());
     }

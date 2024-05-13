@@ -11,7 +11,7 @@ public abstract class Rule {
         RULE_ERROR
     }
 
-    protected static final int MAX_ZONED_LENGTH = 31;
+    protected static final int MAX_ZONED_LENGTH = 16;
 
     protected static final int LTContentMaskCC = 0x00000001;
     protected static final int LTContentMaskYY = 0x00000002;
