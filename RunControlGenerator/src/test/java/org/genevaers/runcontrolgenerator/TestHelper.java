@@ -53,6 +53,7 @@ public class TestHelper {
 	public static final String TEST_GEN_JLT = TEST_RUNCONTROLS_RCGGEN + "rcg.JLT";
 	public static final String TEST_BASEFILE = "AllTypesBase[9953].xml";
     public static final String TEST_FILE = "mergeAssAll.xml";
+    public static final String ALL_TYPES_TARGET = "AllTypesTarget[12156].xml";
     public static final String ARITH_FILE = "CMP_ARITH_PLUS.xml";
     public static final String ASSIGNMENTS = "JMR91Assignments[12075].xml";
     public static final String EVENT_ARTIH = "EVENT_ARITHMETIC_STEPS2[12094].xml";

@@ -173,7 +173,7 @@ public class RepoHelper {
         switch (t)
         {
             case ZONED:
-                numDigits = length - 1;
+                numDigits = length;
             break;
             case ALPHA:
             case ALPHANUMERIC:

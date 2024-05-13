@@ -11,29 +11,17 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.genevaers.compilers.extract.astnodes.ASTFactory;
-import org.genevaers.compilers.extract.astnodes.ErrorAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
-import org.genevaers.genevaio.ltfile.LTLogger;
-import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTable;
-import org.genevaers.genevaio.ltfile.LogicTableArg;
-import org.genevaers.genevaio.ltfile.LogicTableF0;
-import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
-import org.genevaers.genevaio.ltfile.LogicTableNV;
-import org.genevaers.genevaio.ltfile.LogicTableNameF1;
-import org.genevaers.genevaio.ltfile.LogicTableRE;
-import org.genevaers.genevaio.ltfile.LogicTableWR;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.ViewNode;
-import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,6 +93,14 @@ class ErrorAndWarningTest extends RunCompilerBase {
         assertEquals(1, warns.size());
         assertEquals("Treating column 1 as ZONED.", warns.get(0).getDetail());
     }
+
+    @Test void testWarnFlipColumnAndTooSmall() {
+        runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Packed}");
+        List<CompilerMessage> warns = Repository.getWarnings();
+        assertEquals(2, warns.size());
+        assertEquals("Treating column 1 as ZONED.", warns.get(1).getDetail());
+    }
+
 
     @Test void testWarnFlipField() {
         runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
@@ -225,6 +221,33 @@ class ErrorAndWarningTest extends RunCompilerBase {
         List<CompilerMessage> warns = Repository.getWarnings();
         assertEquals(1, warns.size());
         assertTrue(warns.get(0).getDetail().contains("truncation"));
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(0, errs.size());
+    }
+
+    @Test void testAssignmentTruncationZonedOK() {
+        runFromXMLOverrideColNLogic(12156, TestHelper.ALL_TYPES_TARGET, 14,  "COLUMN = 12345678");
+        assertEquals(0, Repository.getWarnings().size());
+        assertEquals(0, Repository.getCompilerErrors().size());
+    }
+
+    @Test void testAssignmentTruncationZonedError() {
+        runFromXMLOverrideColNLogic(12156, TestHelper.ALL_TYPES_TARGET, 14,  "COLUMN = 123456789");
+        assertEquals(0, Repository.getWarnings().size());
+        List<CompilerMessage> errs = Repository.getCompilerErrors();
+        assertEquals(1, errs.size());
+        assertTrue(errs.get(0).getDetail().contains("Truncation"));
+    }
+
+    @Test void testAssignmentBin8ToZoned() {
+        TestHelper.setupWithView(TestHelper.ALL_TYPES_TARGET);
+        readConfigAndBuildRepo();
+        ViewColumn vc = Repository.getViews().get(12156).getColumnNumber(14);
+        vc.setFieldLength((short)15);
+        TestHelper.setColumnNLogic(12156, "COLUMN = {Packed}", 14);
+        CompileAndGenerateDots();
+
+        assertEquals(0, Repository.getWarnings().size());
         List<CompilerMessage> errs = Repository.getCompilerErrors();
         assertEquals(0, errs.size());
     }
