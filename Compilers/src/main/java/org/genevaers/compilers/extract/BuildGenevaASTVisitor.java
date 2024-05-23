@@ -185,13 +185,17 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             String[] bits = col.split("\\.");
             ViewNode view = dataProvider.getView(viewSource.getViewId());
             int colnum = Integer.parseInt(bits[1]);
-            if(colnum > 0) {
+            if(colnum > 0 && colnum < viewColumnSource.getColumnNumber()) {
                 ViewColumn vc = view.getColumnNumber(colnum); 
                 ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(vc); // Change this to make column type more specific
                 colNode.setViewColumn(vc);
                 colRefAss.addChildIfNotNull(colNode);
             } else {
-                colRefAss.addError("Column number cannot be zero");
+                if(colnum == 0) {
+                    colRefAss.addError("Column number cannot be zero");
+                } else {
+                    colRefAss.addError("Column number must be less than the current column");
+                }
             }
         }
         return colRefAss;
