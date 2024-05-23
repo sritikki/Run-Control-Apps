@@ -39,9 +39,7 @@ import org.genevaers.repository.data.CompilerMessage;
 public class WBFormatFilterCompiler implements SyntaxChecker {
 
 	private GoalContext tree;
-	private Set<Integer> columnRefs = new HashSet<Integer>() {
-		
-	};
+	private Set<Integer> columnRefs = new HashSet<Integer>();
 
 	@Override
 	public ParseTree getParseTree() {

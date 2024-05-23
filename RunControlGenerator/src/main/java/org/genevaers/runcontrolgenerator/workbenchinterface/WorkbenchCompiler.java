@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +79,9 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 	private static int sourceLR;
 	private static int sourceLF;
 	private static int currentColumnNumber;
+	private static Set<Integer> columnRefs = new HashSet<Integer>();
+
+
 	//Common setup functions
     public static void setSQLConnection(Connection c) {
 		dataProvider.setDatabaseConnection(new WBConnection(c));
@@ -483,4 +487,44 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		efc.validate();
 		return getLogicTableLog();
 	}
+
+	public static String compileFormatFilter(int viewId) {
+		WBFormatFilterCompiler ffc = new WBFormatFilterCompiler();
+		String cs = ffc.generateCalcStack(viewId);
+		columnRefs.addAll(ffc.getColumnRefs());
+		return cs;
+	}
+
+	public static String compileFormatCalc(int viewId, int colnum) {
+		WBFormatCalculationCompiler fcc = new WBFormatCalculationCompiler();
+		String cs = fcc.generateCalcStack(viewId, colnum);
+		columnRefs.addAll(fcc.getColumnRefs());
+		return cs;
+	}
+
+	public static void compileExtractFilter(int viewId, int srcnum) {
+		currentView = Repository.getViews().get(viewId);
+		currentViewSource = currentView.getViewSource((short)srcnum);
+		WBExtractFilterCompiler efc = new WBExtractFilterCompiler();
+		efc.buildAST();
+	}
+
+	public static void compileExtractAssign(int viewId, int srcnum, int colnum) {
+		currentView = Repository.getViews().get(viewId);
+		currentViewSource = currentView.getViewSource((short)srcnum);
+		currentViewColumnSource = currentViewSource.findFromColumnSourcesByNumber(colnum);
+		WBExtractColumnCompiler efc = new WBExtractColumnCompiler();
+		efc.buildAST();
+	}
+
+	public static void compileExtractOutput(int viewId, int srcnum) {
+		currentView = Repository.getViews().get(viewId);
+		currentViewSource = currentView.getViewSource((short)srcnum);
+		WBExtractOutputCompiler efc = new WBExtractOutputCompiler();
+		efc.buildAST();
+	}
+
+    public static Set<Integer> getColumnRefs() {
+		return columnRefs;
+    }
 }
