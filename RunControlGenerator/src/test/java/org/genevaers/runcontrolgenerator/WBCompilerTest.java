@@ -16,9 +16,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 
 import org.genevaers.compilers.extract.astnodes.ExtractAST2Dot;
-import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.genevaio.dbreader.DatabaseConnection.DbType;
-import org.genevaers.genevaio.dbreader.DBReader;
 import org.genevaers.genevaio.dbreader.DatabaseConnection;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.PostgresConnection;
@@ -27,8 +25,6 @@ import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
-import org.genevaers.repository.calculationstack.CalcStack;
-import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
@@ -42,9 +38,6 @@ import org.genevaers.repository.data.CompilerMessageSource;
 import org.genevaers.repository.data.ViewLogicDependency.LogicType;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
-import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
-import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.runcontrolgenerator.workbenchinterface.ColumnData;
 import org.genevaers.runcontrolgenerator.workbenchinterface.LRData;
 import org.genevaers.runcontrolgenerator.workbenchinterface.LRFieldData;
@@ -506,8 +499,9 @@ import com.google.common.flogger.FluentLogger;
 
     WBExtractOutputCompiler recordCompiler = (WBExtractOutputCompiler) WBCompilerFactory.getProcessorFor(WBCompilerType.EXTRACT_OUTPUT);
     recordCompiler.buildAST();
-
-    WorkbenchCompiler.buildTheExtractTableIfThereAreNoErrors(true);
+    if(WorkbenchCompiler.hasNoNewErrors()) {
+      WorkbenchCompiler.buildLogicTablesAndPerformWholeViewChecks();
+    }
   }
 
 }

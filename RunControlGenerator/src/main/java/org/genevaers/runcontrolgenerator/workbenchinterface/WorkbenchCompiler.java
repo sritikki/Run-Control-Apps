@@ -193,21 +193,21 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 
 	public void run() {
 		buildAST();
-		buildTheExtractTableIfThereAreNoErrors(true);
+		buildLogicTablesAndPerformWholeViewChecks();
 	}
 
 	public void validate() {
 		buildAST();
-		buildTheExtractTableIfThereAreNoErrors(false);
+		ExtractPhaseCompiler.buildTheJoinLogicTable();
+		ExtractPhaseCompiler.buildTheExtractLogicTable();
 	}
 
 	public abstract void buildAST();
 
-	public static void buildTheExtractTableIfThereAreNoErrors(boolean validation) {
-		if(Repository.newErrorsDetected() == false) {
-			ExtractPhaseCompiler.buildTheJoinLogicTable();
-			ExtractPhaseCompiler.buildTheExtractLogicTable(validation);
-		}
+	public static void buildLogicTablesAndPerformWholeViewChecks() {
+		ExtractPhaseCompiler.buildTheJoinLogicTable();
+		ExtractPhaseCompiler.buildTheExtractLogicTable();
+		ExtractPhaseCompiler.wholeViewChecks();
 	}
 
 	public static LogicTable getXlt() {
@@ -418,6 +418,10 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		return Repository.newErrorsDetected();
 	}
 
+	public static boolean hasNoNewErrors() {
+		return Repository.newErrorsDetected() == false;
+	}
+
 	public static void dotTo(Path dir) {
 		ExtractPhaseCompiler.dotTo(dir);
 	}
@@ -438,4 +442,45 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		currentViewSource = vs;
 	}
 
+	public static String checkSyntaxFormatFilter(int viewId, String logic) {
+		ViewNode vn = Repository.getViews().get(viewId);
+		vn.setFormatFilterLogic(logic);
+		WBFormatFilterCompiler ffc = new WBFormatFilterCompiler();
+		return ffc.generateCalcStack(viewId);
+	}
+
+	public static String checkSyntaxFormatCalc(int viewId, int colnum, String logic) {
+		ViewColumn vc = Repository.getViews().get(viewId).getColumnNumber(colnum);
+		vc.setColumnCalculation(logic);
+		WBFormatCalculationCompiler fcc = new WBFormatCalculationCompiler();
+		return fcc.generateCalcStack(viewId, colnum);
+	}
+
+	public static String checkSyntaxExtractFilter(int viewId, int srcnum, String logic) {
+		currentView = Repository.getViews().get(viewId);
+		currentViewSource = currentView.getViewSource((short)srcnum);
+		currentViewSource.setExtractFilter(logic);
+		WBExtractFilterCompiler efc = new WBExtractFilterCompiler();
+		efc.validate();
+		return getLogicTableLog();
+	}
+
+	public static String checkSyntaxExtractAssign(int viewId, int srcnum, int colnum, String logic) {
+		currentView = Repository.getViews().get(viewId);
+		currentViewSource = currentView.getViewSource((short)srcnum);
+		currentViewColumnSource = currentViewSource.findFromColumnSourcesByNumber(colnum);
+		currentViewColumnSource.setLogicText(logic);
+		WBExtractColumnCompiler efc = new WBExtractColumnCompiler();
+		efc.validate();
+		return getLogicTableLog();
+	}
+
+	public static String checkSyntaxExtractOutput(int viewId, int srcnum, String logic) {
+		currentView = Repository.getViews().get(viewId);
+		currentViewSource = currentView.getViewSource((short)srcnum);
+		currentViewSource.setExtractOutputLogic(logic);
+		WBExtractOutputCompiler efc = new WBExtractOutputCompiler();
+		efc.validate();
+		return getLogicTableLog();
+	}
 }

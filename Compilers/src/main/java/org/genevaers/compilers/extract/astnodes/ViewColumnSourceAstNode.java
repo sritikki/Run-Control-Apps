@@ -132,7 +132,7 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
                     int lrid = ((ViewSourceAstNode) parent).getViewSource().getSourceLRID();
                     int lfid = ((ViewSourceAstNode) parent).getViewSource().getSourceLFID();
                     ViewColumnSourceAstNode othervcs = (ViewColumnSourceAstNode) parent.getChild(colnum);
-                    if (othervcs.getType() == Type.VIEWCOLUMNSOURCE) {
+                    if (othervcs != null && othervcs.getType() == Type.VIEWCOLUMNSOURCE) {
                         if (colnum == othervcs.getViewColumnSource().getColumnNumber()) {
                             if (othervcs.isAssignedTo()) {
                                 CompilerMessage message = new CompilerMessage(vcs.getViewId(),
