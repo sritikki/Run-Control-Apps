@@ -307,6 +307,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		currentViewSource = null;
 		currentView = null;
 		currentColumnNumber = 0;
+		columnRefs = new HashSet<Integer>();
 	}
 
 	public static String getDependenciesAsString() {
