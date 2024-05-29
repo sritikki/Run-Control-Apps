@@ -13,13 +13,34 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
-# Called by the Run Control App Prebuild pom.xml
 # Get the Grammar repo if it is not there
-# Install the DB2 Jars if needed
 
-echo "Install Grammar for Run Control Apps"
-./grammar.sh
-echo "Configure Build Run Control Apps"
-./configBuild.sh
-echo "Build Run Control Apps"
+main() {
+    echo "Clone the grammar"
+    BASEDIR=${PWD}
+    echo "Installation location: ${BASEDIR}"
+    # Move up from prebuild
+    cd ..
+    # Move up from Run Control Apps
+    cd ..
+    if [[ ! -z "$GERS_GRAMMAR" ]]; then
+        echo "Cloning from bash variable $GERS_GRAMMAR"
+        clone $GERS_GRAMMAR
+    else
+        echo "Using standard GitHub repo"
+        clone "https://github.com/genevaers/Grammar.git"
+    fi
+    cd ./Grammar
+    echo "Grammar location: ${PWD}"
+    mvn install
+    cd $BASEDIR
+}
+
+clone() {
+    if [ ! -d Grammar ] 
+    then
+        git clone $1 Grammar
+    fi
+}
+
+main "$@"
