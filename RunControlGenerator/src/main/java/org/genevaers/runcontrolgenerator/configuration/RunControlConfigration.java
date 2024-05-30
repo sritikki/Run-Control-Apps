@@ -90,6 +90,7 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(LOG_FILE, new ConfigEntry(LOG_FILE, true));
         parmToValue.put(WB_XML_FILES_SOURCE, new ConfigEntry(WB_XML_FILES_SOURCE, true));
 
+        parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry("", false));
         parmToValue.put(DOT_XLT, new ConfigEntry("N", true));
         parmToValue.put(DOT_JLT, new ConfigEntry("N", true));
         parmToValue.put(VIEW_DOTS, new ConfigEntry("", true));
@@ -154,7 +155,7 @@ public class RunControlConfigration extends GersConfigration{
             break;
             case "DB2":
             break;
-            case "PG":
+            case "POSTGRES":
             break;
             default:
                 valid = false;

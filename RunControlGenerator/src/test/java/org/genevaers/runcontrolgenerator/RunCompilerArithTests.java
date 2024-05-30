@@ -306,10 +306,9 @@ class RunCompilerArithTests extends RunCompilerBase {
         readConfigAndBuildRepo();
         TestHelper.setColumn1Logic(9956, "COLUMN = {ZONED}");
         RunControlConfigration.setDotFilter("9956", "1,2", "N");
-        ASTBase root = CompileAndGenerateDots();
-        ASTBase fieldRef = root.getFirstLeafNode();
-        ColumnAssignmentASTNode colAss = (ColumnAssignmentASTNode)fieldRef.getParent();
-        assertEquals("ZONED", ((FieldReferenceAST)fieldRef).getName());
+        ExtractBaseAST root = (ExtractBaseAST)CompileAndGenerateDots();
+        ColumnAssignmentASTNode colAss = (ColumnAssignmentASTNode) root.getChildNodesOfType(ASTFactory.Type.COLUMNASSIGNMENT).get(0);
+        assertEquals("ZONED", ((FieldReferenceAST)colAss.getFirstLeafNode()).getName());
     }
 
     @Test void testStringConstAssignment() throws IOException {

@@ -1421,6 +1421,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         LogicTableArg arg2 = ske.getArg2();
         arg2.setFieldLength(sk.getSkFieldLength());
         arg2.setFieldFormat(sk.getSortKeyDataType());
+        arg2.setJustifyId(JustifyId.NONE);
         return ske;
     }
 
@@ -1557,7 +1558,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         //TODO the start pos is dependent on extract type
         arg.setStartPosition(f.getStartPosition());
         arg.setFieldLength(f.getLength());
-        arg.setJustifyId(f.getJustification());
+        arg.setJustifyId(f.getJustification() == null ? JustifyId.NONE : f.getJustification());
         arg.setSignedInd(f.isSigned());
         arg.setValue(new Cookie(""));
 
@@ -1579,7 +1580,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         } else {
             colarg.setFieldLength(vc.getFieldLength());
         }
-        colarg.setJustifyId(vc.getJustifyId());
+        colarg.setJustifyId(vc.getJustifyId() == null ? JustifyId.NONE : vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
         colarg.setValue(new Cookie(""));
         colarg.setPadding2("");  //This seems a little silly
@@ -1601,6 +1602,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setOrdinalPosition(vc.getOrdinalPosition());
         if(vc.getDataType() == DataType.ALPHANUMERIC) {
             arg.setJustifyId(JustifyId.LEFT);
+        } else {
+            arg.setJustifyId(vc.getJustifyId() == null ? JustifyId.NONE : vc.getJustifyId());
         }
         return arg;
     }
@@ -1725,7 +1728,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         //TODO the start pos is dependent on extract type
         arg.setStartPosition(key.getStartPosition());
         arg.setFieldLength(key.getFieldLength());
-        arg.setJustifyId(key.getJustification());
+        arg.setJustifyId(key.getJustification() == null ? JustifyId.NONE : key.getJustification());
         arg.setSignedInd(key.isSigned());
         arg.setRounding(key.getRounding());
         arg.setValue(new Cookie(key.getValue()));
@@ -1792,7 +1795,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         } else {
             colarg.setFieldLength(vc.getFieldLength());
         }
-        colarg.setJustifyId(vc.getJustifyId());
+        colarg.setJustifyId(vc.getJustifyId() == null ? JustifyId.NONE : vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
         colarg.setValue(new Cookie(""));
         colarg.setPadding2("");  //This seems a little silly

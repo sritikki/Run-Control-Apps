@@ -37,6 +37,7 @@ import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
 import org.genevaers.runcontrolgenerator.utility.Status;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.visualisation.GraphVizRunner;
 
 import com.google.common.flogger.FluentLogger;
@@ -173,9 +174,7 @@ public class ExtractPhaseCompiler {
 			vsnode.setViewSource(vs);
 			lfNode.addChildIfNotNull(vsnode);
 			ExtractBaseAST.clearLastColumnWithAWrite();
-			if(vsnode.hasExtractFilterText()) {
-				addViewSourceNodes(vsnode);
-			}
+			addViewSourceNodes(vsnode);
 			addViewColumnSourceNodes(vsnode);
 		}
 	}
