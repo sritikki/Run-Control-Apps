@@ -33,7 +33,7 @@ import org.genevaers.genevaio.dots.LookupGenerationDotWriter;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.html.VDPHTMLWriter;
 import org.genevaers.genevaio.ltfile.LogicTable;
-import org.genevaers.genevaio.ltfile.XLTFileReader;
+import org.genevaers.genevaio.ltfile.LTFileReader;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.vdpfile.VDPFileReader;
 import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
@@ -53,6 +53,8 @@ public class RunControlAnalyser {
 	private VDPManagementRecords vmrs;
 
 	private FlowGenerator flowGen;
+
+	private Path viewsPath;
 
 	public RunControlAnalyser() {
 		trg = Paths.get("RunControls");
@@ -74,26 +76,13 @@ public class RunControlAnalyser {
 		
 	}
 
-	public void readXLT(Path xltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
-		logger.atInfo().log("Read XLT %s csv flag %s", xltPath, Boolean.toString(withCSV));
-		XLTFileReader xltr = new XLTFileReader();
-		xltr.setCompare(compare);
-		xltr.setRecordsRoot(recordsRoot);
-		xltr.open(xltPath, GersConfigration.XLT_DDNAME);
-		xlt = xltr.makeLT();
-	}
-
-	public void readJLT(Path jltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
-		logger.atInfo().log("Read JLT %s csv flag %s", jltPath, Boolean.toString(withCSV));
-		if(jltPath.toFile().exists()) {
-			XLTFileReader jltr = new XLTFileReader();
-			jltr.setCompare(compare);
-			jltr.setRecordsRoot(recordsRoot);
-			jltr.open(jltPath, GersConfigration.JLT_DDNAME);
-			jlt = jltr.makeLT();
-		} else {
-			logger.atInfo().log("No JLT found");
-		}
+	public LogicTable readLT(Path ltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare, String ddname) {
+		logger.atInfo().log("Read LT %s csv flag %s", ltPath, Boolean.toString(withCSV));
+		LTFileReader ltr = new LTFileReader();
+		ltr.setCompare(compare);
+		ltr.setRecordsRoot(recordsRoot);
+		ltr.open(ltPath, ddname);
+		return ltr.makeLT();
 	}
 
 	public void writeHTML(String joinsFilter) throws IOException {
@@ -110,10 +99,16 @@ public class RunControlAnalyser {
 		writeViewDiagrams(xlt, joinsFilter);
 		//This must follow the above which builds the flow.dot file
 		writeFlowAndLookupGenerationDiagrams(jlt);
-		
+		convertDotsToSVGs(viewsPath);
+		convertDotsToSVGs(trg);
+
 		VDPHTMLWriter htmlWriter= new VDPHTMLWriter();
 		htmlWriter.setCurrentWorkingDirectory(trg);
 		htmlWriter.setFileName(htmlFileName);
+		htmlWriter.setReportType(RcaConfigration.getReportFormat());
+		htmlWriter.setXLTReportName(RcaConfigration.getXLTReportName());
+		htmlWriter.setJLTReportName(RcaConfigration.getJLTReportName());
+		htmlWriter.setVDPReportName(RcaConfigration.getVDPReportName());
 		htmlWriter.write(vmrs);
 		htmlWriter.close();
 	}
@@ -123,20 +118,18 @@ public class RunControlAnalyser {
 		flowGen.setCurrentWorkingDirectory(trg);
 		flowGen.setDetailJoins(joinsFilter);
 		flowGen.writeDotFilesFromLT("flow.dot");
-		Path vws = trg.resolve("views");
-		vws.toFile().mkdirs();
-		convertDotsToSVGs(vws);
+		viewsPath = trg.resolve("views");
+		viewsPath.toFile().mkdirs();
 	}
 
 	private void writeFlowAndLookupGenerationDiagrams(LogicTable jlt) throws IOException {
 		if(Repository.getLookups().size() > 0 && jlt != null) {
 			LookupGenerationDotWriter lgw = new LookupGenerationDotWriter(jlt);
-			lgw.writeREDGenerations(trg.resolve("views"));
+			lgw.writeREDGenerations(viewsPath);
 			flowGen.setLogicTable(jlt);
 			flowGen.clearView2fileMap();
 			flowGen.writeDotFilesFromLT("joins.dot");
 		}
-		convertDotsToSVGs(trg);
 	}
 	
 	private void convertDotsToSVGs(Path vdpPath) {
@@ -177,22 +170,17 @@ public class RunControlAnalyser {
 			if(!baseFileName.endsWith("/")) {
 				baseFileName += "/";
 			}
-			String vdp = baseFileName + "VDP";
-			String xlt = baseFileName + "XLT";
-			String jlt = baseFileName + "JLT";
-			Path vdpName = Paths.get(vdp);
-			Path xltName = Paths.get(xlt);
-			Path jltName = Paths.get(jlt);
+			Path rcPath = Paths.get(baseFileName);
 			htmlFileName = "gersrca.html";
 
-			logger.atInfo().log("Read VDP File %s", vdpName);
-			logger.atInfo().log("Read XLT File %s", xltName);
-			logger.atInfo().log("Read JLT File %s", jltName);
+			logger.atInfo().log("Read VDP File %s", rcPath);
+			logger.atInfo().log("Read XLT File %s", rcPath);
+			logger.atInfo().log("Read JLT File %s", rcPath);
 			logger.atInfo().log("Write to %s", htmlFileName);
 
-			readVDP(vdpName, GersConfigration.VDP_DDNAME, withCSV, null, false);
-			readXLT(xltName, withCSV, null, false);
-			readJLT(jltName, withCSV, null, false);
+			readVDP(rcPath, GersConfigration.VDP_DDNAME, withCSV, null, false);
+			xlt = readLT(rcPath, withCSV, null, false, GersConfigration.XLT_DDNAME);
+			jlt = readLT(rcPath, withCSV, null, false, GersConfigration.JLT_DDNAME);
 			writeHTML(joinsFilter);
 			
 			if(noBrowse == false) {

@@ -87,4 +87,17 @@ public class RcaConfigration extends GersConfigration {
     public static String getReportFormat() {
         return parmToValue.get(REPORT_FORMAT).getValue();
     }
+    
+    public static String getXLTReportName() {
+        return isZos() ? XLT_REPORT_DDNAME : XLT_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getJLTReportName() {
+        return isZos() ? JLT_REPORT_DDNAME : JLT_REPORT_DDNAME + "." + parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getVDPReportName() {
+        return isZos() ? VDP_REPORT_DDNAME : VDP_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
 }

@@ -73,6 +73,10 @@ public class VDPHTMLWriter {
 			"}" +
 			"}";
 	private Path cwd;
+	private String reportFormat;
+	private String xltReportName;
+	private String jltReportName;
+	private String vdpReportName;
 	
 
 	public void setFileName(String fileName) {
@@ -165,16 +169,16 @@ public class VDPHTMLWriter {
 	}
 
 	private DomContent jltreport() {
-		return a().withText("JLT Report")
+		return a().withText("JLT Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
-				.withHref("jltrpt.txt")
+				.withHref("../" + jltReportName)
 				.withTarget(PAGE_IFRAME);
 	}
 
 	private DomContent xltreport() {
-		return a().withText("XLT Report")
+		return a().withText("XLT Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
-				.withHref("xltrpt.txt")
+				.withHref("../" + xltReportName)
 				.withTarget(PAGE_IFRAME);
 	}
 
@@ -290,5 +294,21 @@ public class VDPHTMLWriter {
 	public void setCurrentWorkingDirectory(Path c) {
 		cwd=c;
 	}
+
+	public void setReportType(String reportFormat) {
+		this.reportFormat = reportFormat;
+	}
+
+	public void setXLTReportName(String xltReportName) {
+		this.xltReportName = xltReportName;
+	}
+
+    public void setJLTReportName(String jltReportName) {
+		this.jltReportName = jltReportName;
+    }
+
+    public void setVDPReportName(String vdpReportName) {
+		this.vdpReportName = vdpReportName;
+    }
 
 }

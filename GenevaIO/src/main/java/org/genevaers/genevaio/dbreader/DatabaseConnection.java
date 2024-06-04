@@ -28,7 +28,8 @@ public interface DatabaseConnection {
 
     public enum DbType {
         DB2,
-        POSTGRES
+        POSTGRES,
+        WBCONNECTION
     }
 
     public void connect() throws SQLException;

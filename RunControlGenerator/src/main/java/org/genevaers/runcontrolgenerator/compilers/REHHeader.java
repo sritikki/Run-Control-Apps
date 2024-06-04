@@ -263,7 +263,7 @@ public class REHHeader {
         addViewColumnSource(vs, vci.next(), Integer.toString(jv.getEffDateCode())); 
         addViewColumnSource(vs, vci.next(), "0"); //always 0
         addViewColumnSource(vs, vci.next(), jv.isIndexText() ? "1" : "0"); 
-        addViewColumnSource(vs, vci.next(), "<Reserved space>"); //always 0
+        addViewColumnSource(vs, vci.next(), "Reserved  spaces"); //always 0
     }    
 
     private void addRecordCount(ViewSource vs, ViewColumn vc) {

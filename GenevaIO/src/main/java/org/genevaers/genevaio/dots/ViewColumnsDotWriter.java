@@ -37,10 +37,14 @@ public class ViewColumnsDotWriter extends DotWriter {
 		vsDotString = new StringBuilder();
 		declareSubgraph(view, viewSource);
 
-		if(view.getViewDefinition().getName().contains("REH")) {
+		if(view.getViewDefinition().getName().contains("REH") || view.getViewDefinition().getName().contains("RTH")) {
 			logger.atFine().log("Handle REH differently");
-		} else if (view.getViewSource(viewSource).getExtractFilter() != null) {
-			appendExtractFiler(view, viewSource);
+		} else if (view.getViewSource(viewSource) != null) {
+			if(view.getViewSource(viewSource).getExtractFilter() != null) {
+				appendExtractFiler(view, viewSource);
+			}
+		} else {
+			logger.atSevere().log("Build DOT string for columns of view %s source %d. VS NULL.", view.getName(), viewSource);
 		}
 
 		appendColumns(view, viewSource);

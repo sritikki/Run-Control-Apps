@@ -18,10 +18,14 @@ package org.genevaers.runcontrolgenerator.repositorybuilders;
  */
 
 import com.google.common.flogger.FluentLogger;
+
+import java.sql.Connection;
+
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 
 public class RepositoryBuilderFactory {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+	private static Connection databaseConnection;
 
 	public static RepositoryBuilder get() {
 
@@ -34,10 +38,16 @@ public class RepositoryBuilderFactory {
 				return new DB2Builder();
 			case "POSTGRES":
 				return new PostgresBuilder();
+			case "WBCONNECTION":
+				return new WBConnectionBuilder(databaseConnection);
 			default:
 				logger.atSevere().log("Unknown Input Type %s", RunControlConfigration.getInputType());
 				return null;
 		}
+	}
+
+	public static void setDatabaseConnection(Connection dbc) {
+		databaseConnection = dbc;
 	}
 
 }

@@ -31,7 +31,7 @@ import org.genevaers.utilities.GersConfigration;
 
 import com.google.common.flogger.FluentLogger;
 
-public class XLTFileReader {
+public class LTFileReader {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private LTRecordReader recordReader = new LTRecordReader();

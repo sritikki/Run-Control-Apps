@@ -29,7 +29,10 @@ import java.util.TreeSet;
 
 import org.genevaers.repository.components.ViewNode;
 
+import com.google.common.flogger.FluentLogger;
+
 public abstract class DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     protected boolean hasErrors = false;
     protected static String viewIds;
@@ -49,8 +52,8 @@ public abstract class DBReaderBase {
                 addComponentToRepo(rs);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            hasErrors = true;
         }
     }
 
@@ -62,8 +65,7 @@ public abstract class DBReaderBase {
                 addComponentToRepo(rs);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.atSevere().log(e.getMessage());
         }
     }
 

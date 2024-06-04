@@ -73,7 +73,6 @@ public class RunControlGenerator {
 		}
 	}
 
-
 	private void writeRunControlFiles() {
 		if(status != Status.ERROR) {
 			RunControlWriter rcw = new RunControlWriter();

@@ -33,7 +33,7 @@ import org.genevaers.genevaio.html.LTRecordsHTMLWriter;
 import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
-import org.genevaers.genevaio.ltfile.XLTFileReader;
+import org.genevaers.genevaio.ltfile.LTFileReader;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
@@ -60,7 +60,7 @@ public class AnalyserDriver {
 	private static final String FTP_GET = "FTP Get ";
 	private static RunControlAnalyser fa = new RunControlAnalyser();
 	private Object cwd;
-	private Path dataStore;
+	private static Path dataStore;
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
 
 	private boolean jlt1Present;
@@ -95,25 +95,16 @@ public class AnalyserDriver {
 		session.disconnect();
 	}
 
-	public void generateFlowDataFrom(String baseFileName, boolean withCSV, boolean noBrowse, String joinsFilter) throws Exception {
+	public static void generateFlowDataFrom(String baseFileName, boolean withCSV, boolean noBrowse, String joinsFilter) throws Exception {
 		fa.generateFlowDataFrom(baseFileName, withCSV, noBrowse, joinsFilter);
 	}
 
-	public void setTargetDirectory(String trg) {
+	public static void setTargetDirectory(String trg) {
 		Path trgPath = dataStore.resolve(trg);
 		if(trgPath.toFile().exists() == false) {
 			trgPath.toFile().mkdirs();
 		}
 		fa.setTargetDirectory(trgPath);
-	}
-
-	public void listRunControlDataSets() {
-		WildcardFileFilter fileFilter = new WildcardFileFilter("*.VDP");
-		Collection<File> rcFiles = FileUtils.listFiles(fa.getCurrentWorkiingDirectory().toFile(), fileFilter, DirectoryFileFilter.INSTANCE);
-		
-		for(File rc : rcFiles) {
-			System.out.println(rc.toString());
-		}
 	}
 
 	public void openDataStore() {
@@ -126,7 +117,7 @@ public class AnalyserDriver {
 		}
 	}
 
-	public void makeRunControlAnalyserDataStore(Path root) {
+	public static void makeRunControlAnalyserDataStore(Path root) {
 		if(root == null) {
 			String home = System.getProperty("user.home");
 			//locroot = locroot.replaceAll("^[Cc]:", "");
@@ -145,49 +136,36 @@ public class AnalyserDriver {
 		return dataStore;
 	}
 
-	public void openHtmlFor(String rcSet)  {
-		Path showme = dataStore.resolve(rcSet).resolve("gersrca.html");
-		CommandRunner cmdRunner = new CommandRunner();
-		try {
-			cmdRunner.run("cmd /C " + showme.toString(), showme.getParent().toFile());
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	public String[] getRcSets() {
 		return dataStore.toFile().list();
 	}
 
 	public static void generateXltPrint(Path root) {
 		logger.atInfo().log("Generate %s", RcaConfigration.XLT_REPORT_DDNAME);
-		LogicTable xlt = readLT(root, GersConfigration.XLT_DDNAME);
-		writeLtReport(xlt, RcaConfigration.XLT_REPORT_DDNAME);
+		writeLtReport(root, GersConfigration.XLT_DDNAME, RcaConfigration.getXLTReportName());
 		//collectCoverageDataFrom(xltp, xlt);
 	}
 
-	private static LogicTable readLT(Path root, String ddName) {
-		XLTFileReader xltr = new XLTFileReader();
-		xltr.open(root, ddName);
-		LogicTable xlt = xltr.makeLT();
-		xltr.close();
-		logger.atInfo().log("Read %d LT records", xlt.getNumberOfRecords());
-		return xlt;
-	}
-
-    private static void writeLtReport(LogicTable lt, String ddname) {
+	private static void writeLtReport(Path root, String ddname, String ltReportDdname) {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
-				LTLogger.writeRecordsTo(lt, ddname);
+				LogicTable tlt = fa.readLT(root, false, null, false, ddname); //readLT(root, ddname);
+				LTLogger.writeRecordsTo(tlt, ltReportDdname);
 				break;
 			case "CSV":
-				LTCSVWriter.write(lt, ddname);
+				LogicTable cxlt = fa.readLT(root, false, null, false, ddname); //readLT(root, ddname);
+				LTCSVWriter.write(cxlt, ltReportDdname);
 				break;
 			case "HTML":
-				
+				MetadataNode recordsRoot = new MetadataNode();
+				recordsRoot.setName("Root");
+				recordsRoot.setSource1(root.toString());
+				// recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
+				fa.readLT(root, false, recordsRoot, false, ddname);
+				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+				ltrw.setIgnores();
+				ltrw.writeFromRecordNodes(recordsRoot, ltReportDdname);
 				break;
-		
 			default:
 				break;
 		}
@@ -201,8 +179,7 @@ public class AnalyserDriver {
 		logger.atInfo().log("Generate %s", RcaConfigration.JLT_REPORT_DDNAME);
 		Path jltp = root.resolve("JLT");
 		if(GersConfigration.isZos() || jltp.toFile().exists()) {
-			LogicTable xlt = readLT(root, GersConfigration.JLT_DDNAME);
-			writeLtReport(xlt, RcaConfigration.JLT_REPORT_DDNAME);
+			writeLtReport(root, GersConfigration.JLT_DDNAME, RcaConfigration.getJLTReportName());
 		}
     }
 
@@ -262,10 +239,10 @@ public class AnalyserDriver {
 			recordsRoot.setName("Root");
 			recordsRoot.setSource1(root.relativize(rc1.resolve("JLT1")).toString());
 			recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
-			fa.readXLT(rc1.resolve("JLT"), false, recordsRoot, false);
+			fa.readLT(rc1.resolve("JLT"), false, recordsRoot, false, "JLT1");
 			logger.atInfo().log("JLT Tree built from %s", rc1.toString());
 			Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
-			fa.readXLT(rc2.resolve("JLT"), false, recordsRoot, true);
+			fa.readLT(rc2.resolve("JLT"), false, recordsRoot, true, "JLT2");
 			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
 			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
 			LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -279,10 +256,10 @@ public class AnalyserDriver {
 		recordsRoot.setName("Root");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("XLT1")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("XLT2")).toString());
-		fa.readXLT(rc1.resolve("XLT"), false, recordsRoot, false);
+		fa.readLT(rc1.resolve("XLT"), false, recordsRoot, false, "XLT1");
 		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
-		fa.readXLT(rc2.resolve("XLT"), false, recordsRoot, true);
+		fa.readLT(rc2.resolve("XLT"), false, recordsRoot, true, "XLT2");
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
 		LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -340,7 +317,8 @@ public class AnalyserDriver {
 		return vdpPath.toFile().exists() &&	xltPath.toFile().exists();
 	}
 
-	public static void runFromConfig() {
+	public static boolean runFromConfig() {
+		boolean ranOkay = true;
 		String locroot = System.getProperty("user.dir");
     	//locroot = locroot.replaceAll("^[Cc]:", "");
     	locroot = locroot.replace("\\", "/");
@@ -354,6 +332,19 @@ public class AnalyserDriver {
 		if(RcaConfigration.isVdpReport()) {
 			generateVdpPrint(root);
 		}
+		try {
+			makeRunControlAnalyserDataStore(root);
+            setTargetDirectory("rca");
+            generateFlowDataFrom(".", 
+             true,  //default to generate csv
+            true,
+            ""
+            );
+        } catch (Exception e) {
+			ranOkay = false;
+            logger.atSevere().log("Problem running the analyser. %s", e.getMessage());
+        }
+		return ranOkay;
 	}
 
 }

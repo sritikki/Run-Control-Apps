@@ -32,7 +32,7 @@ import com.google.common.flogger.FluentLogger;
 public class App {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static void main(String[] args) {
+    public static void  main(String[] args) {
 		System.out.printf("GenevaERS Run Control Analyser version %s\n", CommandLineHandler.readVersion());
 		System.out.printf("Java Vendor %s\n", System.getProperty("java.vendor"));
 		System.out.printf("Java Version %s\n", System.getProperty("java.version"));
@@ -40,6 +40,7 @@ public class App {
     } 
 
     public static void run() {
+        boolean ranOkay = false;
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
         pr.setConfig(rcac);
@@ -49,14 +50,21 @@ public class App {
             GenevaLog.initLogger(RunControlAnalyser.class.getName(), RcaConfigration.getLogFileName(), GersConfigration.getLogLevel());
             logger.atInfo().log("Log level %s", GersConfigration.getLogLevel());
             if(RcaConfigration.isValid()) {
-                AnalyserDriver.runFromConfig();
+                ranOkay = AnalyserDriver.runFromConfig();
             } else {
-                logger.atSevere().log("Invalid configuration processing stopped");
+                logger.atSevere().log("Invalid configuration. Processing stopped");
             }
         } catch (IOException e) {
             logger.atSevere().log("Unable to read PARM file");
         }
         GenevaLog.closeLogger(RunControlAnalyser.class.getName());
+        if(ranOkay) {
+            System.out.println("Run control analyser completed");
+            System.exit(0);
+        } else {
+            System.out.println("Run control analyser failed. See log for details.");
+            System.exit(1);
+        }
     }
 
 }

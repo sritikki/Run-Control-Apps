@@ -161,10 +161,6 @@ public class RCAGenerationData {
         flow.openDataStore();
     }
 
-    public static void openHtmlFor(String rcSet) {
-        flow.openHtmlFor(rcSet);
-    }
-
     public static void ftpRunControlDatasets(String dbServer2, String hlq, String rc, String user,
             String pwd) throws IOException {
                 flow.ftpRunControlDatasets(dbServer2, hlq, rc, user, pwd);

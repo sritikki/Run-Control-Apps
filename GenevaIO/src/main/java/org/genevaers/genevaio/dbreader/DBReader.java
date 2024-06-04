@@ -53,24 +53,28 @@ public class DBReader {
             setConnectionType(params);
             dbConnection.connect();
             if(dbConnection.isConnected()) {
-                hasErrors = viewsReader.addToRepo(dbConnection, params);
-                hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
-                hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
-                hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
-                hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
-                hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
-                hasErrors |= lookupsReader.addToRepo(dbConnection, params);
-                hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
-                hasErrors |= fieldReader.addToRepo(dbConnection, params);
-                hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
-                hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
-                hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
-                hasErrors |= exitReader.addToRepo(dbConnection, params);
+                addComponents();
             } 
         } catch (ClassNotFoundException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void addComponents() {
+        hasErrors = viewsReader.addToRepo(dbConnection, params);
+        hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
+        hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
+        hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
+        hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
+        hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
+        hasErrors |= lookupsReader.addToRepo(dbConnection, params);
+        hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
+        hasErrors |= fieldReader.addToRepo(dbConnection, params);
+        hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
+        hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
+        hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
+        hasErrors |= exitReader.addToRepo(dbConnection, params);
     }
 
     /** 
@@ -99,6 +103,12 @@ public class DBReader {
 
     public boolean hasErrors() {
         return hasErrors;
+    }
+
+    public void addFromDatabaseConnection(DatabaseConnection dbc, DatabaseConnectionParams pms) {
+        params = pms;
+        dbConnection = dbc;
+        addComponents();
     }
 
 

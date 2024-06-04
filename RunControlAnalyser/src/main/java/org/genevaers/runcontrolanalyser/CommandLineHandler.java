@@ -32,6 +32,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.menu.RCAGenerationData;
 import org.genevaers.utilities.GenevaLog;
 
@@ -97,13 +98,18 @@ public class CommandLineHandler {
 		} else if(line.hasOption("help")) {
 			showHelpIfNeeded(buildCommandLineOptions(), true);
 		} else {
-			flow.makeRunControlAnalyserDataStore(root);
-			root.resolve("rca").toFile().mkdirs();
-			AnalyserDriver.generateXltPrint(root);
-			AnalyserDriver.generateJltPrint(root);
-			flow.writeCoverageResults(root);
-			generateFlow();
+			defaultRun(root);
 		}
+	}
+
+	public static void defaultRun(Path root) {
+		new RcaConfigration();
+		flow.makeRunControlAnalyserDataStore(root);
+		root.resolve("rca").toFile().mkdirs();
+		AnalyserDriver.generateXltPrint(root);
+		AnalyserDriver.generateJltPrint(root);
+		//flow.writeCoverageResults(root);
+		generateFlow();
 	}
 
 	private static void generateDiffReport(Path root) {
