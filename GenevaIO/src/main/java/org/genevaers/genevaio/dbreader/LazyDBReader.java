@@ -138,6 +138,10 @@ public class LazyDBReader implements CompilerDataProvider {
           loadLR(environmentId, id);
           lr = Repository.getLogicalRecords().get(id);
         } 
+        if(lr.getLookupExitID() > 0) {
+            DBExitReader exitReader = new DBExitReader();
+            exitReader.addToRepoById(databaseConnection, params, lr.getLookupExitID());              
+        }
         return lr;
     }
 

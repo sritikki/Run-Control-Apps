@@ -86,4 +86,19 @@ public class DBExitReader extends DBReaderBase {
         return hasErrors;
     }
 
+    public boolean addToRepoById(DatabaseConnection dbConnection, DatabaseConnectionParams params, int id) {
+        String query = "select distinct "
+        + "e.exitid, "
+        + "e.name, "
+        + "moduleid, "
+        + "exittypecd, "
+        + "programtypecd, "
+        + "e.optimizeind "
+        + "FROM " + params.getSchema() + ".exit e "
+        + "where e.environid = " + params.getEnvironmentID()
+        + " and e.exitid = '" + id + "' ";
+        executeAndWriteToRepo(dbConnection, query);
+        return hasErrors;
+    }
+
 }
