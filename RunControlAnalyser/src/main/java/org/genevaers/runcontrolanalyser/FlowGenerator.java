@@ -412,11 +412,11 @@ public class FlowGenerator {
 		else if(xtr.getFunctionCode().endsWith("C")) {
 			LogicTableF1 dtc = (LogicTableF1)xtr;
 			ViewColumn vc = currentViewNode.getColumnNumber(dtc.getSuffixSeqNbr());
-			if(vc.findFromSourcesByNumber((short)1) == null) {
+			if(vc.findFromSourcesByNumber(currentViewSource) == null) {
 				ViewColumnSource vcs = new ViewColumnSource();
 				vcs.setSrcValue(dtc.getArg().getValue().getString());
 				vcs.setSourceType(ColumnSourceType.CONSTANT);
-				vcs.setSequenceNumber((short)1);
+				vcs.setSequenceNumber(currentViewSource);
 				vc.addToSourcesByNumber(vcs);
 			}
 			//addConstantLink(dtc.getColumnId(), dtc.getColumnId(), xltr.getFunctionCode()equalsIgnoreCase("SK"));

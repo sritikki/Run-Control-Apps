@@ -69,8 +69,10 @@ public class REHHeader {
     protected ViewNode vn;
     protected int rehViewNum;
     private short startPos;
-    private LogicalRecord hdrLR;
+    protected LogicalRecord hdrLR;
     private RecordCountAST recCountAccum;
+    private static short rehsourceNum = 1;
+    protected static short rthsourceNum = 1;
 
     public void setLogicTableEmitter(LogicTableEmitter ltEmitter) {
         //jltEmitter = ltEmitter;
@@ -179,7 +181,7 @@ public class REHHeader {
 
         ViewNode vn = Repository.getViews().get(rehViewNum);
         ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
-        ViewSource vs = vn.getViewSource((short)ddnum); 
+        ViewSource vs = vn.getViewSource(rehsourceNum++); 
         vs.setSourceLRID(0); //Reset to 0 for the REH
         vs.setOutputPFID(rehViewNum);
         vn.getOutputFile().setComponentId(rehViewNum);
@@ -201,14 +203,14 @@ public class REHHeader {
         vsnode.addChildIfNotNull(eos);
     }
 
-    private void addWriteNode(ViewSourceAstNode vsnode, int fileNum) {
+    protected void addWriteNode(ViewSourceAstNode vsnode, int fileNum) {
         WriteASTNode wrNode = (WriteASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.WRITE);
         wrNode.setPhysicalFile(Repository.getPhysicalFiles().get(fileNum));
         wrNode.setViewSource(vsnode.getViewSource());
         vsnode.addChildIfNotNull(wrNode);
     }
 
-    private void addViewColumnSourceNodes(ViewSourceAstNode vsnode) {
+    protected void addViewColumnSourceNodes(ViewSourceAstNode vsnode) {
         //Iterate through the columns and 
 		Iterator<ViewColumnSource> vcsi = vsnode.getViewSource().getIteratorForColumnSourcesByNumber();
 		while(vcsi.hasNext()) {
@@ -244,7 +246,7 @@ public class REHHeader {
         //It will know that the ids are - or use the view number. 
         //It will be unique and the will only be one source
         vs.setComponentId(vn.getID());
-        vs.setSequenceNumber((short)jv.getDdNum());
+        vs.setSequenceNumber(rehsourceNum);
         vs.setSourceLFID(lfid);
         vs.setSourceLRID(hdrLR.getComponentId());
         vs.setViewId(vn.getID());
@@ -266,7 +268,7 @@ public class REHHeader {
         addViewColumnSource(vs, vci.next(), "Reserved  spaces"); //always 0
     }    
 
-    private void addRecordCount(ViewSource vs, ViewColumn vc) {
+    protected void addRecordCount(ViewSource vs, ViewColumn vc) {
         ViewColumnSource vcs = new ViewColumnSource();
         vcs.setColumnID(vc.getComponentId());
         vcs.setColumnNumber(vc.getColumnNumber());
@@ -281,7 +283,7 @@ public class REHHeader {
         vs.addToColumnSourcesByNumber(vcs);
     }
 
-    private ViewColumnSource addViewColumnSource(ViewSource vs, ViewColumn vc, String value) {
+    protected ViewColumnSource addViewColumnSource(ViewSource vs, ViewColumn vc, String value) {
         ViewColumnSource vcs = new ViewColumnSource();
         vcs.setColumnID(vc.getComponentId());
         vcs.setColumnNumber(vc.getColumnNumber());
@@ -313,12 +315,14 @@ public class REHHeader {
         NumAtomAST constNode = (NumAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.NUMATOM);
         constNode.setValue(vcs.getSrcValue()); 
         casnode.addChildIfNotNull(constNode);
+        vcs.setSourceType(ColumnSourceType.CONSTANT);
     }
     
     private void addStringConstant(ColumnAssignmentASTNode casnode, ViewColumnSource vcs) {
         StringAtomAST constNode = (StringAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGATOM);
         constNode.setValue(vcs.getSrcValue()); 
         casnode.addChildIfNotNull(constNode);
+        vcs.setSourceType(ColumnSourceType.CONSTANT);
     }
     
     private void addRecordCountAccumulator(ColumnAssignmentASTNode casnode) {
