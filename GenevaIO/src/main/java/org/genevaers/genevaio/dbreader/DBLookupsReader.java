@@ -180,7 +180,7 @@ public class DBLookupsReader extends DBReaderBase{
                 + "ON(k.LOOKUPID = s.LOOKUPID AND s.LOOKUPSTEPID = k.LOOKUPSTEPID AND l.environid = k.environid) "
                 + "INNER JOIN " + params.getSchema() + ".LRLFASSOC t "
                 + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = k.environid) "
-                + "where l.environid = " + params.getEnvironmentID() + " and l.name = '" + name + "' "
+                + "where l.environid = " + params.getEnvironmentID() + " and UPPER(l.name) = '" + name.toUpperCase() + "' "
                 + "ORDER BY l.LOOKUPID, s.STEPSEQNBR, k.KEYSEQNBR; ";
             executeAndWriteToRepo(dbConnection, query);
             return hasErrors;
