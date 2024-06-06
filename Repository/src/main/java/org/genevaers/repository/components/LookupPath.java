@@ -188,7 +188,7 @@ public class LookupPath extends ComponentNode {
 		lr2lf.put(lr, lf);
 	}
 
-	public int getLfFromLr(int lr) {
+	public Integer getLfFromLr(int lr) {
 		return lr2lf.get(lr);
 	}
 }
