@@ -26,7 +26,7 @@ import java.util.TreeMap;
 public class ComponentCollection<T> {
 
 	private Map<Integer, T> components = new TreeMap<>();
-	private Map<String, T> componentsByName = new TreeMap<>();
+	private Map<String, T> componentsByName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public void add(T c, int id, String name) {
 		components.put(id, c);
