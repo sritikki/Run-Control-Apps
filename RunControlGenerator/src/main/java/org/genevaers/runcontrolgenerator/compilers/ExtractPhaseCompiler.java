@@ -239,7 +239,7 @@ public class ExtractPhaseCompiler {
 	}
 
 	private static boolean noWriteStatementMissing(ViewSourceAstNode vsnode) {
-		return (ExtractBaseAST.getLastColumnWithAWrite() == vsnode.getNumberOfColumns());
+		return (ExtractBaseAST.getLastColumnWithAWrite(vsnode.getViewSource()) == vsnode.getNumberOfColumns());
 	}
 
 	private static void compileColumn(ViewColumnSourceAstNode vcsn) {

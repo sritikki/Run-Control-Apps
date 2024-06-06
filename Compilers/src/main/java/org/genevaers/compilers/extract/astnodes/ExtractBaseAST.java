@@ -1,6 +1,7 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.genevaers.compilers.base.ASTBase;
@@ -53,6 +55,8 @@ public abstract class ExtractBaseAST extends ASTBase{
     protected static ViewColumn currentViewColumn;
     protected static ViewColumnSource currentViewColumnSource;
     protected static int lastColumnWithAWrite = 0;
+
+    protected static Map<ViewSource, Integer> lastWriteColumnMap = new HashMap<>();
 
     protected ASTFactory.Type type = null;
     private boolean negative = false;
@@ -192,14 +196,12 @@ public abstract class ExtractBaseAST extends ASTBase{
     }
 
 
-    public static int getLastColumnWithAWrite() {
-        return lastColumnWithAWrite;
+    public static int getLastColumnWithAWrite(ViewSource vs) {
+        return lastWriteColumnMap.get(vs);
     }
 
     public static void setLastColumnWithAWrite() {
-        if(currentViewColumnSource != null) {
-            ExtractBaseAST.lastColumnWithAWrite = currentViewColumnSource.getColumnNumber();
-        }
+        lastWriteColumnMap.put(currentViewSource, currentViewColumnSource.getColumnNumber());
     }
 
     public static void clearLastColumnWithAWrite() {
