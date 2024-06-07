@@ -78,7 +78,7 @@ public class AppTest {
         File xltfile = TestHelper.getXLT();         
         assertTrue(xltfile.exists());
         File jltfile = TestHelper.getJLT();
-        assertFalse(jltfile.exists());
+        assertTrue(jltfile.exists());
     }
 
     @Test public void testDemo1() {

@@ -53,13 +53,13 @@ public class RunControlWriter {
         LTWriter xltw = new LTWriter();
         LTWriter jltw = new LTWriter();
         try {
-            if(joinLogicTable.getNumberOfRecords() > 5) {
+//            if(joinLogicTable.getNumberOfRecords() > 5) {
                 logger.atInfo().log("Write Join Logic Table");
                 jltw.write(joinLogicTable, Paths.get(RunControlConfigration.getJLTFileName()));
                 jltw.close();
-            } else {
-                logger.atInfo().log("No Join Logic Table required");
-            }
+//            } else {
+//                logger.atInfo().log("No Join Logic Table required");
+//            }
             logger.atInfo().log("Write Extract Logic Table");
             xltw.write(extractLogicTable, Paths.get(RunControlConfigration.getXLTFileName()));
             xltw.close();
