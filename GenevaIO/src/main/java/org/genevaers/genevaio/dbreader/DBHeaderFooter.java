@@ -36,9 +36,9 @@ public class DBHeaderFooter extends DBReaderBase {
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String query = "select * from " + params.getSchema() + ".viewheaderfooter "
-        + "where environid = " + params.getEnvironmentID() + " and viewid in(" + params.getViewIds()+ ");";
+        + "where environid = ? and viewid in(" + dbConnection.getPlaceholders(params.getViewIds())+ ");";
 
-        executeAndWriteToRepo(dbConnection, query);
+        executeAndWriteToRepo(dbConnection, query, params, params.getViewIds());
         return hasErrors;
     }
 

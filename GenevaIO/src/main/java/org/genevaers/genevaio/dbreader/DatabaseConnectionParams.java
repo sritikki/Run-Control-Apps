@@ -45,6 +45,10 @@ public class DatabaseConnectionParams {
         return environmentID;
     }
 
+    public int getEnvironmentIdAsInt() {
+        return Integer.valueOf(environmentID);
+    }
+
     public void setEnvironmentID(String environmentID) {
         this.environmentID = environmentID;
     }

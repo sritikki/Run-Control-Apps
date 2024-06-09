@@ -1,6 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -76,9 +77,9 @@ public class DBLookupsReader extends DBReaderBase{
                 + "ON(k.LOOKUPID = s.LOOKUPID AND s.LOOKUPSTEPID = k.LOOKUPSTEPID AND l.environid = k.environid) "
                 + "INNER JOIN " + params.getSchema() + ".LRLFASSOC t "
                 + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = k.environid) "
-                + "where l.environid = " + params.getEnvironmentID() + " and l.lookupid in(" + lookups + ") "
+                + "where l.environid = ? and l.lookupid in(" + dbConnection.getPlaceholders(lookups) + ") "
                 + "ORDER BY l.LOOKUPID, s.STEPSEQNBR, k.KEYSEQNBR; ";
-            executeAndWriteToRepo(dbConnection, query);
+            executeAndWriteToRepo(dbConnection, query, params, lookups);
             return hasErrors;
         } else {
             logger.atInfo().log("No Lookups required");
@@ -89,15 +90,23 @@ public class DBLookupsReader extends DBReaderBase{
     private void getSourceLookupIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String query= "SELECT 	DISTINCT LOOKUPID FROM "
             + params.getSchema() + ".VIEWLOGICDEPEND d "
-            + "WHERE d.ENVIRONID = " + params.getEnvironmentID() + " AND d.VIEWID in(" + viewIds + ") AND LOOKUPID > 0 "
+            + "WHERE d.ENVIRONID = ? AND d.VIEWID in(" + dbConnection.getPlaceholders(viewIds) + ") AND LOOKUPID > 0 "
             + "union "
             +"SELECT DISTINCT SORTTITLELOOKUPID as LOOKUPID FROM "
             + params.getSchema() + ".VIEWCOLUMNSOURCE s "
-            + "WHERE s.ENVIRONID = " + params.getEnvironmentID() + " AND s.VIEWID in(" + viewIds + ") AND SORTTITLELOOKUPID > 0";
+            + "WHERE s.ENVIRONID = ? AND s.VIEWID in(" + dbConnection.getPlaceholders(viewIds) + ") AND SORTTITLELOOKUPID > 0";
         
             Set<Integer> lookupIds = new TreeSet<>();
             try {
-                ResultSet rs = dbConnection.getResults(query);
+                PreparedStatement ps = dbConnection.prepareStatement(query);
+                int parmNum = 1;
+                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+                String[] idsIn = viewIds.split(",");
+                for(int i=0; i<idsIn.length; i++) {
+                    ps.setString(parmNum++, idsIn[i]);
+                }
+                ResultSet rs = dbConnection.getResults(ps);
                 while(rs.next()) {
                     lookupIds.add(rs.getInt("LOOKUPID"));
                 }
@@ -108,6 +117,7 @@ public class DBLookupsReader extends DBReaderBase{
                         lookups += "," + li.next().toString();
                     }
                 } 
+                ps.close();
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -179,10 +189,10 @@ public class DBLookupsReader extends DBReaderBase{
                 + "INNER JOIN " + params.getSchema() + ".LOOKUPSRCKEY k "
                 + "ON(k.LOOKUPID = s.LOOKUPID AND s.LOOKUPSTEPID = k.LOOKUPSTEPID AND l.environid = k.environid) "
                 + "INNER JOIN " + params.getSchema() + ".LRLFASSOC t "
-                + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = k.environid) "
-                + "where l.environid = " + params.getEnvironmentID() + " and UPPER(l.name) = '" + name.toUpperCase() + "' "
+                + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = t.environid) "
+                + "where l.environid = ? and UPPER(l.name) = ? "
                 + "ORDER BY l.LOOKUPID, s.STEPSEQNBR, k.KEYSEQNBR; ";
-            executeAndWriteToRepo(dbConnection, query);
+            executeAndWriteToRepo(dbConnection, query, params, name);
             return hasErrors;
         } else {
             logger.atInfo().log("No Lookups required");

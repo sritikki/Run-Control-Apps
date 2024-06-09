@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.PreparedStatement;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -49,8 +51,8 @@ public class DBPhysicalFileReader extends DBReaderBase {
         if(requiredPFs.size() > 0) { 
             //Then get the PFs
             String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-            + "where PHYFILEID in (" + getIds(requiredPFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
-            executeAndWriteToRepo(dbConnection, pfRecs);
+            + "where ENVIRONID= ? and PHYFILEID in (" + dbConnection.getPlaceholders(getIds(requiredPFs)) + ") and ;";
+            executeAndWriteToRepo(dbConnection, pfRecs, params, getIds(requiredPFs));
             //Note this relies on the LFs having been added first
             addPfsToLfs();
         }
@@ -60,9 +62,16 @@ public class DBPhysicalFileReader extends DBReaderBase {
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         if(requiredLFs.size() > 0) {
             String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
-                    + "where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID=" + params.getEnvironmentID() + ";";
+                    + "where ENVIRONID=? and LOGFILEID in (" + dbConnection.getPlaceholders(getIds(requiredLFs)) + ");";
             try {
-                ResultSet rs = dbConnection.getResults(pfsFromLfs);
+                PreparedStatement ps = dbConnection.prepareStatement(pfsFromLfs);
+                int parmNum = 1;
+                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+                String[] idsIn = getIds(requiredPFs).split(",");
+                for(int i=0; i<idsIn.length; i++) {
+                    ps.setString(parmNum++, idsIn[i]);
+                }
+                ResultSet rs = dbConnection.getResults(ps);
                 while (rs.next()) {
                     requiredPFs.add(rs.getInt("PHYFILEID"));
                     List<Integer> pfs = lf2pf.get(rs.getInt("LOGFILEID"));
@@ -72,6 +81,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
                     }
                     pfs.add(rs.getInt("PHYFILEID"));
                 }
+                dbConnection.closeStatement(ps);
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -132,7 +142,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
     public void addToRepoByName(DatabaseConnection databaseConnection, DatabaseConnectionParams params, String pfName) {
         //Then get the PFs
         String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-        + "where NAME = '" + pfName + "' and ENVIRONID= " + params.getEnvironmentID() + ";";
-        executeAndWriteToRepo(databaseConnection, pfRecs);
+        + "where ENVIRONID= ? and NAME = ?;";
+        executeAndWriteToRepo(databaseConnection, pfRecs, params, pfName);
      }
 }

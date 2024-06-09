@@ -51,9 +51,8 @@ public class DBSortKeyReader extends DBReaderBase {
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String query = "select * from " + params.getSchema() + ".viewsortkey "
-        + "where environid = " + params.getEnvironmentID() + " and viewid in(" + params.getViewIds()+ ");";
-
-        executeAndWriteToRepo(dbConnection, query);
+        + "where environid = ? and viewid in(" + dbConnection.getPlaceholders(params.getViewIds())+ ");";
+        executeAndWriteToRepo(dbConnection, query, params, params.getViewIds());
         return hasErrors;
     }
 

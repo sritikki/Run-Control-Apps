@@ -37,8 +37,8 @@ public class DBLogicalFileReader extends DBReaderBase{
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
 		if(requiredLFs.size() > 0) {
 			String query = "select * from " + params.getSchema() +".LOGFILE "
-			+ " where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID= " + params.getEnvironmentID() + ";";
-			executeAndWriteToRepo(dbConnection, query);
+			+ " where ENVIRONID= ? and LOGFILEID in (" + dbConnection.getPlaceholders(getIds(requiredLFs)) + ");";
+			executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLFs));
 		}
         return false;
     }
@@ -53,15 +53,15 @@ public class DBLogicalFileReader extends DBReaderBase{
 
     public boolean addLFtoRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID, int lfid) {
         String query = "select * from " + params.getSchema() +".LOGFILE "
-        + " where LOGFILEID = " + lfid + " and ENVIRONID= " + params.getEnvironmentID() + ";";
-        executeAndWriteToRepo(dbConnection, query);
+        + " where ENVIRONID= ? and LOGFILEID = ?;";
+        executeAndWriteToRepo(dbConnection, query, params, lfid);
         return false;
     }
 
     public boolean addToRepoByName(DatabaseConnection dbConnection, DatabaseConnectionParams params, String name) {
         String query = "select * from " + params.getSchema() +".LOGFILE "
-        + " where NAME = '" + name + "' and ENVIRONID= " + params.getEnvironmentID() + ";";
-        executeAndWriteToRepo(dbConnection, query);
+        + " where ENVIRONID= ? and NAME = ?;";
+        executeAndWriteToRepo(dbConnection, query, params, name);
         return false;
     }
 

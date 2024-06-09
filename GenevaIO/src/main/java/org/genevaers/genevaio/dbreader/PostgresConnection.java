@@ -25,7 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PostgresConnection implements DatabaseConnection {
+public class PostgresConnection extends DatabaseConnection {
 
     private DatabaseConnectionParams params;
     private Connection con;
@@ -70,14 +70,23 @@ public class PostgresConnection implements DatabaseConnection {
     }
 
     @Override
-    public ResultSet getResults(String query) throws SQLException {
-        PreparedStatement ps = con.prepareStatement(query);
+    public Connection getConnection() {
+        return con;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String query) throws SQLException {
+        return con.prepareStatement(query);
+    }
+
+    @Override
+    public ResultSet getResults(PreparedStatement ps) throws SQLException {
         return ps.executeQuery();
     }
 
     @Override
-    public Connection getConnection() {
-        return con;
+    public void closeStatement(PreparedStatement ps) throws SQLException {
+        ps.close();
     }
 
 }

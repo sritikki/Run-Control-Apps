@@ -52,9 +52,9 @@ public class DBFieldReader extends DBReaderBase{
             + "from " + params.getSchema() + ".LRFIELD f "
             + "INNER JOIN " + params.getSchema() + ".LRFIELDATTR a "
             + "ON a.LRFIELDID = f.LRFIELDID and a.ENVIRONID = f.ENVIRONID "
-            + "where f.ENVIRONID = " + params.getEnvironmentID() + " and f.logrecid in(" + getIds(requiredLRs) + ") ";
+            + "where f.ENVIRONID = ? and f.logrecid in(" + dbConnection.getPlaceholders(getIds(requiredLRs)) + ") ";
         
-        executeAndWriteToRepo(dbConnection, query);
+        executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLRs));
         return hasErrors;
     }
 
@@ -84,8 +84,7 @@ public class DBFieldReader extends DBReaderBase{
         Repository.addLRField(lrf);
     }
 
-    public void addLRToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID,
-            int sourceLR) {
+    public void addLRToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID, int sourceLR) {
                 String query = "select "
                 + "f.LRFIELDID, "
                 + "f.LOGRECID, "
@@ -104,8 +103,8 @@ public class DBFieldReader extends DBReaderBase{
                 + "from " + params.getSchema() + ".LRFIELD f "
                 + "INNER JOIN " + params.getSchema() + ".LRFIELDATTR a "
                 + "ON a.LRFIELDID = f.LRFIELDID and a.ENVIRONID = f.ENVIRONID "
-                + "where f.ENVIRONID = " + environmentID + " and f.logrecid = " + sourceLR + ";";
-                executeAndWriteToRepo(dbConnection, query);
-        }
+                + "where f.ENVIRONID = ? and f.logrecid = ?;";
+                executeAndWriteToRepo(dbConnection, query, params, sourceLR);
+    }
     
 }

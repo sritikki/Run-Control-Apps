@@ -41,11 +41,9 @@ public class DBLRIndexReader extends DBReaderBase{
             + "from " + params.getSchema() + ".lrindex i "
             + "inner join  " + params.getSchema() + ".lrindexfld f "
             + "on(f.environid = i.environid and f.lrindexid = i.lrindexid) "
-            + "where i.ENVIRONID = " + params.getEnvironmentID() + " and i.logrecid in(" + getIds(requiredLRs) + ") "
+            + "where i.ENVIRONID = ? and i.logrecid in(" + dbConnection.getPlaceholders(getIds(requiredLRs)) + ") "
             + "order by logrecid;";
-
-        executeAndWriteToRepo(dbConnection, query);
-    
+        executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLRs));
         return hasErrors;
     }
 
@@ -73,8 +71,7 @@ public class DBLRIndexReader extends DBReaderBase{
         Repository.addLRIndex(lri);
     }
 
-    public void addLRToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID,
-            int sourceLR) {
+    public void addLRToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, int environmentID, int sourceLR) {
                 String query = "select distinct "
                 + "i.lrindexid, "
                 + "i.logrecid, "
@@ -86,8 +83,8 @@ public class DBLRIndexReader extends DBReaderBase{
                 + "from " + params.getSchema() + ".lrindex i "
                 + "inner join  " + params.getSchema() + ".lrindexfld f "
                 + "on(f.environid = i.environid and f.lrindexid = i.lrindexid) "
-                + "where i.ENVIRONID = " + environmentID + " and i.logrecid = " + sourceLR + "; ";
-                executeAndWriteToRepo(dbConnection, query);
+                + "where i.ENVIRONID = ? and i.logrecid = ?; ";
+                executeAndWriteToRepo(dbConnection, query, params, sourceLR);
             }
     
 }

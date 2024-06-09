@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.PreparedStatement;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -86,12 +88,14 @@ public class DBViewsReader extends DBReaderBase {
         String viewsQuery = "select VIEWID from " + params.getSchema() + ".view where ENVIRONID = "
                 + params.getEnvironmentID() + " and VIEWID IN(" + params.getViewIds() + ")";
         try {
-            ResultSet rs = dbConnection.getResults(viewsQuery);
+            PreparedStatement ps = dbConnection.prepareStatement(viewsQuery);
+            ResultSet rs = dbConnection.getResults(ps);
             List<Integer> views = new ArrayList<>();
             while (rs.next()) {
                 views.add(rs.getInt("VIEWID"));
             }
             allExist = checkEachInputIn(params.getViewIds(), views);
+            dbConnection.closeStatement(ps);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -118,9 +122,9 @@ public class DBViewsReader extends DBReaderBase {
     private void addViewsToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String viewsQuery = queryBase + " from " + params.getSchema() + ".View v " 
         + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
-        + "where viewid IN(" + viewIds + ") and v.environid = " + params.getEnvironmentID() + ";";
+        + "where v.environid = ? and viewid IN(" + dbConnection.getPlaceholders(viewIds) + ");";
 
-        executeAndWriteToRepo(dbConnection, viewsQuery);
+        executeAndWriteToRepo(dbConnection, viewsQuery, params, viewIds);
     }
 
     @Override
@@ -216,8 +220,6 @@ public class DBViewsReader extends DBReaderBase {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
         return allExist;
     }
     

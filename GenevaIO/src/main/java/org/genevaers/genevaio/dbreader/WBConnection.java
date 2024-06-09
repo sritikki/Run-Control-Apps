@@ -10,7 +10,7 @@ import java.util.List;
  * A DatabaseConnection implementation that uses the exising 
  * workbench database connection
  */
-public class WBConnection implements DatabaseConnection{
+public class WBConnection extends DatabaseConnection{
 
     private Connection sqlConnection;
 
@@ -43,8 +43,7 @@ public class WBConnection implements DatabaseConnection{
     }
 
     @Override
-    public ResultSet getResults(String query) throws SQLException {
-        PreparedStatement ps = sqlConnection.prepareStatement(query);
+    public ResultSet getResults(PreparedStatement ps) throws SQLException {
         return ps.executeQuery();
    }
 
@@ -55,6 +54,16 @@ public class WBConnection implements DatabaseConnection{
     @Override
     public Connection getConnection() {
         return sqlConnection;
+    }
+
+    @Override
+    public void closeStatement(PreparedStatement ps) throws SQLException {
+        ps.close();
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String query) throws SQLException {
+            return sqlConnection.prepareStatement(query);
     }
     
 }

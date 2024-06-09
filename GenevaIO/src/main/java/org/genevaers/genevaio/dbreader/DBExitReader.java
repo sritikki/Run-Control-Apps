@@ -43,9 +43,9 @@ public class DBExitReader extends DBReaderBase {
             + "programtypecd, "
             + "e.optimizeind "
             + "FROM " + params.getSchema() + ".exit e "
-            + "where e.environid = " + params.getEnvironmentID() + " and e.exitid in(" + getIds(requiredExits) + ") ";
+            + "where e.environid = ? and e.exitid in(" + dbConnection.getPlaceholders(getIds(requiredExits)) + ") ";
 
-            executeAndWriteToRepo(dbConnection, query);
+            executeAndWriteToRepo(dbConnection, query, params, getIds(requiredExits));
         }
         return hasErrors;
     }
@@ -75,14 +75,14 @@ public class DBExitReader extends DBReaderBase {
         + "programtypecd, "
         + "e.optimizeind "
         + "FROM " + params.getSchema() + ".exit e "
-        + "where e.environid = " + params.getEnvironmentID();
+        + "where e.environid = ?";
         if(proc) {
-            query += " and e.moduleid = '" + name + "' ";
+            query += " and e.moduleid = ?;";
         } else {
-            query += " and e.name = '" + name + "' ";
+            query += " and e.name = ?;";
         }
         procedure = proc;
-        executeAndWriteToRepo(dbConnection, query);
+        executeAndWriteToRepo(dbConnection, query, params, name);
         return hasErrors;
     }
 
@@ -95,10 +95,11 @@ public class DBExitReader extends DBReaderBase {
         + "programtypecd, "
         + "e.optimizeind "
         + "FROM " + params.getSchema() + ".exit e "
-        + "where e.environid = " + params.getEnvironmentID()
-        + " and e.exitid = '" + id + "' ";
-        executeAndWriteToRepo(dbConnection, query);
+        + "where e.environid = ? "
+        + "and e.exitid = ? ";
+        executeAndWriteToRepo(dbConnection, query, params, id);
         return hasErrors;
     }
+
 
 }
