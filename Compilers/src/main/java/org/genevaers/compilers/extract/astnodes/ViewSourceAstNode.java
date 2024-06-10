@@ -48,6 +48,7 @@ public class ViewSourceAstNode extends ExtractBaseAST implements EmittableASTNod
     }
 
     public void setViewSource(ViewSource vs) {
+        currentViewSource = vs;
         this.vs = vs;
     }
 

@@ -111,14 +111,10 @@ public class LFAstNode extends ExtractBaseAST implements EmittableASTNode{
                 lf.setRequired(true);
                 addChildIfNotNull(pfn);
             }  else {
-                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-                err.addError("Unknown physical file " + parts[1]);
-                addChildIfNotNull(err);
+                addError("Unknown physical file " + parts[1]);
             }
         } else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unknown logical file " + requestedName);
-            addChildIfNotNull(err);
+            addError("Unknown logical file " + requestedName);
         }
     }
 

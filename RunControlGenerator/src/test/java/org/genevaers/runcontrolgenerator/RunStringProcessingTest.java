@@ -20,6 +20,7 @@ import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.enums.LtCompareType;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,6 +59,7 @@ class RunStringProcessingTest extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         ExtractBaseAST.setCurrentColumnNumber((short)0);
         Repository.setGenerationTime(Calendar.getInstance().getTime());
@@ -106,25 +108,22 @@ class RunStringProcessingTest extends RunCompilerBase {
     @Test void testBothNumericFields() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
         "IF {Binary1} CONTAINS {Binary2} THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
-        ErrorAST errs = (ErrorAST) comp.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
-        assertTrue(errs.getErrors().get(0).contains("Incompatable"));
+        ErrorAST errs = (ErrorAST) ExtractPhaseCompiler.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
+        assertTrue(errs.getError().contains("Incompatable"));
     }
 
     @Test void testLhsNumericField() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
         "IF {Binary1} CONTAINS {Alphanumeric} THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
-        ErrorAST errs = (ErrorAST) comp.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
-        assertTrue(errs.getErrors().get(0).contains("Incompatable"));
+        ErrorAST errs = (ErrorAST) ExtractPhaseCompiler.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
+        assertTrue(errs.getError().contains("Incompatable"));
     }
 
     @Test void testRhsNumericField() {
         LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, 
         "IF {Alphanumeric} CONTAINS {Binary1} THEN COLUMN = 9 ELSE COLUMN = 3 ENDIF");
-        ErrorAST errs = (ErrorAST) comp.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
-        assertTrue(errs.getErrors().get(0).contains("Incompatable"));
+        ErrorAST errs = (ErrorAST) ExtractPhaseCompiler.getXltRoot().getFirstNodeOfType(ASTFactory.Type.ERRORS);
+        assertTrue(errs.getError().contains("Incompatable"));
     }
 
     @Test void testSFCP() {

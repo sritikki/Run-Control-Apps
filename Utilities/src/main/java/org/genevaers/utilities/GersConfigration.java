@@ -47,6 +47,7 @@ public class GersConfigration {
     public static final String VDP_DDNAME = "VDP";
     
     public static final String ZOS = "ZOS";
+    public static final String CURRENT_WORKING_DIRECTORY = "CWD";
     protected static Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
     private static boolean zos;

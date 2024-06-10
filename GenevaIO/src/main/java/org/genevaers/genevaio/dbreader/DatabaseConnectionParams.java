@@ -24,7 +24,7 @@ public class DatabaseConnectionParams {
 
     DatabaseConnection.DbType dbType;
     String schema;
-    String environmenID;
+    String environmentID;
     String username;
     String password;
     String port;
@@ -41,12 +41,16 @@ public class DatabaseConnectionParams {
         this.schema = schema;
     }
 
-    public String getEnvironmenID() {
-        return environmenID;
+    public String getEnvironmentID() {
+        return environmentID;
     }
 
-    public void setEnvironmenID(String environmenID) {
-        this.environmenID = environmenID;
+    public int getEnvironmentIdAsInt() {
+        return Integer.valueOf(environmentID);
+    }
+
+    public void setEnvironmentID(String environmentID) {
+        this.environmentID = environmentID;
     }
 
     public String getUsername() {

@@ -85,7 +85,7 @@ public class ParmReader {
 	}
 
 	private void parse(String line) {
-		if (line.length() > 0 && line.charAt(0) != '#' && line.charAt(0) != '[') {
+		if (line.length() > 0 && line.charAt(0) != '#' && line.charAt(0) != '[' && line.charAt(0) != '*') {
 			String[] parts = line.split("=");
 			if (parts.length == 2) {
 				String parmName = parts[0].trim();

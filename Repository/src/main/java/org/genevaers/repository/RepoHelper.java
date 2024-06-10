@@ -167,4 +167,62 @@ public class RepoHelper {
         }
         return isEffectiveDated;
     }
+
+    public static int getMaxNumberOfDigitsForType(DataType t, int length) {
+        int numDigits = 0;
+        switch (t)
+        {
+            case ZONED:
+                numDigits = length;
+            break;
+            case ALPHA:
+            case ALPHANUMERIC:
+            case EDITED:
+                numDigits = length;
+                break;
+            case MASKED:
+                //Need to consider the code and presence of decimals?
+                numDigits = length;
+                break;
+            case BCD:
+                numDigits = length * 2;
+                break;
+            case BINARY:
+            case BSORT:
+            switch (length)
+            {
+            case 1:
+                numDigits = 3;
+                break;
+            case 2:
+                numDigits = 5;
+                break;
+            case 4:
+                numDigits = 10;
+                break;
+            case 8:
+                numDigits = 20;
+                break;
+            default:
+                numDigits = 0;
+                break;
+            }
+                break;
+            case CONSTDATE:
+            case CONSTNUM:
+            case CONSTSTRING:
+            case FLOAT:
+            case GENEVANUMBER:
+            case INVALID:
+                break;
+            case PSORT:
+            case PACKED:
+                numDigits = (length * 2) - 1;
+                break;
+            default:
+                break;
+        }
+        return numDigits;
+    
+    }
 }

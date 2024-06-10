@@ -234,4 +234,16 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
     public String getUniqueKey() {
         return uniqueKey;
     }
+
+
+    @Override
+    public String getMessageName() {
+        return lookup.getName();
+    }
+
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        return 0;
+    }
 }

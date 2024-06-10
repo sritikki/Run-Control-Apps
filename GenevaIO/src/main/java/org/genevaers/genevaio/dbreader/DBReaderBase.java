@@ -1,5 +1,8 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -26,7 +29,10 @@ import java.util.TreeSet;
 
 import org.genevaers.repository.components.ViewNode;
 
+import com.google.common.flogger.FluentLogger;
+
 public abstract class DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     protected boolean hasErrors = false;
     protected static String viewIds;
@@ -39,32 +45,53 @@ public abstract class DBReaderBase {
     protected static Set<Integer> lrlfAssociationIds = new TreeSet<>();
     protected static Set<Integer> lfpfAssociationIds = new TreeSet<>();
 
-    protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query) {
-        try {
-            ResultSet rs = dbConnection.getResults(query);
-            while(rs.next()) {
-                addComponentToRepo(rs);
-            }
+    protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query, DatabaseConnectionParams params, int id) {
+        try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
+            ps.setInt(1, params.getEnvironmentIdAsInt());
+            ps.setInt(2, id);
+            executeAndAddResultSetToRepo(ps);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.atSevere().log("executeAndWriteToRepo %s", e.getMessage());
         }
     }
 
-    protected void addComponentToRepo(ResultSet rs) throws SQLException {
+    protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query, DatabaseConnectionParams params, String name) {
+        try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
+            ps.setInt(1, params.getEnvironmentIdAsInt());
+            ps.setString(2, name);
+            executeAndAddResultSetToRepo(ps);
+        } catch (SQLException e) {
+            logger.atSevere().log("executeAndWriteToRepo %s", e.getMessage());
+        }
     }
+
+    protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query, DatabaseConnectionParams params, String[] idsIn) {
+        try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
+            int parmNum = 1;
+            ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+            for(int i=0; i<idsIn.length; i++) {
+                ps.setString(parmNum++, idsIn[i]);
+            }
+            executeAndAddResultSetToRepo(ps);
+        } catch (SQLException e) {
+            logger.atSevere().log("executeAndWriteToRepo %s", e.getMessage());
+        }
+    }
+
+    private void executeAndAddResultSetToRepo(PreparedStatement ps) throws SQLException {
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+            addComponentToRepo(rs);
+        }
+    }
+
+    protected abstract void addComponentToRepo(ResultSet rs) throws SQLException;
 
     protected static String getDefaultedString(String rsValue, String defVal) {
         return rsValue == null ? defVal : rsValue;
     }
-    
-
 
     abstract public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params);
-
-    public boolean getHasErrors() {
-        return hasErrors;
-    }
 
     public static ViewNode getCurrentViewNode() {
         return currentViewNode;

@@ -1,6 +1,7 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.genevaio.ltfile.Cookie;
+import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 
@@ -22,7 +23,7 @@ import org.genevaers.repository.components.enums.DateCode;
  */
 
 
-public class FiscaldateAST extends FormattedASTNode implements GenevaERSValue{
+public class FiscaldateAST extends FormattedASTNode implements GenevaERSValue, Assignable{
 
     private String value;
 
@@ -83,6 +84,29 @@ public class FiscaldateAST extends FormattedASTNode implements GenevaERSValue{
     @Override
     public DateCode getDateCode() {
         return (overriddenDateCode != null) ? overriddenDateCode : rawDateCode();
+    }
+
+    @Override
+    public String getMessageName() {
+        return "fiscal date";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
+    }
+
+    @Override
+    public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAssignmentEntry'");
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
     }
 
 }

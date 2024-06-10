@@ -14,18 +14,12 @@
 # specific language governing permissions and limitations
 # under the License.
 
+# Called by the Run Control App Prebuild pom.xml
 # Get the Grammar repo if it is not there
-# Also use the presence of the grammar to manage the jars
-if [ ! -d "../Grammar" ]; 
-then
-    echo "Clone the grammar"
-    git clone git@github.com:genevaers/Grammar.git ../Grammar
-    cd ../Grammar
-    mvn install
-    cd ../prebuild
-else
-    echo "Grammar repo in place"
-fi
-echo "Configure Build"
-./mvnInstallJars.sh
-echo "Build"
+# Install the DB2 Jars if needed
+
+echo "Install Grammar for Run Control Apps"
+./grammar.sh
+echo "Configure Build Run Control Apps"
+./configBuild.sh
+echo "Build Run Control Apps"

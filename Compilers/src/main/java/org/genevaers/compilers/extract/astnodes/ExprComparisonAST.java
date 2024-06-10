@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import java.util.ArrayList;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -19,6 +21,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -61,6 +64,12 @@ import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXLEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXPEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.CFXXEmitter;
 import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonEmitter;
+import org.genevaers.compilers.extract.emitters.comparisonemitters.ComparisonRulesChecker;
+import org.genevaers.compilers.extract.emitters.rules.CanCompareDates;
+import org.genevaers.compilers.extract.emitters.rules.CompareFlipLhs;
+import org.genevaers.compilers.extract.emitters.rules.CompareFlipRhs;
+import org.genevaers.compilers.extract.emitters.rules.Rule;
+import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
@@ -204,8 +213,9 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         }
         ExtractBaseAST lhsin = (ExtractBaseAST) children.get(0);
         ExtractBaseAST rhsin = (ExtractBaseAST) children.get(1);
-        ComparisonEmitter emitter = getComparisonEmitter(lhsin, rhsin); 
-        if(emitter != null) {
+        ComparisonEmitter emitter = decastAndgetComparisonEmitter(lhsin, rhsin); 
+        RuleResult result = verifyOperands(op, lhs, rhs);
+        if(emitter != null && result != RuleResult.RULE_ERROR) {
             emitter.setLtEmitter(ltEmitter);
             ltfo = emitter.getLTEntry(op, lhs, rhs);
             applyComparisonRules(op, lhs, rhs);
@@ -222,7 +232,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
     }
 
 
-    private ComparisonEmitter getComparisonEmitter( ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
+    private ComparisonEmitter decastAndgetComparisonEmitter( ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
         //The real type can be under a cast.
         lhs = lhsin;
         rhs = rhsin;
@@ -358,4 +368,8 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
         }
     }
 
+    public RuleResult verifyOperands(String op, ExtractBaseAST lhs, ExtractBaseAST rhs) {
+        ComparisonRulesChecker crc = new ComparisonRulesChecker();
+        return crc.apply(lhs, rhs);
+    }
 }

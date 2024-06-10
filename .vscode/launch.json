@@ -6,6 +6,19 @@
     "configurations": [
         {
             "type": "java",
+            "request": "attach",
+            "name": "Attach by Process ID",
+            "processId": "${command:PickJavaProcess}"
+        },
+        {
+            "type": "java",
+            "name": "Attach",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": "9091"
+        },
+        {
+            "type": "java",
             "name": "Launch Component Generator",
             "request": "launch",
             "mainClass": "ComponentGenerator.CommandLineHandler",
@@ -19,6 +32,15 @@
             "mainClass": "org.genevaers.mr91comparisons.TestRunner",
             "projectName": "petestframework",
             "cwd": "${workspaceFolder}/PETestFramework"
+        },
+        {
+            "type": "java",
+            "name": "Launch WBRunRCG-RCA",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
+            "projectName": "runcontrolanalyser",
+            "cwd": "${workspaceFolder}/RunControlGenerator/target/WEReports/passes/wbxml/RCAReport",
+            "args": ""
         },
         {
             "type": "java",
@@ -45,6 +67,22 @@
             "projectName": "runcontrolanalyser",
             "cwd": "${workspaceFolder}/../../RunControlPlayPen",
             "args": "-d"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCA from Playpen RC2",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.App",
+            "projectName": "runcontrolanalyser",
+            "cwd": "${workspaceFolder}/../../../../RunControlPlayPen/RC2"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCA App from WB Export",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.App",
+            "projectName": "runcontrolanalyser",
+            "cwd": "${workspaceFolder}/../../../WEReports/passes/wbxml/RCAReport"
         },
         {
             "type": "java",
@@ -99,6 +137,14 @@
         },
         {
             "type": "java",
+            "name": "Launch RCG WEReports/passes",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolgenerator.App",
+            "projectName": "runcontrolgenerator",
+            "cwd": "${workspaceFolder}/../../../WEReports/passes/wbxml/RCAReport"
+        },
+        {
+            "type": "java",
             "name": "Launch RCG from playpen RC1",
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolgenerator.App",
@@ -111,7 +157,7 @@
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolgenerator.App",
             "projectName": "runcontrolgenerator",
-            "cwd": "${workspaceFolder}../../../RunControlPlayPen/RC2"
+            "cwd": "${workspaceFolder}../../../../RunControlPlayPen/RC2"
         },
         {
             "type": "java",

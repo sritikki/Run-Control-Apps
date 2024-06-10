@@ -12,9 +12,15 @@ public class LeftASTNode extends StringFunctionASTNode implements Assignable{
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
         if(getNumberOfChildren() == 1) {
             Concatable cc =  (Concatable) getChildIterator().next();
-            cc.getLeftEntry(col, (ExtractBaseAST) cc, Short.valueOf(getLength()));
+            cc.getLeftEntry(col, (ExtractBaseAST) cc, (short)getLength());
         }
         return null;
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAssignableLength'");
     }
 
 }

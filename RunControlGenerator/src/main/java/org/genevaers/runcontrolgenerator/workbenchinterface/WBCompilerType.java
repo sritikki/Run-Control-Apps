@@ -1,7 +1,7 @@
-package org.genevaers.compilers.extract.emitters.assignmentemitters;
+package org.genevaers.runcontrolgenerator.workbenchinterface;
 
 /*
- * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
+ * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2023.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,10 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
  */
 
 
-import org.genevaers.compilers.extract.astnodes.ColumnAST;
-import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
-
-public interface DataTypeChecker {
-    public enum DTResult {
-        ASSIGN_OK,
-        ASSIGN_WARNING,
-        ASSIGN_ERROR
-    }
-
-    public abstract DTResult verifyOperands(ColumnAST column, ExtractBaseAST rhs);
-    
+public enum WBCompilerType {
+	EXTRACT_COLUMN,
+	EXTRACT_FILTER,
+	EXTRACT_OUTPUT,
+	FORMAT_FILTER,
+	FORMAT_CALCULATION
 }

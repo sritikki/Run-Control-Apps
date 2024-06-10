@@ -160,4 +160,22 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
         return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
     }
 
+    @Override
+    public String getMessageName() {
+        return "numeric constant '" + numStr +"'";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        return numStr.length();
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        if(numStr.contains("."))
+            return numStr.length() - 1;
+        else 
+            return numStr.length();
+    }
+
 }

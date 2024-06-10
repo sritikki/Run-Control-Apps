@@ -1,0 +1,23 @@
+digraph VDP_Record_Flow {
+    rankdir=LR;
+    
+    subgraph cluster_cg { label="Component Generator" node [shape=plaintext]
+
+    yamlReader[shape=oval color=pink style=filled]
+    classes[shape=rect color=palegreen style=filled]
+    FreeMarker[color=pink style=filled]
+
+}
+
+    inputYaml[shape=rect color=palegreen style=filled]
+    RecordObject[shape=parallelogram color=lightblue style=filled]
+    HTML_Docs[label=Documentation shape=rect color=lightsalmon style=filled]
+    DSECT[shape=egg  color=lightgray style=filled]
+    Component[color=gold style=filled shape=octagon]
+
+    inputYaml -> yamlReader -> classes -> FreeMarker
+    FreeMarker -> RecordObject
+    FreeMarker -> HTML_Docs
+    FreeMarker -> DSECT
+    FreeMarker -> Component
+}

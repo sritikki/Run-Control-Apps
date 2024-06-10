@@ -103,4 +103,20 @@ public class RecordCountAST  extends FormattedASTNode implements Assignable, Cal
         this.emittable = false;
     }
 
+    @Override
+    public String getMessageName() {
+        return "record counter";
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        return 10;
+    }
+
 }

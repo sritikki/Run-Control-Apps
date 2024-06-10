@@ -428,11 +428,7 @@ public class ExtractAST2Dot {
 
     private static void dotErrorNode(ExtractBaseAST node) {
         ErrorAST errs = (ErrorAST) node;
-        label = errs.getErrors().size() + " Errors\n";
-        Iterator<String> ei = errs.getErrors().iterator();
-        while (ei.hasNext()) {
-            label += ei.next() + "\n";
-        }
+        label = errs.getError();
         colour = "red";
         shape = "octagon";
         idString = "err_" + nodeNum++;
@@ -450,8 +446,8 @@ public class ExtractAST2Dot {
     private static void dotColumnNode(ExtractBaseAST node) {
         ColumnAST col = (ColumnAST) node;
         label = "Column " + col.getViewColumn().getColumnNumber();
-        colour = COLUMNDATA;
         idString = "col_" + col.getViewColumn().getComponentId() + nodeNum;
+        colour = COLUMNDATA;
         dataflow = true;
     }
 
@@ -473,7 +469,9 @@ public class ExtractAST2Dot {
 
     private static void dotLookupFieldNode(ExtractBaseAST node) {
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) node;
-        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName() + "\n" + lkfieldRef.getUniqueKey() + " -> " + lkfieldRef.getNewJoinId();;
+        String labelName = lkfieldRef.getRef() != null ? lkfieldRef.getRef().getName() : "____";
+        label = lkfieldRef.getLookup().getName() + "." + labelName + "\n";
+        label += lkfieldRef.getUniqueKey() + " -> " + lkfieldRef.getNewJoinId();;
         colour = LKDATASOURCE;
         idString = "Field_" + nodeNum++;
         reverseArrow = true;
@@ -481,11 +479,7 @@ public class ExtractAST2Dot {
 
     private static void dotLookupNode(ExtractBaseAST node) {
         LookupPathRefAST lkRef = (LookupPathRefAST) node;
-        if(lkRef.getLookup() != null) {
-            label = lkRef.getLookup().getName() + "\n" + lkRef.getUniqueKey() + " -> " + lkRef.getNewJoinId();
-        } else {
-            label = "NULL Lookup";
-        }
+        label = lkRef.getMessageName() + "\n" + lkRef.getUniqueKey() + " -> " + lkRef.getNewJoinId();
         colour = LKDATASOURCE;
         idString = "LK_" + nodeNum++;
         reverseArrow = true;
@@ -502,7 +496,7 @@ public class ExtractAST2Dot {
 
     private static void dotColumnAssignmentNode(ExtractBaseAST node) {
         ColumnAssignmentASTNode colassNode = (ColumnAssignmentASTNode) node;
-        label = colassNode.getType().toString();
+        label = colassNode.getType().toString() + " " + colassNode.getLineNumber() +":" + colassNode.getCharPositionInLine();
         colour = ASSIGNMENT;
         shape = EMITABLE;
         idString = "Colass" + nodeNum++;
@@ -565,7 +559,12 @@ public class ExtractAST2Dot {
                 + vcs.getComponentId();
         String escLogic = vcs.getLogicText().replace("\"", "'");
         label = "Column " + vcs.getColumnNumber() + "\n" + escLogic;
-        colour = "lightblue";
+        if(vcsn.isAssignedTo()) {
+            colour = "lightblue";
+        } else {
+            colour = LIGHTGREY;
+            shape = EMITABLE;
+        }
     }
 
     private static void dotViewSourceNode(ExtractBaseAST node) {

@@ -45,7 +45,9 @@ import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.UserExit;
 import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.repository.components.enums.ColumnSourceType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
 import com.google.common.flogger.FluentLogger;
@@ -68,6 +70,8 @@ public class FlowGenerator {
 	private List<String> detailedJoinIDs = null;
 	private FlowDotFile fdf;
 	private VDPManagementRecords vmrs;
+
+	private ViewNode currentViewNode;
 	
 	public FlowGenerator(VDPManagementRecords vmrs, LogicTable x) {
 
@@ -239,8 +243,8 @@ public class FlowGenerator {
 
 	private void addEventSetTo(ViewDotFile currentVdf2, LTRecord xtr) {
 		LogicTableNV nv = (LogicTableNV)xtr;
-		ViewNode view = Repository.getViews().get(nv.getViewId());
-		currentView = view.getName();
+		currentViewNode = Repository.getViews().get(nv.getViewId());
+		currentView = currentViewNode.getName();
 		
 		LogicalFile srclf = Repository.getLogicalFiles().get(nv.getFileId());
 		sourceLFs.put(nv.getFileId(), srclf);
@@ -248,7 +252,7 @@ public class FlowGenerator {
 		currentViewSource = nv.getSourceSeqNbr();
 		currentVdf.addEventSet(currentViewSource, srclf, srcLR);
 		
-		fdf.addLF2ViewLink(srclf, view);
+		fdf.addLF2ViewLink(srclf, currentViewNode);
 }
 
 	private boolean isNewView(LTRecord xtr) {
@@ -407,6 +411,14 @@ public class FlowGenerator {
 		}
 		else if(xtr.getFunctionCode().endsWith("C")) {
 			LogicTableF1 dtc = (LogicTableF1)xtr;
+			ViewColumn vc = currentViewNode.getColumnNumber(dtc.getSuffixSeqNbr());
+			if(vc.findFromSourcesByNumber(currentViewSource) == null) {
+				ViewColumnSource vcs = new ViewColumnSource();
+				vcs.setSrcValue(dtc.getArg().getValue().getString());
+				vcs.setSourceType(ColumnSourceType.CONSTANT);
+				vcs.setSequenceNumber(currentViewSource);
+				vc.addToSourcesByNumber(vcs);
+			}
 			//addConstantLink(dtc.getColumnId(), dtc.getColumnId(), xltr.getFunctionCode()equalsIgnoreCase("SK"));
 		}
 	}

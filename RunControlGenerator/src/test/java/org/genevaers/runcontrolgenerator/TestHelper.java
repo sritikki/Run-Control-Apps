@@ -53,6 +53,7 @@ public class TestHelper {
 	public static final String TEST_GEN_JLT = TEST_RUNCONTROLS_RCGGEN + "rcg.JLT";
 	public static final String TEST_BASEFILE = "AllTypesBase[9953].xml";
     public static final String TEST_FILE = "mergeAssAll.xml";
+    public static final String ALL_TYPES_TARGET = "AllTypesTarget[12156].xml";
     public static final String ARITH_FILE = "CMP_ARITH_PLUS.xml";
     public static final String ASSIGNMENTS = "JMR91Assignments[12075].xml";
     public static final String EVENT_ARTIH = "EVENT_ARITHMETIC_STEPS2[12094].xml";
@@ -61,6 +62,12 @@ public class TestHelper {
     public static final String PROD_STATE = "DEMO_Summary_Product_Qty_Sold_By_State_View[10715].xml";
     public static final String DEMO_LOOKUPS = "DEMO_Extract_With_Lookups_VIEW[10689].xml";
     public static final String SKE_DT = "SKEandDT[11074].xml";
+    public static final String COL_TOO_BIG = "ColTooBig.xml";
+    public static final String FIELD_TOO_BIG = "FieldTooBig.xml";
+    public static final String INCOMPATIBLE_DATES = "IncompatibleDates.xml";
+    public static final String INCOMPATIBLE_LOOKUP_DATES = "IncompatibleLookupDates.xml";
+    public static final String INCOMPATIBLE_FIELD_DATES = "IncompatibleFieldDates.xml";
+    public static final String INCOMPATIBLE_LOOKUPFIELD_DATES = "IncompatibleLookupFieldDates.xml";
     public static final String ONE_COL = "OneCol.xml";
     public static final String ONE_COL_LOOKUP = "OneColLookup.xml";
     public static final String ONE_COL_WRITE_EXIT = "OneColWriteExit[12052].xml";
@@ -72,6 +79,7 @@ public class TestHelper {
     public static final String DEMO1 = "V0010689.xml";
     public static final String OLD_TEST_FILE = "oldpass2.xml";
     public static final String FORMAT_COMPILE = "FormatCompileTest[12087].xml";
+    public static final String WBCOMPILER_TEST = "WBCompilerTest.xml";
     public static final String GIO_WBXMLFILES = "../GenevaIO/src/test/resources/";
     public static final String ALL_ARITH = "../../../../PETestFramework/xml/AllArith.xml";
 	public static final String CFAX_TEST = "CFAXTest[12051].xml";

@@ -32,7 +32,8 @@ public class GraphVizRunner {
 	public void processDot(File d) {
 		CommandRunner cmd = new CommandRunner();
 		//Need the absoloutePath
-		String command = "dot -Gconcentrate=true -Tsvg -O " + d.getAbsolutePath();
+		//String command = "dot -Gconcentrate=true -Tsvg -O " + d.getAbsolutePath();
+		String command = "dot -Tsvg -O " + d.getAbsolutePath();
 
         try {
 			int rc = cmd.run(command, d.getParentFile());

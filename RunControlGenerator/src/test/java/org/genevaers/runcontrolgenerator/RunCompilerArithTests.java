@@ -27,6 +27,7 @@ import org.genevaers.genevaio.ltfile.LogicTableNameValue;
 import org.genevaers.genevaio.ltfile.LogicTableRE;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.junit.jupiter.api.AfterEach;
@@ -64,6 +65,7 @@ class RunCompilerArithTests extends RunCompilerBase {
 
     @BeforeEach
     public void initEach(TestInfo info){
+        ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
@@ -152,7 +154,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         String[] expected = new String[]{ "DIMN", "SETE", "ADDL", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(7, expected, expectedGotos, xlt);
-        LogicTable jlt = comp.getJoinLogicTable();
+        LogicTable jlt = ExtractPhaseCompiler.getJoinLogicTable();
         String[] jexpected = new String[]{ "HD", "DIM4", "SETC", "RENX" };
         int jexpectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(1, jexpected, jexpectedGotos, jlt);
@@ -304,11 +306,9 @@ class RunCompilerArithTests extends RunCompilerBase {
         readConfigAndBuildRepo();
         TestHelper.setColumn1Logic(9956, "COLUMN = {ZONED}");
         RunControlConfigration.setDotFilter("9956", "1,2", "N");
-        ASTBase root = CompileAndGenerateDots();
-        ASTBase fieldRef = root.getFirstLeafNode();
-        ColumnAssignmentASTNode colAss = (ColumnAssignmentASTNode)fieldRef.getParent();
-        assertEquals("CAS found", colAss.getTag());
-        assertEquals("ZONED", ((FieldReferenceAST)fieldRef).getName());
+        ExtractBaseAST root = (ExtractBaseAST)CompileAndGenerateDots();
+        ColumnAssignmentASTNode colAss = (ColumnAssignmentASTNode) root.getChildNodesOfType(ASTFactory.Type.COLUMNASSIGNMENT).get(0);
+        assertEquals("ZONED", ((FieldReferenceAST)colAss.getFirstLeafNode()).getName());
     }
 
     @Test void testStringConstAssignment() throws IOException {
@@ -345,8 +345,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestHelper.setColumn1Logic(9956, "COLUMN = {Rubbish}");
         RunControlConfigration.setDotFilter("9956", "1", "N");
         ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
-        ErrorAST errs = (ErrorAST) root.getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
+        assertTrue(Repository.getCompilerErrors().size() > 0);
     }
 
     @Test void testBadSyntaxAssignment() throws IOException {
@@ -355,8 +354,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestHelper.setColumn1Logic(9956, "COLUMN = oops}");
         RunControlConfigration.setDotFilter("9956", "1", "N");
         ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
-        ErrorAST errs = (ErrorAST) root.getFirstNodeOfType(ASTFactory.Type.ERRORS);
-        assertTrue(errs.getErrors().size()>0);
+        assertTrue(Repository.getCompilerErrors().size() > 0);
     }
 
     // @Test void testEventArith() {

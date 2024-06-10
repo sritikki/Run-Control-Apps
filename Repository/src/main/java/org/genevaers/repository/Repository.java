@@ -41,7 +41,9 @@ import org.genevaers.repository.components.UserExit;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.enums.LrStatus;
+import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.ComponentCollection;
+import org.genevaers.repository.data.ExtractDependencyCache;
 import org.genevaers.repository.data.InputReport;
 import org.genevaers.repository.jltviews.JLTView;
 import org.genevaers.repository.jltviews.JoinViewsManager;
@@ -72,6 +74,7 @@ public class Repository {
 	private static ComponentCollection<LogicalFile> lfs = new ComponentCollection<LogicalFile>();
 	private static ComponentCollection<PhysicalFile> pfs = new ComponentCollection<PhysicalFile>();
 	private static ComponentCollection<UserExit> exits = new ComponentCollection<UserExit>();
+	private static ComponentCollection<UserExit> procedures = new ComponentCollection<UserExit>();
 	private static ComponentCollection<LogicalRecord> lrs = new ComponentCollection<LogicalRecord>();
 	private static ComponentCollection<LRField> fields = new ComponentCollection<LRField>();
 	private static ComponentCollection<LRIndex> indexes = new ComponentCollection<LRIndex>();
@@ -80,17 +83,23 @@ public class Repository {
 	private static ComponentCollection<ViewNode> formatViews = new ComponentCollection<ViewNode>();
 	private static JoinViewsManager jvm = new JoinViewsManager();
 
+	private static ExtractDependencyCache dependencyCache = new ExtractDependencyCache();
+
 	private static List<InputReport> inputReports = new ArrayList<>();
+	private static List<CompilerMessage> warnings = new ArrayList<>();
+	private static List<CompilerMessage> compilerErrors = new ArrayList<>();
 
 	private static Date generationTime;
 
 	private static int numberOfExtractViews;
+	private static int numErrors;
 
 	public static void clearAndInitialise() {
 		crs = new ComponentCollection<ControlRecord>();
 		lfs = new ComponentCollection<LogicalFile>();
 		pfs = new ComponentCollection<PhysicalFile>();
 		exits = new ComponentCollection<UserExit>();
+		procedures = new ComponentCollection<UserExit>();
 		lrs = new ComponentCollection<LogicalRecord>();
 		fields = new ComponentCollection<LRField>();
 		indexes = new ComponentCollection<LRIndex>();
@@ -98,6 +107,9 @@ public class Repository {
 		views = new ComponentCollection<ViewNode>();
 		formatViews = new ComponentCollection<ViewNode>();
 		jvm = new JoinViewsManager();	
+		compilerErrors.clear();
+		warnings.clear();
+		dependencyCache.clear();
 
 		UniqueKeys.reset();
 
@@ -112,6 +124,7 @@ public class Repository {
 		maxComponentLRID = 0;
 		maxFieldID = 0;
 		maxIndexID = 0;
+		numErrors = 0;
 	
 		extractFileNubers = new TreeSet<>();
 	}
@@ -134,6 +147,10 @@ public class Repository {
 
 	public static ComponentCollection<UserExit> getUserExits() {
 		return exits;
+	}
+
+	public static ComponentCollection<UserExit> getProcedures() {
+		return procedures;
 	}
 
 	public static ComponentCollection<LogicalRecord> getLogicalRecords() {
@@ -197,7 +214,7 @@ public class Repository {
 		if(maxFieldID < lrf.getComponentId())
 			maxFieldID = lrf.getComponentId();
 		fields.add(lrf, lrf.getComponentId(), lrf.getName());
-		if (lrf.getLrID() != currentLRID) {
+		if (lrf.getLrID() != currentLRID || currentLR == null) {
 			currentLRID = lrf.getLrID();
 			currentLR = lrs.get(currentLRID);
 		}
@@ -434,4 +451,31 @@ public class Repository {
 		return keylen;
 	}
 
+	public static void addErrorMessage(CompilerMessage err) {
+		compilerErrors.add(err);
+	}
+
+	public static void addWarningMessage(CompilerMessage warn) {
+		warnings.add(warn);
+	}
+
+	public static List<CompilerMessage> getCompilerErrors() {
+		return compilerErrors;
+	}
+
+	public static List<CompilerMessage> getWarnings() {
+		return warnings;
+	}
+
+	public static ExtractDependencyCache getDependencyCache() {
+		return dependencyCache;
+	}
+
+	public static void clearNewErrorsDetected() {
+		numErrors = compilerErrors.size();
+	}
+
+	public static boolean newErrorsDetected() {
+		return compilerErrors.size() > numErrors;
+	}
 }

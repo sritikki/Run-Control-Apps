@@ -28,7 +28,8 @@ import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.repository.Repository;
-import org.genevaers.runcontrolgenerator.compilers.RepositoryCompiler;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
@@ -44,7 +45,7 @@ public class RunControlGenerator {
 
 	//RunControlConfigration rcc;
 	private FileWriter reportWriter;
-	ReportWriter rw = new ReportWriter();
+	ReportWriter report = new ReportWriter();
 
 	private Status status;
 
@@ -56,8 +57,6 @@ public class RunControlGenerator {
 	private LogicTable joinLogicTable;
 
 	public void runFromConfig() {
-		//this.rcc = rcc;
-
 		GenevaLog.writeHeader("Run Control Generator");
 
 		if(buildComponentRepositoryFromSelectedInput() != Status.ERROR) {
@@ -68,12 +67,11 @@ public class RunControlGenerator {
 			singlePassOptimise();
 			runCompilers();
 			writeRunControlFiles();
-			rw.write();
+			report.write();
 		} else {
-			logger.atSevere().log("Failed to build the component repository");
+			logger.atSevere().log("Failed to build the component repository. No run control files will be written");
 		}
 	}
-
 
 	private void writeRunControlFiles() {
 		if(status != Status.ERROR) {
@@ -85,9 +83,11 @@ public class RunControlGenerator {
 			rcw.setExtractLogicTable(extractLogicTable);
 			rcw.setJoinLogicTable(joinLogicTable);
 			status = rcw.run();
-			rw.setNumJLTRecordsWritten(joinLogicTable.getNumberOfRecords());
-			rw.setNumXLTRecordsWritten(extractLogicTable.getNumberOfRecords());
-			rw.setNumVDPRecordsWritten(rcw.getNumVDPRecordsWritten());
+			report.setNumJLTRecordsWritten(joinLogicTable.getNumberOfRecords());
+			report.setNumXLTRecordsWritten(extractLogicTable.getNumberOfRecords());
+			report.setNumVDPRecordsWritten(rcw.getNumVDPRecordsWritten());
+		} else {
+			logger.atSevere().log("There were errors. No run control files will be written");
 		}
 	}
 
@@ -103,11 +103,12 @@ public class RunControlGenerator {
 	private void runCompilers() {
 		GenevaLog.logNow("runCompilers");
 		if(status != Status.ERROR) {
-			RepositoryCompiler comp = new RepositoryCompiler();
-			comp.setLogicGroups(logicGroups);
-			status = comp.run();
-			extractLogicTable = comp.getExtractLogicTable();
-			joinLogicTable = comp.getJoinLogicTable();
+			ExtractPhaseCompiler.run(logicGroups);
+			extractLogicTable = ExtractPhaseCompiler.getExtractLogicTable();
+			joinLogicTable = ExtractPhaseCompiler.getJoinLogicTable();
+			FormatRecordsBuilder.run();
+		} else {
+			logger.atSevere().log("There were SPO errors. No compilation performed.");
 		}
 	}
 

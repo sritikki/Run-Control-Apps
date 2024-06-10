@@ -44,6 +44,7 @@ import org.junit.jupiter.api.Test;
 public class JLTViewTests {
 
     @Test void testBuildSimpleJoinView() {
+        Repository.setGenerationTime(Calendar.getInstance().getTime());
         //This test is at the JLTGenerator level
         Repository.setGenerationTime(Calendar.getInstance().getTime());
         LogicTableEmitter jltEmitter = new LogicTableEmitter();

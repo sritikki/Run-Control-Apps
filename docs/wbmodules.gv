@@ -1,0 +1,77 @@
+digraph WorkBench {
+    rankdir=TB
+//Nodes
+graph [label="WorkBench Module Dependencies\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22 ranksep="2 equally" compound=true ];
+labeljust=center;
+
+subgraph cluster_we { label="User Interface" node [shape=plaintext]
+    eds[label="Editors" shape=rect style=filled color=PaleGreen]
+    diags[label="Dialogs" shape=rect style=filled color="PaleGreen" ]
+    reps[label="Reports" shape=rect style=filled color="gold" ]
+    importer[label="Importer" shape=rect style=filled color=PaleGreen]
+    exporter[label="Exporter" shape=rect style=filled color=PaleGreen]
+    login[label="Login" shape=rect style=filled color=gold]
+    sec[label="Security" shape=rect style=filled color=gold]
+    anz[label="Analyzer" shape=rect style=filled color=pink]
+    run[label="Runs" shape=rect style=filled color=pink]
+}
+
+    subgraph cluster_comp { label="Compilers"  node [shape=plaintext] 
+        EPF[label="Extract Compilers" shape=rect style=filled color="lightblue1" ]
+        FPF[label="Format Compilers" shape=rect style=filled color="lightblue1" ]
+    }
+
+subgraph cluster_data { label="Data" node [shape=plaintext]
+    DAO[label="DAO" shape=rect style=filled color=PaleGreen]
+    DB2DAO[label="DB2DAO" shape=rect style=filled color=gold]
+    PGDAO[label="PGDAO" shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_model { label="Model" node [shape=plaintext]
+    model[label="Model" shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_import { label="XML Interface" node [shape=plaintext]
+    xmlr[label="XML Reader" shape=rect style=filled color=PaleGreen]
+    xmlw[label="XML Writer" shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_ftp { label="FTP" node [shape=plaintext]
+    ftp[label="FTP" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_rcg { label="Run Control Generator" node [shape=plaintext]
+    rcg[label="RCG" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_rc { label="RCG Files" node [shape=plaintext]
+    vdp[label="VDP" shape=rect style=filled color=pink]
+    xlt[label="XLT" shape=rect style=filled color=pink]
+    jlt[label="JLT" shape=rect style=filled color=pink]
+}
+xmf[label="WB XML" shape=cylinder style=filled color=grey]
+
+DAO -> PGDAO
+DAO -> DB2DAO
+diags -> model [lhead=cluster_model]
+eds -> model [lhead=cluster_model]
+model ->DAO [lhead=cluster_data] 
+eds -> EPF [lhead=cluster_comp]
+eds -> FPF  [lhead=cluster_comp]
+FPF -> model [lhead=cluster_model]
+EPF -> model [lhead=cluster_model]
+reps -> model [lhead=cluster_model]
+importer -> xmlr [lhead=cluster_import]
+exporter -> xmlw [lhead=cluster_import]
+xmlr -> model [lhead=cluster_model]
+xmlw -> model [lhead=cluster_model]
+anz -> ftp [lhead=cluster_ftp]
+rcg -> vdp [lhead=cluster_rc]
+rcg -> xmf
+xmlr -> xmf
+xmlw -> xmf
+run -> ftp [lhead=cluster_ftp]
+run -> model [lhead=cluster_model]
+run -> rcg [lhead=cluster_model]
+ftp -> vdp [lhead=cluster_rc]
+}

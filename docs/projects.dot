@@ -1,0 +1,93 @@
+digraph FrontendProjects {
+    rankdir=TB
+//Nodes
+graph [label="Run Control Apps\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22 ranksep="2 equally" compound=true ];
+labeljust=center;
+
+// Applications
+subgraph cluster_rcg { label="Run Control Generator" node [shape=plaintext]
+    RCG[label="Run Control Generator" shape=rect style=filled color=PaleGreen]
+    SPO[label="Single Pass Optimiser" shape=rect style=filled color="lightblue1" ]
+
+    JLT[label="JLT Generation" shape=rect style=filled color="lightblue1" ]
+}
+
+subgraph cluster_comp { label="Compilers"  node [shape=plaintext] 
+    EPF[label="Extract Compilers" shape=rect style=filled color="lightblue1" ]
+    FPF[label="Format Compilers" shape=rect style=filled color="lightblue1" ]
+}
+
+
+subgraph cluster_fa { label="Run Control Analyser" node [shape=plaintext]
+    FA[label="Run Control Analyser" shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_wb { label="Workbench Interface" node [shape=plaintext]
+    VI[label="View Interface" shape=rect style=filled color=PaleGreen]
+    CI[label="Compiler Interface" shape=rect style=filled color=PaleGreen]
+}
+
+//Libraries
+
+subgraph cluster_gio { label="GenevaIO" node [shape=plaintext]
+
+    subgraph cluster_giolt { label="LT File" node [shape=plaintext]
+       LTR[label="LT Reader" shape=rect style=filled color="lightblue1" ]
+       LTW[label="LT Writer" shape=rect style=filled color="lightblue1" ]
+       REPOL[label="Logic Table" shape=rect style=filled color="lightblue1" ]
+    }
+
+    subgraph cluster_giovdp { label="VDP File" node [shape=plaintext]
+        VDPR[label="VDPFile Reader" shape=rect style=filled color="lightblue1" ]
+        VDPW[label="VDPFile Writer" shape=rect style=filled color="lightblue1" ]
+        REPOV[label="VDP File Objects" shape=rect style=filled color="lightblue1" ]
+    }
+
+    subgraph cluster_gior { label="Readers" node [shape=plaintext]
+        WB[label="WBXML" shape=rect style=filled color="lightblue1" ]
+        DB2[label="DB2 Reader" shape=rect style=filled color="lightblue1" ]
+        PG[label="Postgres Reader" shape=rect style=filled color="lightblue1" ]
+        VX[label="VDP XML Reader" shape=rect style=filled color="lightblue1" ]
+    }
+
+    subgraph cluster_giow { label="Writers" node [shape=plaintext]
+         HTML[label="HTML Writer" shape=rect style=filled color="lightblue1" ]
+        DOT[label="DOT Writer" shape=rect style=filled color="lightblue1" ]
+    }
+
+}
+
+subgraph cluster_repo { label="Repository" margin=18 node [shape=plaintext]
+    REPOC[label="Views"  shape=rect style=filled color="lightblue1" ]
+    REPOM[label="Metadata"  shape=rect style=filled color="lightblue1" ]
+}
+
+EPF -> WB [lhead=cluster_gior, ltail=cluster_rcg]
+FA -> VDPR [lhead=cluster_giovdp, ltail=cluster_fa]
+FA -> HTML [lhead=cluster_giow, ltail=cluster_fa]
+SPO -> VDPR [lhead=cluster_giovdp, ltail=cluster_rcg]
+LTR -> REPOL
+LTW -> REPOL
+
+HTML -> REPOL [lhead=cluster_giolt, ltail=cluster_giow]
+DOT  -> REPOM [lhead=cluster_repo, ltail=cluster_giow]
+VDPW -> REPOV 
+VDPR -> REPOV 
+WB -> REPOC [lhead=cluster_repo]
+RCG -> SPO
+RCG -> FPF
+RCG -> EPF
+RCG -> JLT
+
+VI -> DB2
+CI -> EPF
+
+DB2 -> REPOM [lhead=cluster_repo]
+
+
+EPF  -> { REPOC} [lhead=cluster_repo, ltail=cluster_rcg]
+FPF  -> LTW [lhead=cluster_giolt, ltail=cluster_rcg]
+
+
+REPOV -> REPOM [lhead=cluster_repo, ltail=cluster_giovdp]
+}

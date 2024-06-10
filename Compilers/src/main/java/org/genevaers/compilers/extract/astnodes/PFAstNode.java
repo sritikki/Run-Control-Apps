@@ -42,10 +42,8 @@ public class PFAstNode extends ExtractBaseAST {
 
     public void resolve(PhysicalFile pfin, String requested) {
         if(pfin == null) {
-                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
                 requestedName = requested;
-                err.addError("Unknown physical file " + requested);
-                addChildIfNotNull(err);
+                addError("Unknown physical file " + requested);
         } else {
             pf = pfin;
         }

@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.SortTitleAST;
@@ -32,7 +32,6 @@ import org.genevaers.compilers.extract.emitters.CodeEmitter;
 import org.genevaers.compilers.extract.emitters.helpers.EmitterArgHelper;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
-import org.genevaers.genevaio.ltfile.ArgHelper;
 import org.genevaers.genevaio.ltfile.Cookie;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
@@ -64,6 +63,7 @@ public class LookupEmitter extends CodeEmitter {
     private LKSEmitter lkse;
     private LKFieldEmitter lkfe;
     List<LogicTableRE> lusms;
+    private int sortTitleFieldId;
 
     public LogicTableF1 emitJoin(LookupPathAST lookupAST, boolean skt) {
         // We need to determine JOIN or LKLR
@@ -144,6 +144,17 @@ public class LookupEmitter extends CodeEmitter {
             lookupAST.emitEffectiveDate();
         }
     }
+
+    private LogicTableF1 emitKSLK() {
+        LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
+        LogicTableF1 kslk = (LogicTableF1) ltFact.getKSLK(Repository.getFields().get(sortTitleFieldId));
+        return kslk;
+    }
+
+    public void setSortTitleFieldId(int sortTitleFieldId) {
+        this.sortTitleFieldId = sortTitleFieldId;
+    }
+
 
     private LogicTableRE emitLUEX(LookupPathStep step, LookupPath lookup) {
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();

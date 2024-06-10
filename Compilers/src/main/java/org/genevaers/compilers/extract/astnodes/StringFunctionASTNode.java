@@ -7,8 +7,8 @@ public class StringFunctionASTNode extends FormattedASTNode {
 
     private String length;
 
-    public String getLength() {
-        return length;
+    public int getLength() {
+        return length.length();
     }
 
     public void setLength(String length) {
@@ -24,4 +24,16 @@ public class StringFunctionASTNode extends FormattedASTNode {
     public DateCode getDateCode() {
         return (overriddenDateCode != null) ? overriddenDateCode : DateCode.NONE;
     }
+
+    @Override
+    public String getMessageName() {
+        return "string function";
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

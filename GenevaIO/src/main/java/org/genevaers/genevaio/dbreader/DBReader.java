@@ -52,24 +52,42 @@ public class DBReader {
         try {
             setConnectionType(params);
             dbConnection.connect();
-            hasErrors = viewsReader.addToRepo(dbConnection, params);
-            hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
-            hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
-            hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
-            hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
-            hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
-            hasErrors |= lookupsReader.addToRepo(dbConnection, params);
-            hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
-            hasErrors |= fieldReader.addToRepo(dbConnection, params);
-            hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
-            hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
-            hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
-            hasErrors |= exitReader.addToRepo(dbConnection, params);
-            } catch (ClassNotFoundException | SQLException e) {
+            if(dbConnection.isConnected()) {
+                addComponents();
+            } 
+        } catch (ClassNotFoundException | SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+
+    private void addComponents() {
+        hasErrors = viewsReader.addToRepo(dbConnection, params);
+        hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
+        hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
+        hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
+        hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
+        hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
+        hasErrors |= lookupsReader.addToRepo(dbConnection, params);
+        hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
+        hasErrors |= fieldReader.addToRepo(dbConnection, params);
+        hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
+        hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
+        hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
+        hasErrors |= exitReader.addToRepo(dbConnection, params);
+    }
+
+    /** 
+     * Funtion to aid the workbench compiler
+     * Problem is that the view source may not have been saved
+     * Therefore just want the LR?
+     * 
+     * WB will supply a DataProvider - which is just a wrapper for the database connection
+     * 
+     */
+    // public boolean loadViewSource(int envID, int view, int sourceNumber) {
+
+    // }
 
     private DatabaseConnection setConnectionType(DatabaseConnectionParams params) throws ClassNotFoundException {
         switch(params.getDbType()) {
@@ -85,6 +103,12 @@ public class DBReader {
 
     public boolean hasErrors() {
         return hasErrors;
+    }
+
+    public void addFromDatabaseConnection(DatabaseConnection dbc, DatabaseConnectionParams pms) {
+        params = pms;
+        dbConnection = dbc;
+        addComponents();
     }
 
 

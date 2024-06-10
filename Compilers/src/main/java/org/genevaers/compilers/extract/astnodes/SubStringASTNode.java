@@ -14,7 +14,7 @@ public class SubStringASTNode extends StringFunctionASTNode implements Assignabl
     public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs) {
         if(getNumberOfChildren() == 1) {
             Concatable cc =  (Concatable) getChildIterator().next();
-            cc.getSubstreEntry(col, (ExtractBaseAST) cc, Short.valueOf(getStartOffest()), Short.valueOf(getLength()));
+            cc.getSubstreEntry(col, (ExtractBaseAST) cc, Short.valueOf(getStartOffest()), (short)getLength());
         }
         return null;
     }
@@ -25,5 +25,11 @@ public class SubStringASTNode extends StringFunctionASTNode implements Assignabl
 
     public void setStartOffest(String startOffest) {
         this.startOffest = startOffest;
+    }
+
+    @Override
+    public int getAssignableLength() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAssignableLength'");
     }
  }

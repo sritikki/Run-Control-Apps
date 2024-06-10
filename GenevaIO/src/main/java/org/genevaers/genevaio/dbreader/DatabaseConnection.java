@@ -1,5 +1,8 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -22,21 +25,44 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface DatabaseConnection {
+public abstract class DatabaseConnection {
 
     public enum DbType {
         DB2,
-        POSTGRES
+        POSTGRES,
+        WBCONNECTION
     }
 
-    public void connect() throws SQLException;
+    public abstract void connect() throws SQLException;
 
-    public boolean isConnected();
+    public abstract boolean isConnected();
 
-    public List<Integer> getExistingFolderIds(String folderIds) throws SQLException;
+    public abstract List<Integer> getExistingFolderIds(String folderIds) throws SQLException;
 
-    public List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException;
+    public abstract List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException;
 
-    public ResultSet getResults(String viewsQuery) throws SQLException;
+    public abstract PreparedStatement prepareStatement(String query) throws SQLException ;
+
+    public abstract ResultSet getResults(PreparedStatement ps) throws SQLException;
+
+    public abstract Connection getConnection();
+
+    public abstract void closeStatement(PreparedStatement ps) throws SQLException;
+
+    public String getPlaceholders(int size) {
+        StringBuilder builder = new StringBuilder();
+        if (size > 1) {
+            for (int i = 1; i < size; i++) {
+                builder.append("?,");
+            }
+        }
+        builder.append("?");
+        return builder.toString();
+    }
+
+    public String getPlaceholders(String ids) {
+        String[] pls = ids.split(",");
+        return getPlaceholders(pls.length);
+    }
 
 }

@@ -28,8 +28,11 @@ import org.genevaers.repository.components.enums.ProgramType;
 
 public class DBExitReader extends DBReaderBase {
 
+    private boolean procedure;
+
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+        procedure = false;
         requiredExits.remove(0);
         if(requiredExits.size() > 0) {
             String query = "select distinct "
@@ -40,9 +43,9 @@ public class DBExitReader extends DBReaderBase {
             + "programtypecd, "
             + "e.optimizeind "
             + "FROM " + params.getSchema() + ".exit e "
-            + "where e.environid = " + params.getEnvironmenID() + " and e.exitid in(" + getIds(requiredExits) + ") ";
+            + "where e.environid = ? and e.exitid in(" + dbConnection.getPlaceholders(getIds(requiredExits)) + ") ";
 
-            executeAndWriteToRepo(dbConnection, query);
+            executeAndWriteToRepo(dbConnection, query, params, getIds(requiredExits));
         }
         return hasErrors;
     }
@@ -56,6 +59,47 @@ public class DBExitReader extends DBReaderBase {
         ue.setProgramType(ProgramType.fromdbcode(rs.getString("PROGRAMTYPECD")));
         ue.setExitType(ExitType.fromdbcode(rs.getString("EXITTYPECD")));
         ue.setOptimizable(rs.getBoolean("OPTIMIZEIND"));
-        Repository.getUserExits().add(ue, ue.getComponentId(), ue.getName());
+        if(procedure) {
+            Repository.getProcedures().add(ue, ue.getComponentId(), ue.getExecutable());
+        } else {
+            Repository.getUserExits().add(ue, ue.getComponentId(), ue.getName());
+        }
     }
+
+    public boolean addToRepoByName(DatabaseConnection dbConnection, DatabaseConnectionParams params, String name, boolean proc) {
+        String query = "select distinct "
+        + "e.exitid, "
+        + "e.name, "
+        + "moduleid, "
+        + "exittypecd, "
+        + "programtypecd, "
+        + "e.optimizeind "
+        + "FROM " + params.getSchema() + ".exit e "
+        + "where e.environid = ?";
+        if(proc) {
+            query += " and e.moduleid = ?;";
+        } else {
+            query += " and e.name = ?;";
+        }
+        procedure = proc;
+        executeAndWriteToRepo(dbConnection, query, params, name);
+        return hasErrors;
+    }
+
+    public boolean addToRepoById(DatabaseConnection dbConnection, DatabaseConnectionParams params, int id) {
+        String query = "select distinct "
+        + "e.exitid, "
+        + "e.name, "
+        + "moduleid, "
+        + "exittypecd, "
+        + "programtypecd, "
+        + "e.optimizeind "
+        + "FROM " + params.getSchema() + ".exit e "
+        + "where e.environid = ? "
+        + "and e.exitid = ? ";
+        executeAndWriteToRepo(dbConnection, query, params, id);
+        return hasErrors;
+    }
+
+
 }

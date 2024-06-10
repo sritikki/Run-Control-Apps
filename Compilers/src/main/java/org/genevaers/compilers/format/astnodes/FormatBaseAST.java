@@ -25,6 +25,7 @@ import org.genevaers.repository.calculationstack.CalcStackEntry;
 import org.genevaers.repository.calculationstack.CalcStackIntegerEntry;
 import org.genevaers.repository.calculationstack.CalcStackLongStringEntry;
 import org.genevaers.repository.calculationstack.CalcStackShortStringEntry;
+import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.calculationstack.CalcStack.CalcStackOpcode;
 
 public abstract class FormatBaseAST extends ASTBase{
@@ -35,6 +36,8 @@ public abstract class FormatBaseAST extends ASTBase{
     protected boolean inverted = false;
     protected CalcStackEntry calcStackEntry;
     protected boolean negative;
+    protected static int currentColumnNumber = 0;
+    protected static int currentView;
 
     public FormatASTFactory.Type getType() {
         return type;
@@ -149,6 +152,18 @@ public abstract class FormatBaseAST extends ASTBase{
 
     public void setNegative() {
         negative = true;
+    }
+
+    public static void resetStack() {
+        calcStack = null;
+    }
+
+    public static void setCurrentColumnNumber(int currentColumnNumber) {
+        FormatBaseAST.currentColumnNumber = currentColumnNumber;
+    }
+
+    public static void setCurrentView(int currentView) {
+        FormatBaseAST.currentView = currentView;
     }
 
 }

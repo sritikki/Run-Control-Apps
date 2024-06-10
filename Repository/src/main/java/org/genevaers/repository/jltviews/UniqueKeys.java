@@ -39,6 +39,7 @@ public class UniqueKeys {
     public static void reset() {
         base = 1;
         sktbase = 1;
+        keysMap.clear();
     }
 
 

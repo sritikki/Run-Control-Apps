@@ -63,13 +63,12 @@ public class PriorFieldReferenceAST extends FieldReferenceAST{
             LogicTableArg arg;
             if(vc.getExtractArea() == ExtractArea.AREACALC) {
                 arg = ((LogicTableF1)ltEntry).getArg();
-                arg.setFieldFormat(getDataType());
             } else {
                 arg = ((LogicTableF2)ltEntry).getArg1();
-                arg.setFieldFormat(getDataType());
                 LogicTableArg arg2 = ((LogicTableF2)ltEntry).getArg2();
                 flipDataTypeIfFieldAlphanumeric(arg, arg2);
             }
+            arg.setFieldFormat(getDataType());
             arg.setLogfileId(getLtEmitter().getFileId());        
             arg.setFieldContentId(getDateCode());
         }

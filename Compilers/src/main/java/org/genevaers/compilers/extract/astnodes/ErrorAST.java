@@ -18,30 +18,31 @@ package org.genevaers.compilers.extract.astnodes;
  */
 
 
-import java.util.ArrayList;
-import java.util.List;
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.data.CompilerMessage;
+import org.genevaers.repository.data.CompilerMessageSource;
 
 public class ErrorAST extends ExtractBaseAST {
 
-    private List<String> errors;
+    private String error;
+    private CompilerMessage errMessage;
 
     public ErrorAST() {
         type = ASTFactory.Type.ERRORS;
     }
 
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
+    public void setError(String e) {
+        error = e ;
+        errMessage = new CompilerMessage(currentViewSource.getViewId(), CompilerMessageSource.COLUMN,  currentViewSource.getSourceLRID(), currentViewSource.getSourceLFID(), currentColumnNumber, e);
+        Repository.addErrorMessage(errMessage);              
     }
 
-    public List<String> getErrors() {
-        return errors;
+    public CompilerMessage getErrMessage() {
+        return errMessage;
     }
 
-    public void addError(String e) {
-        if(errors == null) {
-            errors = new ArrayList<>();
-        }
-        errors.add(e);
+    public String getError() {
+        return error;
     }
 
 }

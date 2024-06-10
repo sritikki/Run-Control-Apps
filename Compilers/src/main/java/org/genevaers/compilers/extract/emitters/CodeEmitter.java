@@ -37,7 +37,7 @@ public class CodeEmitter {
 
     private static ViewSource currentViewSource;
     
-    private  LogicTableEmitter ltEmitter;
+    protected LogicTableEmitter ltEmitter;
 
     public void setLtEmitter(LogicTableEmitter ltEmitter) {
         this.ltEmitter = ltEmitter;

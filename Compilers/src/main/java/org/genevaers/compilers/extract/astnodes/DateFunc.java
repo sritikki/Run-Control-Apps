@@ -1,6 +1,7 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.data.NormalisedDate;
@@ -71,4 +72,16 @@ public class DateFunc extends FormattedASTNode implements GenevaERSValue{
     public int getCookieCode() {
         return 0;
     }
+
+    @Override
+    public String getMessageName() {
+        return "date function";
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+    }
+
 }

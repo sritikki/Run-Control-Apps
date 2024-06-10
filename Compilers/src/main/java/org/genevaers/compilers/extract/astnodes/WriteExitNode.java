@@ -32,15 +32,19 @@ public class WriteExitNode extends ExtractBaseAST {
         type = ASTFactory.Type.WRITEEXIT;
     }
 
-    public void resolveExit(String exitName) {
+    public void resolveExit(String exitName, boolean procedure) {
         name = exitName;
-        UserExit exit = Repository.getUserExits().get(exitName);
+        UserExit exit = null;
+        if(procedure) {
+            exit = Repository.getProcedures().get(exitName);
+        } else {
+            exit = Repository.getUserExits().get(exitName);
+        }
         if(exit != null) {       
+            Repository.getDependencyCache().addExitID(exit.getComponentId());
             ref = exit;
         } else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unknown exit " + exitName);
-            addChildIfNotNull(err);
+            addError("Unknown exit " + exitName);
         }
     }
 

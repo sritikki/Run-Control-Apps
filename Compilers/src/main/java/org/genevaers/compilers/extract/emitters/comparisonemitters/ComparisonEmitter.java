@@ -2,6 +2,7 @@ package org.genevaers.compilers.extract.emitters.comparisonemitters;
 
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -21,6 +22,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 
 
 import org.genevaers.compilers.extract.emitters.CodeEmitter;
+import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.repository.components.enums.LtCompareType;
 

@@ -18,7 +18,7 @@ package org.genevaers.genevaio.recordreader;
  */
 import java.io.File;
 import java.io.IOException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;

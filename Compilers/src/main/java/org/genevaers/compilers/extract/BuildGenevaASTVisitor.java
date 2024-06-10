@@ -26,6 +26,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.extract.astnodes.BetweenFunc;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+import org.genevaers.genevaio.dataprovider.CompilerDataProvider;
 import org.genevaers.compilers.extract.astnodes.BooleanAndAST;
 import org.genevaers.compilers.extract.astnodes.BooleanNotAST;
 import org.genevaers.compilers.extract.astnodes.BooleanOrAST;
@@ -47,7 +48,6 @@ import org.genevaers.compilers.extract.astnodes.IsFoundAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
-import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.LookupPathRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RepeatAST;
@@ -78,6 +78,7 @@ import org.genevaers.grammar.GenevaERSParser;
 import org.genevaers.grammar.GenevaERSParser.EffDateContext;
 import org.genevaers.grammar.GenevaERSParser.ExprArithFactorContext;
 import org.genevaers.grammar.GenevaERSParser.ExprArithTermContext;
+import org.genevaers.grammar.GenevaERSParser.LrFieldContext;
 import org.genevaers.grammar.GenevaERSParser.StmtContext;
 import org.genevaers.grammar.GenevaERSParser.SymbollistContext;
 import org.genevaers.repository.Repository;
@@ -92,12 +93,16 @@ import com.google.common.flogger.FluentLogger;
 
 public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private static CompilerDataProvider dataProvider;
     
     private ViewColumnSource viewColumnSource;
     private ViewSource viewSource;
     private ExtractContext extractContext;
 
     private ExtractBaseAST parent;
+
+    private boolean procedure;
 
     public enum ExtractContext {
         FILTER,
@@ -133,7 +138,11 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     
     @Override public ExtractBaseAST visitSelectIf(GenevaERSParser.SelectIfContext ctx) { 
         SelectIfAST sfn = (SelectIfAST)ASTFactory.getNodeOfType(ASTFactory.Type.SELECTIF);
-        sfn.addChildIfNotNull(visit(ctx.getChild(2)));
+        if(extractContext == ExtractContext.FILTER) {
+            sfn.addChildIfNotNull(visit(ctx.getChild(2)));
+        } else {
+            sfn.addError("SELECTIF cannot be used here");
+        }
         return sfn; 
     }
 
@@ -146,11 +155,14 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     //Let's just visit a column node
 	@Override public ExtractBaseAST visitColumnAssignment(GenevaERSParser.ColumnAssignmentContext ctx) { 
         ColumnAssignmentASTNode casnode = (ColumnAssignmentASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNASSIGNMENT);
-        casnode.setTag("CAS found");
+        ExtractBaseAST.setCurrentColumnNumber((short)viewColumnSource.getColumnNumber());
+        TerminalNode eq = ctx.EQ();
+        casnode.setLineNumber(eq.getSymbol().getLine());
+        casnode.setCharPostionInLine(eq.getSymbol().getCharPositionInLine());
         TerminalNode c = ctx.COLUMN();
         if(c.getSymbol().getType() == GenevaERSParser.COLUMN) {
             casnode.addChildIfNotNull(visitChildren(ctx));
-            ViewNode view = Repository.getViews().get(viewColumnSource.getViewId());
+            ViewNode view = dataProvider.getView(viewColumnSource.getViewId());
             ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(view.getColumnByID(viewColumnSource.getColumnID())); // Change this to make column type more specific
             colNode.setViewColumn(view.getColumnByID(viewColumnSource.getColumnID()));
             casnode.addChildIfNotNull(colNode);
@@ -171,11 +183,20 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         if(c.getSymbol().getType() == GenevaERSParser.COL_REF) {
             String col = c.getText();
             String[] bits = col.split("\\.");
-            ViewNode view = Repository.getViews().get(viewSource.getViewId());
-            ViewColumn vc = view.getColumnNumber(Integer.parseInt(bits[1])); 
-            ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(vc); // Change this to make column type more specific
-            colNode.setViewColumn(vc);
-            colRefAss.addChildIfNotNull(colNode);
+            ViewNode view = dataProvider.getView(viewSource.getViewId());
+            int colnum = Integer.parseInt(bits[1]);
+            if(colnum > 0 && colnum < viewColumnSource.getColumnNumber()) {
+                ViewColumn vc = view.getColumnNumber(colnum); 
+                ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(vc); // Change this to make column type more specific
+                colNode.setViewColumn(vc);
+                colRefAss.addChildIfNotNull(colNode);
+            } else {
+                if(colnum == 0) {
+                    colRefAss.addError("Column number cannot be zero");
+                } else {
+                    colRefAss.addError("Column number must be less than the current column");
+                }
+            }
         }
         return colRefAss;
     }
@@ -438,26 +459,29 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
 	@Override public ExtractBaseAST visitLrField(GenevaERSParser.LrFieldContext ctx) { 
-        //This should be common to all of the builders
+        FieldReferenceAST fieldRef = makeCurrentOrPriorFieldReferenceAST(ctx);
+        LogicalRecord lr = dataProvider.getLogicalRecord(viewSource.getSourceLRID());
+        fieldRef.resolveField(lr, stripBraces(ctx.CURLED_NAME().getText()));
+        return fieldRef; 
+    }
 
-        // Could be a PRIOR Field
-        String fieldName = ctx.getText();
+    private String stripBraces(String curledName) {
+        int braceNdx = curledName.indexOf("{");
+        int endNdx = curledName.indexOf("}");
+        return curledName.substring(braceNdx+1, endNdx);
+    }
+
+    private FieldReferenceAST makeCurrentOrPriorFieldReferenceAST(LrFieldContext ctx) {
         FieldReferenceAST fieldRef;
-        if(fieldName.contains("PRIOR")) {
+        if(ctx.PRIOR() != null) {
             fieldRef = (FieldReferenceAST) ASTFactory.getNodeOfType(ASTFactory.Type.PRIORLRFIELD);             
         } else {
         //we need the repository to verify that the field exists?
             fieldRef = (FieldReferenceAST) ASTFactory.getNodeOfType(ASTFactory.Type.LRFIELD);
         }
-        //We can get the field name from the second child of the ctx
-        int braceNdx = fieldName.indexOf("{");
-        int endNdx = fieldName.indexOf("}");
-        fieldName = fieldName.substring(braceNdx+1, endNdx);
-        LogicalRecord lr = Repository.getLogicalRecords().get(viewSource.getSourceLRID());
-        //To save this messing about maybe each view column source should hold a ref to its lr
-        //Set this up at build time
-        fieldRef.resolveField(lr, fieldName);
-        return fieldRef; 
+        fieldRef.setCharPostionInLine(ctx.getStart().getCharPositionInLine());
+        fieldRef.setLineNumber(ctx.getStart().getLine());
+        return fieldRef;
     }
 
     @Override public ExtractBaseAST visitIfbody(GenevaERSParser.IfbodyContext ctx) { 
@@ -486,6 +510,8 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitLookup(GenevaERSParser.LookupContext ctx) {
         LookupPathRefAST lkRef = (LookupPathRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPREF);
+        lkRef.setCharPostionInLine(ctx.getStart().getCharPositionInLine());
+        lkRef.setLineNumber(ctx.getStart().getLine());
         if(ctx.getChildCount() == 1) {
             String lkname = ctx.getText();
             int braceNdx = lkname.indexOf("{");
@@ -495,32 +521,26 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         } else if(ctx.getChildCount() == 4) {
             addLookupReferenceToNode(lkRef, ctx.getChild(1).getText());
         }
-        parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkRef);
+        if(ctx.symbollist() != null) {
+            lkRef.addChildIfNotNull(visitSymbollist(ctx.symbollist()));
+            lkRef.setSymbols((SymbolList) visitSymbollist(ctx.symbollist()));
+        }
+        if(ctx.effDate() != null) {
+            lkRef.addChildIfNotNull(visitEffDate(ctx.effDate()));
+            lkRef.setEffDateValue((EffDateValue) visitEffDate(ctx.effDate()));
+        }
+        lkRef.makeUnique();
         return lkRef;
      }
 
-    private void parseEffectiveDataAndSymbols(EffDateContext effData, SymbollistContext symList, LookupPathAST lkPath) {
-        if(symList != null) {
-            lkPath.addChildIfNotNull(visitSymbollist(symList));
-            lkPath.setSymbols((SymbolList) visitSymbollist(symList));
-        }
-        if(effData != null) {
-            lkPath.addChildIfNotNull(visitEffDate(effData));
-            lkPath.setEffDateValue((EffDateValue) visitEffDate(effData));
-        }
-        lkPath.makeUnique();
-    }
-  
-
 	private void addLookupReferenceToNode(LookupPathRefAST lkRef, String lkname) {
-        LookupPath lookup =  Repository.getLookups().get(lkname);
+        LookupPath lookup =  dataProvider.getLookup(lkname);
 		if(lookup != null) {
             lkRef.setLookup(lookup);
             lkRef.resolveLookup(lookup);
+            Repository.getDependencyCache().addLookupIfAbsent(lkname, lookup);
 		} else {
-            ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-            err.addError("Unknown Lookup " + lkname);
-            lkRef.addChildIfNotNull(err);
+            lkRef.addError("Unknown Lookup " + lkname);
         }		
     }
 
@@ -528,20 +548,26 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPFIELDREF);
 		String fullName = ctx.getChild(1).getText();
 		String[] parts = fullName.split("\\.");
-        LookupPath lookup =  Repository.getLookups().get(parts[0]);
+        LookupPath lookup =  dataProvider.getLookup(parts[0]);
 		if(lookup != null) {
             lkfieldRef.resolveField(lookup, parts[1]);
 		} else {
-            addErrorNode(lkfieldRef, "Unknown Lookup " + parts[0]);
+            lkfieldRef.setCharPostionInLine(ctx.getStart().getCharPositionInLine());
+            lkfieldRef.setLineNumber(ctx.getStart().getLine());
+            lkfieldRef.addError("Unknown Lookup " + parts[0]);
         }		
-        parseEffectiveDataAndSymbols(ctx.effDate(), ctx.symbollist(), lkfieldRef);
+        if(ctx.symbollist() != null) {
+            lkfieldRef.addChildIfNotNull(visitSymbollist(ctx.symbollist()));
+            lkfieldRef.setSymbols((SymbolList) visitSymbollist(ctx.symbollist()));
+        }
+        if(ctx.effDate() != null) {
+            lkfieldRef.addChildIfNotNull(visitEffDate(ctx.effDate()));
+            lkfieldRef.setEffDateValue((EffDateValue) visitEffDate(ctx.effDate()));
+        }
+		if(lookup != null) {
+            lkfieldRef.makeUnique();
+        }
         return lkfieldRef;
-    }
-
-    private void addErrorNode(ExtractBaseAST node, String msg) {
-        ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-        err.addError(msg);
-        node.addChildIfNotNull(err);
     }
 
 	@Override public ExtractBaseAST visitExprStringAtom(GenevaERSParser.ExprStringAtomContext ctx) { 
@@ -595,6 +621,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
     }
 
     @Override public ExtractBaseAST visitWriteStatement(GenevaERSParser.WriteStatementContext ctx) {
+        procedure = false;
         WriteASTNode wr = (WriteASTNode)ASTFactory.getNodeOfType(ASTFactory.Type.WRITE);
         ExtractBaseAST.setLastColumnWithAWrite();
         wr.setViewSource(viewSource);
@@ -642,6 +669,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
 
     @Override public ExtractBaseAST visitFile(GenevaERSParser.FileContext ctx) { 
         LFAstNode lf =  (LFAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.LF);
+        String lfpf = ctx.children.get(1).getText();
+		String[] parts = lfpf.split("\\.");
+        Repository.getDependencyCache().setNamedLfPfAssoc(lfpf, dataProvider.findPFAssocID(parts[0], parts[1]));
         //Resolve the LF.PF name
         lf.resolve(ctx.children.get(1).getText());
         return lf; 
@@ -663,9 +693,18 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         WriteExitNode we =  (WriteExitNode) ASTFactory.getNodeOfType(ASTFactory.Type.WRITEEXIT);
         String exitName = ctx.getText().replace("{", "");
         exitName = exitName.replace("}", ""); //Must be a better way of doing this
-        we.resolveExit(exitName);
+        dataProvider.findExitID(exitName, procedure);
+        we.resolveExit(exitName, procedure);
         return we; 
     }
+
+    @Override public ExtractBaseAST visitProcedure(GenevaERSParser.ProcedureContext ctx) {
+        if(ctx.getChild(0).getText().equalsIgnoreCase("PROCEDURE")) {
+            procedure = true;
+        }
+        return visitChildren(ctx); 
+    }
+  
 
     @Override 
     public ExtractBaseAST visitDateConstant(GenevaERSParser.DateConstantContext ctx) {
@@ -705,9 +744,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
                 }
             } else {
                 StringComparisonAST strcmp = (StringComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCOMP);
-                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-                err.addError("Incompatable data types");
-                strcmp.addChildIfNotNull(err);
+                strcmp.addError("Incompatable data types");
                 return strcmp; 
             }
         }
@@ -726,9 +763,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
                 if(StringDataTypeChecker.allowConcatNode(concatNode)) {
                     strconcat.addChildIfNotNull(concatNode);
                 } else {
-                    ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
-                    err.addError("Incompatable data type for " + n.getText());
-                    strconcat.addChildIfNotNull(err);
+                    strconcat.addError("Incompatable data type for " + n.getText());
                 }
                 c+=2;
             }
@@ -796,7 +831,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         ColumnRefAST colRef = (ColumnRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.COLUMNREF);
         String col = ctx.getText();
         String[] bits = col.split("\\.");
-        ViewNode view = Repository.getViews().get(viewSource.getViewId());
+        ViewNode view = dataProvider.getView(viewColumnSource.getViewId());
         //ColumnAST colNode = (ColumnAST)ASTFactory.getColumnNode(view.getColumnByID(Integer.parseInt(bits[1]))); // Change this to make column type more specific
         colRef.setViewColumn(view.getColumnNumber(Integer.parseInt(bits[1])));
         return colRef; 
@@ -830,7 +865,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         this.viewColumnSource = viewColumnSource;
         int vsid = viewColumnSource.getViewSourceId();
         int viewID = viewColumnSource.getViewId();
-        this.viewSource = Repository.getViews().get(viewID).getViewSourceById(vsid);
+        this.viewSource = dataProvider.getView(viewID).getViewSourceById(vsid);
     }
 
     public void setViewSource(ViewSource viewSource) {
@@ -841,5 +876,8 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         this.parent = parent;
     }
 
-    
+    public static void setDataProvider(CompilerDataProvider dp) {
+        dataProvider = dp;
+    }
+
 }

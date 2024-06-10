@@ -24,9 +24,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.flogger.FluentLogger;
+
 import java.sql.ResultSet;
 
-public class DB2Connection implements DatabaseConnection{
+public class DB2Connection extends DatabaseConnection{
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     
     private DatabaseConnectionParams params;
     private Connection con;
@@ -68,7 +72,7 @@ public class DB2Connection implements DatabaseConnection{
         folderQuery = "select VIEWFOLDERID from ";
         folderQuery += params.getSchema();
         folderQuery += ".viewfolder v where ENVIRONID = ";
-        folderQuery += params.getEnvironmenID();
+        folderQuery += params.getEnvironmentID();
         folderQuery += " and VIEWFOLDERID IN(";
         folderQuery += params.getFolderIds();
         folderQuery += ")";
@@ -83,22 +87,39 @@ public class DB2Connection implements DatabaseConnection{
     }
 
     @Override
-    public List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException {
-        String viewsQuery = "select viewid  from " + params.getSchema() + ".vfvassoc vf "
-        + "where vf.environid = " + params.getEnvironmenID() + " and vf.viewfolderid in(" + params.getFolderIds() + ");";
-        PreparedStatement ps = con.prepareStatement(viewsQuery);
-
-        ResultSet rs = ps.executeQuery();
+    public List<Integer> getViewIdsFromFolderIds(String folderIds) {
         List<Integer> views = new ArrayList<>();
-        while(rs.next()) {
-            views.add(rs.getInt("viewid"));
+        String viewsQuery = "select viewid  from " + params.getSchema() + ".vfvassoc vf "
+        + "where vf.environid = ? and vf.viewfolderid in(" + getPlaceholders(params.getFolderIds()) + ");";
+        try(PreparedStatement ps = con.prepareStatement(viewsQuery);) {
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                views.add(rs.getInt("viewid"));
+            }
+        } catch (SQLException e) {
+            logger.atSevere().log("getViewIdsFromFolderIds error %s", e.getMessage());
         }
         return views;
     }
 
+
     @Override
-    public ResultSet getResults(String query) throws SQLException {
-        PreparedStatement ps = con.prepareStatement(query);
+    public Connection getConnection() {
+        return con;
+    }
+
+    @Override
+    public PreparedStatement prepareStatement(String query) throws SQLException {
+        return con.prepareStatement(query);
+    }
+
+    @Override
+    public ResultSet getResults(PreparedStatement ps) throws SQLException {
         return ps.executeQuery();
+    }
+
+    @Override
+    public void closeStatement(PreparedStatement ps) throws SQLException {
+        ps.close();
     }
 }

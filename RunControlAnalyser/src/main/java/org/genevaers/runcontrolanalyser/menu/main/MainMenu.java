@@ -28,7 +28,6 @@ public class MainMenu extends Menu{
         menuItems.add(new FtpRcSet());
         menuItems.add(new LocalRcSet());
         menuItems.add(new OpenFlows());
-        menuItems.add(new NamedRC());
         menuItems.add(new ShuffleOff());
     }
 

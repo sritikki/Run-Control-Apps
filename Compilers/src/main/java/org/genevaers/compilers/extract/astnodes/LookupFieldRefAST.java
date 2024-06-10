@@ -29,8 +29,10 @@ import org.genevaers.genevaio.ltfile.LogicTableF0;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.genevaio.ltfile.LogicTableNameF1;
+import org.genevaers.repository.RepoHelper;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
+import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.enums.DataType;
@@ -60,6 +62,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             JLTView jv = Repository.getJoinViews().addJLTViewFromLookupField(lookup, fld);
             if(currentViewColumnSource != null) {
                 jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
+                Repository.getDependencyCache().addNamedLookupField(lookup, fld);
             }
         } else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
@@ -359,5 +362,20 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     public void fixupGotos() {
         //
         goto2 = ltEmitter.getNumberOfRecords();
+    }
+
+    @Override
+    public int getAssignableLength() {
+        return ref.getLength();
+    }
+
+    @Override
+    public String getMessageName() {
+        return String.format("{%s.%s}",lookup.getName(),ref.getName());
+    }
+
+    @Override
+    public int getMaxNumberOfDigits() {
+        return RepoHelper.getMaxNumberOfDigitsForType(getDataType(), ref.getLength());
     }
 }

@@ -51,7 +51,7 @@ public class ReportWriter {
 
     private int xltRecordsWritten;
 
-    private Object vdpRecordsWritten;
+    private int vdpRecordsWritten;
 
 	public  void write(){
 		GersEnvironment.initialiseFromTheEnvironment();
@@ -70,15 +70,20 @@ public class ReportWriter {
             nodeMap.put("parmsRead", RunControlConfigration.getLinesRead());
             nodeMap.put("optsInEffect", RunControlConfigration.getOptionsInEffect());
             nodeMap.put("inputReports", Repository.getInputReports());
-            nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
-            nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
-            nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
-            nodeMap.put("views", Repository.getViews().getValues());
-            nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
-            nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getREHViewNumber()));
-            nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getRTHViewNumber()));
-            nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
-            nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
+            nodeMap.put("compErrs", Repository.getCompilerErrors());
+            nodeMap.put("warnings", Repository.getWarnings());
+            nodeMap.put("rcgversion", readVersion());
+            if(Repository.getCompilerErrors().isEmpty()) {
+                nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
+                nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
+                nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
+                nodeMap.put("views", Repository.getViews().getValues());
+                nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
+                nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getREHViewNumber()));
+                nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getRTHViewNumber()));
+                nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
+                nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
+            }
 
             logger.atInfo().log(RunControlConfigration.getReportFileName());
             generateTemplatedOutput(template, nodeMap, RunControlConfigration.getReportFileName());
@@ -133,5 +138,19 @@ public class ReportWriter {
     public void setNumVDPRecordsWritten(int numberOfRecords) {
         vdpRecordsWritten = numberOfRecords;
     }
+
+	public String readVersion() {
+		String version = "unknown";
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Properties properties = new Properties();
+		try (InputStream resourceStream = loader.getResourceAsStream("application.properties")) {
+			properties.load(resourceStream);
+            version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return version;
+	}
+
 
 }

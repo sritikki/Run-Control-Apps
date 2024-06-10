@@ -17,7 +17,7 @@ public class PostgresBuilder implements RepositoryBuilder{
 		DatabaseConnectionParams conParams = new DatabaseConnectionParams();
 		conParams.setDatabase(RunControlConfigration.getParm(RunControlConfigration.DB2_DATABASE));
 		conParams.setDbType(DbType.POSTGRES);
-		conParams.setEnvironmenID(RunControlConfigration.getParm(RunControlConfigration.DB2_ENVIRONMENT_ID));
+		conParams.setEnvironmentID(RunControlConfigration.getParm(RunControlConfigration.DB2_ENVIRONMENT_ID));
 		conParams.setPort(RunControlConfigration.getParm(RunControlConfigration.DB2_PORT));
 		conParams.setServer(RunControlConfigration.getParm(RunControlConfigration.DB2_SERVER));
 		conParams.setFolderIds(RunControlConfigration.getParm(RunControlConfigration.DBFLDRS));

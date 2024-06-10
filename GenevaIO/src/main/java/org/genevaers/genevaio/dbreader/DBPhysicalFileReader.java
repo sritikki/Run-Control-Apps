@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+import java.sql.PreparedStatement;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -46,32 +48,44 @@ public class DBPhysicalFileReader extends DBReaderBase {
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         //get the required PFs via a query and add to the set
         updateRequiredPfs(dbConnection, params);
-        //Then get the PFs
-        String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-        + "where PHYFILEID in (" + getIds(requiredPFs) + ") and ENVIRONID= " + params.getEnvironmenID() + ";";
-        executeAndWriteToRepo(dbConnection, pfRecs);
-        //Note this relies on the LFs having been added first
-        addPfsToLfs();
+        if(requiredPFs.size() > 0) { 
+            //Then get the PFs
+            String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
+            + "where ENVIRONID= ? and PHYFILEID in (" + dbConnection.getPlaceholders(getIds(requiredPFs)) + ") and ;";
+            executeAndWriteToRepo(dbConnection, pfRecs, params, getIds(requiredPFs));
+            //Note this relies on the LFs having been added first
+            addPfsToLfs();
+        }
         return false;
     }
 
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
-                + "where LOGFILEID in (" + getIds(requiredLFs) + ") and ENVIRONID=" + params.getEnvironmenID() + ";";
-        try {
-            ResultSet rs = dbConnection.getResults(pfsFromLfs);
-            while (rs.next()) {
-                requiredPFs.add(rs.getInt("PHYFILEID"));
-                List<Integer> pfs = lf2pf.get(rs.getInt("LOGFILEID"));
-                if(pfs == null) {
-                    pfs = new ArrayList<>();
-                    lf2pf.put(rs.getInt("LOGFILEID"), pfs);
+        if(requiredLFs.size() > 0) {
+            String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
+                    + "where ENVIRONID=? and LOGFILEID in (" + dbConnection.getPlaceholders(getIds(requiredLFs)) + ");";
+            try {
+                PreparedStatement ps = dbConnection.prepareStatement(pfsFromLfs);
+                int parmNum = 1;
+                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+                String[] idsIn = getIds(requiredPFs).split(",");
+                for(int i=0; i<idsIn.length; i++) {
+                    ps.setString(parmNum++, idsIn[i]);
                 }
-                pfs.add(rs.getInt("PHYFILEID"));
+                ResultSet rs = dbConnection.getResults(ps);
+                while (rs.next()) {
+                    requiredPFs.add(rs.getInt("PHYFILEID"));
+                    List<Integer> pfs = lf2pf.get(rs.getInt("LOGFILEID"));
+                    if(pfs == null) {
+                        pfs = new ArrayList<>();
+                        lf2pf.put(rs.getInt("LOGFILEID"), pfs);
+                    }
+                    pfs.add(rs.getInt("PHYFILEID"));
+                }
+                dbConnection.closeStatement(ps);
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
     
@@ -124,4 +138,11 @@ public class DBPhysicalFileReader extends DBReaderBase {
             }
         }
     }
+
+    public void addToRepoByName(DatabaseConnection databaseConnection, DatabaseConnectionParams params, String pfName) {
+        //Then get the PFs
+        String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
+        + "where ENVIRONID= ? and NAME = ?;";
+        executeAndWriteToRepo(databaseConnection, pfRecs, params, pfName);
+     }
 }

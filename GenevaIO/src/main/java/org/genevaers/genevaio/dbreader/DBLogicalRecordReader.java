@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.dbreader;
 
+
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -20,8 +22,6 @@ package org.genevaers.genevaio.dbreader;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
-
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.enums.LrStatus;
@@ -39,10 +39,9 @@ public class DBLogicalRecordReader extends DBReaderBase {
             + "r.LOOKUPEXITID, "
             + "r.LOOKUPEXITSTARTUP "
             + "from " + params.getSchema() + ".LOGREC r " 
-            + "where r.ENVIRONID = " + params.getEnvironmenID() + " and r.LOGRECID in(" + getIds(requiredLRs) + ") "
+            + "where r.ENVIRONID = ? and r.LOGRECID in(" + dbConnection.getPlaceholders(getIds(requiredLRs)) + ") "
             + "order by r.LOGRECID; ";
-        executeAndWriteToRepo(dbConnection, query);
-    
+        executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLRs));
         return false;
     }
 
@@ -57,4 +56,35 @@ public class DBLogicalRecordReader extends DBReaderBase {
         Repository.addLogicalRecord(lr);
     }
     
+    public boolean addNamedToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params, String name) {
+        String query = "select "
+            + "r.ENVIRONID, "
+            + "r.LOGRECID, "
+            + "r.NAME, "
+            + "r.LRTYPECD, "
+            + "r.LRSTATUSCD, "
+            + "r.LOOKUPEXITID, "
+            + "r.LOOKUPEXITSTARTUP "
+            + "from " + params.getSchema() + ".LOGREC r " 
+            + "where r.ENVIRONID = ? and r.NAME = ? "
+            + "order by r.LOGRECID; ";
+        executeAndWriteToRepo(dbConnection, query, params, name);
+    
+        return false;
+    }
+
+    public void addLRToRepo(DatabaseConnection sqlConnection, DatabaseConnectionParams params, int environmentID, int sourceLR) {
+                String query = "select "
+                + "r.ENVIRONID, "
+                + "r.LOGRECID, "
+                + "r.NAME, "
+                + "r.LRTYPECD, "
+                + "r.LRSTATUSCD, "
+                + "r.LOOKUPEXITID, "
+                + "r.LOOKUPEXITSTARTUP "
+                + "from " + params.getSchema() + ".LOGREC r " 
+                + "where r.ENVIRONID = ? and r.LOGRECID = ?;";
+            executeAndWriteToRepo(sqlConnection, query, params, sourceLR);
+    }
+
 }

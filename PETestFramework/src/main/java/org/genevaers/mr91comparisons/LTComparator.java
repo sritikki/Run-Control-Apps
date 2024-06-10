@@ -36,7 +36,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
-import org.genevaers.genevaio.ltfile.XLTFileReader;
+import org.genevaers.genevaio.ltfile.LTFileReader;
 import org.genevaers.utilities.CommandRunner;
 
 import freemarker.template.Configuration;
@@ -151,9 +151,9 @@ public class LTComparator {
 	}
 
 	private void runLTPrint(Path ltPath, String type, String toName) throws IOException, InterruptedException {
-		XLTFileReader xltr = new XLTFileReader();
+		LTFileReader xltr = new LTFileReader();
 		xltr.open(ltPath, type);
 		LogicTable lt = xltr.makeLT();
-        LTLogger.writeRecordsTo(lt, ltPath.resolve(toName).toString());
+        LTLogger.writeRecordsTo(lt, ltPath.resolve(toName).toString(), "");
 	}
 }

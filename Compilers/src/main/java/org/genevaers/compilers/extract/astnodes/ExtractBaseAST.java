@@ -1,5 +1,8 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -20,12 +23,13 @@ package org.genevaers.compilers.extract.astnodes;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
-import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
@@ -51,6 +55,8 @@ public abstract class ExtractBaseAST extends ASTBase{
     protected static ViewColumn currentViewColumn;
     protected static ViewColumnSource currentViewColumnSource;
     protected static int lastColumnWithAWrite = 0;
+
+    protected static Map<ViewSource, Integer> lastWriteColumnMap = new HashMap<>();
 
     protected ASTFactory.Type type = null;
     private boolean negative = false;
@@ -133,6 +139,34 @@ public abstract class ExtractBaseAST extends ASTBase{
         return leaf;
     }
 
+    public List<ExtractBaseAST> getChildNodesOfType(ASTFactory.Type t) {
+        List<ExtractBaseAST> nodes = new ArrayList<>();
+        ExtractBaseAST leaf = null;
+        Iterator<ASTBase> ci = children.iterator();
+        while(leaf == null && ci.hasNext()) {
+            leaf = (ExtractBaseAST) ci.next();
+            if(leaf.getType() == t) {
+                nodes.add(leaf);
+            }
+            nodes = leaf.addNodesOfType(t, nodes);
+        }
+        return nodes;
+    }
+
+    public List<ExtractBaseAST> addNodesOfType(ASTFactory.Type t, List<ExtractBaseAST> nodes) {
+        ExtractBaseAST leaf = null;
+        Iterator<ASTBase> ci = children.iterator();
+        while(ci.hasNext()) {
+            leaf = (ExtractBaseAST) ci.next();
+            if(leaf.getType() == t) {
+                nodes.add(leaf);
+            }
+            nodes = leaf.addNodesOfType(t, nodes);
+        }
+        return nodes;
+    }
+
+
     public void setNegative() {
         negative = true;
     }
@@ -141,12 +175,33 @@ public abstract class ExtractBaseAST extends ASTBase{
         return negative;
     }
 
-    public static int getLastColumnWithAWrite() {
-        return lastColumnWithAWrite;
+    public void addError(String message) {
+        ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+        err.setError(String.format("line:%d offset:%d %s", getLineNumber(), getCharPositionInLine(), message));
+        addChildIfNotNull(err);
+    }
+
+    public void addWarning(String message) {
+        WarningAST warn = (WarningAST) ASTFactory.getNodeOfType(ASTFactory.Type.WARNING);
+        warn.setWarning(String.format("line:%d offset:%d %s", getLineNumber(), getCharPositionInLine(), message));
+        addChildIfNotNull(warn);
+    }
+
+    public static ViewSource getCurrentViewSource() {
+        return currentViewSource;
+    }
+
+    public static ViewColumn getCurrentViewColumn() {
+        return currentViewColumn;
+    }
+
+
+    public static int getLastColumnWithAWrite(ViewSource vs) {
+        return lastWriteColumnMap.get(vs);
     }
 
     public static void setLastColumnWithAWrite() {
-        ExtractBaseAST.lastColumnWithAWrite = currentViewColumnSource.getColumnNumber();
+        lastWriteColumnMap.put(currentViewSource, currentViewColumnSource.getColumnNumber());
     }
 
     public static void clearLastColumnWithAWrite() {

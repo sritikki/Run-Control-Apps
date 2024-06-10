@@ -66,6 +66,8 @@ public class RunControlConfigration extends GersConfigration{
 
     public RunControlConfigration() {
         //Map preloaded with expect names and default values
+        super();
+        parmToValue.clear();
         parmToValue.put(INPUT_TYPE, new ConfigEntry("", false));
         parmToValue.put(OUTPUT_RUN_CONTROL_FILES, new ConfigEntry("", false));
         parmToValue.put(OUTPUT_WB_XML_FILES, new ConfigEntry("", false));
@@ -88,6 +90,7 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(LOG_FILE, new ConfigEntry(LOG_FILE, true));
         parmToValue.put(WB_XML_FILES_SOURCE, new ConfigEntry(WB_XML_FILES_SOURCE, true));
 
+        parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry("", false));
         parmToValue.put(DOT_XLT, new ConfigEntry("N", true));
         parmToValue.put(DOT_JLT, new ConfigEntry("N", true));
         parmToValue.put(VIEW_DOTS, new ConfigEntry("", true));
@@ -152,7 +155,7 @@ public class RunControlConfigration extends GersConfigration{
             break;
             case "DB2":
             break;
-            case "PG":
+            case "POSTGRES":
             break;
             default:
                 valid = false;
@@ -256,8 +259,14 @@ public class RunControlConfigration extends GersConfigration{
         return parmToValue.get(NUMBER_MODE).getValue().equalsIgnoreCase("STANDARD");      
     }
 
+   
     public static String getVDPXMLDirectory() {
         return VDP_XML_FILES_SOURCE;
+    }
+
+    public static void set(String parm, String val) {
+        ConfigEntry pv = parmToValue.get(parm);
+        pv.setValue(val);
     }
 
 

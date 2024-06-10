@@ -44,7 +44,7 @@ import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 import j2html.tags.specialized.SpanTag;
 
-public class VDPHTMLWriter {
+public class RCAFrameworkHTMLWriter {
 
 	private static final String MENU_BADGE = "w3-badge w3-right";
 	private static final String MENU_CLASS = "w3-bar-item w3-button w3-hover-blue w3-flat-silver";
@@ -73,6 +73,10 @@ public class VDPHTMLWriter {
 			"}" +
 			"}";
 	private Path cwd;
+	private String reportFormat;
+	private String xltReportName;
+	private String jltReportName;
+	private String vdpReportName;
 	
 
 	public void setFileName(String fileName) {
@@ -106,7 +110,7 @@ public class VDPHTMLWriter {
 					html(
 							head(
 									meta().withContent("text/html; charset=UTF-8"),
-									title("VDP Analysis"),
+									title("Run Control Analysis"),
 									link().withRel(STYLESHEET).withType(TEXT_CSS).withHref("https://www.w3schools.com/w3css/4/w3.css"),
 									link().withRel(STYLESHEET).withType(TEXT_CSS).withHref("https://www.w3schools.com/lib/w3-colors-flat.css"),
 									link().withRel(STYLESHEET).withType(TEXT_CSS).withHref("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
@@ -138,7 +142,7 @@ public class VDPHTMLWriter {
 	private ContainerTag sidebar() {
 		return div( 
 						div(
-								h3("VDP Analysis"),
+								h3("Run Control Analysis"),
 								generationEntry(),
 								componentsSection(),
 								views(),
@@ -148,13 +152,25 @@ public class VDPHTMLWriter {
 								physicalFiles(),
 								userExits(),
 								controlRecords(),
+								flowBreaker(),
 								flowSection(),
 								joinsSection(),
+								reportsBreaker(),
+								vdpReport(),
 								xltreport(),
 								jltreport(),
 								functionCodeCoverage()
 						).withClass("w3-container w3-dark-grey")
 					).withClass("w3-sidebar w3-bar-block w3-light-grey").withStyle("width:25%; height:100%");
+	}
+
+
+	private DomContent reportsBreaker() {
+		return h3("Reports").withClass("w3-dark-grey");
+	}
+
+	private DomContent flowBreaker() {
+		return h3("Flow Diagrams").withClass("w3-dark-grey");
 	}
 
 	private DomContent functionCodeCoverage() {
@@ -164,17 +180,23 @@ public class VDPHTMLWriter {
 				.withTarget(PAGE_IFRAME);
 	}
 
-	private DomContent jltreport() {
-		return a().withText("JLT Report")
+	private DomContent vdpReport() {
+		return a().withText("VDP Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
-				.withHref("jltrpt.txt")
+				.withHref("../" + vdpReportName)
+				.withTarget(PAGE_IFRAME);
+	}
+	private DomContent jltreport() {
+		return a().withText("JLT Report (" + reportFormat + ")")
+				.withClass(MENU_CLASS)
+				.withHref("../" + jltReportName)
 				.withTarget(PAGE_IFRAME);
 	}
 
 	private DomContent xltreport() {
-		return a().withText("XLT Report")
+		return a().withText("XLT Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
-				.withHref("xltrpt.txt")
+				.withHref("../" + xltReportName)
 				.withTarget(PAGE_IFRAME);
 	}
 
@@ -187,7 +209,7 @@ public class VDPHTMLWriter {
 
 	private DomContent flowSection() {
 		//return h3("Flow").withClass("w3-pink");
-		return a().withText("Flow")
+		return a().withText("Views")
 				.withClass(MENU_CLASS)
 				.withHref("flow.dot.svg")
 				.withTarget(PAGE_IFRAME);
@@ -290,5 +312,21 @@ public class VDPHTMLWriter {
 	public void setCurrentWorkingDirectory(Path c) {
 		cwd=c;
 	}
+
+	public void setReportType(String reportFormat) {
+		this.reportFormat = reportFormat;
+	}
+
+	public void setXLTReportName(String xltReportName) {
+		this.xltReportName = xltReportName;
+	}
+
+    public void setJLTReportName(String jltReportName) {
+		this.jltReportName = jltReportName;
+    }
+
+    public void setVDPReportName(String vdpReportName) {
+		this.vdpReportName = vdpReportName;
+    }
 
 }

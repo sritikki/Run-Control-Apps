@@ -1,0 +1,355 @@
+package org.genevaers.runcontrolgenerator.compilers;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
+import java.util.List;
+
+import org.genevaers.compilers.base.ASTBase;
+import org.genevaers.compilers.base.EmittableASTNode;
+import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
+import org.genevaers.compilers.extract.ExtractColumnCompiler;
+import org.genevaers.compilers.extract.ExtractFilterCompiler;
+import org.genevaers.compilers.extract.ExtractOutputCompiler;
+import org.genevaers.compilers.extract.astnodes.ASTFactory;
+import org.genevaers.compilers.extract.astnodes.ExtractAST2Dot;
+import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.compilers.extract.astnodes.ExtractFilterAST;
+import org.genevaers.compilers.extract.astnodes.ExtractOutputAST;
+import org.genevaers.compilers.extract.astnodes.LFAstNode;
+import org.genevaers.compilers.extract.astnodes.PFAstNode;
+import org.genevaers.compilers.extract.astnodes.ViewColumnSourceAstNode;
+import org.genevaers.compilers.extract.astnodes.ViewSourceAstNode;
+import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
+import org.genevaers.genevaio.dataprovider.RepoDataProvider;
+import org.genevaers.genevaio.ltfile.LogicTable;
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.LRField;
+import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.PhysicalFile;
+import org.genevaers.repository.components.ViewColumnSource;
+import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.data.CompilerMessage;
+import org.genevaers.repository.data.CompilerMessageSource;
+import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
+import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
+import org.genevaers.runcontrolgenerator.utility.Status;
+import org.genevaers.utilities.GersConfigration;
+import org.genevaers.visualisation.GraphVizRunner;
+
+import com.google.common.flogger.FluentLogger;
+
+public class ExtractPhaseCompiler {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+	private static List<LogicGroup> logicGroups;   
+	private static ExtractBaseAST extractRoot;
+	private static ExtractBaseAST joinsRoot;
+	private static LogicTableEmitter xltEmitter = new LogicTableEmitter();
+	private static LogicTableEmitter jltEmitter = new LogicTableEmitter();
+	private static ViewSourceAstNode vsnode;
+    
+   	public ExtractPhaseCompiler(List<LogicGroup> lgs) {
+		logicGroups = lgs;
+    }
+
+    public static void reset() {
+        xltEmitter = new LogicTableEmitter();
+        jltEmitter = new LogicTableEmitter();
+		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		ExtractBaseAST.clearLastColumnWithAWrite();
+		vsnode = null;
+    }
+
+    public static Status run(List<LogicGroup> lgs) {
+        Status status = Status.OK;
+		logicGroups = lgs;
+		buildTheAST();
+		if(Repository.getCompilerErrors().size() == 0) {
+			//once the AST is built we now have enough data
+			//to generate the JLT
+			//This has to be done before building the XLT
+			//since the lookup numbers are changed when we generate the JLT
+			buildTheJoinLogicTable();
+			buildTheExtractLogicTable();
+			wholeViewChecks();
+		} else{
+			status = Status.ERROR;
+		}
+        return status;
+	}
+
+    public static void buildTheAST() {
+		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
+		BuildGenevaASTVisitor.setDataProvider(new RepoDataProvider());
+		Iterator<LogicGroup> lgi = logicGroups.iterator();
+		while(lgi.hasNext()) {
+			LogicGroup lg = lgi.next();
+			addNodesFromLogicGroup(lg);
+		}
+		Repository.saveNumberOfExtractViews();
+		writeXLTDotIfEnabled();
+	}
+
+    public static void buildViewSourceAST(ViewSource vs) {
+		vsnode = buildVSNodeAndAddToRoot(vs);
+		ExtractFilterAST ef = (ExtractFilterAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRFILTER);
+		vsnode.addChildIfNotNull(ef);
+		ExtractFilterCompiler efc = new ExtractFilterCompiler();
+		efc.setViewSource(vsnode.getViewSource());
+		try {
+			efc.processLogicAndAddNodes(ef);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+    public static void buildViewColumnSourceAST(ViewColumnSource vcs) {
+		if(vsnode == null) {
+			buildVSNodeAndAddToRoot(Repository.getViews().get(vcs.getViewId()).getViewSource(vcs.getSequenceNumber()));
+		}
+		ViewColumnSourceAstNode vcsn = (ViewColumnSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWCOLUMNSOURCE);
+		vcsn.setViewColumnSource(vcs);
+		vsnode.addChildIfNotNull(vcsn);
+		compileColumn(vcsn);		
+		vcsn.checkAssigned();
+		writeXLTDotIfEnabled();
+	}
+
+	public static void buildViewOutputAST(ViewSource vs) {
+		if(vsnode == null) {
+			buildVSNodeAndAddToRoot(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
+		}
+		ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
+		vsnode.addChildIfNotNull(eo);
+		ExtractOutputCompiler eoc = new ExtractOutputCompiler();
+		eoc.setViewSource(vsnode.getViewSource());
+		try {
+			eoc.processLogicAndAddNodes(eo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static ViewSourceAstNode buildVSNodeAndAddToRoot(ViewSource vs) {
+		vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
+		vsnode.setViewSource(Repository.getViews().get(vs.getViewId()).getViewSource(vs.getSequenceNumber()));
+		extractRoot.addChildIfNotNull(vsnode);
+		return vsnode;
+	}
+
+
+	private static void writeXLTDotIfEnabled() {
+		if(RunControlConfigration.isXltDotEnabled()) {
+			ExtractAST2Dot.setFilter(RunControlConfigration.getViewDots().length() >0 || RunControlConfigration.getColumnDots().length()>0);
+			ExtractAST2Dot.setViews(RunControlConfigration.getViewDots().split(","));
+			ExtractAST2Dot.setCols(RunControlConfigration.getColumnDots().split(","));
+			ExtractAST2Dot.write(extractRoot, Paths.get("target/XLT.dot"));
+		}
+	}
+
+	private static void addNodesFromLogicGroup(LogicGroup lg) {
+		lg.getLfID();
+		LFAstNode lfNode = (LFAstNode)ASTFactory.getNodeOfType(ASTFactory.Type.LF);
+		lfNode.setLogicalFile(lg.getLogicalFile());
+		if(RunControlConfigration.isPFDotEnabled()) {
+			addPFNodes(lfNode);
+		} else {
+			extractRoot.addChildIfNotNull(lfNode);
+		}
+		addViewSourceNodesToLFNode(lfNode, lg);
+	}
+
+	private static void addViewSourceNodesToLFNode(LFAstNode lfNode, LogicGroup lg) {
+		Iterator<ViewSourceWrapper> vsi = lg.getSortedViewSources().iterator();
+		while(vsi.hasNext()) {
+			ViewSourceWrapper vsw = vsi.next();
+			ViewSourceAstNode vsnode = (ViewSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWSOURCE);
+			ViewSource vs = vsw.getViewSource(); 
+			logger.atInfo().log("Compile view %d source %d", vs.getViewId(), vs.getSequenceNumber());
+			vsnode.setViewSource(vs);
+			lfNode.addChildIfNotNull(vsnode);
+			ExtractBaseAST.clearLastColumnWithAWrite();
+			addViewSourceNodes(vsnode);
+			addViewColumnSourceNodes(vsnode);
+		}
+	}
+
+	private static void addViewSourceNodes(ViewSourceAstNode vsnode) {
+		ExtractFilterAST ef = (ExtractFilterAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRFILTER);
+		vsnode.addChildIfNotNull(ef);
+		ExtractFilterCompiler efc = new ExtractFilterCompiler();
+		efc.setViewSource(vsnode.getViewSource());
+		try {
+			efc.processLogicAndAddNodes(ef);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void addViewColumnSourceNodes(ViewSourceAstNode vsnode) {
+		Iterator<ViewColumnSource> vcsi = vsnode.getViewSource().getIteratorForColumnSourcesByNumber();
+		while(vcsi.hasNext()) {
+			ViewColumnSource vcs = vcsi.next();
+			ViewColumnSourceAstNode vcsn = (ViewColumnSourceAstNode) ASTFactory.getNodeOfType(ASTFactory.Type.VIEWCOLUMNSOURCE);
+			vcsn.setViewColumnSource(vcs);
+			vsnode.addChildIfNotNull(vcsn);
+			compileColumn(vcsn);
+			resolveSortKeyTitleLookups(vcs);
+			vcsn.checkAssigned();
+		}
+		compileExtractOutputLogic(vsnode);
+	}
+
+	private static void resolveSortKeyTitleLookups(ViewColumnSource vcs) {
+		if(vcs.getSortTitleLookupId() > 0) {
+			logger.atInfo().log("Need Sort Title lookup id %d", vcs.getSortTitleLookupId());
+			LookupPath lkup = Repository.getLookups().get(vcs.getSortTitleLookupId());
+			LRField f = Repository.getFields().get(vcs.getSortTitleFieldId());
+			Repository.getJoinViews().addSortKeyJLTViewField(lkup, f);
+		}
+	}
+
+	private static void compileExtractOutputLogic(ViewSourceAstNode vsnode) {
+		boolean runEOC = true;
+		if(RunControlConfigration.getInputType().equalsIgnoreCase("VDPXML")) {
+			if(noWriteStatementMissing(vsnode)) {
+				runEOC = false; //There must have been a write in the last column
+			}
+		}
+
+		//What if the extract output logic does not contain a write?
+		if(runEOC) {
+			ExtractOutputAST eo = (ExtractOutputAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRACTOUTPUT);
+			vsnode.addChildIfNotNull(eo);
+			ExtractOutputCompiler eoc = new ExtractOutputCompiler();
+			eoc.setViewSource(vsnode.getViewSource());
+			try {
+				eoc.processLogicAndAddNodes(eo);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+	}
+
+	private static boolean noWriteStatementMissing(ViewSourceAstNode vsnode) {
+		return (ExtractBaseAST.getLastColumnWithAWrite(vsnode.getViewSource()) == vsnode.getNumberOfColumns());
+	}
+
+	private static void compileColumn(ViewColumnSourceAstNode vcsn) {
+		logger.atFine().log("Compiling column %d", vcsn.getViewColumnSource().getColumnNumber());
+		ExtractColumnCompiler ecc = new ExtractColumnCompiler();
+		try {
+			ecc.processLogicAndAddNodes(vcsn);
+			if(Repository.newErrorsDetected()) {
+				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+
+	public static ExtractBaseAST getXltRoot() {
+		return extractRoot;
+	}
+
+	public static void addPFNodes(LFAstNode lfNode) {
+        Iterator<PhysicalFile> pfi = lfNode.getLogicalFile().getPFIterator();
+        while(pfi.hasNext()) {
+            PFAstNode pfn = (PFAstNode)ASTFactory.getNodeOfType(ASTFactory.Type.PF);
+            pfn.setPhysicalFile(pfi.next());
+            pfn.addChildIfNotNull(lfNode);
+            extractRoot.addChildIfNotNull(pfn);
+        }
+    }
+
+	public static void buildTheJoinLogicTable() {
+		//To do this use a JLT generator
+		//Which knows how to take the Repo data and make the beast
+		//All of the required Join data should have been accumulated
+		//Let's see what we have
+		JLTTreeGenerator jltgen = new JLTTreeGenerator(jltEmitter);
+		ExtractBaseAST.setLogicTableEmitter(jltEmitter);
+		joinsRoot = jltgen.buildJoinViews();
+		Repository.getJoinViews().logdata();
+		writeJltDotIfEnabled();
+		jltgen.emit();
+	}
+
+	private static void writeJltDotIfEnabled() {
+		if(RunControlConfigration.isJltDotEnabled()) {
+        	ExtractAST2Dot.write(joinsRoot, Paths.get("target/JLT.dot"));
+		}
+	}
+
+	public static void buildTheExtractLogicTable() {
+		if(Repository.newErrorsDetected()) {
+			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+		} else {
+			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
+			((EmittableASTNode)extractRoot).emit();
+		}
+	}
+
+    public static void wholeViewChecks() {
+		checkWriteStatements(extractRoot);
+		lookForNoAssignments();
+	}
+
+
+    private static void checkAssignmentStatements() {
+		lookForNoAssignments();
+	}
+
+	private static void lookForNoAssignments() {
+		//Start at the root find the VCS node and see if any have not assigned
+		List<ExtractBaseAST> vcsNodes = extractRoot.getChildNodesOfType(Type.VIEWCOLUMNSOURCE);
+		Iterator<ExtractBaseAST> vcsi = vcsNodes.iterator();
+		while (vcsi.hasNext()) {
+			ViewColumnSourceAstNode vcs = (ViewColumnSourceAstNode) vcsi.next();
+			if(vcs.isAssignedTo()) {
+
+			} else {
+				ViewSourceAstNode vs = (ViewSourceAstNode)vcs.getParent();
+				CompilerMessage message = new CompilerMessage(vcs.getViewColumnSource().getViewId(), CompilerMessageSource.COLUMN,  
+				vs.getViewSource().getSourceLRID(), vs.getViewSource().getSourceLFID(), vcs.getViewColumnSource().getColumnNumber(), "Column not assigned");
+				Repository.addWarningMessage(message);              				
+			}
+		}
+	}
+
+	private static void checkWriteStatements(ExtractBaseAST root) {
+		ViewSourceAstNode localvsnode = (vsnode == null ? (ViewSourceAstNode) root.getChildIterator().next().getChildIterator().next() : vsnode);
+		if(noWriteStatementMissing(localvsnode)) {
+			logger.atInfo().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
+		} else {
+			CompilerMessage errMessage = new CompilerMessage(localvsnode.getViewSource().getViewId(), CompilerMessageSource.EXTRACT_OUTPUT,  
+			localvsnode.getViewSource().getSourceLRID(), localvsnode.getViewSource().getSourceLFID(), 0, "No write statements were found");
+			Repository.addErrorMessage(errMessage);              			
+		}
+	}
+
+	public static LogicTable getExtractLogicTable() {
+        return xltEmitter.getLogicTable();
+    }
+
+    public static LogicTable getJoinLogicTable() {
+        return jltEmitter.getLogicTable();
+    }
+
+	public static void dotTo(Path dotfile) {
+		ExtractAST2Dot.write(extractRoot, dotfile);
+		//Maybe WB Compiler should be above the RCG and RCA
+		//So it can use them
+		GraphVizRunner gr = new GraphVizRunner();
+		gr.processDot(dotfile.toFile());
+	}
+
+}

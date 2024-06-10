@@ -70,7 +70,4 @@ public class App {
         GenevaLog.closeLogger(RunControlGenerator.class.getName());
     }
 
-	// private static void initLogger(String logFile) {
-    //     GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, Level.FINE);
-	// }
 }
