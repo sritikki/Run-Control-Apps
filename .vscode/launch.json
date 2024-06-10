@@ -35,6 +35,15 @@
         },
         {
             "type": "java",
+            "name": "Launch WBRunRCG-RCA",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
+            "projectName": "runcontrolanalyser",
+            "cwd": "${workspaceFolder}/RunControlGenerator/target/WEReports/passes/wbxml/RCAReport",
+            "args": ""
+        },
+        {
+            "type": "java",
             "name": "Launch RCA aggregate",
             "request": "launch",
             "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
@@ -66,6 +75,14 @@
             "mainClass": "org.genevaers.runcontrolanalyser.App",
             "projectName": "runcontrolanalyser",
             "cwd": "${workspaceFolder}/../../../../RunControlPlayPen/RC2"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCA App from WB Export",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.App",
+            "projectName": "runcontrolanalyser",
+            "cwd": "${workspaceFolder}/../../../WEReports/passes/wbxml/RCAReport"
         },
         {
             "type": "java",
@@ -117,6 +134,14 @@
             "mainClass": "org.genevaers.runcontrolgenerator.App",
             "projectName": "runcontrolgenerator",
             "cwd": "${workspaceFolder}/../../../RunControlPlayPen"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCG WEReports/passes",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolgenerator.App",
+            "projectName": "runcontrolgenerator",
+            "cwd": "${workspaceFolder}/../../../WEReports/passes/wbxml/RCAReport"
         },
         {
             "type": "java",
