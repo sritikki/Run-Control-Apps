@@ -152,13 +152,25 @@ public class VDPHTMLWriter {
 								physicalFiles(),
 								userExits(),
 								controlRecords(),
+								flowBreaker(),
 								flowSection(),
 								joinsSection(),
+								reportsBreaker(),
+								vdpReport(),
 								xltreport(),
 								jltreport(),
 								functionCodeCoverage()
 						).withClass("w3-container w3-dark-grey")
 					).withClass("w3-sidebar w3-bar-block w3-light-grey").withStyle("width:25%; height:100%");
+	}
+
+
+	private DomContent reportsBreaker() {
+		return h3("Reports").withClass("w3-dark-grey");
+	}
+
+	private DomContent flowBreaker() {
+		return h3("Flow Diagrams").withClass("w3-dark-grey");
 	}
 
 	private DomContent functionCodeCoverage() {
@@ -168,6 +180,12 @@ public class VDPHTMLWriter {
 				.withTarget(PAGE_IFRAME);
 	}
 
+	private DomContent vdpReport() {
+		return a().withText("VDP Report (" + reportFormat + ")")
+				.withClass(MENU_CLASS)
+				.withHref("../" + vdpReportName)
+				.withTarget(PAGE_IFRAME);
+	}
 	private DomContent jltreport() {
 		return a().withText("JLT Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
@@ -191,7 +209,7 @@ public class VDPHTMLWriter {
 
 	private DomContent flowSection() {
 		//return h3("Flow").withClass("w3-pink");
-		return a().withText("Flow")
+		return a().withText("Views")
 				.withClass(MENU_CLASS)
 				.withHref("flow.dot.svg")
 				.withTarget(PAGE_IFRAME);
