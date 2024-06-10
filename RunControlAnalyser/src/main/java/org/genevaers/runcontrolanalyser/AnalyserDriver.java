@@ -335,6 +335,14 @@ public class AnalyserDriver {
 		if(RcaConfigration.isVdpReport()) {
 			generateVdpPrint(root);
 		}
+		if(RcaConfigration.isRcaReport()) {
+			ranOkay = generateRcaPrint(root);
+		}
+		return ranOkay;
+	}
+
+	private static boolean generateRcaPrint(Path root) {
+		boolean ranOkay = true;
 		try {
 			makeRunControlAnalyserDataStore(root);
             setTargetDirectory("rca");
