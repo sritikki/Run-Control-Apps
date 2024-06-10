@@ -202,7 +202,7 @@ public class AnalyserDriver {
 			case "HTML":
 				VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
 				vdprw.setIgnores();
-				vdprw.writeFromRecordNodes(recordsRoot, vdpReportDdname);					
+				vdprw.writeFromRecordNodes(recordsRoot, RcaConfigration.getVDPReportName());					
 				break;
 		
 			default:
