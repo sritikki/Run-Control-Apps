@@ -70,7 +70,7 @@ public class VDPTextWriter {
 	}
 
 	private static void writeTheLtDetailsToFile(MetadataNode recordsRoot, String ltPrint, String generated) {
-		try (Writer out = new FileWriter(ltPrint + ".text");) {
+		try (Writer out = new FileWriter(ltPrint);) {
 			writeDetails(recordsRoot, out, generated);
 		}
 		catch (Exception e) {

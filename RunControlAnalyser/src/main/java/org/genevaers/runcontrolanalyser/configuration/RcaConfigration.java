@@ -57,7 +57,7 @@ public class RcaConfigration extends GersConfigration {
         parmToValue.put(XLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(JLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(VDP_REPORT, new ConfigEntry("N", false));
-        parmToValue.put(REPORT_FORMAT, new ConfigEntry("TEXT", false));
+        parmToValue.put(REPORT_FORMAT, new ConfigEntry("TXT", false));
     }
 
     public static boolean isValid() {

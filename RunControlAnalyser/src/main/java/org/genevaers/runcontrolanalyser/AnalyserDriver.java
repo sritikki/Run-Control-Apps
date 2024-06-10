@@ -18,31 +18,24 @@ package org.genevaers.runcontrolanalyser;
  */
 
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.Records2Dot;
 import org.genevaers.genevaio.html.LTRecordsHTMLWriter;
 import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
-import org.genevaers.genevaio.ltfile.LTFileReader;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
-import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FTPSession;
 import org.genevaers.utilities.GersConfigration;
 
@@ -157,6 +150,7 @@ public class AnalyserDriver {
 	private static void writeLtReport(Path root, String ddname, String ltReportDdname) {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
+			case "TXT":
 				LogicTable tlt = fa.readLT(root, false, null, false, ddname); //readLT(root, ddname);
 				LTLogger.writeRecordsTo(tlt, ltReportDdname, generation);
 				break;
@@ -192,17 +186,18 @@ public class AnalyserDriver {
     }
 
 	public static void generateVdpPrint(Path root) {
-		logger.atInfo().log("Generate %s", RcaConfigration.VDP_REPORT_DDNAME);
+		logger.atInfo().log("Generate %s", RcaConfigration.getVDPReportName());
 		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Root");
 		fa.readVDP(root, GersConfigration.VDP_DDNAME, false, recordsRoot, false);
-		writeVDPReport(recordsRoot, RcaConfigration.VDP_REPORT_DDNAME);
+		writeVDPReport(recordsRoot, RcaConfigration.getVDPReportName());
 		//collectCoverageDataFrom(xltp, xlt);
 	}
 
 	private static void writeVDPReport(MetadataNode recordsRoot, String vdpReportDdname) {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
+			case "TXT":
 				VDPTextWriter.writeFromRecordNodes(recordsRoot, vdpReportDdname, generation);
 				break;
 			case "CSV":
