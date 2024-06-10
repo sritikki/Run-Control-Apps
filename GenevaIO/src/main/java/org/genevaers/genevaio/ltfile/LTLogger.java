@@ -117,33 +117,34 @@ public class LTLogger {
 		return sb.toString();
 	}
 
-	public static void writeRecordsTo(LogicTable lt, String ltPrint) {
+	public static void writeRecordsTo(LogicTable lt, String ltPrint, String generation) {
 		ZFile dd;
 		if (GersConfigration.isZos()) {
 			try {
 				logger.atInfo().log("Write LT report to %s", ltPrint);
 				dd = new ZFile("//DD:" + ltPrint, "w");
-				writeTheLtDetailsToDnname(lt, dd);
+				writeTheLtDetailsToDnname(lt, dd, generation);
 				dd.close();
 			} catch (IOException e) {
 				logger.atSevere().log("Unable to create DDname %s", ltPrint);
 			}
 		} else {
-			writeTheLtDetailsToFile(lt, ltPrint);
+			writeTheLtDetailsToFile(lt, ltPrint, generation);
 		}
 		logger.atInfo().log("LT report written");
 	}
 
-	private static void writeTheLtDetailsToFile(LogicTable lt, String ltPrint) {
+	private static void writeTheLtDetailsToFile(LogicTable lt, String ltPrint, String generation) {
 		try (Writer out = new FileWriter(ltPrint);) {
-			writeDetails(lt, out);
+			writeDetails(lt, out, generation);
 		}
 		catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
 	}
 
-	private static void writeDetails(LogicTable lt, Writer out) throws IOException {
+	private static void writeDetails(LogicTable lt, Writer out, String generation) throws IOException {
+		out.write(String.format("Logic Table Report: %s\n\n", generation));
 		Iterator<LTRecord> lti = lt.getIterator();
 		while (lti.hasNext()) {
 			LTRecord ltr = lti.next();
@@ -154,10 +155,10 @@ public class LTLogger {
 		out.write("\nEnd of LT Records");
 	}
 
-	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd) throws IOException {
+	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd, String generation) throws IOException {
 		logger.atFine().log("Stream details");
 		try (Writer out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
-			writeDetails(lt, out);
+			writeDetails(lt, out, generation);
 		}
 		catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);

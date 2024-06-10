@@ -21,6 +21,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -50,42 +52,43 @@ public class VDPTextWriter {
 	private static Map<Integer, LookupDetails> lookupDetailsById = new TreeMap<>();
 	private static Map<Integer, LrDetails> lrDetailsById = new TreeMap<>();
 
-	public static void writeFromRecordNodes( MetadataNode recordsRoot, String filename) {
+	public static void writeFromRecordNodes( MetadataNode recordsRoot, String filename, String generated) {
 		ZFile dd;
 		if (GersConfigration.isZos()) {
 			try {
 				logger.atInfo().log("Write VDP report to %s", filename);
 				dd = new ZFile("//DD:" + filename, "w");
-				writeTheVDPDetailsToDnname(recordsRoot, dd);
+				writeTheVDPDetailsToDnname(recordsRoot, dd, generated);
 				dd.close();
 			} catch (IOException e) {
 				logger.atSevere().log("Unable to create DDname %s", filename);
 			}
 		} else {
-			writeTheLtDetailsToFile(recordsRoot, filename);
+			writeTheLtDetailsToFile(recordsRoot, filename, generated);
 		}
 		logger.atInfo().log("LT report written");
 	}
 
-	private static void writeTheLtDetailsToFile(MetadataNode recordsRoot, String ltPrint) {
+	private static void writeTheLtDetailsToFile(MetadataNode recordsRoot, String ltPrint, String generated) {
 		try (Writer out = new FileWriter(ltPrint + ".text");) {
-			writeDetails(recordsRoot, out);
+			writeDetails(recordsRoot, out, generated);
 		}
 		catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
 	}
-	private static void writeTheVDPDetailsToDnname(MetadataNode recordsRoot, ZFile dd) throws IOException {
+	private static void writeTheVDPDetailsToDnname(MetadataNode recordsRoot, ZFile dd, String generated) throws IOException {
 		logger.atFine().log("Stream details");
 		try (Writer out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
-			writeDetails(recordsRoot, out);
+			writeDetails(recordsRoot, out, generated);
 		}
 		catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
 	}
 
-	public static  void writeDetails( MetadataNode recordsRoot, Writer fw) throws IOException {
+	public static  void writeDetails( MetadataNode recordsRoot, Writer fw, String generated) throws IOException {
+		writeHeader(generated, fw);
 		writeSummary(recordsRoot,fw);
 		writeViewSummaries(recordsRoot, fw);
 		writeLookupSummaries(recordsRoot, fw);
@@ -96,6 +99,10 @@ public class VDPTextWriter {
 		writeContent(recordsRoot,fw);
 	}
 	
+	private static void writeHeader(String generated, Writer fw) throws IOException {
+		fw.write(String.format("VDP Report: %s\n\n", generated));
+	}
+
 	private static void writePfSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
 		fw.write("\nPhysical Files\n");
 		fw.write("==================\n");

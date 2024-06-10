@@ -20,9 +20,13 @@ package org.genevaers.runcontrolanalyser;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -62,6 +66,10 @@ public class AnalyserDriver {
 	private Object cwd;
 	private static Path dataStore;
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
+
+	private static String version;
+
+	private static String generation;
 
 	private boolean jlt1Present;
 
@@ -150,7 +158,7 @@ public class AnalyserDriver {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 				LogicTable tlt = fa.readLT(root, false, null, false, ddname); //readLT(root, ddname);
-				LTLogger.writeRecordsTo(tlt, ltReportDdname);
+				LTLogger.writeRecordsTo(tlt, ltReportDdname, generation);
 				break;
 			case "CSV":
 				LogicTable cxlt = fa.readLT(root, false, null, false, ddname); //readLT(root, ddname);
@@ -195,7 +203,7 @@ public class AnalyserDriver {
 	private static void writeVDPReport(MetadataNode recordsRoot, String vdpReportDdname) {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
-				VDPTextWriter.writeFromRecordNodes(recordsRoot, vdpReportDdname);
+				VDPTextWriter.writeFromRecordNodes(recordsRoot, vdpReportDdname, generation);
 				break;
 			case "CSV":
 				break;
@@ -347,4 +355,18 @@ public class AnalyserDriver {
 		return ranOkay;
 	}
 
+	public static String readVersion() {
+		version = "unknown";
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Properties properties = new Properties();
+		try (InputStream resourceStream = loader.getResourceAsStream("application.properties")) {
+			properties.load(resourceStream);
+            version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		generation = String.format("Generated %s version %s",formattedDate, version);
+		return generation;
+	}
 }
