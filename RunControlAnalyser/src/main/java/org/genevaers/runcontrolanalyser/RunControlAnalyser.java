@@ -23,9 +23,6 @@ import java.nio.file.Paths;
 import java.util.Collection;
 
 import com.google.common.flogger.FluentLogger;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -34,7 +31,6 @@ import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.html.VDPHTMLWriter;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.LTFileReader;
-import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.vdpfile.VDPFileReader;
 import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.repository.Repository;
@@ -147,19 +143,6 @@ public class RunControlAnalyser {
 		}
 	}
 
-
-	public void setHTMLFileName(String name) {
-		htmlFileName = name;
-	}
-
-	public void writeLtCSV(String ltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		LTCSVWriter.write(xlt, ltName);
-	}
-
-	public void writeJLTCSV(String jltName) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
-		LTCSVWriter.write(jlt, jltName);
-	}
-
 	public void setTargetDirectory(Path trgPath) {
 		trg = trgPath;
 	}
@@ -202,18 +185,4 @@ public class RunControlAnalyser {
 		}
 	}
 
-	Path getCurrentWorkiingDirectory() {
-		return trg;
-	}
-
-	public void openAnalysis(String rcSet) throws IOException, InterruptedException {
-		Path showme = trg.resolve(rcSet);
-		CommandRunner cmdRunner = new CommandRunner();
-		cmdRunner.run("cmd /C " + showme.toString(), showme.getParent().toFile());
-	}
-
-    public void runFromConfig(RcaConfigration rcac) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'runFromConfig'");
-    }
 }
