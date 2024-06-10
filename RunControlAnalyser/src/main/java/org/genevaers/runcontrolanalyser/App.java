@@ -1,8 +1,8 @@
 package org.genevaers.runcontrolanalyser;
 
 import java.io.IOException;
-import java.util.logging.Level;
-
+import java.io.InputStream;
+import java.util.Properties;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.genevaers.utilities.GersConfigration;
@@ -33,7 +33,7 @@ public class App {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     public static void  main(String[] args) {
-		System.out.printf("GenevaERS Run Control Analyser version %s\n", CommandLineHandler.readVersion());
+		System.out.printf("GenevaERS Run Control Analyser version %s\n", readVersion());
 		System.out.printf("Java Vendor %s\n", System.getProperty("java.vendor"));
 		System.out.printf("Java Version %s\n", System.getProperty("java.version"));
         App.run();
@@ -67,4 +67,16 @@ public class App {
         }
     }
 
+	public static String readVersion() {
+		String version = "unknown";
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Properties properties = new Properties();
+		try (InputStream resourceStream = loader.getResourceAsStream("application.properties")) {
+			properties.load(resourceStream);
+            version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return version;
+	}
 }
