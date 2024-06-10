@@ -44,7 +44,7 @@ import j2html.tags.ContainerTag;
 import j2html.tags.DomContent;
 import j2html.tags.specialized.SpanTag;
 
-public class VDPHTMLWriter {
+public class RCAFrameworkHTMLWriter {
 
 	private static final String MENU_BADGE = "w3-badge w3-right";
 	private static final String MENU_CLASS = "w3-bar-item w3-button w3-hover-blue w3-flat-silver";
@@ -110,7 +110,7 @@ public class VDPHTMLWriter {
 					html(
 							head(
 									meta().withContent("text/html; charset=UTF-8"),
-									title("VDP Analysis"),
+									title("Run Control Analysis"),
 									link().withRel(STYLESHEET).withType(TEXT_CSS).withHref("https://www.w3schools.com/w3css/4/w3.css"),
 									link().withRel(STYLESHEET).withType(TEXT_CSS).withHref("https://www.w3schools.com/lib/w3-colors-flat.css"),
 									link().withRel(STYLESHEET).withType(TEXT_CSS).withHref("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
@@ -142,7 +142,7 @@ public class VDPHTMLWriter {
 	private ContainerTag sidebar() {
 		return div( 
 						div(
-								h3("VDP Analysis"),
+								h3("Run Control Analysis"),
 								generationEntry(),
 								componentsSection(),
 								views(),

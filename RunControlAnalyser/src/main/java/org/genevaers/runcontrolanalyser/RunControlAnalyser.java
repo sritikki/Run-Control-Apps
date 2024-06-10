@@ -28,7 +28,7 @@ import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.dots.LookupGenerationDotWriter;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
-import org.genevaers.genevaio.html.VDPHTMLWriter;
+import org.genevaers.genevaio.html.RCAFrameworkHTMLWriter;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.LTFileReader;
 import org.genevaers.genevaio.vdpfile.VDPFileReader;
@@ -98,7 +98,7 @@ public class RunControlAnalyser {
 		convertDotsToSVGs(viewsPath);
 		convertDotsToSVGs(trg);
 
-		VDPHTMLWriter htmlWriter= new VDPHTMLWriter();
+		RCAFrameworkHTMLWriter htmlWriter= new RCAFrameworkHTMLWriter();
 		htmlWriter.setCurrentWorkingDirectory(trg);
 		htmlWriter.setFileName(htmlFileName);
 		htmlWriter.setReportType(RcaConfigration.getReportFormat());
