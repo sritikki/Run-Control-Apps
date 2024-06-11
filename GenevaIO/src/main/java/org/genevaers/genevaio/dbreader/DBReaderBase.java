@@ -36,7 +36,7 @@ public abstract class DBReaderBase {
 
     protected boolean hasErrors = false;
     protected static String viewIdsString;
-    protected static Set<Integer> viewIds;
+    protected static Set<Integer> viewIds = new TreeSet<>();
 
     protected static ViewNode currentViewNode;
 

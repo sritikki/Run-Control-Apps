@@ -101,10 +101,14 @@ public class DBLookupsReader extends DBReaderBase{
             try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
                 int parmNum = 1;
                 ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
-                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
                 Iterator<Integer> ii = viewIds.iterator();
                 while(ii.hasNext()) {
                     ps.setInt(parmNum++, ii.next());
+                }
+                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+                Iterator<Integer> ii2 = viewIds.iterator();
+                while(ii2.hasNext()) {
+                    ps.setInt(parmNum++, ii2.next());
                 }
                 //     String[] idsIn = viewIdsString.split(",");
                 // for(int i=0; i<idsIn.length; i++) {

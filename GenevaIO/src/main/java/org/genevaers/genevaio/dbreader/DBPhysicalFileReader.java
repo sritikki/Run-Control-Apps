@@ -53,6 +53,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
         updateRequiredPfs(dbConnection, params);
         if(requiredPFs.size() > 0) { 
             //Then get the PFs
+            requiredPFs.remove(0);
             String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
             + "where ENVIRONID= ? and PHYFILEID in (" + getPlaceholders(requiredPFs.size()) + ");";
             executeAndWriteToRepo(dbConnection, pfRecs, params, requiredPFs);
