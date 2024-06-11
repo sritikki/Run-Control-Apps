@@ -52,9 +52,9 @@ public class DBFieldReader extends DBReaderBase{
             + "from " + params.getSchema() + ".LRFIELD f "
             + "INNER JOIN " + params.getSchema() + ".LRFIELDATTR a "
             + "ON a.LRFIELDID = f.LRFIELDID and a.ENVIRONID = f.ENVIRONID "
-            + "where f.ENVIRONID = ? and f.logrecid in(" + dbConnection.getPlaceholders(getIds(requiredLRs)) + ") ";
+            + "where f.ENVIRONID = ? and f.logrecid in(" + getPlaceholders(requiredLRs.size()) + ") ";
         
-        executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLRs));
+        executeAndWriteToRepo(dbConnection, query, params, requiredLRs);
         return hasErrors;
     }
 

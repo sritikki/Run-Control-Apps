@@ -49,20 +49,5 @@ public abstract class DatabaseConnection {
 
     public abstract void closeStatement(PreparedStatement ps) throws SQLException;
 
-    public String getPlaceholders(int size) {
-        StringBuilder builder = new StringBuilder();
-        if (size > 1) {
-            for (int i = 1; i < size; i++) {
-                builder.append("?,");
-            }
-        }
-        builder.append("?");
-        return builder.toString();
-    }
-
-    public String getPlaceholders(String ids) {
-        String[] pls = ids.split(",");
-        return getPlaceholders(pls.length);
-    }
 
 }

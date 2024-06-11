@@ -36,9 +36,9 @@ public class DBControlRecordReader extends DBReaderBase {
             + "c.COMMENTS "
             + "from " + params.getSchema() + ".CONTROLREC c INNER JOIN " + params.getSchema() + ".VIEW v "
             + "ON (v.CONTROLRECID = c.CONTROLRECID and c.ENVIRONID = v.ENVIRONID) "
-            + "where c.ENVIRONID = ? and viewid IN(" + dbConnection.getPlaceholders(viewIds) 
+            + "where c.ENVIRONID = ? and viewid IN(" + getPlaceholders(viewIds.size()) 
             + ");";
-            executeAndWriteToRepo(dbConnection, query, params, viewIds.split(","));
+            executeAndWriteToRepo(dbConnection, query, params, viewIds);
             return hasErrors;
     }
     

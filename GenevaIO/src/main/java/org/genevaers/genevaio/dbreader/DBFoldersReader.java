@@ -33,51 +33,13 @@ import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
 
-public class DBViewsReader extends DBReaderBase {
-
-    String queryBase = "SELECT "
-    + "v.ENVIRONID, "
-    + "VIEWID, "
-    + "NAME, "
-    + "EFFDATE, "
-    + "VIEWSTATUSCD, "
-    + "VIEWTYPECD, "
-    + "EXTRACTFILEPARTNBR, "
-    + "OUTPUTMEDIACD, "
-    + "OUTPUTLRID, "
-    + "PAGESIZE, "
-    + "LINESIZE, "
-    + "ZEROSUPPRESSIND, "
-    + "EXTRACTMAXRECCNT, "
-    + "EXTRACTSUMMARYIND, "
-    + "EXTRACTSUMMARYBUF, "
-    + "OUTPUTMAXRECCNT, "
-    + "CONTROLRECID, "
-    + "WRITEEXITID, "
-    + "WRITEEXITSTARTUP, "
-    + "FORMATEXITID, "
-    + "FORMATEXITSTARTUP, "
-    + "FILEFLDDELIMCD, "
-    + "FILESTRDELIMCD, "
-    + "DELIMHEADERROWIND, "
-    + "v.LFPFASSOCID, "
-    + "a.PHYFILEID, "
-    + "FORMATFILTLOGIC, "
-    + "v.CREATEDUSERID, "
-    + "v.LASTMODUSERID ";
-
+public class DBFoldersReader extends DBReaderBase {
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        if(params.getFolderIds().length() > 0) {
-            getViewIdsFromFolderIds(dbConnection, params);
-        }else if(params.getViewIds().length() > 0) {
-            viewIdsString = params.getViewIds();
-            convertToIntergerSet(viewIdsString);
-            verifyViewsExist(dbConnection, params);
-        }
+        getViewIdsFromFolderIds(dbConnection, params);
         if(hasErrors == false) {
-            addViewsToRepo(dbConnection, params);
+//            addViewsToRepo(dbConnection, params);
         }
         return hasErrors;
     }
@@ -120,59 +82,9 @@ public class DBViewsReader extends DBReaderBase {
     }
 
 
-    private void addViewsToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-
-        String viewsQuery = queryBase + " from " + params.getSchema() + ".View v " 
-        + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
-        + "where v.environid = ? and viewid IN(" + getPlaceholders(viewIds.size()) + ");";
-
-        executeAndWriteToRepo(dbConnection, viewsQuery, params, viewIds);
-    }
-
     @Override
     protected void addComponentToRepo(ResultSet rs) throws SQLException {
-        //Have to be able to generate this bit...
-        ViewDefinition vd = new ViewDefinition();
-        vd.setComponentId(rs.getInt("VIEWID"));
-        vd.setName(rs.getString("NAME"));
-        vd.setStatus(ViewStatus.fromdbcode(rs.getString("VIEWSTATUSCD")));
-        // + "OUTPUTLRID, "
-        // + "PAGESIZE, "
-        // + "LINESIZE, "
-        // + "FILEFLDDELIMCD, "
-        // + "FILESTRDELIMCD, "
-        // + "DELIMHEADERROWIND, "
-        // + "FORMATFILTLOGIC, "
-        vd.setViewType(ViewType.fromdbcode(rs.getString("VIEWTYPECD")));
-        vd.setOutputMedia(OutputMedia.fromdbcode(rs.getString("OUTPUTMEDIACD")));
-        vd.setExtractFileNumber((short)rs.getInt("EXTRACTFILEPARTNBR"));
-        vd.setMaxExtractSummaryRecords(rs.getInt("EXTRACTSUMMARYBUF"));
-        vd.setOutputLrId(rs.getInt("OUTPUTLRID"));
-        vd.setDefaultOutputFileId(rs.getInt("PHYFILEID"));
-        // this one can be dropped vd.setOutputDestinationId(outputDestinationId);
-        // not sure whatvd.setDetailed(outputDetailInd);
-        vd.setZeroValueRecordSuppression(rs.getBoolean("ZEROSUPPRESSIND"));
-        vd.setGenerateDelimitedHeader(rs.getBoolean("DELIMHEADERROWIND"));
-        vd.setExtractMaxRecCount(rs.getInt("EXTRACTMAXRECCNT"));
-        vd.setOutputMaxRecCount(rs.getInt("OUTPUTMAXRECCNT"));
-        //vd.setProcessAsofDate(processAsofDate);
-        //vd.setLookupAsofDate(lookupAsofDate);
-        //vd.setFillErrorValue(fillErrorValue);
-        //vd.setFillTruncationValue(fillTruncationValue);
-        vd.setExtractSummarized(rs.getBoolean("EXTRACTSUMMARYIND"));
-        vd.setWriteExitId(rs.getInt("WRITEEXITID"));
-        vd.setWriteExitParams(getDefaultedString(rs.getString("WRITEEXITSTARTUP"), ""));
-        vd.setFormatExitId(rs.getInt("FORMATEXITID"));
-        vd.setFormatExitParams(getDefaultedString(rs.getString("FORMATEXITSTARTUP"), ""));
-        vd.setControlRecordId(rs.getInt("CONTROLRECID"));
-
-        //These probably should not be here
-        vd.setOwnerUser(rs.getString("CREATEDUSERID"));
-        vd.setOwnerUser(rs.getString("LASTMODUSERID"));
-
-        currentViewNode = Repository.getViewNodeMakeIfDoesNotExist(vd);
-        currentViewNode.setFormatFilterLogic(rs.getString("FORMATFILTLOGIC"));
-    }
+     }
 
     private void getViewIdsFromFolderIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         if(foldersExist(dbConnection, params)) {

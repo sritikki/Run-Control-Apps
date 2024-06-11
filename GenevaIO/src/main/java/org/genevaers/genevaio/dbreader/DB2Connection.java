@@ -89,8 +89,8 @@ public class DB2Connection extends DatabaseConnection{
     @Override
     public List<Integer> getViewIdsFromFolderIds(String folderIds) {
         List<Integer> views = new ArrayList<>();
-        String viewsQuery = "select viewid  from " + params.getSchema() + ".vfvassoc vf "
-        + "where vf.environid = ? and vf.viewfolderid in(" + getPlaceholders(params.getFolderIds()) + ");";
+        String viewsQuery = "select viewid  from " + params.getSchema() + ".vfgetPlaceholdersvassoc vf "
+        + "where vf.environid = ? and vf.viewfolderid in(?);";
         try(PreparedStatement ps = con.prepareStatement(viewsQuery);) {
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {

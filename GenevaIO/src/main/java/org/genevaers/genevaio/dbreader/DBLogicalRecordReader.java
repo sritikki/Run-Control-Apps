@@ -39,9 +39,9 @@ public class DBLogicalRecordReader extends DBReaderBase {
             + "r.LOOKUPEXITID, "
             + "r.LOOKUPEXITSTARTUP "
             + "from " + params.getSchema() + ".LOGREC r " 
-            + "where r.ENVIRONID = ? and r.LOGRECID in(" + dbConnection.getPlaceholders(getIds(requiredLRs)) + ") "
+            + "where r.ENVIRONID = ? and r.LOGRECID in(" + getPlaceholders(requiredLRs.size()) + ") "
             + "order by r.LOGRECID; ";
-        executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLRs));
+        executeAndWriteToRepo(dbConnection, query, params, requiredLRs);
         return false;
     }
 

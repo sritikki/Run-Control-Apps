@@ -37,9 +37,9 @@ public class DBViewColumnsReader extends DBReaderBase{
     // Which could be generated?
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String query = "select * from " + params.getSchema() + ".viewcolumn "
-        + "where environid = ? and viewid in(" + dbConnection.getPlaceholders(params.getViewIds())
+        + "where environid = ? and viewid in(" + getPlaceholders(viewIds.size())
         + ") order by columnnumber;";
-        executeAndWriteToRepo(dbConnection, query, params, params.getViewIds());
+        executeAndWriteToRepo(dbConnection, query, params, viewIds);
         return hasErrors;
     }
 

@@ -40,8 +40,11 @@ import org.genevaers.repository.components.enums.FileType;
 import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.TextDelimiter;
 
+import com.google.common.flogger.FluentLogger;
+
 
 public class DBPhysicalFileReader extends DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     Map<Integer, List<Integer>> lf2pf = new HashMap<>();
 
     @Override
@@ -51,8 +54,8 @@ public class DBPhysicalFileReader extends DBReaderBase {
         if(requiredPFs.size() > 0) { 
             //Then get the PFs
             String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-            + "where ENVIRONID= ? and PHYFILEID in (" + dbConnection.getPlaceholders(getIds(requiredPFs)) + ") and ;";
-            executeAndWriteToRepo(dbConnection, pfRecs, params, getIds(requiredPFs));
+            + "where ENVIRONID= ? and PHYFILEID in (" + getPlaceholders(requiredPFs.size()) + ");";
+            executeAndWriteToRepo(dbConnection, pfRecs, params, requiredPFs);
             //Note this relies on the LFs having been added first
             addPfsToLfs();
         }
@@ -62,12 +65,11 @@ public class DBPhysicalFileReader extends DBReaderBase {
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         if(requiredLFs.size() > 0) {
             String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
-                    + "where ENVIRONID=? and LOGFILEID in (" + dbConnection.getPlaceholders(getIds(requiredLFs)) + ");";
-            try {
-                PreparedStatement ps = dbConnection.prepareStatement(pfsFromLfs);
+                    + "where ENVIRONID=? and LOGFILEID in (" + getPlaceholders(getIds(requiredLFs)) + ");";
+            try (PreparedStatement ps = dbConnection.prepareStatement(pfsFromLfs);){
                 int parmNum = 1;
                 ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
-                String[] idsIn = getIds(requiredPFs).split(",");
+                String[] idsIn = getIds(requiredLFs).split(",");
                 for(int i=0; i<idsIn.length; i++) {
                     ps.setString(parmNum++, idsIn[i]);
                 }
@@ -80,11 +82,9 @@ public class DBPhysicalFileReader extends DBReaderBase {
                         lf2pf.put(rs.getInt("LOGFILEID"), pfs);
                     }
                     pfs.add(rs.getInt("PHYFILEID"));
-                }
-                dbConnection.closeStatement(ps);
+                }                
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.atSevere().log("updateRequiredPfs failed: %s", e.getMessage());
             }
         }
     }
