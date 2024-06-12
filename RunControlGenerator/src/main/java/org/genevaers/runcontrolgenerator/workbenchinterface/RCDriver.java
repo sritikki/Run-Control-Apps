@@ -164,6 +164,7 @@ public class RCDriver {
             fw.write("JLT_REPORT=Y\n");
             fw.write("VDP_REPORT=Y\n");
             fw.write("REPORT_FORMAT=" + rcaTextType + "\n");
+            fw.write("RCA_REPORT=Y\n");
             fw.write("TRACE=N\n");
             fw.close();
         } catch (IOException e) {
