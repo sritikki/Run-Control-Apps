@@ -12,8 +12,6 @@ import org.genevaers.compilers.extract.emitters.rules.Rule;
 import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
-import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.CompilerMessageSource;
 
 public class FlipDataChecker extends AssignmentRulesChecker {
 
@@ -29,15 +27,7 @@ public class FlipDataChecker extends AssignmentRulesChecker {
         if (result != RuleResult.RULE_ERROR) {
             List<Rule> flippedRules = new ArrayList<>();
             flippedRules.add(new FieldZonedMaxLength());
-            CompilerMessage warn = new CompilerMessage(
-                                            vc.getViewId(), 
-                                            CompilerMessageSource.COLUMN, 
-                                            ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
-                                            ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
-                                            column.getViewColumn().getColumnNumber(),
-                                            (String.format("Treating field {%s} as ZONED.", rhs.getMessageName()))
-                                        );
-            Repository.addWarningMessage(warn);
+            Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(String.format("Treating field {%s} as ZONED.", rhs.getMessageName())));
             result = updateResult(result, applyRulesTo(flippedRules, column, rhs));
         }
 

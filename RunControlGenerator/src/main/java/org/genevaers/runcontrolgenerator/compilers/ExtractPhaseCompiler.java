@@ -318,9 +318,7 @@ public class ExtractPhaseCompiler {
 
 			} else {
 				ViewSourceAstNode vs = (ViewSourceAstNode)vcs.getParent();
-				CompilerMessage message = new CompilerMessage(vcs.getViewColumnSource().getViewId(), CompilerMessageSource.COLUMN,  
-				vs.getViewSource().getSourceLRID(), vs.getViewSource().getSourceLFID(), vcs.getViewColumnSource().getColumnNumber(), "Column not assigned");
-				Repository.addWarningMessage(message);              				
+				Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage("Column not assigned"));              				
 			}
 		}
 	}
@@ -330,9 +328,7 @@ public class ExtractPhaseCompiler {
 		if(noWriteStatementMissing(localvsnode)) {
 			logger.atInfo().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
 		} else {
-			CompilerMessage errMessage = new CompilerMessage(localvsnode.getViewSource().getViewId(), CompilerMessageSource.EXTRACT_OUTPUT,  
-			localvsnode.getViewSource().getSourceLRID(), localvsnode.getViewSource().getSourceLFID(), 0, "No write statements were found");
-			Repository.addErrorMessage(errMessage);              			
+			Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage("No write statements were found"));              			
 		}
 	}
 

@@ -8,7 +8,6 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.CompilerMessageSource;
 
 public class ConstStringToDateColumnError extends Rule{ 
 
@@ -17,14 +16,7 @@ public class ConstStringToDateColumnError extends Rule{
         final ViewColumn vc = ((ColumnAST)op1).getViewColumn();
         FormattedASTNode frhs = (FormattedASTNode) op2;
         if(vc.getDateCode() != DateCode.NONE && op2.getType() == Type.STRINGATOM) {
-            CompilerMessage err = new CompilerMessage(
-                vc.getViewId(), 
-                CompilerMessageSource.COLUMN, 
-                ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
-                ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
-                vc.getColumnNumber(),
-                (String.format("Cannot assign %s to column %s which has a date code.", frhs.getMessageName(), vc.getColumnNumber()))
-            );
+            CompilerMessage err = ExtractBaseAST.makeCompilerMessage(String.format("Cannot assign %s to column %s which has a date code.", frhs.getMessageName(), vc.getColumnNumber()));
             Repository.addErrorMessage(err);
             return RuleResult.RULE_ERROR;
         } else {

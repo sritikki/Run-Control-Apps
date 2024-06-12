@@ -28,14 +28,7 @@ public class FlipColumnChecker extends AssignmentRulesChecker {
         column.setOverrideDataType(DataType.ZONED);
         ViewColumn vc = column.getViewColumn();
         updateResult(result, apply(column, rhs));
-        CompilerMessage warn = new CompilerMessage(
-                                        vc.getViewId(), 
-                                        CompilerMessageSource.COLUMN, 
-                                        ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
-                                        ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
-                                        column.getViewColumn().getColumnNumber(),
-                                        (String.format("Treating column %d as ZONED.", column.getViewColumn().getColumnNumber()))
-                                    );
+        CompilerMessage warn = ExtractBaseAST.makeCompilerMessage(String.format("Treating column %d as ZONED.", column.getViewColumn().getColumnNumber()));
         Repository.addWarningMessage(warn);
 
         // Change the alnum data type to zoned
