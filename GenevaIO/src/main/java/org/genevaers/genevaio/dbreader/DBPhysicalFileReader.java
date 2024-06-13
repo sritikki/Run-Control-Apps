@@ -64,6 +64,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
     }
 
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+        requiredLFs.remove(0);
         if(requiredLFs.size() > 0) {
             String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
                     + "where ENVIRONID=? and LOGFILEID in (" + getPlaceholders(requiredLFs.size()) + ");";

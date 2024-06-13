@@ -1,5 +1,8 @@
 package org.genevaers.genevaio.dbreader;
 
+
+import java.sql.PreparedStatement;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -20,18 +23,23 @@ package org.genevaers.genevaio.dbreader;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.UserExit;
 import org.genevaers.repository.components.enums.ExitType;
 import org.genevaers.repository.components.enums.ProgramType;
 
+import com.google.common.flogger.FluentLogger;
+
 public class DBExitReader extends DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private boolean procedure;
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+		getLogicDependentExits(dbConnection, params);
         procedure = false;
         requiredExits.remove(0);
         if(requiredExits.size() > 0) {
@@ -98,6 +106,30 @@ public class DBExitReader extends DBReaderBase {
         + "and e.exitid = ? ";
         executeAndWriteToRepo(dbConnection, query, params, id);
         return hasErrors;
+    }
+
+    private void getLogicDependentExits(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+		String schema = params.getSchema();
+		String selectString = "SELECT d.exitid FROM " + schema + ".viewlogicdepend d " + //
+				"where d.environid = ? and viewid in(" + getPlaceholders(viewIds.size()) + ") and d.exitid IS NOT NULL ;";
+
+		try (PreparedStatement pst = dbConnection.getConnection().prepareStatement(selectString);) {
+			int parmNum = 1;
+
+			pst.setInt(parmNum++, Integer.valueOf(params.getEnvironmentID()));
+			Iterator<Integer> vi = viewIds.iterator();
+			while (vi.hasNext()) {
+				pst.setInt(parmNum++, vi.next());
+			}
+			ResultSet rs = dbConnection.getResults(pst);
+			while (rs.next()) {
+				requiredExits.add(rs.getInt("exitid"));
+			}
+		}
+		catch (SQLException e) {
+            logger.atInfo()
+            .log("getLogicDependentExits %s", e);
+		}
     }
 
 
