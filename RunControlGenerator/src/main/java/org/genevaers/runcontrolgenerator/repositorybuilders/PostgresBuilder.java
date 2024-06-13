@@ -13,7 +13,6 @@ public class PostgresBuilder implements RepositoryBuilder{
 
     @Override
     public Status run() {
-		Status retval = Status.OK;
 		DatabaseConnectionParams conParams = new DatabaseConnectionParams();
 		conParams.setDatabase(RunControlConfigration.getParm(RunControlConfigration.DB2_DATABASE));
 		conParams.setDbType(DbType.POSTGRES);
@@ -27,7 +26,7 @@ public class PostgresBuilder implements RepositoryBuilder{
 		conParams.setPassword(System.getenv("PG_PASSWORD"));
 		DBReader dbr = new DBReader();
 		dbr.addViewsToRepository(conParams);
-		return retval;
+		return dbr.hasErrors() ? Status.ERROR : Status.OK;
     }
     
 }

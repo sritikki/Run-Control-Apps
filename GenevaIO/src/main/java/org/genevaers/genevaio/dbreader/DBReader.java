@@ -63,18 +63,20 @@ public class DBReader {
 
     private void addComponents() {
         hasErrors = viewsReader.addToRepo(dbConnection, params);
-        hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
-        hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
-        hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
-        hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
-        hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
-        hasErrors |= lookupsReader.addToRepo(dbConnection, params);
-        hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
-        hasErrors |= fieldReader.addToRepo(dbConnection, params);
-        hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
-        hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
-        hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
-        hasErrors |= exitReader.addToRepo(dbConnection, params);
+        if(hasErrors == false) {
+            hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
+            hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
+            hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
+            hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
+            hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
+            hasErrors |= lookupsReader.addToRepo(dbConnection, params);
+            hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
+            hasErrors |= fieldReader.addToRepo(dbConnection, params);
+            hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
+            hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
+            hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
+            hasErrors |= exitReader.addToRepo(dbConnection, params);
+        }
     }
 
     /** 

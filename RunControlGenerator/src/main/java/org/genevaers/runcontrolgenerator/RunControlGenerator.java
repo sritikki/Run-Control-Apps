@@ -28,6 +28,7 @@ import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
@@ -67,10 +68,11 @@ public class RunControlGenerator {
 			singlePassOptimise();
 			runCompilers();
 			writeRunControlFiles();
-			report.write();
 		} else {
+			Repository.addErrorMessage(new CompilerMessage(0, null, 0, 0, 0, "Failed to build the component repository"));
 			logger.atSevere().log("Failed to build the component repository. No run control files will be written");
 		}
+		report.write();
 	}
 
 	private void writeRunControlFiles() {

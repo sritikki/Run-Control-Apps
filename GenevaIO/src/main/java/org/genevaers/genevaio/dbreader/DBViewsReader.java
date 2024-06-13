@@ -33,7 +33,10 @@ import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
 
+import com.google.common.flogger.FluentLogger;
+
 public class DBViewsReader extends DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     String queryBase = "SELECT "
     + "v.ENVIRONID, "
@@ -78,6 +81,8 @@ public class DBViewsReader extends DBReaderBase {
         }
         if(hasErrors == false) {
             addViewsToRepo(dbConnection, params);
+        } else {
+            logger.atSevere().log("Get Views failed");
         }
         return hasErrors;
     }
@@ -112,8 +117,10 @@ public class DBViewsReader extends DBReaderBase {
             String inputId = ii.next();
             if (views.contains(Integer.parseInt(inputId)) == false) {
                 allExist = false;
-                // Log folder id that is not found
+                logger.atSevere().log("View %s not found ", inputId);
                 hasErrors = true;
+            } else {
+                logger.atInfo().log("View %s found ", inputId);
             }
         }
         return allExist;

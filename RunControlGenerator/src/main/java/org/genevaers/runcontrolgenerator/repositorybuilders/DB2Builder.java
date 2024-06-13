@@ -27,7 +27,7 @@ public class DB2Builder implements RepositoryBuilder{
 		conParams.setPassword(System.getenv("TSO_PASSWORD"));
 		DBReader dbr = new DBReader();
 		dbr.addViewsToRepository(conParams);
-        return retval;
+		return dbr.hasErrors() ? Status.ERROR : Status.OK;
     }
     
 }

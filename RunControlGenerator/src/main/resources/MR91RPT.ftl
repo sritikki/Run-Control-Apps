@@ -134,7 +134,7 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 </#if>
  
 ===============================
-~WRNS - SAFR compiler warnings:
+~WRNS - Warnings:
 ===============================
 <#if warnings?size == 0> 
 <none>
@@ -146,13 +146,13 @@ View(${warn.viewid?c}) Loc(${warn.source}) SrcLR(${warn.srcLR?c})  SrcLF(${warn.
 </#if> 
  
 =============================
-~ERRS - SAFR compiler errors:
+~ERRS - Errors:
 =============================
 <#if compErrs?size == 0> 
 <none>
 <#else>
 <#list compErrs as err>
-View(${err.viewid?c}) Loc(${err.source}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcLF?c}) Col(${err.columnNumber})
+View(${err.viewid?c}) Loc(${err.source!"none"}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcLF?c}) Col(${err.columnNumber})
  ${err.detail}
 </#list>
 </#if>
