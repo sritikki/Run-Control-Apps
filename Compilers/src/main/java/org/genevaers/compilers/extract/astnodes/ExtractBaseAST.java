@@ -232,4 +232,8 @@ public abstract class ExtractBaseAST extends ASTBase{
         getCurrentSourceOrColumnNumber(), detail);
     }
 
+    public static void setCurrentMessageSource(CompilerMessageSource currentMessageSource) {
+        ExtractBaseAST.currentMessageSource = currentMessageSource;
+    }
+
 }
