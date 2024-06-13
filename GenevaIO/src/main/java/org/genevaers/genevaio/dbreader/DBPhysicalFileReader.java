@@ -66,13 +66,13 @@ public class DBPhysicalFileReader extends DBReaderBase {
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         if(requiredLFs.size() > 0) {
             String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
-                    + "where ENVIRONID=? and LOGFILEID in (" + getPlaceholders(getIds(requiredLFs)) + ");";
+                    + "where ENVIRONID=? and LOGFILEID in (" + getPlaceholders(requiredLFs.size()) + ");";
             try (PreparedStatement ps = dbConnection.prepareStatement(pfsFromLfs);){
                 int parmNum = 1;
                 ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
-                String[] idsIn = getIds(requiredLFs).split(",");
-                for(int i=0; i<idsIn.length; i++) {
-                    ps.setString(parmNum++, idsIn[i]);
+                Iterator<Integer> lfi = requiredLFs.iterator();
+                while(lfi.hasNext()) {
+                    ps.setInt(parmNum++, lfi.next());
                 }
                 ResultSet rs = dbConnection.getResults(ps);
                 while (rs.next()) {
