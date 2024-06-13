@@ -1,0 +1,54 @@
+digraph WorkBench {
+    rankdir=TB
+//Nodes
+graph [label="WorkBench Module Dependencies\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22 ranksep="2 equally" compound=true ];
+labeljust=center;
+
+subgraph cluster_we { label="Export with RcaReport selected" node [shape=plaintext]
+    export[label="Export" shape=rect style=filled color=PaleGreen]
+}
+
+    subgraph cluster_comp { label="RCAReport"  node [shape=plaintext] 
+        DIR[label="Make Directory" shape=rect style=filled color="lightblue1" ]
+    }
+
+subgraph cluster_data { label="Run Control Analyser" node [shape=plaintext]
+    rca[label="Run" shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_xmlidir { label="WBXMLI" node [shape=plaintext]
+    xmlidir[label="Write XML here" shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_rcadir { label="Rca directory" node [shape=plaintext]
+    rcadir[label="gersrca.html" shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_reports { label="RCA Reports" node [shape=plaintext]
+    rcar[label="VDP XLT JLT " shape=rect style=filled color=PaleGreen]
+}
+
+subgraph cluster_rcg { label="Run Control Generator" node [shape=plaintext]
+    rcg[label="Run" shape=rect style=filled color=pink]
+}
+
+subgraph cluster_rcfiles { label="RC Files" node [shape=plaintext]
+    vdp[label="VDP" shape=rect style=filled color=pink]
+    xlt[label="XLT" shape=rect style=filled color=pink]
+    jlt[label="JLT" shape=rect style=filled color=pink]
+}
+xmf[label="WB XML" shape=cylinder style=filled color=grey]
+
+export -> DIR [lhead=cluster_comp label=" Step 1"]
+DIR -> xmlidir [lhead=cluster_xmlidir label=" Step 2"]
+xmlidir -> xmf [lhead=cluster_xmldir]
+export -> rcg [lhead=cluster_rcg label=" Step 3"]
+rcg -> xlt [lhead=cluster_rc]
+rcg -> xmf [dir="back"]
+export -> rca [lhead=cluster_data label=" Step 4"]
+rca -> xlt [lhead=cluster_rcfiles dir="back"]
+rca -> rcar [lhead=cluster_reports]
+rca -> rcadir [lhead=cluster_rcadir]
+DIR -> rcg [style="invis"]
+rcar -> rcadir [style="invis"]
+}
