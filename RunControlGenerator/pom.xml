@@ -90,7 +90,7 @@
 							<programs>
 								<program>
 									<mainClass>org.genevaers.runcontrolgenerator.App</mainClass>
-									<id>jmr91</id>
+									<id>gvbrcg</id>
 								</program>
 							</programs>
 						</configuration>

@@ -73,37 +73,6 @@ public class ParmReaderTest {
         assertEquals(ParmReader.PARM_RESULT.WARN_IGNORED,  pr.getResult());
     }
 
-    @Test public void testSetRCOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertEquals(ParmReader.PARM_RESULT.OK,  pr.getResult());
-    }
-    @Test public void testSetWBXMLOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_WB_XML_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertEquals(ParmReader.PARM_RESULT.OK,  pr.getResult());
-    }
-    @Test public void testSetVDPXMLOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_VDP_XML_FILE+ "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertEquals(ParmReader.PARM_RESULT.OK,  pr.getResult());
-    }
-
     @Test public void testNoOutputFromValidInput() throws IOException {
         TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n\n");
         ParmReader pr = new ParmReader();
@@ -112,42 +81,6 @@ public class ParmReaderTest {
         pr.setConfig(rcc);
         pr.populateConfigFrom(TestHelper.getTestParmName());
         assertFalse(rcc.isValid());
-    }
-
-    @Test public void testRCOutFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertTrue(rcc.isValid());
-        assertTrue(rcc.isOutputRC());
-        assertFalse(rcc.isWriteVDPXML());
-        assertFalse(rcc.isWriteVDPXML());
-    }
-
-    @Test public void testWBXMLOutFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_WB_XML_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertTrue(rcc.isValid());
-    }
-
-    @Test public void testVDPXMLOutFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_VDP_XML_FILE + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertTrue(rcc.isValid());
     }
 
 }

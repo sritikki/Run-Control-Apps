@@ -21,7 +21,7 @@ subgraph cluster_xmlidir { label="WBXMLI" node [shape=plaintext]
 }
 
 subgraph cluster_rcadir { label="Rca directory" node [shape=plaintext]
-    rcadir[label="gersrca.html" shape=rect style=filled color=PaleGreen]
+    rcadir[label="gvbrca.html" shape=rect style=filled color=PaleGreen]
 }
 
 subgraph cluster_reports { label="RCA Reports" node [shape=plaintext]

@@ -151,8 +151,7 @@ public class TestHelper {
 			File base = resoucesPath.resolve(TEST_BASEFILE).toFile();
 			org.apache.commons.io.FileUtils.copyFileToDirectory(base, wbxmliPath.toFile());
 			writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-			+   RunControlConfigration.WB_XML_FILES_SOURCE + "=" + wbxmliPath.toString() + "\n"
-			+   RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
+			+   RunControlConfigration.WB_XML_FILES_SOURCE + "=" + wbxmliPath.toString() + "\n");
 			File gendir = new File(TEST_RUNCONTROLS_RCGGEN);
 			gendir.mkdirs();
 			} catch (IOException e) {
@@ -167,8 +166,7 @@ public class TestHelper {
 			File base = resoucesPath.resolve(ONE_COL).toFile();
 			org.apache.commons.io.FileUtils.copyFileToDirectory(base, wbxmliPath.toFile());
 			writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-			+   RunControlConfigration.WB_XML_FILES_SOURCE + "=" + wbxmliPath.toString() + "\n"
-			+   RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
+			+   RunControlConfigration.WB_XML_FILES_SOURCE + "=" + wbxmliPath.toString() + "\n");
 			File gendir = new File(TEST_RUNCONTROLS_RCGGEN);
 			gendir.mkdirs();
 			} catch (IOException e) {
@@ -183,8 +181,7 @@ public class TestHelper {
 			File base = resoucesPath.resolve(SELECTIF).toFile();
 			org.apache.commons.io.FileUtils.copyFileToDirectory(base, wbxmliPath.toFile());
 			writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-			+   RunControlConfigration.WB_XML_FILES_SOURCE + "=" + wbxmliPath.toString() + "\n"
-			+   RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
+			+   RunControlConfigration.WB_XML_FILES_SOURCE + "=" + wbxmliPath.toString() + "\n");
 			File gendir = new File(TEST_RUNCONTROLS_RCGGEN);
 			gendir.mkdirs();
 			} catch (IOException e) {
@@ -202,8 +199,7 @@ public class TestHelper {
 			writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n" 
 					+ RunControlConfigration.WB_XML_FILES_SOURCE + "=" + wbxmliPath.toString() + "\n" 
 					+ RunControlConfigration.EMIT_ENABLED + "=Y" + "\n" 
-					+ RunControlConfigration.DOT_JLT + "=Y" + "\n" 
-					+ RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
+					+ RunControlConfigration.DOT_JLT + "=Y" + "\n");
 			File gendir = new File(TEST_RUNCONTROLS_RCGGEN);
 			gendir.mkdirs();
 		} catch (IOException e) {
@@ -224,8 +220,7 @@ public class TestHelper {
 					+ RunControlConfigration.DOT_XLT + "=Y" + "\n" 
 					+ RunControlConfigration.DOT_JLT + "=Y" + "\n" 
 					+ RunControlConfigration.VIEW_DOTS + "=" + views + "\n" 
-					+ RunControlConfigration.COLUMN_DOTS + "=" + columnFilter + "\n" 
-					+ RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
+					+ RunControlConfigration.COLUMN_DOTS + "=" + columnFilter + "\n");
 			File gendir = new File(TEST_RUNCONTROLS_RCGGEN);
 			gendir.mkdirs();
 		} catch (IOException e) {

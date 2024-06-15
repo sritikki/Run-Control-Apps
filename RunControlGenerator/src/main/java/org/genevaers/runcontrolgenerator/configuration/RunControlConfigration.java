@@ -31,9 +31,6 @@ public class RunControlConfigration extends GersConfigration{
     public static final String DEFAULT_PARM_FILENAME = "MR91Parm.cfg";
     public static final String DEFAULT_ZOSPARM_FILENAME = "MR91PARM";
 
-    public static final String OUTPUT_VDP_XML_FILE = "OUTPUT_VDP_XML_FILE";
-    public static final String OUTPUT_WB_XML_FILES = "OUTPUT_WB_XML_FILES";
-    public static final String OUTPUT_RUN_CONTROL_FILES = "OUTPUT_RUN_CONTROL_FILES";
     public static final String INPUT_TYPE = "INPUT_TYPE";
 
     public static final String DB2_SCHEMA = "DB2_SCHEMA";
@@ -69,9 +66,6 @@ public class RunControlConfigration extends GersConfigration{
         super();
         parmToValue.clear();
         parmToValue.put(INPUT_TYPE, new ConfigEntry("", false));
-        parmToValue.put(OUTPUT_RUN_CONTROL_FILES, new ConfigEntry("", false));
-        parmToValue.put(OUTPUT_WB_XML_FILES, new ConfigEntry("", false));
-        parmToValue.put(OUTPUT_VDP_XML_FILE, new ConfigEntry("", false));
 
         parmToValue.put(DB2_SCHEMA, new ConfigEntry("", false));
         parmToValue.put(DB2_ENVIRONMENT_ID, new ConfigEntry("", false));
@@ -114,37 +108,8 @@ public class RunControlConfigration extends GersConfigration{
 	}
 
 	public static boolean isValid() {
-        boolean valid = false;
-        valid = isInputValid();
-        valid &= isOutputValid();
-		return valid;
+		return isInputValid();
 	}
-
-    public static boolean isOutputValid() {
-        boolean valid = false;
-        if( isOutputRC()) {
-            valid = true;
-        }
-        if(isWriteWBXML()){
-            valid |= true;
-        }
-        if(isWriteVDPXML()){
-            valid |= true;
-        }
-        return valid;
-    }
-
-    public static boolean isOutputRC() {
-        return parmToValue.get(OUTPUT_RUN_CONTROL_FILES).getValue().equalsIgnoreCase("Y");
-    }
-
-    public static boolean isWriteWBXML() {
-        return parmToValue.get(OUTPUT_WB_XML_FILES).getValue().equalsIgnoreCase("Y");
-    }
-
-    public static boolean isWriteVDPXML() {
-        return parmToValue.get(OUTPUT_VDP_XML_FILE).getValue().equalsIgnoreCase("Y");
-    }
 
     private static boolean isInputValid() {
         boolean valid = true;
