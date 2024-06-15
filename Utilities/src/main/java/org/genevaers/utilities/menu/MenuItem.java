@@ -90,9 +90,9 @@ public abstract class MenuItem {
     //     try {
     //         String os = System.getProperty("os.name");
     //         if(os.startsWith("Windows")) {
-    //             runner.run("jmr91.bat", rcDir.toFile());
+    //             runner.run("gvbrcg.bat", rcDir.toFile());
     //         } else {
-    //             runner.run("jmr91", rcDir.toFile());
+    //             runner.run("gvbrcg", rcDir.toFile());
     //         }
     //     } catch (IOException | InterruptedException e) {
     //         // TODO Auto-generated catch block

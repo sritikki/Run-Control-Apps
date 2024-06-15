@@ -70,7 +70,7 @@ public class JLTTreeGenerator {
     }
 
     private RTHHeader addRTHView(int rthViewNumber) {
-        makeOutputPF(rthViewNumber, "REFRRTH", "JMR91 generated REFRRTH");
+        makeOutputPF(rthViewNumber, "REFRRTH", "gvbrcg generated REFRRTH");
         rthHeader = new RTHHeader();
         rthHeader.setLogicTableEmitter(jltEmitter);
         rthHeader.addView(rthViewNumber);
@@ -152,7 +152,7 @@ public class JLTTreeGenerator {
     }
 
     private REHHeader addREHView(int viewNum) {
-        makeOutputPF(viewNum, "REFRREH", "JMR91 generated REFRREH");
+        makeOutputPF(viewNum, "REFRREH", "gvbrcg generated REFRREH");
         rehHeader = new REHHeader();
         rehHeader.setLogicTableEmitter(jltEmitter);
         rehHeader.addView(viewNum);

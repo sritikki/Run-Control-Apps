@@ -1,6 +1,6 @@
 specFileSets:
   - name: "All Formats Date Tests"
-    templateSetName: "JMR91toPE.yaml"
+    templateSetName: "gvbrcgtoPE.yaml"
     specs:
       - "PeTests/DEMO/DEMO.yaml"
       - "PeTests/DEMO/DEMO-All.yaml"

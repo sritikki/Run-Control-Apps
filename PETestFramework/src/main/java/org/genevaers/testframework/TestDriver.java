@@ -252,17 +252,17 @@ public class TestDriver {
 		//copy config
 		//Create WBXMLI
 		//copy XML to above
-		//cd to or run jmr91 from test dir 
+		//cd to or run gvbrcg from test dir 
 		CommandRunner cr = new CommandRunner();
 		try {
 			String mr91String;
 			String rcaString;
 			if(GersEnvironment.get("OSNAME").startsWith("Win")) {
-				mr91String = "jmr91.bat";
-				rcaString = "gersrca.bat";
+				mr91String = "gvbrcg.bat";
+				rcaString = "gvbrca.bat";
 			} else {
-				mr91String = "jmr91";
-				rcaString = "gersrca";
+				mr91String = "gvbrcg";
+				rcaString = "gvbrca";
 			}
 			cr.run(mr91String, localTest.toFile());
 			logger.atInfo().log(cr.getCmdOutput().toString());
@@ -273,7 +273,7 @@ public class TestDriver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// dittto gersrca
+		// dittto gvbrca
 		processLocalResult(testToRun);
 
 		//how to we check a pretend pass? Just return code?

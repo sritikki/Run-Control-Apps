@@ -54,7 +54,6 @@ public class RCDriver {
 
     public static void addViewsToConfig(String viewIDs) {
         RunControlConfigration.set(RunControlConfigration.DBVIEWS, viewIDs);
-        RunControlConfigration.set(RunControlConfigration.OUTPUT_RUN_CONTROL_FILES, "Y");
     }
 
     public static void setDbType(String dbt) {
@@ -112,11 +111,11 @@ public class RCDriver {
 
     private static void runRCG(CommandRunner cmd) {
         try {
-            logger.atInfo().log("Run JMR91 from %s", rcPath.toString() );
-            cmd.run("jmr91.bat", rcPath.toFile());
+            logger.atInfo().log("Run gvbrcg from %s", rcPath.toString() );
+            cmd.run("gvbrcg.bat", rcPath.toFile());
             cmd.clear();
         } catch (IOException | InterruptedException e) {
-            logger.atSevere().log("JMR91 command failed %s", e.getMessage() );
+            logger.atSevere().log("gvbrcg command failed %s", e.getMessage() );
         }
     }
 
@@ -147,12 +146,12 @@ public class RCDriver {
 
     public static void runRCA(CommandRunner cmd) {
         writeRCAParms();
-        logger.atInfo().log("Run gersrca from %s", rcPath.toString() );
+        logger.atInfo().log("Run gvbrca from %s", rcPath.toString() );
         try {
-            cmd.run("gersrca.bat", rcPath.toFile());
+            cmd.run("gvbrca.bat", rcPath.toFile());
             cmd.clear();
         } catch (IOException | InterruptedException e) {
-            logger.atSevere().log("gersrca command failed %s", e.getMessage() );
+            logger.atSevere().log("gvbrca command failed %s", e.getMessage() );
         }
     }
 

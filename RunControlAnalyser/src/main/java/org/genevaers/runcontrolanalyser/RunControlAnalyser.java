@@ -154,7 +154,7 @@ public class RunControlAnalyser {
 				baseFileName += "/";
 			}
 			Path rcPath = Paths.get(baseFileName);
-			htmlFileName = "gersrca.html";
+			htmlFileName = "gvbrca.html";
 
 			logger.atInfo().log("Read VDP File %s", rcPath);
 			logger.atInfo().log("Read XLT File %s", rcPath);

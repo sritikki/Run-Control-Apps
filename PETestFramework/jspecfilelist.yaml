@@ -1,4 +1,4 @@
 name: "Regression Tests"
-templateSet: "JMR91toPE.yaml"
+templateSet: "gvbrcgtoPE.yaml"
 specs:
   - "PeTests/Format/SELIF.yaml"
