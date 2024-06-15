@@ -39,7 +39,6 @@ public class GersConfigration {
     protected static final String ZOSPARMFILE = "ZOSPARMFILE";
 
     public static final String LOG_LEVEL = "LOG_LEVEL";
-    public static final String TRACE = "TRACE";
     public static final String LOG_FILE = "LOGFILE";
 
     public static final String XLT_DDNAME = "XLT";
@@ -72,10 +71,10 @@ public class GersConfigration {
     }
 
 	public static Level getLogLevel() {
-		if(parmToValue.get(TRACE).getValue().equalsIgnoreCase("Y")){
-            return Level.FINE;
-        } else {
+		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("STANDARD")){
             return Level.INFO;
+        } else {
+            return Level.FINE;
         }
 	}
 

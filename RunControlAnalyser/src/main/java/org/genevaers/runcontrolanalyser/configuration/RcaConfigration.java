@@ -44,14 +44,14 @@ public class RcaConfigration extends GersConfigration {
     public static final String RCA_DIR = "RCA/";
     public RcaConfigration() {
         //Map preloaded with expect names and default values
-        parmToValue.put(TRACE, new ConfigEntry("N", false));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         //Hidden defaults
         parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
         parmToValue.put(ZOSPARMFILE, new ConfigEntry(DEFAULT_ZOSPARM_FILENAME, true));
         // parmToValue.put(REPORT_FILE, new ConfigEntry(REPORT_FILE, true));
         parmToValue.put(LOG_FILE, new ConfigEntry("RCALOG", true));
-        parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", true));
         parmToValue.put(XLT_DDNAME, new ConfigEntry("XLT", true));
         parmToValue.put(JLT_DDNAME, new ConfigEntry("JLT", true));
         

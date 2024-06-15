@@ -81,7 +81,7 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(DB2_DATABASE, new ConfigEntry("", false));
         parmToValue.put(DBFLDRS, new ConfigEntry("", false));
         parmToValue.put(DBVIEWS, new ConfigEntry("", false));
-        parmToValue.put(TRACE, new ConfigEntry("N", false));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         //Hidden defaults
         parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
