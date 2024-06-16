@@ -41,6 +41,7 @@ public class TestHelper {
 
 	public static final String TEST_RESOURCES = "./src/test/resources";
 	public static final String TEST_PARMNAME = "./src/test/resources/MR91ParmTest";
+	public static final String TEST_DBVIEWS = "./src/test/resources/DBVIEWS";
 	public static final String TEST_DB2PARM = "./src/test/resources/MR91ParmDB2";
 	public static final String TEST_REPORTNAME = "./target/MR91Report";
 	public static final String TEST_LOGNAME = "./target/MR91Log";
@@ -108,19 +109,18 @@ public class TestHelper {
 	private static int vcscompid = 1;
 
 	public static void writeToParm(String parms) {
-		// Initialize this factory so it can make us a VDP
-		File p = new File(TEST_PARMNAME);
-		try {
-			p.createNewFile();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try (FileWriter fw = new FileWriter(p)){
-			fw.write(parms);
+		writeStringToFile(parms, TEST_PARMNAME);
+	}
+
+	public static void writeToIds(String parms) {
+		writeStringToFile(parms, TEST_DBVIEWS);
+	}
+
+	public static void writeStringToFile(String data, String name) {
+		try (FileWriter fw = new FileWriter((new File(name)))){
+			fw.write(data);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("Unable to write to %s:\n%s", name, e.getMessage());
 		}
 	}
 

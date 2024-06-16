@@ -47,6 +47,9 @@ public class GersConfigration {
     
     public static final String ZOS = "ZOS";
     public static final String CURRENT_WORKING_DIRECTORY = "CWD";
+
+    public static final String DBVIEWS = "DBVIEWS";
+    public static final String DBFLDRS = "DBFLDRS";
     protected static Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
     private static boolean zos;
