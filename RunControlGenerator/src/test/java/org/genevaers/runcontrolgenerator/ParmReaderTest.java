@@ -28,9 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.utilities.IdsReader;
 import org.genevaers.utilities.ParmReader;
+import org.genevaers.utilities.IdsReader.IDS_RESULT;
 
 public class ParmReaderTest {
 
@@ -73,14 +76,20 @@ public class ParmReaderTest {
         assertEquals(ParmReader.PARM_RESULT.WARN_IGNORED,  pr.getResult());
     }
 
-    @Test public void testNoOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertFalse(rcc.isValid());
+    @Test public void testIdReader() throws IOException {
+        TestHelper.writeToIds("#Comment only\n"
+        + "123,345   ignore this comment\n"
+        + "*Another comment this time with a star\n"
+        + "678\n"
+        + "90,25\n");
+        IdsReader idr = new IdsReader();
+        Set<Integer> ids = idr.getIdsFrom(TestHelper.TEST_DBVIEWS);
+        assertEquals(ids.size(),  5);
+        assertTrue(ids.contains(123));
+        assertTrue(ids.contains(345));
+        assertTrue(ids.contains(25));
+        assertEquals(IDS_RESULT.OK, idr.getResult());
     }
+
 
 }

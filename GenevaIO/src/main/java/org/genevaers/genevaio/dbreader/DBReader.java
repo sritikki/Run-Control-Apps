@@ -29,19 +29,20 @@ public class DBReader {
     private DatabaseConnection dbConnection;
     private DatabaseConnectionParams params;
     private boolean hasErrors = false;
-    DBViewsReader viewsReader = new DBViewsReader();
-    DBViewColumnsReader viewColumnsReader = new DBViewColumnsReader();
-    DBViewSourceReader viewSourceReader = new DBViewSourceReader();
-    DBViewColumnSourceReader viewColumnSourceReader = new DBViewColumnSourceReader();
-    DBSortKeyReader sortKeyReader = new DBSortKeyReader();
-    DBControlRecordReader controlRecordReader = new DBControlRecordReader();
-    DBLookupsReader lookupsReader = new DBLookupsReader();
-    DBLogicalRecordReader logicalRecordReader = new DBLogicalRecordReader();
-    DBFieldReader fieldReader = new DBFieldReader();
-    DBLRIndexReader lrIndexReader = new DBLRIndexReader();
-    DBLogicalFileReader logicalFileReader = new DBLogicalFileReader();
-    DBPhysicalFileReader physicalFileReader = new DBPhysicalFileReader();
-    DBExitReader exitReader = new DBExitReader();
+    private DBViewsReader viewsReader = new DBViewsReader();
+    private DBViewColumnsReader viewColumnsReader = new DBViewColumnsReader();
+    private DBViewSourceReader viewSourceReader = new DBViewSourceReader();
+    private DBViewColumnSourceReader viewColumnSourceReader = new DBViewColumnSourceReader();
+    private DBSortKeyReader sortKeyReader = new DBSortKeyReader();
+    private DBControlRecordReader controlRecordReader = new DBControlRecordReader();
+    private DBLookupsReader lookupsReader = new DBLookupsReader();
+    private DBLogicalRecordReader logicalRecordReader = new DBLogicalRecordReader();
+    private DBFieldReader fieldReader = new DBFieldReader();
+    private DBLRIndexReader lrIndexReader = new DBLRIndexReader();
+    private DBLogicalFileReader logicalFileReader = new DBLogicalFileReader();
+    private DBPhysicalFileReader physicalFileReader = new DBPhysicalFileReader();
+    private DBExitReader exitReader = new DBExitReader();
+    private DBFoldersReader foldersReader = new DBFoldersReader();
 
     public List<Integer> getViewIds() {
         return viewIds;
@@ -62,7 +63,8 @@ public class DBReader {
     }
 
     private void addComponents() {
-        hasErrors = viewsReader.addToRepo(dbConnection, params);
+        hasErrors = foldersReader.addToRepo(dbConnection, params);
+        hasErrors |= viewsReader.addToRepo(dbConnection, params);
         if(hasErrors == false) {
             hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
             hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
