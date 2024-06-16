@@ -66,7 +66,7 @@ public class DB2Connection extends DatabaseConnection{
 		Class.forName("com.ibm.db2.jcc.DB2Driver");
     }
 
-    @Override
+    //@Override
     public List<Integer> getExistingFolderIds(String folderIds) throws SQLException {
         String folderQuery;
         folderQuery = "select VIEWFOLDERID from ";
@@ -86,7 +86,7 @@ public class DB2Connection extends DatabaseConnection{
         return fldrs;
     }
 
-    @Override
+    //@Override
     public List<Integer> getViewIdsFromFolderIds(String folderIds) {
         List<Integer> views = new ArrayList<>();
         String viewsQuery = "select viewid  from " + params.getSchema() + ".vfgetPlaceholdersvassoc vf "

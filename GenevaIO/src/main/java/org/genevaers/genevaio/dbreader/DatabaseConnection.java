@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public abstract class DatabaseConnection {
 
@@ -37,9 +38,9 @@ public abstract class DatabaseConnection {
 
     public abstract boolean isConnected();
 
-    public abstract List<Integer> getExistingFolderIds(String folderIds) throws SQLException;
+    // public abstract List<Integer> getExistingFolderIds(Set<Integer> folderIds) throws SQLException;
 
-    public abstract List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException;
+    // public abstract List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException;
 
     public abstract PreparedStatement prepareStatement(String query) throws SQLException ;
 

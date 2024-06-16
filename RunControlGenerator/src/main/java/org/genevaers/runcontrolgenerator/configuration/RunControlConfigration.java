@@ -28,8 +28,8 @@ import com.google.common.flogger.FluentLogger;
 public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String DEFAULT_PARM_FILENAME = "MR91Parm.cfg";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "MR91PARM";
+    public static final String DEFAULT_PARM_FILENAME = "RCGParm.cfg";
+    public static final String DEFAULT_ZOSPARM_FILENAME = "RCGPARM";
 
     public static final String INPUT_TYPE = "INPUT_TYPE";
 
@@ -42,8 +42,8 @@ public class RunControlConfigration extends GersConfigration{
     public static final String DBFLDRS = "DBFLDRS";
     public static final String DBVIEWS = "DBVIEWS";
 
-    private static final String REPORT_FILE = "MR91RPT";
-    private static final String LOG_FILE = "MR91LOG";
+    private static final String REPORT_FILE = "RCGRPT";
+    private static final String LOG_FILE = "RCGLOG";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";

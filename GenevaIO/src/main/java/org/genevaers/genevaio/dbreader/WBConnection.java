@@ -30,13 +30,13 @@ public class WBConnection extends DatabaseConnection{
         throw new UnsupportedOperationException("Unimplemented method 'isConnected'");
     }
 
-    @Override
+    //@Override
     public List<Integer> getExistingFolderIds(String folderIds) throws SQLException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getExistingFolderIds'");
     }
 
-    @Override
+    //@Override
     public List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getViewIdsFromFolderIds'");

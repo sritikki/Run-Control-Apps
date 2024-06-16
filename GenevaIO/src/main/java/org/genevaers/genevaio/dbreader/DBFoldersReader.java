@@ -26,20 +26,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
+import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.IdsReader;
+
+import com.google.common.flogger.FluentLogger;
 
 public class DBFoldersReader extends DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private static Set<Integer> folderIds;
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        getViewIdsFromFolderIds(dbConnection, params);
-        if(hasErrors == false) {
-//            addViewsToRepo(dbConnection, params);
+        folderIds = IdsReader.getIdsFrom(GersConfigration.DBFLDRS);
+        if(folderIds.size() > 0) {
+            getViewIdsFromFolderIds(dbConnection, params);
+        } else {
+            logger.atInfo().log("No folders defined");            
         }
         return hasErrors;
     }
@@ -96,19 +106,19 @@ public class DBFoldersReader extends DBReaderBase {
     }
 
     private static void getFolderViewIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        try {
-            List<Integer> views = dbConnection.getViewIdsFromFolderIds(params.getFolderIds());
-            if (views.size() > 0) {
-                Iterator<Integer> vi = views.iterator();
-                viewIdsString = vi.next().toString();
-                while (vi.hasNext()) {
-                    viewIdsString += "," + vi.next().toString();
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // try {
+        //     List<Integer> views = dbConnection.getViewIdsFromFolderIds(params.getFolderIds());
+        //     if (views.size() > 0) {
+        //         Iterator<Integer> vi = views.iterator();
+        //         viewIdsString = vi.next().toString();
+        //         while (vi.hasNext()) {
+        //             viewIdsString += "," + vi.next().toString();
+        //         }
+        //     }
+        // } catch (SQLException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
     }
 
     public boolean hasErrors() {
@@ -119,21 +129,21 @@ public class DBFoldersReader extends DBReaderBase {
         boolean allExist = true;
     
         List<Integer> fldrIds;
-        try {
-            fldrIds = dbConnection.getExistingFolderIds(params.getFolderIds());
-            Iterator<Integer> fi = fldrIds.iterator();
-            while(fi.hasNext()) {
-                Integer fldrId = fi.next();
-                List<String> inputs = Arrays.asList(params.getFolderIds());
-                if(inputs.contains(fldrId.toString()) == false) {
-                    allExist = false;
-                    //Log folder id that is not found
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//         try {
+// //            fldrIds = dbConnection.getExistingFolderIds(folderIds);
+// //            Iterator<Integer> fi = fldrIds.iterator();
+//             // while(fi.hasNext()) {
+//             //     Integer fldrId = fi.next();
+//             //     List<String> inputs = Arrays.asList(params.getFolderIds());
+//             //     if(inputs.contains(fldrId.toString()) == false) {
+//             //         allExist = false;
+//             //         //Log folder id that is not found
+//             //     }
+//             // }
+//         } catch (SQLException e) {
+//             // TODO Auto-generated catch block
+//             e.printStackTrace();
+//         }
         return allExist;
     }
     

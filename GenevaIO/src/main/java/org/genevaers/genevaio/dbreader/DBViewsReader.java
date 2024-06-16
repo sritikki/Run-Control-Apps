@@ -26,12 +26,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
+import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.IdsReader;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -72,17 +75,14 @@ public class DBViewsReader extends DBReaderBase {
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        if(params.getFolderIds().length() > 0) {
-            getViewIdsFromFolderIds(dbConnection, params);
-        }else if(params.getViewIds().length() > 0) {
-            viewIdsString = params.getViewIds();
-            convertToIntergerSet(viewIdsString);
-            verifyViewsExist(dbConnection, params);
-        }
-        if(hasErrors == false) {
+        viewIds = IdsReader.getIdsFrom(GersConfigration.DBVIEWS);
+        if(viewIds.size() > 0) {
+            verifyViewsExist(dbConnection, params); //Do we need to verify - should find out anyway?
             addViewsToRepo(dbConnection, params);
-        } else {
-            logger.atSevere().log("Get Views failed");
+        }
+         else {
+            logger.atSevere().log("No views defined");
+            hasErrors = true;
         }
         return hasErrors;
     }
@@ -181,56 +181,56 @@ public class DBViewsReader extends DBReaderBase {
         currentViewNode.setFormatFilterLogic(rs.getString("FORMATFILTLOGIC"));
     }
 
-    private void getViewIdsFromFolderIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        if(foldersExist(dbConnection, params)) {
-            getFolderViewIds(dbConnection, params);
-            params.setViewIds(viewIdsString); //update params for future queries
-        } else {
-            hasErrors = true;
-        }
-    }
+    // private void getViewIdsFromFolderIds(DatabaseConnection dbConnection, Set<Integer> folderIds) {
+    //     if(foldersExist(dbConnection, folderIds)) {
+    //         getFolderViewIds(dbConnection, folderIds);
+    //         folderIds.setViewIds(viewIdsString); //update params for future queries
+    //     } else {
+    //         hasErrors = true;
+    //     }
+    // }
 
-    private static void getFolderViewIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        try {
-            List<Integer> views = dbConnection.getViewIdsFromFolderIds(params.getFolderIds());
-            if (views.size() > 0) {
-                Iterator<Integer> vi = views.iterator();
-                viewIdsString = vi.next().toString();
-                while (vi.hasNext()) {
-                    viewIdsString += "," + vi.next().toString();
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+    // private static void getFolderViewIds(DatabaseConnection dbConnection, Set<Integer> folderIds) {
+    //     try {
+    //         List<Integer> views = dbConnection.getViewIdsFromFolderIds(folderIds.getFolderIds());
+    //         if (views.size() > 0) {
+    //             Iterator<Integer> vi = views.iterator();
+    //             viewIdsString = vi.next().toString();
+    //             while (vi.hasNext()) {
+    //                 viewIdsString += "," + vi.next().toString();
+    //             }
+    //         }
+    //     } catch (SQLException e) {
+    //         // TODO Auto-generated catch block
+    //         e.printStackTrace();
+    //     }
+    // }
 
     public boolean hasErrors() {
         return hasErrors;
     }
 
-    private static boolean foldersExist(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        boolean allExist = true;
+    // private static boolean foldersExist(DatabaseConnection dbConnection, Set<Integer> folderIds) {
+    //     boolean allExist = true;
     
-        List<Integer> fldrIds;
-        try {
-            fldrIds = dbConnection.getExistingFolderIds(params.getFolderIds());
-            Iterator<Integer> fi = fldrIds.iterator();
-            while(fi.hasNext()) {
-                Integer fldrId = fi.next();
-                List<String> inputs = Arrays.asList(params.getFolderIds());
-                if(inputs.contains(fldrId.toString()) == false) {
-                    allExist = false;
-                    //Log folder id that is not found
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return allExist;
-    }
+    //     List<Integer> fldrIds;
+    //     try {
+    //         fldrIds = dbConnection.getExistingFolderIds(folderIds);
+    //         Iterator<Integer> fi = fldrIds.iterator();
+    //         while(fi.hasNext()) {
+    //             Integer fldrId = fi.next();
+    //             List<String> inputs = Arrays.asList(folderIds.getFolderIds());
+    //             if(inputs.contains(fldrId.toString()) == false) {
+    //                 allExist = false;
+    //                 //Log folder id that is not found
+    //             }
+    //         }
+    //     } catch (SQLException e) {
+    //         // TODO Auto-generated catch block
+    //         e.printStackTrace();
+    //     }
+    //     return allExist;
+    // }
     
     private void convertToIntergerSet(String viewIdsString) {
         String[] vids = viewIdsString.split(",");
