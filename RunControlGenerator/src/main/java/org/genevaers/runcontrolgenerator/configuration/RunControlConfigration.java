@@ -4,8 +4,6 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import org.genevaers.repository.Repository;
 
 /*
@@ -31,7 +29,6 @@ import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.IdsReader;
 
 import com.google.common.flogger.FluentLogger;
-import com.ibm.db2.jcc.am.s;
 
 public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -85,8 +82,6 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(DB_SERVER, new ConfigEntry("", false));
         parmToValue.put(DB_PORT, new ConfigEntry("", false));
         parmToValue.put(DB_DATABASE, new ConfigEntry("", false));
-        // parmToValue.put(DBFLDRS, new ConfigEntry("", false));
-        // parmToValue.put(DBVIEWS, new ConfigEntry("", false));
         parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         //Hidden defaults

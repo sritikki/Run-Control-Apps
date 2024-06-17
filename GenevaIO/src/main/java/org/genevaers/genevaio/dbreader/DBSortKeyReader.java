@@ -93,7 +93,7 @@ public class DBSortKeyReader extends DBReaderBase {
             vsk.setRtdLrFieldId(rs.getInt("SORTTITLELRFIELDID"));
             //vsk.setRtdJoinId(rtdJoinId);
             vsk.setSortKeyDataType(DataType.fromdbcode(rs.getString("SKFLDFMTCD")));
-            vsk.setSortKeySigned(rs.getBoolean("SKSIGNED"));
+            vsk.setSortKeySigned(rs.getInt("SKSIGNED") == 0 ? false : true);
             vsk.setSkStartPosition(rs.getShort("SKSTARTPOS"));
             vsk.setSkFieldLength(rs.getShort("SKFLDLEN"));
             //vsk.setSkOrdinalPosition(skOrdinalPosition);

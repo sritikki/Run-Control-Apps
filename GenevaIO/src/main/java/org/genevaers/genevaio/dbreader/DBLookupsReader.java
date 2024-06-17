@@ -140,7 +140,7 @@ public class DBLookupsReader extends DBReaderBase{
         requiredLRs.add(rs.getInt("LKUPSRCLR"));
         lpKey.setFieldId(rs.getInt("LRFIELDID"));
         lpKey.setDatatype(DataType.fromdbcode(getDefaultedString(rs.getString("VALUEFMTCD"), "NONE")));
-        lpKey.setSigned(rs.getBoolean("SIGNED"));
+        lpKey.setSigned(rs.getInt("SIGNED") == 0 ? false : true);
         lpKey.setStartPosition((short)0);
         lpKey.setFieldLength(rs.getShort("VALUELEN"));
         lpKey.setOrdinalPosition(rs.getShort("KEYSEQNBR"));

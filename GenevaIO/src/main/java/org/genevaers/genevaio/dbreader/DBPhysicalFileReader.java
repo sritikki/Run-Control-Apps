@@ -115,7 +115,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
         pf.setSqlText(getDefaultedString(rs.getString("DBMSSQL"), ""));
         pf.setDatabaseTable(getDefaultedString(rs.getString("DBMSTABLE"), ""));
         pf.setDatabaseRowFormat(DbmsRowFmtOptId.fromdbcode(getDefaultedString(rs.getString("DBMSROWFMTCD"), "NONE")));
-        pf.setIncludeNulls(rs.getBoolean("DBMSINCLNULLSIND"));
+        pf.setIncludeNulls(rs.getInt("DBMSINCLNULLSIND") == 0 ? false : true);
 		//Make sure these are not null
 		pf.setExtractDDName("");
 		pf.setDatabase("");

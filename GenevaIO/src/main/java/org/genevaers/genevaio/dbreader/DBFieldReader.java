@@ -68,7 +68,7 @@ public class DBFieldReader extends DBReaderBase{
         lrf.setOrdinalPosition(rs.getShort("ORDINALPOS"));
         lrf.setOrdinalOffset(rs.getShort("ORDINALOFFSET"));
         lrf.setDatatype(DataType.fromdbcode(rs.getString("FLDFMTCD")));
-        lrf.setSigned(rs.getBoolean("SIGNEDIND"));
+        lrf.setSigned(rs.getInt("SIGNEDIND") == 0 ? false : true);
         lrf.setLength(rs.getShort("MAXLEN"));
         lrf.setNumDecimalPlaces(rs.getShort("DECIMALCNT"));
         lrf.setRounding(rs.getShort("ROUNDING"));

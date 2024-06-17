@@ -61,6 +61,7 @@ public class RunControlGenerator {
 		GenevaLog.writeHeader("Run Control Generator");
 
 		if(buildComponentRepositoryFromSelectedInput() != Status.ERROR) {
+			logger.atInfo().log("Repository populated");
 			Repository.fixupMaxHeaderLines();
 			Repository.fixupPFDDNames();
 			Repository.allLFsNotRequired();
@@ -132,15 +133,5 @@ public class RunControlGenerator {
 		RepositoryBuilder rb = RepositoryBuilderFactory.get();
 		return rb != null ? rb.run() : Status.ERROR;
 	}
-
-	private void openReportFile() {
-		try {
-			reportWriter = new FileWriter(new File(RunControlConfigration.getReportFileName()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 
 }

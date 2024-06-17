@@ -21,7 +21,10 @@ package org.genevaers.genevaio.dbreader;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.google.common.flogger.FluentLogger;
+
 public class DBReader {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
  
     protected static List<Integer> viewIds;
     private DatabaseConnection dbConnection;
@@ -64,18 +67,31 @@ public class DBReader {
         hasErrors = foldersReader.addToRepo(dbConnection, params);
         hasErrors |= viewsReader.addToRepo(dbConnection, params);
         if(hasErrors == false) {
+            logger.atFine().log("Views read");
             hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
+            logger.atFine().log("View sources read");
             hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
+            logger.atFine().log("View columns read");
             hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
+            logger.atFine().log("View column sources read");
             hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Sortkeys read");
             hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Control records read");
             hasErrors |= lookupsReader.addToRepo(dbConnection, params);
+            logger.atFine().log("lookups read");
             hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
+            logger.atFine().log("LRs read");
             hasErrors |= fieldReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Fields read");
             hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Indexes read");
             hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
+            logger.atFine().log("LFs read");
             hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
+            logger.atFine().log("PFs read");
             hasErrors |= exitReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Exits read");
         }
     }
 

@@ -86,8 +86,7 @@ public class DBViewsReader extends DBReaderBase {
             if(hasErrors == false) {
                 addViewsToRepo(dbConnection, params);
             }
-        }
-         else {
+        } else {
             logger.atSevere().log("No views defined");
             hasErrors = true;
         }
@@ -146,6 +145,7 @@ public class DBViewsReader extends DBReaderBase {
             hasErrors = true;
             logMissingViews(diff);
         } else {
+            logger.atFine().log("All views found");
             hasErrors = false;
         }
     }
@@ -192,15 +192,15 @@ public class DBViewsReader extends DBReaderBase {
         vd.setDefaultOutputFileId(rs.getInt("PHYFILEID"));
         // this one can be dropped vd.setOutputDestinationId(outputDestinationId);
         // not sure whatvd.setDetailed(outputDetailInd);
-        vd.setZeroValueRecordSuppression(rs.getBoolean("ZEROSUPPRESSIND"));
-        vd.setGenerateDelimitedHeader(rs.getBoolean("DELIMHEADERROWIND"));
+        vd.setZeroValueRecordSuppression(rs.getInt("ZEROSUPPRESSIND") == 0 ? false : true);
+        vd.setGenerateDelimitedHeader(rs.getInt("DELIMHEADERROWIND") == 0 ? false : true);
         vd.setExtractMaxRecCount(rs.getInt("EXTRACTMAXRECCNT"));
         vd.setOutputMaxRecCount(rs.getInt("OUTPUTMAXRECCNT"));
         //vd.setProcessAsofDate(processAsofDate);
         //vd.setLookupAsofDate(lookupAsofDate);
         //vd.setFillErrorValue(fillErrorValue);
         //vd.setFillTruncationValue(fillTruncationValue);
-        vd.setExtractSummarized(rs.getBoolean("EXTRACTSUMMARYIND"));
+        vd.setExtractSummarized(rs.getInt("EXTRACTSUMMARYIND") == 0 ? false : true);
         vd.setWriteExitId(rs.getInt("WRITEEXITID"));
         vd.setWriteExitParams(getDefaultedString(rs.getString("WRITEEXITSTARTUP"), ""));
         vd.setFormatExitId(rs.getInt("FORMATEXITID"));

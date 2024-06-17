@@ -57,7 +57,7 @@ public class DBViewColumnsReader extends DBReaderBase{
             } else {
                 vc.setJustifyId(JustifyId.RIGHT);
             }
-            vc.setSigned(rs.getBoolean("SIGNEDIND"));
+            vc.setSigned(rs.getInt("SIGNEDIND") == 0 ? false : true);
             vc.setStartPosition(rs.getShort("STARTPOSITION"));
             vc.setFieldLength(rs.getShort("MAXLEN"));
             vc.setOrdinalPosition(rs.getShort("ORDINALPOSITION"));
@@ -68,7 +68,7 @@ public class DBViewColumnsReader extends DBReaderBase{
             if(jfy != null) {
                 vc.setJustifyId(JustifyId.fromdbcode(jfy));
             }
-            vc.setHidden(!rs.getBoolean("VISIBLE"));
+            vc.setHidden(rs.getInt("VISIBLE") == 0 ? true : false);
             vc.setSubtotalType(SubtotalType.fromdbcode(getDefaultedString(rs.getString("SUBTOTALTYPECD"), "NONE")));
             vc.setSpacesBeforeColumn(rs.getShort("SPACESBEFORECOLUMN"));
             vc.setExtractArea(ExtractArea.fromdbcode(rs.getString("EXTRACTAREACD")));
