@@ -137,7 +137,8 @@ public class RecordParserData {
 				PhysicalFile outpf = Repository.getPhysicalFiles().get(lfpf.pfid);
 				outpf.setRequired(true);
 				Repository.getLogicalFiles().get(lfpf.lfid).setRequired(true);
-				vw.setOutputFileFrom(outpf);
+				if(vw != null)
+					vw.setOutputFileFrom(outpf);
 			}
 		}
 	}

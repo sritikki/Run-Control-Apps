@@ -488,4 +488,12 @@ public class Repository {
 	public static Set<Integer> getRunviews() {
 		return runviews;
 	}
+
+    public static boolean isViewEnabled(int componentID) {
+        if(runviews.size() > 0) {
+			return runviews.contains(componentID) ? true : false;
+		} else {
+			return true;
+		}
+    }
 }

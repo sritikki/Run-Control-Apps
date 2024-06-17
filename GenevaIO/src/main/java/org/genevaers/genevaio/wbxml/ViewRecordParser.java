@@ -28,10 +28,14 @@ import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
 
+import com.google.common.flogger.FluentLogger;
+
 import difflib.StringUtills;
 
 public class ViewRecordParser extends RecordParser {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+	private boolean enabled;
 	private ViewDefinition vd;
 	private ViewNode vn;
 
@@ -47,7 +51,13 @@ public class ViewRecordParser extends RecordParser {
 					componentID = Integer.parseInt(id);
 					vd = new ViewDefinition();
 					vd.setComponentId(componentID);
-					vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
+					if(Repository.isViewEnabled(componentID)) {
+						vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
+						enabled = true;
+					} else {
+						enabled = false;
+						logger.atInfo().log("View %d not enabled", componentID);
+					}
 					break;
 
 				case "NAME":
@@ -119,7 +129,9 @@ public class ViewRecordParser extends RecordParser {
 					vd.setGenerateDelimitedHeader(text.equals("0") ? false : true);
 					break;
 				case "FORMATFILTLOGIC":
-					vn.setFormatFilterLogic(removeBRLineEndings(text));
+					if(enabled) {
+						vn.setFormatFilterLogic(removeBRLineEndings(text));
+					}
 					break;
 				case "CREATEDUSERID":
 				case "LASTMODUSERID": //Last will overwrite the created if set

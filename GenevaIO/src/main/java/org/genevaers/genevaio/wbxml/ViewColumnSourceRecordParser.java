@@ -50,7 +50,9 @@ public class ViewColumnSourceRecordParser extends RecordParser {
 				case "VIEWID":
 					int viewID = Integer.parseInt(text);
 					vcs.setViewId(viewID);
-					Repository.getViews().get(viewID).addViewColumnSource(vcs);
+					if(Repository.isViewEnabled(viewID)) {
+						Repository.getViews().get(viewID).addViewColumnSource(vcs);
+					}
 					break;
 				case "SOURCETYPEID":
 					vcs.setSourceType(ColumnSourceType.values()[Integer.parseInt(text.trim())]);
