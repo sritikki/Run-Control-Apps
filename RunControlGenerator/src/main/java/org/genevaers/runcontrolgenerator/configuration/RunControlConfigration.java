@@ -2,6 +2,12 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.genevaers.repository.Repository;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -22,8 +28,10 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 import org.genevaers.utilities.ConfigEntry;
 import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.IdsReader;
 
 import com.google.common.flogger.FluentLogger;
+import com.ibm.db2.jcc.am.s;
 
 public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -41,6 +49,7 @@ public class RunControlConfigration extends GersConfigration{
     public static final String DB_DATABASE = "DB_DATABASE";
     public static final String DBFLDRS = "DBFLDRS";
     public static final String DBVIEWS = "DBVIEWS";
+    public static final String RUNVIEWS = "RUNVIEWS";
 
     public static final String REPORT_FILE = "GRCGRPT";
     public static final String LOG_FILE = "GRCGLOG";
@@ -61,6 +70,9 @@ public class RunControlConfigration extends GersConfigration{
     // Configuration is just a map of parm names to values
     // Make it a TreeMap so it is sorted
 
+    //Let's make these part of the config
+    private static List<String> runviewsContents = new ArrayList<>();
+
     public RunControlConfigration() {
         //Map preloaded with expect names and default values
         super();
@@ -73,8 +85,8 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(DB_SERVER, new ConfigEntry("", false));
         parmToValue.put(DB_PORT, new ConfigEntry("", false));
         parmToValue.put(DB_DATABASE, new ConfigEntry("", false));
-        parmToValue.put(DBFLDRS, new ConfigEntry("", false));
-        parmToValue.put(DBVIEWS, new ConfigEntry("", false));
+        // parmToValue.put(DBFLDRS, new ConfigEntry("", false));
+        // parmToValue.put(DBVIEWS, new ConfigEntry("", false));
         parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         //Hidden defaults
@@ -84,7 +96,7 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(LOG_FILE, new ConfigEntry(LOG_FILE, true));
         parmToValue.put(WB_XML_FILES_SOURCE, new ConfigEntry(WB_XML_FILES_SOURCE, true));
 
-        parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry("", false));
+        parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry("", true));
         parmToValue.put(DOT_XLT, new ConfigEntry("N", true));
         parmToValue.put(DOT_JLT, new ConfigEntry("N", true));
         parmToValue.put(VIEW_DOTS, new ConfigEntry("", true));
@@ -97,13 +109,25 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(JLT_DDNAME, new ConfigEntry("JLT", true));
         parmToValue.put(VDP_DDNAME, new ConfigEntry("VDP", true));
 
-        parmToValue.put(LOG_LEVEL, new ConfigEntry("LOG_LEVEL", false));
-
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         parmToValue.put(NUMBER_MODE, new ConfigEntry("STANDARD", false )); //Could be LARGE
+
+        readRunViews();
     }
 
-	public static String getInputType() {
+	private void readRunViews() {
+        Repository.setRunviews(IdsReader.getIdsFrom(RUNVIEWS));
+        runviewsContents.addAll(IdsReader.getLinesRead());
+    }
+
+    public static List<String> getRunviewsContents() {
+        if(runviewsContents.isEmpty())
+            runviewsContents.add("<none>");
+        return runviewsContents;
+    }
+
+    public static String getInputType() {
 		return parmToValue.get(INPUT_TYPE).getValue();
 	}
 

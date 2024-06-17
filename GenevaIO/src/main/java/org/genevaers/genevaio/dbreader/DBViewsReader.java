@@ -22,8 +22,10 @@ import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections4.SetUtils;
@@ -40,6 +42,8 @@ import com.google.common.flogger.FluentLogger;
 
 public class DBViewsReader extends DBReaderBase {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private static List<String> linesRead = new ArrayList<>();
 
     String queryBase = "SELECT "
     + "v.ENVIRONID, "
@@ -75,8 +79,8 @@ public class DBViewsReader extends DBReaderBase {
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        viewIds.addAll(IdsReader.getIdsFrom(GersConfigration.DBVIEWS));
-        if(viewIds.size() > 0) {
+        decideOnViewIds();
+         if(viewIds.size() > 0) {
             logViewIds();
             verifyViewsExist(dbConnection, params); //Do we need to verify - should find out anyway?
             if(hasErrors == false) {
@@ -88,6 +92,18 @@ public class DBViewsReader extends DBReaderBase {
             hasErrors = true;
         }
         return hasErrors;
+    }
+
+
+
+    private void decideOnViewIds() {
+        if(Repository.getRunviews().size() > 0) {
+            logger.atInfo().log("Overriding viewids with Runviews");
+            viewIds = Repository.getRunviews();
+        } else {
+            viewIds.addAll(IdsReader.getIdsFrom(GersConfigration.DBVIEWS));
+            linesRead.addAll(IdsReader.getLinesRead());    
+        }
     }
 
 
@@ -201,5 +217,12 @@ public class DBViewsReader extends DBReaderBase {
 
     public boolean hasErrors() {
         return hasErrors;
+    }
+
+    public static  List<String> getLinesRead() {
+        if(linesRead.isEmpty()) {
+            linesRead.add("<none>");
+        }
+        return linesRead;
     }
 }

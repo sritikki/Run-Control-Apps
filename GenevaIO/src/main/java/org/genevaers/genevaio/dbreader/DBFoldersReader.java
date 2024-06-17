@@ -22,8 +22,10 @@ import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections4.SetUtils;
@@ -38,10 +40,12 @@ public class DBFoldersReader extends DBReaderBase {
 
     private static Set<Integer> folderIds;
     private static Set<Integer> folderIdsFound = new HashSet<>();
+    private static List<String> linesRead = new ArrayList<>();;
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         folderIds = IdsReader.getIdsFrom(GersConfigration.DBFLDRS);
+        linesRead.addAll(IdsReader.getLinesRead());
         if(folderIds.size() > 0) {
             getViewIdsFromFolderIds(dbConnection, params);
         } else {
@@ -97,6 +101,13 @@ public class DBFoldersReader extends DBReaderBase {
 
     public boolean hasErrors() {
         return hasErrors;
+    }
+
+    public static List<String> getLinesRead() {
+        if(linesRead.isEmpty()) {
+            linesRead.add("<none>");
+        }
+        return linesRead;
     }
 
 }

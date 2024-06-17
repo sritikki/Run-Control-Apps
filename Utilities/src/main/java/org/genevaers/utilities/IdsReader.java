@@ -46,6 +46,7 @@ public class IdsReader {
 
 	public static Set<Integer> getIdsFrom(String parmName) {
 		ids.clear();
+		linesRead.clear();
 		try {
 			if (System.getProperty("os.name").startsWith("z")) {
 				readDDIds();

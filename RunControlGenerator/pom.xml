@@ -104,7 +104,7 @@
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>application.properties</include>
-					<include>MR91RPT.ftl</include>
+					<include>GRCGRPT.ftl</include>
 				</includes>
 			</resource>
 		</resources>

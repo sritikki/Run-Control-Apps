@@ -26,8 +26,6 @@ public class WBConnectionBuilder implements RepositoryBuilder{
 		conParams.setEnvironmentID(RunControlConfigration.getParm(RunControlConfigration.ENVIRONMENT_ID));
 		conParams.setPort(RunControlConfigration.getParm(RunControlConfigration.DB_PORT));
 		conParams.setServer(RunControlConfigration.getParm(RunControlConfigration.DB_SERVER));
-		conParams.setFolderIds(RunControlConfigration.getParm(RunControlConfigration.DBFLDRS));
-		conParams.setViewIds(RunControlConfigration.getParm(RunControlConfigration.DBVIEWS));
 		conParams.setSchema(RunControlConfigration.getParm(RunControlConfigration.DB_SCHEMA));
 		conParams.setUsername(System.getenv("PG_USERID"));
 		conParams.setPassword(System.getenv("PG_PASSWORD"));
