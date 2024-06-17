@@ -29,11 +29,11 @@ public class RCDriver {
 //     #INPUT_TYPE=PG            # WBXML or VDPML or DB2
 // #INPUT_TYPE=VDPXML            # WBXML or VDPML or DB2
 // INPUT_TYPE=POSTGRES            # WBXML or VDPML or DB2
-// DB2_ENVIRONMENT_ID=5
-// DB2_SCHEMA=gendev
-// DB2_PORT=5432
-// DB2_SERVER=localhost
-// DB2_DATABASE=genevaers
+// DB_ENVIRONMENT_ID=5
+// DB_SCHEMA=gendev
+// DB_PORT=5432
+// DB_SERVER=localhost
+// DB_DATABASE=genevaers
 
 // DBVIEWS=12156
 
@@ -130,11 +130,11 @@ public class RCDriver {
                 fw.write("INPUT_TYPE=" + inputType + "\n");
             } else {
                 fw.write("INPUT_TYPE=" + inputType + "\n");
-                fw.write("DB2_ENVIRONMENT_ID=" + environmentID + "\n");
-                fw.write("DB2_SCHEMA=" + schema + "\n");
-                fw.write("DB2_PORT=" + port + "\n");
-                fw.write("DB2_SERVER=" + server + "\n");
-                fw.write("DB2_DATABASE=" + database + "\n");
+                fw.write("DB_ENVIRONMENT_ID=" + environmentID + "\n");
+                fw.write("DB_SCHEMA=" + schema + "\n");
+                fw.write("DB_PORT=" + port + "\n");
+                fw.write("DB_SERVER=" + server + "\n");
+                fw.write("DB_DATABASE=" + database + "\n");
                 fw.write("DBVIEWS="+ dbviews + "\n");
             }
             fw.write("OUTPUT_RUN_CONTROL_FILES=Y\n");

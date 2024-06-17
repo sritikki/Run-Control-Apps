@@ -41,7 +41,7 @@ public class App {
                 App.run("", trgDir + ".rpt", trgDir + ".log", trgDir + ".VDP", trgDir + ".XLT", trgDir + ".JLT");
             }
         } else {
-            App.run("", "", "RCGLOG", "", "", "");
+            App.run("", "", RunControlConfigration.LOG_FILE, "", "", "");
         }
     } 
 

@@ -57,11 +57,11 @@ public class GenDBRun extends MenuItem{
         try (FileWriter fw = new FileWriter(rcDir.resolve("MR91Parm.cfg").toFile())) {
             fw.write("INPUT_TYPE=DB2\n");
             fw.write("OUTPUT_RUN_CONTROL_FILES=Y\n");
-            fw.write("DB2_SERVER="+RCAGenerationData.getDbServer()+"\n");
-            fw.write("DB2_DATABASE="+RCAGenerationData.getDbDatabase()+"\n");
-            fw.write("DB2_SCHEMA="+RCAGenerationData.getDbSchema()+"\n");
-            fw.write("DB2_PORT="+RCAGenerationData.getDbPort()+"\n");
-            fw.write("DB2_ENVIRONMENT_ID="+RCAGenerationData.getEnvId()+"\n");
+            fw.write("DB_SERVER="+RCAGenerationData.getDbServer()+"\n");
+            fw.write("DB_DATABASE="+RCAGenerationData.getDbDatabase()+"\n");
+            fw.write("DB_SCHEMA="+RCAGenerationData.getDbSchema()+"\n");
+            fw.write("DB_PORT="+RCAGenerationData.getDbPort()+"\n");
+            fw.write("DB_ENVIRONMENT_ID="+RCAGenerationData.getEnvId()+"\n");
             fw.write("DBVIEWS="+RCAGenerationData.getViewIds()+"\n");
             fw.close();
         } catch (IOException e) {

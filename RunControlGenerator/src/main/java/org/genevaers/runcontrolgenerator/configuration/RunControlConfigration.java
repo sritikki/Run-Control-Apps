@@ -28,22 +28,22 @@ import com.google.common.flogger.FluentLogger;
 public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String DEFAULT_PARM_FILENAME = "RCGParm.cfg";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "RCGPARM";
+    public static final String DEFAULT_PARM_FILENAME = "GRCGParm.cfg";
+    public static final String DEFAULT_ZOSPARM_FILENAME = "GRCGPARM";
 
     public static final String INPUT_TYPE = "INPUT_TYPE";
 
-    public static final String DB2_SCHEMA = "DB2_SCHEMA";
-    public static final String DB2_ENVIRONMENT_ID = "DB2_ENVIRONMENT_ID";
-    public static final String DB2_SUBSYSTEM = "DB2_SUBSYSTEM";
-    public static final String DB2_SERVER = "DB2_SERVER";
-    public static final String DB2_PORT = "DB2_PORT";
-    public static final String DB2_DATABASE = "DB2_DATABASE";
+    public static final String DB_SCHEMA = "DB_SCHEMA";
+    public static final String ENVIRONMENT_ID = "ENVIRONMENT_ID";
+    public static final String DB_SUBSYSTEM = "DB_SUBSYSTEM";
+    public static final String DB_SERVER = "DB_SERVER";
+    public static final String DB_PORT = "DB_PORT";
+    public static final String DB_DATABASE = "DB_DATABASE";
     public static final String DBFLDRS = "DBFLDRS";
     public static final String DBVIEWS = "DBVIEWS";
 
-    private static final String REPORT_FILE = "RCGRPT";
-    private static final String LOG_FILE = "RCGLOG";
+    public static final String REPORT_FILE = "GRCGRPT";
+    public static final String LOG_FILE = "GRCGLOG";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";
@@ -67,12 +67,12 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.clear();
         parmToValue.put(INPUT_TYPE, new ConfigEntry("", false));
 
-        parmToValue.put(DB2_SCHEMA, new ConfigEntry("", false));
-        parmToValue.put(DB2_ENVIRONMENT_ID, new ConfigEntry("", false));
-        parmToValue.put(DB2_SUBSYSTEM, new ConfigEntry("", false));
-        parmToValue.put(DB2_SERVER, new ConfigEntry("", false));
-        parmToValue.put(DB2_PORT, new ConfigEntry("", false));
-        parmToValue.put(DB2_DATABASE, new ConfigEntry("", false));
+        parmToValue.put(DB_SCHEMA, new ConfigEntry("", false));
+        parmToValue.put(ENVIRONMENT_ID, new ConfigEntry("", false));
+        parmToValue.put(DB_SUBSYSTEM, new ConfigEntry("", false));
+        parmToValue.put(DB_SERVER, new ConfigEntry("", false));
+        parmToValue.put(DB_PORT, new ConfigEntry("", false));
+        parmToValue.put(DB_DATABASE, new ConfigEntry("", false));
         parmToValue.put(DBFLDRS, new ConfigEntry("", false));
         parmToValue.put(DBVIEWS, new ConfigEntry("", false));
         parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
