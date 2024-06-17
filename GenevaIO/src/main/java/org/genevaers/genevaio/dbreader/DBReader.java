@@ -21,11 +21,9 @@ package org.genevaers.genevaio.dbreader;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.genevaers.repository.Repository;
-
 public class DBReader {
  
-    private List<Integer> viewIds;
+    protected static List<Integer> viewIds;
     private DatabaseConnection dbConnection;
     private DatabaseConnectionParams params;
     private boolean hasErrors = false;
@@ -101,6 +99,8 @@ public class DBReader {
             case POSTGRES:
             dbConnection = new PostgresConnection(params);
             break;
+           default:
+                break;
         }
         return null;
     }
