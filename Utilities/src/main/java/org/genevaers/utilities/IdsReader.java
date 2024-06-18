@@ -49,7 +49,7 @@ public class IdsReader {
 		linesRead.clear();
 		try {
 			if (System.getProperty("os.name").startsWith("z")) {
-				readDDIds();
+				readDDIds(parmName);
 			} else {
 				readSuppliedIds(parmName);
 			}
@@ -59,8 +59,8 @@ public class IdsReader {
 		return ids;
 	}
 
-	private static void readDDIds() throws IOException  {
-		String ddname = "//DD:" + GersConfigration.getZosParmFileName();
+	private static void readDDIds(String parmName) throws IOException  {
+		String ddname = "//DD:" + parmName;
 		logger.atInfo().log("Read %s", ddname);
 			BufferedReader br = new BufferedReader(new InputStreamReader(new ZFile(ddname, "r").getInputStream()));
 			logger.atInfo().log("Reading %s", ddname);
