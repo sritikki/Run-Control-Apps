@@ -201,7 +201,8 @@ public abstract class ExtractBaseAST extends ASTBase{
 
 
     public static int getLastColumnWithAWrite(ViewSource vs) {
-        return lastWriteColumnMap.get(vs);
+        Integer colNum = lastWriteColumnMap.get(vs);
+        return colNum == null ? 0 : colNum;
     }
 
     public static void setLastColumnWithAWrite() {
