@@ -94,8 +94,7 @@ public class RepeatAST extends FormattedASTNode implements GenevaERSValue, Assig
 
     @Override
     public int getMaxNumberOfDigits() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+        return value.length();
     }
 
 }
