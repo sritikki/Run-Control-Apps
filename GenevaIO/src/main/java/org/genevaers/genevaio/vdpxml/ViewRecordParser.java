@@ -69,7 +69,9 @@ public class ViewRecordParser extends BaseParser {
 			case "NAME":
 				vd = new ViewDefinition();
 				vd.setComponentId(componentID);
-				vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
+				if(Repository.isViewEnabled(componentID)) {
+					vn = Repository.getViewNodeMakeIfDoesNotExist(vd);
+				}
 				vd.setName(text);
 				break;
 
@@ -135,7 +137,9 @@ public class ViewRecordParser extends BaseParser {
 				vd.setGenerateDelimitedHeader(text.equals("0") ? false : true);
 				break;
 			case "FORMATFILTLOGIC":
-				vn.setFormatFilterLogic(removeBRLineEndings(text));
+				if(Repository.isViewEnabled(componentID)) {
+					vn.setFormatFilterLogic(removeBRLineEndings(text));
+				}
 				break;
 			case "OWNERUSER":
 				vd.setOwnerUser(text);
@@ -152,38 +156,41 @@ public class ViewRecordParser extends BaseParser {
     }
 
 	private void generateExtractOutputLogic(int id) {
-		String writeLogic = "";
-		switch(vn.getViewDefinition().getViewType()) {
-			case COPY:
-				if(id > 0) {
-					writeLogic = String.format("WRITE(SOURCE=INPUT, %s", getFileParm(vn, id));
-				} else {
-					writeLogic = "WRITE(SOURCE=INPUT,DEST=DEFAULT)";
-				}
-				break;
-			case SUMMARY:
-			case DETAIL:
-				writeLogic = String.format("WRITE(SOURCE=VIEW,DEST=EXT=%03d", vn.getViewDefinition().getExtractFileNumber());
-				writeLogic += getWriteParm(vn) + ")";
-				break;
-			case EXTRACT:
-				if(vn.getOutputFile().getComponentId() > 0) {
-					writeLogic = String.format("WRITE(SOURCE=DATA, %s)", getFileParm(vn, id));
-				} else if(Repository.getPhysicalFiles().get(id) != null) {
-					writeLogic = String.format("WRITE(SOURCE=DATA, %s)", getFileParm(vn, id));
-				} else {
-					writeLogic = "WRITE(SOURCE=DATA,DEST=DEFAULT)";
-				}
-				break;
-			default:
-				//Error case
-				break;
-			
-		}
-		Iterator<ViewSource> vsi = vn.getViewSourceIterator();
-		while (vsi.hasNext()) {
-			ViewSource vs = vsi.next();
-			vs.setExtractOutputLogic(writeLogic);
+		if (vn != null) {
+			String writeLogic = "";
+			switch (vn.getViewDefinition().getViewType()) {
+				case COPY:
+					if (id > 0) {
+						writeLogic = String.format("WRITE(SOURCE=INPUT, %s", getFileParm(vn, id));
+					} else {
+						writeLogic = "WRITE(SOURCE=INPUT,DEST=DEFAULT)";
+					}
+					break;
+				case SUMMARY:
+				case DETAIL:
+					writeLogic = String.format("WRITE(SOURCE=VIEW,DEST=EXT=%03d",
+							vn.getViewDefinition().getExtractFileNumber());
+					writeLogic += getWriteParm(vn) + ")";
+					break;
+				case EXTRACT:
+					if (vn.getOutputFile().getComponentId() > 0) {
+						writeLogic = String.format("WRITE(SOURCE=DATA, %s)", getFileParm(vn, id));
+					} else if (Repository.getPhysicalFiles().get(id) != null) {
+						writeLogic = String.format("WRITE(SOURCE=DATA, %s)", getFileParm(vn, id));
+					} else {
+						writeLogic = "WRITE(SOURCE=DATA,DEST=DEFAULT)";
+					}
+					break;
+				default:
+					// Error case
+					break;
+
+			}
+			Iterator<ViewSource> vsi = vn.getViewSourceIterator();
+			while (vsi.hasNext()) {
+				ViewSource vs = vsi.next();
+				vs.setExtractOutputLogic(writeLogic);
+			}
 		}
 	}
 
