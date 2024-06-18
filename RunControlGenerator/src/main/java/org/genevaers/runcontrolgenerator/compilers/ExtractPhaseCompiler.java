@@ -219,7 +219,9 @@ public class ExtractPhaseCompiler {
 		boolean runEOC = true;
 		if(RunControlConfigration.getInputType().equalsIgnoreCase("VDPXML")) {
 			if(noWriteStatementMissing(vsnode)) {
-				runEOC = false; //There must have been a write in the last column
+				runEOC = false; //There must have been a write in the last column so don't generate write
+			} else {
+				runEOC = true; //need a write statement
 			}
 		}
 
