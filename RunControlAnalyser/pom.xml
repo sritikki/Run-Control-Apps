@@ -124,7 +124,7 @@
 							<goal>assemble</goal>
 						</goals>
 						<configuration>
-							<windowsScriptTemplate>${project.basedir}/src/appassembler/windowsBinTemplate</windowsScriptTemplate>
+							<!-- <windowsScriptTemplate>${project.basedir}/src/appassembler/windowsBinTemplate</windowsScriptTemplate> -->
 							<assembleDirectory>${project.build.directory}/</assembleDirectory>
                             <platforms>
                                 <platform>windows</platform>

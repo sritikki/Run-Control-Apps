@@ -3,6 +3,7 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 import org.genevaers.repository.Repository;
@@ -103,11 +104,18 @@ public class RCDriver {
         }
     }
 
-    public static void runRCG() {
+    public static void runRCG(String relPath) {
         writeRCGParms();
 		CommandRunner cmd = new CommandRunner();
-        runRCG(cmd);
-        runRCA(cmd);
+        //want to run from the predefined paths
+        String cwd = Paths.get("").toAbsolutePath().toString();
+        logger.atInfo().log("cwd %s",cwd);
+        String rcg = cwd + "\\runcontrolapps\\runcontrolgenerator\\bin\\gvbrcg.bat";
+        String rca = cwd + "\\runcontrolapps\\runcontrolanalyser\\bin\\gvbrca.bat";
+        runApp(cmd, rcg);
+        runApp(cmd, rca);
+//        runRCG(cmd);
+//        runRCA(cmd);
     }
 
     private static void runRCG(CommandRunner cmd) {
@@ -150,6 +158,17 @@ public class RCDriver {
         logger.atInfo().log("Run " + GersConfigration.RCA_RUNNAME + "from %s", rcPath.toString() );
         try {
             cmd.run(GersConfigration.RCA_RUNNAME + ".bat", rcPath.toFile());
+            cmd.clear();
+        } catch (IOException | InterruptedException e) {
+            logger.atSevere().log(GersConfigration.RCA_RUNNAME +  "command failed %s", e.getMessage() );
+        }
+    }
+
+    public static void runApp(CommandRunner cmd, String appname) {
+        writeRCAParms();
+        logger.atInfo().log("Run " + appname + "from %s", rcPath.toString() );
+        try {
+            cmd.run(appname, rcPath.toFile());
             cmd.clear();
         } catch (IOException | InterruptedException e) {
             logger.atSevere().log(GersConfigration.RCA_RUNNAME +  "command failed %s", e.getMessage() );
