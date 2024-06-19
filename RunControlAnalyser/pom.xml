@@ -124,7 +124,7 @@
 							<goal>assemble</goal>
 						</goals>
 						<configuration>
-							<windowsScriptTemplate>${project.basedir}/src/appassembler/windowsBinTemplate</windowsScriptTemplate>
+							<!-- <windowsScriptTemplate>${project.basedir}/src/appassembler/windowsBinTemplate</windowsScriptTemplate> -->
 							<assembleDirectory>${project.build.directory}/</assembleDirectory>
                             <platforms>
                                 <platform>windows</platform>
@@ -133,7 +133,7 @@
 							<programs>
 								<program>
 									<mainClass>org.genevaers.runcontrolanalyser.App</mainClass>
-									<id>gersrca</id>
+									<id>gvbrca</id>
 								</program>
 							</programs>
 						</configuration>

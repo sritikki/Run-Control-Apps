@@ -2,6 +2,10 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+import org.genevaers.repository.Repository;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -22,31 +26,30 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 import org.genevaers.utilities.ConfigEntry;
 import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.IdsReader;
 
 import com.google.common.flogger.FluentLogger;
 
 public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String DEFAULT_PARM_FILENAME = "MR91Parm.cfg";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "MR91PARM";
+    public static final String RCG_PARM_FILENAME = RCG_BASENAME + "PARM.cfg";
+    public static final String RCG_ZOSPARM_FILENAME = RCG_BASENAME +  "PARM";
 
-    public static final String OUTPUT_VDP_XML_FILE = "OUTPUT_VDP_XML_FILE";
-    public static final String OUTPUT_WB_XML_FILES = "OUTPUT_WB_XML_FILES";
-    public static final String OUTPUT_RUN_CONTROL_FILES = "OUTPUT_RUN_CONTROL_FILES";
     public static final String INPUT_TYPE = "INPUT_TYPE";
 
-    public static final String DB2_SCHEMA = "DB2_SCHEMA";
-    public static final String DB2_ENVIRONMENT_ID = "DB2_ENVIRONMENT_ID";
-    public static final String DB2_SUBSYSTEM = "DB2_SUBSYSTEM";
-    public static final String DB2_SERVER = "DB2_SERVER";
-    public static final String DB2_PORT = "DB2_PORT";
-    public static final String DB2_DATABASE = "DB2_DATABASE";
+    public static final String DB_SCHEMA = "DB_SCHEMA";
+    public static final String ENVIRONMENT_ID = "ENVIRONMENT_ID";
+    public static final String DB_SUBSYSTEM = "DB_SUBSYSTEM";
+    public static final String DB_SERVER = "DB_SERVER";
+    public static final String DB_PORT = "DB_PORT";
+    public static final String DB_DATABASE = "DB_DATABASE";
     public static final String DBFLDRS = "DBFLDRS";
     public static final String DBVIEWS = "DBVIEWS";
+    public static final String RUNVIEWS = "RUNVIEWS";
 
-    private static final String REPORT_FILE = "MR91RPT";
-    private static final String LOG_FILE = "MR91LOG";
+    public static final String REPORT_FILE = "GRCGRPT";
+    public static final String LOG_FILE = "GRCGLOG";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";
@@ -64,33 +67,31 @@ public class RunControlConfigration extends GersConfigration{
     // Configuration is just a map of parm names to values
     // Make it a TreeMap so it is sorted
 
+    //Let's make these part of the config
+    private static List<String> runviewsContents = new ArrayList<>();
+
     public RunControlConfigration() {
         //Map preloaded with expect names and default values
         super();
         parmToValue.clear();
         parmToValue.put(INPUT_TYPE, new ConfigEntry("", false));
-        parmToValue.put(OUTPUT_RUN_CONTROL_FILES, new ConfigEntry("", false));
-        parmToValue.put(OUTPUT_WB_XML_FILES, new ConfigEntry("", false));
-        parmToValue.put(OUTPUT_VDP_XML_FILE, new ConfigEntry("", false));
 
-        parmToValue.put(DB2_SCHEMA, new ConfigEntry("", false));
-        parmToValue.put(DB2_ENVIRONMENT_ID, new ConfigEntry("", false));
-        parmToValue.put(DB2_SUBSYSTEM, new ConfigEntry("", false));
-        parmToValue.put(DB2_SERVER, new ConfigEntry("", false));
-        parmToValue.put(DB2_PORT, new ConfigEntry("", false));
-        parmToValue.put(DB2_DATABASE, new ConfigEntry("", false));
-        parmToValue.put(DBFLDRS, new ConfigEntry("", false));
-        parmToValue.put(DBVIEWS, new ConfigEntry("", false));
-        parmToValue.put(TRACE, new ConfigEntry("N", false));
+        parmToValue.put(DB_SCHEMA, new ConfigEntry("", false));
+        parmToValue.put(ENVIRONMENT_ID, new ConfigEntry("", false));
+        parmToValue.put(DB_SUBSYSTEM, new ConfigEntry("", false));
+        parmToValue.put(DB_SERVER, new ConfigEntry("", false));
+        parmToValue.put(DB_PORT, new ConfigEntry("", false));
+        parmToValue.put(DB_DATABASE, new ConfigEntry("", false));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         //Hidden defaults
-        parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
-        parmToValue.put(ZOSPARMFILE, new ConfigEntry(DEFAULT_ZOSPARM_FILENAME, true));
+        parmToValue.put(PARMFILE, new ConfigEntry(RCG_PARM_FILENAME, true));
+        parmToValue.put(ZOSPARMFILE, new ConfigEntry(RCG_ZOSPARM_FILENAME, true));
         parmToValue.put(REPORT_FILE, new ConfigEntry(REPORT_FILE, true));
         parmToValue.put(LOG_FILE, new ConfigEntry(LOG_FILE, true));
         parmToValue.put(WB_XML_FILES_SOURCE, new ConfigEntry(WB_XML_FILES_SOURCE, true));
 
-        parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry("", false));
+        parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry("", true));
         parmToValue.put(DOT_XLT, new ConfigEntry("N", true));
         parmToValue.put(DOT_JLT, new ConfigEntry("N", true));
         parmToValue.put(VIEW_DOTS, new ConfigEntry("", true));
@@ -103,48 +104,31 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(JLT_DDNAME, new ConfigEntry("JLT", true));
         parmToValue.put(VDP_DDNAME, new ConfigEntry("VDP", true));
 
-        parmToValue.put(LOG_LEVEL, new ConfigEntry("LOG_LEVEL", false));
-
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         parmToValue.put(NUMBER_MODE, new ConfigEntry("STANDARD", false )); //Could be LARGE
+
+        readRunViews();
     }
 
-	public static String getInputType() {
+	private void readRunViews() {
+        Repository.setRunviews(IdsReader.getIdsFrom(RUNVIEWS));
+        runviewsContents.addAll(IdsReader.getLinesRead());
+    }
+
+    public static List<String> getRunviewsContents() {
+        if(runviewsContents.isEmpty())
+            runviewsContents.add("<none>");
+        return runviewsContents;
+    }
+
+    public static String getInputType() {
 		return parmToValue.get(INPUT_TYPE).getValue();
 	}
 
 	public static boolean isValid() {
-        boolean valid = false;
-        valid = isInputValid();
-        valid &= isOutputValid();
-		return valid;
+		return isInputValid();
 	}
-
-    public static boolean isOutputValid() {
-        boolean valid = false;
-        if( isOutputRC()) {
-            valid = true;
-        }
-        if(isWriteWBXML()){
-            valid |= true;
-        }
-        if(isWriteVDPXML()){
-            valid |= true;
-        }
-        return valid;
-    }
-
-    public static boolean isOutputRC() {
-        return parmToValue.get(OUTPUT_RUN_CONTROL_FILES).getValue().equalsIgnoreCase("Y");
-    }
-
-    public static boolean isWriteWBXML() {
-        return parmToValue.get(OUTPUT_WB_XML_FILES).getValue().equalsIgnoreCase("Y");
-    }
-
-    public static boolean isWriteVDPXML() {
-        return parmToValue.get(OUTPUT_VDP_XML_FILE).getValue().equalsIgnoreCase("Y");
-    }
 
     private static boolean isInputValid() {
         boolean valid = true;

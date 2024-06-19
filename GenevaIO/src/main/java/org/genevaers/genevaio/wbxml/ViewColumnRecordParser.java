@@ -66,7 +66,9 @@ public class ViewColumnRecordParser extends RecordParser {
 					break;
 				case "COLUMNNUMBER":
 					vc.setColumnNumber(Integer.parseInt(text.trim()));
-					currentViewNode.addViewColumn(vc);
+					if(Repository.isViewEnabled(currentViewId)) {
+						currentViewNode.addViewColumn(vc);
+					}
 					vc.setName("Column Number " + text.trim());
 					break;
 				case "FLDFMTCD":

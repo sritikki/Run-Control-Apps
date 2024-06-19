@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public abstract class DatabaseConnection {
 
@@ -37,9 +38,9 @@ public abstract class DatabaseConnection {
 
     public abstract boolean isConnected();
 
-    public abstract List<Integer> getExistingFolderIds(String folderIds) throws SQLException;
+    // public abstract List<Integer> getExistingFolderIds(Set<Integer> folderIds) throws SQLException;
 
-    public abstract List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException;
+    // public abstract List<Integer> getViewIdsFromFolderIds(String folderIds) throws SQLException;
 
     public abstract PreparedStatement prepareStatement(String query) throws SQLException ;
 
@@ -49,20 +50,5 @@ public abstract class DatabaseConnection {
 
     public abstract void closeStatement(PreparedStatement ps) throws SQLException;
 
-    public String getPlaceholders(int size) {
-        StringBuilder builder = new StringBuilder();
-        if (size > 1) {
-            for (int i = 1; i < size; i++) {
-                builder.append("?,");
-            }
-        }
-        builder.append("?");
-        return builder.toString();
-    }
-
-    public String getPlaceholders(String ids) {
-        String[] pls = ids.split(",");
-        return getPlaceholders(pls.length);
-    }
 
 }

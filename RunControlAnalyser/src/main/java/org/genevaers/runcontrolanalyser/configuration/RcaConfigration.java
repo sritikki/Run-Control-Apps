@@ -26,14 +26,9 @@ import com.google.common.flogger.FluentLogger;
 public class RcaConfigration extends GersConfigration {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String DEFAULT_PARM_FILENAME = "RCAPARM";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "RCAPARM";
+    public static final String DEFAULT_PARM_FILENAME = RCA_BASENAME + "PARM";
+    public static final String DEFAULT_ZOSPARM_FILENAME = RCA_BASENAME + "PARM";
 
-    public static final String XLT_REPORT = "XLT_REPORT";
-    public static final String JLT_REPORT = "JLT_REPORT";
-    public static final String VDP_REPORT = "VDP_REPORT";
-    public static final String RCA_REPORT = "RCA_REPORT";
-    public static final String REPORT_FORMAT = "REPORT_FORMAT";
     public static final String COMPARE = "COMPARE";
     public static final String COVERAGE = "COVERAGE";
  
@@ -44,14 +39,14 @@ public class RcaConfigration extends GersConfigration {
     public static final String RCA_DIR = "RCA/";
     public RcaConfigration() {
         //Map preloaded with expect names and default values
-        parmToValue.put(TRACE, new ConfigEntry("N", false));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         //Hidden defaults
         parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
         parmToValue.put(ZOSPARMFILE, new ConfigEntry(DEFAULT_ZOSPARM_FILENAME, true));
         // parmToValue.put(REPORT_FILE, new ConfigEntry(REPORT_FILE, true));
         parmToValue.put(LOG_FILE, new ConfigEntry("RCALOG", true));
-        parmToValue.put(LOG_LEVEL, new ConfigEntry("INFO", true));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", true));
         parmToValue.put(XLT_DDNAME, new ConfigEntry("XLT", true));
         parmToValue.put(JLT_DDNAME, new ConfigEntry("JLT", true));
         

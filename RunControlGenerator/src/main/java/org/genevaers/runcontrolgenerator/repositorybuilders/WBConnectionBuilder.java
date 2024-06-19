@@ -21,14 +21,12 @@ public class WBConnectionBuilder implements RepositoryBuilder{
     public Status run() {
 		Status retval = Status.OK;
 		DatabaseConnectionParams conParams = new DatabaseConnectionParams();
-		conParams.setDatabase(RunControlConfigration.getParm(RunControlConfigration.DB2_DATABASE));
+		conParams.setDatabase(RunControlConfigration.getParm(RunControlConfigration.DB_DATABASE));
 		conParams.setDbType(DbType.POSTGRES);
-		conParams.setEnvironmentID(RunControlConfigration.getParm(RunControlConfigration.DB2_ENVIRONMENT_ID));
-		conParams.setPort(RunControlConfigration.getParm(RunControlConfigration.DB2_PORT));
-		conParams.setServer(RunControlConfigration.getParm(RunControlConfigration.DB2_SERVER));
-		conParams.setFolderIds(RunControlConfigration.getParm(RunControlConfigration.DBFLDRS));
-		conParams.setViewIds(RunControlConfigration.getParm(RunControlConfigration.DBVIEWS));
-		conParams.setSchema(RunControlConfigration.getParm(RunControlConfigration.DB2_SCHEMA));
+		conParams.setEnvironmentID(RunControlConfigration.getParm(RunControlConfigration.ENVIRONMENT_ID));
+		conParams.setPort(RunControlConfigration.getParm(RunControlConfigration.DB_PORT));
+		conParams.setServer(RunControlConfigration.getParm(RunControlConfigration.DB_SERVER));
+		conParams.setSchema(RunControlConfigration.getParm(RunControlConfigration.DB_SCHEMA));
 		conParams.setUsername(System.getenv("PG_USERID"));
 		conParams.setPassword(System.getenv("PG_PASSWORD"));
 		DBReader dbr = new DBReader();

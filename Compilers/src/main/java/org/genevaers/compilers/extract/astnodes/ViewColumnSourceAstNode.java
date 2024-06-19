@@ -58,6 +58,8 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
 
     @Override
     public void emit() {
+        currentMessageSource = CompilerMessageSource.COLUMN;
+        currentViewColumnSource = vcs;
         ViewNode view = Repository.getViews().get(vcs.getViewId());
         currentViewColumn = view.getColumnByID(vcs.getColumnID());
         ltEmitter.setSuffixSeqNbr((short)vcs.getColumnNumber());
@@ -129,23 +131,16 @@ public class ViewColumnSourceAstNode extends ExtractBaseAST implements Emittable
                     assignedTo = true;
                 } else {
                     // assignment to another column
-                    int lrid = ((ViewSourceAstNode) parent).getViewSource().getSourceLRID();
-                    int lfid = ((ViewSourceAstNode) parent).getViewSource().getSourceLFID();
                     ViewColumnSourceAstNode othervcs = (ViewColumnSourceAstNode) parent.getChild(colnum);
                     if (othervcs != null && othervcs.getType() == Type.VIEWCOLUMNSOURCE) {
                         if (colnum == othervcs.getViewColumnSource().getColumnNumber()) {
                             if (othervcs.isAssignedTo()) {
-                                CompilerMessage message = new CompilerMessage(vcs.getViewId(),
-                                        CompilerMessageSource.COLUMN, lrid, lfid, vcs.getColumnNumber(),
-                                        "Overwriting column " + colnum + " value");
-                                Repository.addWarningMessage(message);
+                                Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage("Overwriting column " + colnum + " value"));
                             } else {
                                 othervcs.setAssignedTo(true);
                             }
                         } else {
-                            CompilerMessage message = new CompilerMessage(vcs.getViewId(), CompilerMessageSource.COLUMN,
-                                    0, 0, colnum, "Cannot set assigned for column");
-                            Repository.addErrorMessage(message);
+                            Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage("Cannot set assigned for column"));
                         }
                     }
                 }

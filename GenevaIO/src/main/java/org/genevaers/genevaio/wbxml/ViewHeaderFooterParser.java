@@ -71,10 +71,12 @@ public class ViewHeaderFooterParser extends RecordParser {
 					itemText = text;
 					break;
 				case "HEADERFOOTERIND":
-					if (text.equals("1")) {
-						addHeaderToRepository();
-					} else {
-						addFooterToRepository();
+					if((Repository.isViewEnabled(viewid))) {
+						if (text.equals("1")) {
+							addHeaderToRepository();
+						} else {
+							addFooterToRepository();
+						}
 					}
 					break;
 				default:

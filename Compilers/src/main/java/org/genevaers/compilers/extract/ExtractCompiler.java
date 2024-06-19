@@ -34,6 +34,7 @@ import org.genevaers.grammar.GenevaERSParser;
 import org.genevaers.grammar.GenevaERSParser.GoalContext;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.data.CompilerMessageSource;
 
 public class ExtractCompiler {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -76,8 +77,14 @@ public class ExtractCompiler {
         BuildGenevaASTVisitor astBuilder = new BuildGenevaASTVisitor(exContext);
         astBuilder.setParent(parent);
         if(exContext == ExtractContext.COLUMN) {
+            ExtractBaseAST.setCurrentMessageSource(CompilerMessageSource.COLUMN);
             astBuilder.setViewColumnSource(vcs);
         } else {
+            if(exContext == ExtractContext.FILTER) {
+                ExtractBaseAST.setCurrentMessageSource(CompilerMessageSource.EXTRACT_FILTER);
+            } else {
+                ExtractBaseAST.setCurrentMessageSource(CompilerMessageSource.EXTRACT_OUTPUT);
+            }
             astBuilder.setViewSource(vs);
         }
         astBuilder.visit(tree);

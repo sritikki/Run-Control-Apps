@@ -38,13 +38,14 @@ import com.google.common.flogger.FluentLogger;
 public class DBLookupsReader extends DBReaderBase{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private String lookups = "";
+    //private String lookups = "";
+
+    private Set<Integer> lookupIds;
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         getSourceLookupIds(dbConnection, params);
-        if(lookups.length() > 0) {
-            logger.atInfo().log("Getting Lookups %s", lookups);
+        if(lookupIds.size() > 0) {
             String query = "SELECT 	distinct "
                 + "l.LOOKUPID, "
                 + "l.NAME, "
@@ -76,10 +77,10 @@ public class DBLookupsReader extends DBReaderBase{
                 + "INNER JOIN " + params.getSchema() + ".LOOKUPSRCKEY k "
                 + "ON(k.LOOKUPID = s.LOOKUPID AND s.LOOKUPSTEPID = k.LOOKUPSTEPID AND l.environid = k.environid) "
                 + "INNER JOIN " + params.getSchema() + ".LRLFASSOC t "
-                + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = k.environid) "
-                + "where l.environid = ? and l.lookupid in(" + dbConnection.getPlaceholders(lookups) + ") "
+                + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = t.environid) "
+                + "where l.environid = ? and l.lookupid in(" + getPlaceholders(lookupIds.size()) + ") "
                 + "ORDER BY l.LOOKUPID, s.STEPSEQNBR, k.KEYSEQNBR; ";
-            executeAndWriteToRepo(dbConnection, query, params, lookups);
+            executeAndWriteToRepo(dbConnection, query, params, lookupIds);
             return hasErrors;
         } else {
             logger.atInfo().log("No Lookups required");
@@ -90,34 +91,33 @@ public class DBLookupsReader extends DBReaderBase{
     private void getSourceLookupIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String query= "SELECT 	DISTINCT LOOKUPID FROM "
             + params.getSchema() + ".VIEWLOGICDEPEND d "
-            + "WHERE d.ENVIRONID = ? AND d.VIEWID in(" + dbConnection.getPlaceholders(viewIds) + ") AND LOOKUPID > 0 "
+            + "WHERE d.ENVIRONID = ? AND d.VIEWID in(" + getPlaceholders(viewIds.size()) + ") AND LOOKUPID > 0 "
             + "union "
             +"SELECT DISTINCT SORTTITLELOOKUPID as LOOKUPID FROM "
             + params.getSchema() + ".VIEWCOLUMNSOURCE s "
-            + "WHERE s.ENVIRONID = ? AND s.VIEWID in(" + dbConnection.getPlaceholders(viewIds) + ") AND SORTTITLELOOKUPID > 0";
+            + "WHERE s.ENVIRONID = ? AND s.VIEWID in(" + getPlaceholders(viewIds.size()) + ") AND SORTTITLELOOKUPID > 0";
         
-            Set<Integer> lookupIds = new TreeSet<>();
-            try {
-                PreparedStatement ps = dbConnection.prepareStatement(query);
+            lookupIds = new TreeSet<>();
+            try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
                 int parmNum = 1;
                 ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
-                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
-                String[] idsIn = viewIds.split(",");
-                for(int i=0; i<idsIn.length; i++) {
-                    ps.setString(parmNum++, idsIn[i]);
+                Iterator<Integer> ii = viewIds.iterator();
+                while(ii.hasNext()) {
+                    ps.setInt(parmNum++, ii.next());
                 }
+                ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+                Iterator<Integer> ii2 = viewIds.iterator();
+                while(ii2.hasNext()) {
+                    ps.setInt(parmNum++, ii2.next());
+                }
+                //     String[] idsIn = viewIdsString.split(",");
+                // for(int i=0; i<idsIn.length; i++) {
+                //     ps.setString(parmNum++, idsIn[i]);
+                // }
                 ResultSet rs = dbConnection.getResults(ps);
                 while(rs.next()) {
                     lookupIds.add(rs.getInt("LOOKUPID"));
                 }
-                Iterator<Integer> li = lookupIds.iterator();
-                if(li.hasNext()) {
-                    lookups = li.next().toString();
-                    while(li.hasNext()) {
-                        lookups += "," + li.next().toString();
-                    }
-                } 
-                ps.close();
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -140,7 +140,7 @@ public class DBLookupsReader extends DBReaderBase{
         requiredLRs.add(rs.getInt("LKUPSRCLR"));
         lpKey.setFieldId(rs.getInt("LRFIELDID"));
         lpKey.setDatatype(DataType.fromdbcode(getDefaultedString(rs.getString("VALUEFMTCD"), "NONE")));
-        lpKey.setSigned(rs.getBoolean("SIGNED"));
+        lpKey.setSigned(rs.getInt("SIGNED") == 0 ? false : true);
         lpKey.setStartPosition((short)0);
         lpKey.setFieldLength(rs.getShort("VALUELEN"));
         lpKey.setOrdinalPosition(rs.getShort("KEYSEQNBR"));
@@ -192,7 +192,7 @@ public class DBLookupsReader extends DBReaderBase{
                 + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = t.environid) "
                 + "where l.environid = ? and UPPER(l.name) = ? "
                 + "ORDER BY l.LOOKUPID, s.STEPSEQNBR, k.KEYSEQNBR; ";
-            executeAndWriteToRepo(dbConnection, query, params, name);
+            executeAndWriteToRepo(dbConnection, query, params, name.toUpperCase());
             return hasErrors;
         } else {
             logger.atInfo().log("No Lookups required");

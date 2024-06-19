@@ -28,6 +28,7 @@ import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
@@ -47,7 +48,7 @@ public class RunControlGenerator {
 	private FileWriter reportWriter;
 	ReportWriter report = new ReportWriter();
 
-	private Status status;
+	private Status status = Status.OK;
 
 	private List<LogicGroup> logicGroups;
 
@@ -56,10 +57,11 @@ public class RunControlGenerator {
 	private LogicTable extractLogicTable;
 	private LogicTable joinLogicTable;
 
-	public void runFromConfig() {
+	public Status runFromConfig() {
 		GenevaLog.writeHeader("Run Control Generator");
 
 		if(buildComponentRepositoryFromSelectedInput() != Status.ERROR) {
+			logger.atInfo().log("Repository populated");
 			Repository.fixupMaxHeaderLines();
 			Repository.fixupPFDDNames();
 			Repository.allLFsNotRequired();
@@ -67,10 +69,12 @@ public class RunControlGenerator {
 			singlePassOptimise();
 			runCompilers();
 			writeRunControlFiles();
-			report.write();
 		} else {
+			Repository.addErrorMessage(new CompilerMessage(0, null, 0, 0, 0, "Failed to build the component repository"));
 			logger.atSevere().log("Failed to build the component repository. No run control files will be written");
 		}
+		report.write();
+		return status;
 	}
 
 	private void writeRunControlFiles() {
@@ -103,7 +107,7 @@ public class RunControlGenerator {
 	private void runCompilers() {
 		GenevaLog.logNow("runCompilers");
 		if(status != Status.ERROR) {
-			ExtractPhaseCompiler.run(logicGroups);
+			status = ExtractPhaseCompiler.run(logicGroups);
 			extractLogicTable = ExtractPhaseCompiler.getExtractLogicTable();
 			joinLogicTable = ExtractPhaseCompiler.getJoinLogicTable();
 			FormatRecordsBuilder.run();
@@ -128,17 +132,8 @@ public class RunControlGenerator {
 
 	private Status buildComponentRepositoryFromSelectedInput() {
 		RepositoryBuilder rb = RepositoryBuilderFactory.get();
-		return rb != null ? rb.run() : Status.ERROR;
+		status = rb.run();
+		return status;
 	}
-
-	private void openReportFile() {
-		try {
-			reportWriter = new FileWriter(new File(RunControlConfigration.getReportFileName()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 
 }

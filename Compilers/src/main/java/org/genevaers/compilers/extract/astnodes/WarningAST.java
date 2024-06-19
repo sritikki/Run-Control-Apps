@@ -20,7 +20,6 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.CompilerMessageSource;
 
 public class WarningAST extends ExtractBaseAST {
 
@@ -33,8 +32,7 @@ public class WarningAST extends ExtractBaseAST {
 
     public void setWarning(String w) {
         msg = w ;
-        warnMessage = new CompilerMessage(currentViewSource.getViewId(), CompilerMessageSource.COLUMN,  currentViewSource.getSourceLRID(), currentViewSource.getSourceLFID(), currentViewColumn.getColumnNumber(), w);
-        Repository.addWarningMessage(warnMessage);              
+        Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(w));              
     }
 
     public CompilerMessage getWarningMessage() {

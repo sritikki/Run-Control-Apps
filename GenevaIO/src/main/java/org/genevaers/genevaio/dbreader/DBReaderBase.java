@@ -35,7 +35,9 @@ public abstract class DBReaderBase {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     protected boolean hasErrors = false;
-    protected static String viewIds;
+    protected static String viewIdsString;
+    protected static Set<Integer> viewIds = new TreeSet<>();
+
     protected static ViewNode currentViewNode;
 
     protected static Set<Integer> requiredLFs = new TreeSet<>();
@@ -65,12 +67,26 @@ public abstract class DBReaderBase {
         }
     }
 
-    protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query, DatabaseConnectionParams params, String[] idsIn) {
+    // protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query, DatabaseConnectionParams params, String[] idsIn) {
+    //     try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
+    //         int parmNum = 1;
+    //         ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+    //         for(int i=0; i<idsIn.length; i++) {
+    //             ps.setString(parmNum++, idsIn[i]);
+    //         }
+    //         executeAndAddResultSetToRepo(ps);
+    //     } catch (SQLException e) {
+    //         logger.atSevere().log("executeAndWriteToRepo %s", e.getMessage());
+    //     }
+    // }
+
+    protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query, DatabaseConnectionParams params, Set<Integer> idsIn) {
         try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
             int parmNum = 1;
             ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
-            for(int i=0; i<idsIn.length; i++) {
-                ps.setString(parmNum++, idsIn[i]);
+            Iterator<Integer> ii = idsIn.iterator();
+            while(ii.hasNext()) {
+                ps.setInt(parmNum++, ii.next());
             }
             executeAndAddResultSetToRepo(ps);
         } catch (SQLException e) {
@@ -109,5 +125,22 @@ public abstract class DBReaderBase {
         }
         return ids;
     }
+
+    protected String getPlaceholders(int size) {
+        StringBuilder builder = new StringBuilder();
+        if (size > 1) {
+            for (int i = 1; i < size; i++) {
+                builder.append("?,");
+            }
+        }
+        builder.append("?");
+        return builder.toString();
+    }
+
+    protected String getPlaceholders(String ids) {
+        String[] pls = ids.split(",");
+        return getPlaceholders(pls.length);
+    }
+
 
 }

@@ -27,6 +27,9 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
+import org.genevaers.genevaio.dbreader.DBFoldersReader;
+import org.genevaers.genevaio.dbreader.DBViewsReader;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersEnvironment;
@@ -42,7 +45,7 @@ public class ReportWriter {
 
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final static String REPORT_TEMPLATE = "MR91RPT.ftl";
+    private final static String REPORT_TEMPLATE = "GRCGRPT.ftl";
 
     private static final String LOCALROOT = "LOCALROOT";
 	private  Configuration cfg;
@@ -69,6 +72,9 @@ public class ReportWriter {
             nodeMap.put("env", "stuff");
             nodeMap.put("parmsRead", RunControlConfigration.getLinesRead());
             nodeMap.put("optsInEffect", RunControlConfigration.getOptionsInEffect());
+            nodeMap.put("dbfolders", DBFoldersReader.getLinesRead());
+            nodeMap.put("dbviews", DBViewsReader.getLinesRead());
+            nodeMap.put("runviews", RunControlConfigration.getRunviewsContents());
             nodeMap.put("inputReports", Repository.getInputReports());
             nodeMap.put("compErrs", Repository.getCompilerErrors());
             nodeMap.put("warnings", Repository.getWarnings());
@@ -88,8 +94,7 @@ public class ReportWriter {
             logger.atInfo().log(RunControlConfigration.getReportFileName());
             generateTemplatedOutput(template, nodeMap, RunControlConfigration.getReportFileName());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.atSevere().log("Report Writer error %s",e.getMessage());
         }
 		logger.atConfig().log("Report Generated");
 	}

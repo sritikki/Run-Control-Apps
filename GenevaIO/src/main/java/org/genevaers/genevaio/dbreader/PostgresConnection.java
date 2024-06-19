@@ -57,13 +57,13 @@ public class PostgresConnection extends DatabaseConnection {
         return retval;
     }
 
-    @Override
+    //@Override
     public List<Integer> getExistingFolderIds(String folderIds) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    //@Override
     public List<Integer> getViewIdsFromFolderIds(String folderIds) {
         // TODO Auto-generated method stub
         return null;

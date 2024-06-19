@@ -1,7 +1,7 @@
 <#assign aDateTime = .now>
 <#assign aDate = aDateTime?date>
 <#assign aTime = aDateTime?time>
-~RCGRPT
+~GRCGRPT
  
 GenevaERS - The Single-Pass Optimization Engine
 (https://genevaers.org)
@@ -15,7 +15,7 @@ Built:           ${rcgversion}
  
 Executed:        ${aDate} : ${aTime}
  
-Report DD Name:  MR91RPT
+Report DD Name:  GRCGRPT
 Report Title:    GVBRCG Control Report
  
  
@@ -25,10 +25,8 @@ Report Sections:
  
     Tag    Section name
     -----  ------------------------------------------------------
-    ~PARM  Contents of MR91PARM file
+    ~PARM  Contents of GRCGPARM file
     ~OPTS  Options in effect
-    ~WXML  Contents of WBXMLS file
-    ~VXML  Contents of VDPXMLS file
     ~DFOL  Contents of DBFLDRS file
     ~RUNV  Contents of RUNVIEWS file
     ~DVWS  Contents of DBVIEWS file
@@ -44,7 +42,7 @@ Report Sections:
  
  
 ==================================
-~PARM - Contents of MR91PARM file:
+~PARM - Contents of GRCGPARM file:
 ==================================
 
 <#list parmsRead as parm>
@@ -60,19 +58,29 @@ ${parm}
 ${opt}
 </#list>
  
-================================
-~WXML - Contents of WBXMLS file:
-================================
+==================================
+~DFOL - Contents of DBFLDRS file:
+==================================
  
-<none>
+<#list dbfolders as opt>
+${opt}
+</#list>
  
+==================================
+~DVWS - Contents of DBVIEWS file:
+==================================
+ 
+<#list dbviews as opt>
+${opt}
+</#list>
  
 ==================================
 ~RUNV - Contents of RUNVIEWS file:
 ==================================
  
-<none>
- 
+<#list runviews as opt>
+${opt}
+</#list>
  
 =======================
 ~VIEW - Views selected:
@@ -134,7 +142,7 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 </#if>
  
 ===============================
-~WRNS - SAFR compiler warnings:
+~WRNS - Warnings:
 ===============================
 <#if warnings?size == 0> 
 <none>
@@ -146,13 +154,13 @@ View(${warn.viewid?c}) Loc(${warn.source}) SrcLR(${warn.srcLR?c})  SrcLF(${warn.
 </#if> 
  
 =============================
-~ERRS - SAFR compiler errors:
+~ERRS - Errors:
 =============================
 <#if compErrs?size == 0> 
 <none>
 <#else>
 <#list compErrs as err>
-View(${err.viewid?c}) Loc(${err.source}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcLF?c}) Col(${err.columnNumber})
+View(${err.viewid?c}) Loc(${err.source!"none"}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcLF?c}) Col(${err.columnNumber})
  ${err.detail}
 </#list>
 </#if>
@@ -163,8 +171,8 @@ View(${err.viewid?c}) Loc(${err.source}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcL
 ~EXEC - Execution summary:
 ==========================
  
-Number of compiler warnings:               0
-Number of compiler errors:       ${compErrs?size?left_pad(11)}
+Number of warnings:              ${warnings?size!0?c?left_pad(11)}
+Number of errors:                ${compErrs?size!0?c?left_pad(11)}
 Number of reference-phase views: ${numrefviews!0?c?left_pad(11)}
 Number of extract-phase views:   ${numextviews!0?c?left_pad(11)}
  

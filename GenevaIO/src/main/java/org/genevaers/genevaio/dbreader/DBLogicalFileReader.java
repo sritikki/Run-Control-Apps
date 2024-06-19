@@ -23,6 +23,9 @@ import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalFile;
@@ -35,15 +38,16 @@ public class DBLogicalFileReader extends DBReaderBase{
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+		getLogicDependentLFs(dbConnection, params);
 		if(requiredLFs.size() > 0) {
 			String query = "select * from " + params.getSchema() +".LOGFILE "
-			+ " where ENVIRONID= ? and LOGFILEID in (" + dbConnection.getPlaceholders(getIds(requiredLFs)) + ");";
-			executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLFs));
+			+ " where ENVIRONID= ? and LOGFILEID in (" + getPlaceholders(requiredLFs.size()) + ");";
+			executeAndWriteToRepo(dbConnection, query, params, requiredLFs);
 		}
         return false;
     }
 
-    @Override
+	@Override
     protected void addComponentToRepo(ResultSet rs) throws SQLException {
         LogicalFile lf = new LogicalFile();
         lf.setID(rs.getInt("LOGFILEID"));
@@ -117,5 +121,33 @@ public class DBLogicalFileReader extends DBReaderBase{
                     + pfName + "]");
 		}
         return result;
+	}
+
+	//Make a separate reader for this and the other logic dependencies?
+	//And add to the requiredX
+	private void getLogicDependentLFs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+		String schema = params.getSchema();
+		String selectString = "SELECT a.lfpfassocid, a.logfileid FROM " + schema + ".viewlogicdepend d " + //
+				"INNER JOIN " + schema + ".lfpfassoc a " + //
+				"ON d.environid=a.environid and a.lfpfassocid = d.lfpfassocid " + //
+				"where d.environid = ? and viewid in(" + getPlaceholders(viewIds.size()) + ");";
+
+		try (PreparedStatement pst = dbConnection.getConnection().prepareStatement(selectString);) {
+			int parmNum = 1;
+
+			pst.setInt(parmNum++, Integer.valueOf(params.getEnvironmentID()));
+			Iterator<Integer> vi = viewIds.iterator();
+			while (vi.hasNext()) {
+				pst.setInt(parmNum++, vi.next());
+			}
+			ResultSet rs = dbConnection.getResults(pst);
+			while (rs.next()) {
+				requiredLFs.add(rs.getInt("logfileid"));
+			}
+		}
+		catch (SQLException e) {
+            logger.atInfo()
+            .log("getLogicDependentLFs %s", e);
+		}
 	}
 }

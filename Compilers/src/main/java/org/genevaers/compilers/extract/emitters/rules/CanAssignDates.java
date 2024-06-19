@@ -2,13 +2,10 @@ package org.genevaers.compilers.extract.emitters.rules;
 
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
-import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DateCode;
-import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.CompilerMessageSource;
 
 public class CanAssignDates extends Rule{ 
 
@@ -22,19 +19,9 @@ public class CanAssignDates extends Rule{
             if(canAssignDates(vc.getDateCode(), f.getDateCode())) {
                 return RuleResult.RULE_PASSED;                
             } else {
-                CompilerMessage err = new CompilerMessage(
-                            vc.getViewId(), 
-                            CompilerMessageSource.COLUMN, 
-                            ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
-                            ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
-                            vc.getColumnNumber(),
-                            String.format(ERR_MESSAGE, f.getDateCode(), vc.getDateCode())
-                        );
-                Repository.addErrorMessage(err);
+                Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage(String.format(ERR_MESSAGE, f.getDateCode(), vc.getDateCode())));
                 return RuleResult.RULE_ERROR;
-
             }
-
         } else {
                 return RuleResult.RULE_PASSED;
         }

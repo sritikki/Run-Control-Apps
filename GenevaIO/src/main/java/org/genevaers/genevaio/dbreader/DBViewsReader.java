@@ -23,17 +23,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections4.SetUtils;
+import org.apache.commons.collections4.SetUtils.SetView;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
+import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.IdsReader;
+
+import com.google.common.flogger.FluentLogger;
 
 public class DBViewsReader extends DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+    private static List<String> linesRead = new ArrayList<>();
 
     String queryBase = "SELECT "
     + "v.ENVIRONID, "
@@ -69,60 +79,93 @@ public class DBViewsReader extends DBReaderBase {
 
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        if(params.getFolderIds().length() > 0) {
-            getViewIdsFromFolderIds(dbConnection, params);
-        }else if(params.getViewIds().length() > 0) {
-            viewIds = params.getViewIds();
-            //verify that all views in list exist
-            verifyViewsExist(dbConnection, params);
-        }
-        if(hasErrors == false) {
-            addViewsToRepo(dbConnection, params);
+        decideOnViewIds();
+         if(viewIds.size() > 0) {
+            logViewIds();
+            verifyViewsExist(dbConnection, params); //Do we need to verify - should find out anyway?
+            if(hasErrors == false) {
+                addViewsToRepo(dbConnection, params);
+            }
+        } else {
+            logger.atSevere().log("No views defined");
+            hasErrors = true;
         }
         return hasErrors;
     }
 
 
-    private boolean verifyViewsExist(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        boolean allExist = true;
-        String viewsQuery = "select VIEWID from " + params.getSchema() + ".view where ENVIRONID = "
-                + params.getEnvironmentID() + " and VIEWID IN(" + params.getViewIds() + ")";
-        try {
-            PreparedStatement ps = dbConnection.prepareStatement(viewsQuery);
-            ResultSet rs = dbConnection.getResults(ps);
-            List<Integer> views = new ArrayList<>();
-            while (rs.next()) {
-                views.add(rs.getInt("VIEWID"));
-            }
-            allExist = checkEachInputIn(params.getViewIds(), views);
-            dbConnection.closeStatement(ps);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
+    private void decideOnViewIds() {
+        if(Repository.getRunviews().size() > 0) {
+            logger.atInfo().log("Overriding viewids with Runviews");
+            viewIds = Repository.getRunviews();
+        } else {
+            viewIds.addAll(IdsReader.getIdsFrom(GersConfigration.DBVIEWS));
+            linesRead.addAll(IdsReader.getLinesRead());    
         }
-        return allExist;
     }
 
-    private boolean checkEachInputIn(String input, List<Integer> views) {
-        boolean allExist = true;
-        List<String> inputs = Arrays.asList(input.split(","));
-        Iterator<String> ii = inputs.iterator();
-        while (ii.hasNext()) {
-            String inputId = ii.next();
-            if (views.contains(Integer.parseInt(inputId)) == false) {
-                allExist = false;
-                // Log folder id that is not found
-                hasErrors = true;
-            }
+
+
+    private void logViewIds() {
+        logger.atInfo().log("Views used to build the RC Files");
+        Iterator<Integer> vi = viewIds.iterator();
+        while (vi.hasNext()) {
+            logger.atInfo().log("view %d ", vi.next());
         }
-        return allExist;
     }
+
+
+
+    private void verifyViewsExist(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+        Set<Integer> viewsFound = new HashSet<>();
+        String viewsQuery = "select VIEWID from " + params.getSchema() + ".view where ENVIRONID = ?"
+                + " and VIEWID IN(" + getPlaceholders(viewIds.size()) + ")";
+        try (PreparedStatement ps = dbConnection.prepareStatement(viewsQuery);) {
+            int parmNum = 1;
+            ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
+            Iterator<Integer> vi = viewIds.iterator();
+            while (vi.hasNext()) {
+                ps.setInt(parmNum++, vi.next());
+            }
+            ResultSet rs = dbConnection.getResults(ps);
+            while (rs.next()) {
+                viewsFound.add(rs.getInt("VIEWID"));
+            }
+            checkAllFound(viewsFound);
+        } catch (SQLException e) {
+            logger.atSevere().log("verifyViewsExist failed %s", e.getMessage());
+            hasErrors = true;
+        }
+    }
+
+    private void checkAllFound(Set<Integer> views) {
+        SetView<Integer> diff = SetUtils.difference(viewIds, views);
+        if(diff.size() > 0) {
+            hasErrors = true;
+            logMissingViews(diff);
+        } else {
+            logger.atFine().log("All views found");
+            hasErrors = false;
+        }
+    }
+
+
+    private void logMissingViews(SetView<Integer> diff) {
+        logger.atSevere().log("Not all views found");
+        Iterator<Integer> di = diff.iterator();
+        while (di.hasNext()) {
+            logger.atSevere().log("view %d missing", di.next());
+        }
+    }
+
 
 
     private void addViewsToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+
         String viewsQuery = queryBase + " from " + params.getSchema() + ".View v " 
         + "LEFT JOIN " + params.getSchema() + ".LFPFASSOC a ON(v.LFPFASSOCID = a.LFPFASSOCID and v.environid = a.environid) "
-        + "where v.environid = ? and viewid IN(" + dbConnection.getPlaceholders(viewIds) + ");";
+        + "where v.environid = ? and viewid IN(" + getPlaceholders(viewIds.size()) + ");";
 
         executeAndWriteToRepo(dbConnection, viewsQuery, params, viewIds);
     }
@@ -149,15 +192,15 @@ public class DBViewsReader extends DBReaderBase {
         vd.setDefaultOutputFileId(rs.getInt("PHYFILEID"));
         // this one can be dropped vd.setOutputDestinationId(outputDestinationId);
         // not sure whatvd.setDetailed(outputDetailInd);
-        vd.setZeroValueRecordSuppression(rs.getBoolean("ZEROSUPPRESSIND"));
-        vd.setGenerateDelimitedHeader(rs.getBoolean("DELIMHEADERROWIND"));
+        vd.setZeroValueRecordSuppression(rs.getInt("ZEROSUPPRESSIND") == 0 ? false : true);
+        vd.setGenerateDelimitedHeader(rs.getInt("DELIMHEADERROWIND") == 0 ? false : true);
         vd.setExtractMaxRecCount(rs.getInt("EXTRACTMAXRECCNT"));
         vd.setOutputMaxRecCount(rs.getInt("OUTPUTMAXRECCNT"));
         //vd.setProcessAsofDate(processAsofDate);
         //vd.setLookupAsofDate(lookupAsofDate);
         //vd.setFillErrorValue(fillErrorValue);
         //vd.setFillTruncationValue(fillTruncationValue);
-        vd.setExtractSummarized(rs.getBoolean("EXTRACTSUMMARYIND"));
+        vd.setExtractSummarized(rs.getInt("EXTRACTSUMMARYIND") == 0 ? false : true);
         vd.setWriteExitId(rs.getInt("WRITEEXITID"));
         vd.setWriteExitParams(getDefaultedString(rs.getString("WRITEEXITSTARTUP"), ""));
         vd.setFormatExitId(rs.getInt("FORMATEXITID"));
@@ -172,55 +215,14 @@ public class DBViewsReader extends DBReaderBase {
         currentViewNode.setFormatFilterLogic(rs.getString("FORMATFILTLOGIC"));
     }
 
-    private void getViewIdsFromFolderIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        if(foldersExist(dbConnection, params)) {
-            getFolderViewIds(dbConnection, params);
-            params.setViewIds(viewIds); //update params for future queries
-        } else {
-            hasErrors = true;
-        }
-    }
-
-    private static void getFolderViewIds(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        try {
-            List<Integer> views = dbConnection.getViewIdsFromFolderIds(params.getFolderIds());
-            if (views.size() > 0) {
-                Iterator<Integer> vi = views.iterator();
-                viewIds = vi.next().toString();
-                while (vi.hasNext()) {
-                    viewIds += "," + vi.next().toString();
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     public boolean hasErrors() {
         return hasErrors;
     }
 
-    private static boolean foldersExist(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
-        boolean allExist = true;
-    
-        List<Integer> fldrIds;
-        try {
-            fldrIds = dbConnection.getExistingFolderIds(params.getFolderIds());
-            Iterator<Integer> fi = fldrIds.iterator();
-            while(fi.hasNext()) {
-                Integer fldrId = fi.next();
-                List<String> inputs = Arrays.asList(params.getFolderIds());
-                if(inputs.contains(fldrId.toString()) == false) {
-                    allExist = false;
-                    //Log folder id that is not found
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+    public static  List<String> getLinesRead() {
+        if(linesRead.isEmpty()) {
+            linesRead.add("<none>");
         }
-        return allExist;
+        return linesRead;
     }
-    
 }

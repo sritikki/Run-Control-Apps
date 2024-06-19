@@ -41,9 +41,9 @@ public class DBLRIndexReader extends DBReaderBase{
             + "from " + params.getSchema() + ".lrindex i "
             + "inner join  " + params.getSchema() + ".lrindexfld f "
             + "on(f.environid = i.environid and f.lrindexid = i.lrindexid) "
-            + "where i.ENVIRONID = ? and i.logrecid in(" + dbConnection.getPlaceholders(getIds(requiredLRs)) + ") "
+            + "where i.ENVIRONID = ? and i.logrecid in(" + getPlaceholders(requiredLRs.size()) + ") "
             + "order by logrecid;";
-        executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLRs));
+        executeAndWriteToRepo(dbConnection, query, params, requiredLRs);
         return hasErrors;
     }
 

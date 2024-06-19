@@ -28,9 +28,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.utilities.IdsReader;
 import org.genevaers.utilities.ParmReader;
+import org.genevaers.utilities.IdsReader.IDS_RESULT;
 
 public class ParmReaderTest {
 
@@ -73,81 +76,45 @@ public class ParmReaderTest {
         assertEquals(ParmReader.PARM_RESULT.WARN_IGNORED,  pr.getResult());
     }
 
-    @Test public void testSetRCOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertEquals(ParmReader.PARM_RESULT.OK,  pr.getResult());
-    }
-    @Test public void testSetWBXMLOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_WB_XML_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertEquals(ParmReader.PARM_RESULT.OK,  pr.getResult());
-    }
-    @Test public void testSetVDPXMLOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_VDP_XML_FILE+ "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertEquals(ParmReader.PARM_RESULT.OK,  pr.getResult());
+    @Test public void testIdReader() throws IOException {
+        TestHelper.writeToIds("#Comment only\n"
+        + "123,345   ignore this comment\n"
+        + "*Another comment this time with a star\n"
+        + "678\n"
+        + "90,25,19\n");
+        Set<Integer> ids = IdsReader.getIdsFrom(TestHelper.TEST_DBVIEWS);
+        assertEquals(ids.size(),  6);
+        assertTrue(ids.contains(123));
+        assertTrue(ids.contains(345));
+        assertTrue(ids.contains(25));
+        assertTrue(ids.contains(19));
+        assertEquals(IDS_RESULT.OK, IdsReader.getResult());
     }
 
-    @Test public void testNoOutputFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertFalse(rcc.isValid());
+    @Test public void test2ndIdReader() throws IOException {
+        TestHelper.writeToIds("#Comment only\n"
+        + "123,345   ignore this comment\n"
+        + "*Another comment this time with a star\n"
+        + "678\n"
+        + "90,25,19\n");
+        Set<Integer> ids = IdsReader.getIdsFrom(TestHelper.TEST_DBVIEWS);
+        assertEquals(ids.size(),  6);
+        assertTrue(ids.contains(123));
+        assertTrue(ids.contains(345));
+        assertTrue(ids.contains(25));
+        assertTrue(ids.contains(19));
+        assertEquals(IDS_RESULT.OK, IdsReader.getResult());
+        TestHelper.writeToIds("#Comment only\n"
+        + "987,654   ignore this comment\n"
+        + "3,2,1\n");
+        Set<Integer> ids2 = IdsReader.getIdsFrom(TestHelper.TEST_DBVIEWS);
+        assertEquals(ids.size(),  5);
+        assertEquals(IDS_RESULT.OK, IdsReader.getResult());
+        assertTrue(ids2.contains(987));
+        assertTrue(ids2.contains(654));
+        assertTrue(ids2.contains(2));
+        assertTrue(ids2.contains(1));
     }
 
-    @Test public void testRCOutFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_RUN_CONTROL_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertTrue(rcc.isValid());
-        assertTrue(rcc.isOutputRC());
-        assertFalse(rcc.isWriteVDPXML());
-        assertFalse(rcc.isWriteVDPXML());
-    }
-
-    @Test public void testWBXMLOutFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_WB_XML_FILES + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertTrue(rcc.isValid());
-    }
-
-    @Test public void testVDPXMLOutFromValidInput() throws IOException {
-        TestHelper.writeToParm(RunControlConfigration.INPUT_TYPE + "=WBXML\n"
-        +   RunControlConfigration.OUTPUT_VDP_XML_FILE + "=Y\n");
-        ParmReader pr = new ParmReader();
-        RunControlConfigration rcc = new RunControlConfigration();
-        //Maybe allow overwrite from args later
-        pr.setConfig(rcc);
-        pr.populateConfigFrom(TestHelper.getTestParmName());
-        assertTrue(rcc.isValid());
-    }
 
 }

@@ -51,8 +51,8 @@ public class DBSortKeyReader extends DBReaderBase {
     @Override
     public boolean addToRepo(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         String query = "select * from " + params.getSchema() + ".viewsortkey "
-        + "where environid = ? and viewid in(" + dbConnection.getPlaceholders(params.getViewIds())+ ");";
-        executeAndWriteToRepo(dbConnection, query, params, params.getViewIds());
+        + "where environid = ? and viewid in(" + getPlaceholders(viewIds.size())+ ");";
+        executeAndWriteToRepo(dbConnection, query, params, viewIds);
         return hasErrors;
     }
 
@@ -93,7 +93,7 @@ public class DBSortKeyReader extends DBReaderBase {
             vsk.setRtdLrFieldId(rs.getInt("SORTTITLELRFIELDID"));
             //vsk.setRtdJoinId(rtdJoinId);
             vsk.setSortKeyDataType(DataType.fromdbcode(rs.getString("SKFLDFMTCD")));
-            vsk.setSortKeySigned(rs.getBoolean("SKSIGNED"));
+            vsk.setSortKeySigned(rs.getInt("SKSIGNED") == 0 ? false : true);
             vsk.setSkStartPosition(rs.getShort("SKSTARTPOS"));
             vsk.setSkFieldLength(rs.getShort("SKFLDLEN"));
             //vsk.setSkOrdinalPosition(skOrdinalPosition);

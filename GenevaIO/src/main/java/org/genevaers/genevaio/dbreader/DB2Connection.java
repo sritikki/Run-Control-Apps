@@ -24,7 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Properties;
 import com.google.common.flogger.FluentLogger;
 
 import java.sql.ResultSet;
@@ -49,6 +49,19 @@ public class DB2Connection extends DatabaseConnection{
         con = DriverManager.getConnection(url, params.getUsername(), params.getPassword());
    }
 
+//    public void connectUserOnly() throws SQLException {
+
+//         Properties properties = new Properties(); 
+//         properties.put("user", params.getUsername()); 
+//         properties.put("passowrd", params.getPassword()); 
+//         properties.put("port", params.getPort()); 
+//         properties.put("securityMechanism", new String("" + com.ibm.db2.jcc.DB2BaseDataSource.USER_ONLY_SECURITY + "")); 
+//         String url = "jdbc:db2://" + params.getServer()+ ":"
+//         + params.getPort() + "/"
+//         + params.getDatabase();
+//         con = DriverManager.getConnection(url, properties); 
+//     }
+
     @Override   
     public boolean isConnected() {
         boolean retval = false;
@@ -66,7 +79,7 @@ public class DB2Connection extends DatabaseConnection{
 		Class.forName("com.ibm.db2.jcc.DB2Driver");
     }
 
-    @Override
+    //@Override
     public List<Integer> getExistingFolderIds(String folderIds) throws SQLException {
         String folderQuery;
         folderQuery = "select VIEWFOLDERID from ";
@@ -86,11 +99,11 @@ public class DB2Connection extends DatabaseConnection{
         return fldrs;
     }
 
-    @Override
+    //@Override
     public List<Integer> getViewIdsFromFolderIds(String folderIds) {
         List<Integer> views = new ArrayList<>();
-        String viewsQuery = "select viewid  from " + params.getSchema() + ".vfvassoc vf "
-        + "where vf.environid = ? and vf.viewfolderid in(" + getPlaceholders(params.getFolderIds()) + ");";
+        String viewsQuery = "select viewid  from " + params.getSchema() + ".vfgetPlaceholdersvassoc vf "
+        + "where vf.environid = ? and vf.viewfolderid in(?);";
         try(PreparedStatement ps = con.prepareStatement(viewsQuery);) {
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {

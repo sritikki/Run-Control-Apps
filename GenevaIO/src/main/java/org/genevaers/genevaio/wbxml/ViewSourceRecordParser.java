@@ -48,8 +48,10 @@ public class ViewSourceRecordParser extends RecordParser {
 				case "SRCSEQNBR":
 					short s = (short) Integer.parseInt(text.trim());
 					vs.setSequenceNumber(s);
-					ViewNode vn = Repository.getViews().get(viewid);
-					vn.addViewSource(vs);
+					if(Repository.isViewEnabled(viewid)) {
+						ViewNode vn = Repository.getViews().get(viewid);
+						vn.addViewSource(vs);
+					}
 					break;
 				case "INLRLFASSOCID":
 					// This assoc id doesn't make any sense until later

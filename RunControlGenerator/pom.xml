@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>runcontrolgenerator</artifactId>
 	<version>1.0.2</version>
-	<packaging>jar</packaging>
+	<!-- <packaging>jar</packaging> -->
 
 	<name>GenevaERS Run Control Generator</name>
 	<url>https://genevaers.org/</url>
@@ -90,7 +90,7 @@
 							<programs>
 								<program>
 									<mainClass>org.genevaers.runcontrolgenerator.App</mainClass>
-									<id>jmr91</id>
+									<id>gvbrcg</id>
 								</program>
 							</programs>
 						</configuration>
@@ -104,7 +104,7 @@
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>application.properties</include>
-					<include>MR91RPT.ftl</include>
+					<include>GRCGRPT.ftl</include>
 				</includes>
 			</resource>
 		</resources>

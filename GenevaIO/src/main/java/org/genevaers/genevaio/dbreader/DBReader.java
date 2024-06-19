@@ -21,27 +21,29 @@ package org.genevaers.genevaio.dbreader;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.genevaers.repository.Repository;
+import com.google.common.flogger.FluentLogger;
 
 public class DBReader {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
  
-    private List<Integer> viewIds;
+    protected static List<Integer> viewIds;
     private DatabaseConnection dbConnection;
     private DatabaseConnectionParams params;
     private boolean hasErrors = false;
-    DBViewsReader viewsReader = new DBViewsReader();
-    DBViewColumnsReader viewColumnsReader = new DBViewColumnsReader();
-    DBViewSourceReader viewSourceReader = new DBViewSourceReader();
-    DBViewColumnSourceReader viewColumnSourceReader = new DBViewColumnSourceReader();
-    DBSortKeyReader sortKeyReader = new DBSortKeyReader();
-    DBControlRecordReader controlRecordReader = new DBControlRecordReader();
-    DBLookupsReader lookupsReader = new DBLookupsReader();
-    DBLogicalRecordReader logicalRecordReader = new DBLogicalRecordReader();
-    DBFieldReader fieldReader = new DBFieldReader();
-    DBLRIndexReader lrIndexReader = new DBLRIndexReader();
-    DBLogicalFileReader logicalFileReader = new DBLogicalFileReader();
-    DBPhysicalFileReader physicalFileReader = new DBPhysicalFileReader();
-    DBExitReader exitReader = new DBExitReader();
+    private DBViewsReader viewsReader = new DBViewsReader();
+    private DBViewColumnsReader viewColumnsReader = new DBViewColumnsReader();
+    private DBViewSourceReader viewSourceReader = new DBViewSourceReader();
+    private DBViewColumnSourceReader viewColumnSourceReader = new DBViewColumnSourceReader();
+    private DBSortKeyReader sortKeyReader = new DBSortKeyReader();
+    private DBControlRecordReader controlRecordReader = new DBControlRecordReader();
+    private DBLookupsReader lookupsReader = new DBLookupsReader();
+    private DBLogicalRecordReader logicalRecordReader = new DBLogicalRecordReader();
+    private DBFieldReader fieldReader = new DBFieldReader();
+    private DBLRIndexReader lrIndexReader = new DBLRIndexReader();
+    private DBLogicalFileReader logicalFileReader = new DBLogicalFileReader();
+    private DBPhysicalFileReader physicalFileReader = new DBPhysicalFileReader();
+    private DBExitReader exitReader = new DBExitReader();
+    private DBFoldersReader foldersReader = new DBFoldersReader();
 
     public List<Integer> getViewIds() {
         return viewIds;
@@ -62,19 +64,35 @@ public class DBReader {
     }
 
     private void addComponents() {
-        hasErrors = viewsReader.addToRepo(dbConnection, params);
-        hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
-        hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
-        hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
-        hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
-        hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
-        hasErrors |= lookupsReader.addToRepo(dbConnection, params);
-        hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
-        hasErrors |= fieldReader.addToRepo(dbConnection, params);
-        hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
-        hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
-        hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
-        hasErrors |= exitReader.addToRepo(dbConnection, params);
+        hasErrors = foldersReader.addToRepo(dbConnection, params);
+        hasErrors |= viewsReader.addToRepo(dbConnection, params);
+        if(hasErrors == false) {
+            logger.atFine().log("Views read");
+            hasErrors |= viewSourceReader.addToRepo(dbConnection, params);
+            logger.atFine().log("View sources read");
+            hasErrors |= viewColumnsReader.addToRepo(dbConnection, params);
+            logger.atFine().log("View columns read");
+            hasErrors |= viewColumnSourceReader.addToRepo(dbConnection, params);
+            logger.atFine().log("View column sources read");
+            hasErrors |= sortKeyReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Sortkeys read");
+            hasErrors |= controlRecordReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Control records read");
+            hasErrors |= lookupsReader.addToRepo(dbConnection, params);
+            logger.atFine().log("lookups read");
+            hasErrors |= logicalRecordReader.addToRepo(dbConnection, params);
+            logger.atFine().log("LRs read");
+            hasErrors |= fieldReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Fields read");
+            hasErrors |= lrIndexReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Indexes read");
+            hasErrors |= logicalFileReader.addToRepo(dbConnection, params);
+            logger.atFine().log("LFs read");
+            hasErrors |= physicalFileReader.addToRepo(dbConnection, params);
+            logger.atFine().log("PFs read");
+            hasErrors |= exitReader.addToRepo(dbConnection, params);
+            logger.atFine().log("Exits read");
+        }
     }
 
     /** 
@@ -97,6 +115,8 @@ public class DBReader {
             case POSTGRES:
             dbConnection = new PostgresConnection(params);
             break;
+           default:
+                break;
         }
         return null;
     }

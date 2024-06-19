@@ -40,8 +40,11 @@ import org.genevaers.repository.components.enums.FileType;
 import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.TextDelimiter;
 
+import com.google.common.flogger.FluentLogger;
+
 
 public class DBPhysicalFileReader extends DBReaderBase {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     Map<Integer, List<Integer>> lf2pf = new HashMap<>();
 
     @Override
@@ -50,9 +53,10 @@ public class DBPhysicalFileReader extends DBReaderBase {
         updateRequiredPfs(dbConnection, params);
         if(requiredPFs.size() > 0) { 
             //Then get the PFs
+            requiredPFs.remove(0);
             String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-            + "where ENVIRONID= ? and PHYFILEID in (" + dbConnection.getPlaceholders(getIds(requiredPFs)) + ") and ;";
-            executeAndWriteToRepo(dbConnection, pfRecs, params, getIds(requiredPFs));
+            + "where ENVIRONID= ? and PHYFILEID in (" + getPlaceholders(requiredPFs.size()) + ");";
+            executeAndWriteToRepo(dbConnection, pfRecs, params, requiredPFs);
             //Note this relies on the LFs having been added first
             addPfsToLfs();
         }
@@ -60,16 +64,16 @@ public class DBPhysicalFileReader extends DBReaderBase {
     }
 
     private void updateRequiredPfs(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
+        requiredLFs.remove(0);
         if(requiredLFs.size() > 0) {
             String pfsFromLfs = "select LOGFILEID, PHYFILEID from " + params.getSchema() + ".LFPFASSOC "
-                    + "where ENVIRONID=? and LOGFILEID in (" + dbConnection.getPlaceholders(getIds(requiredLFs)) + ");";
-            try {
-                PreparedStatement ps = dbConnection.prepareStatement(pfsFromLfs);
+                    + "where ENVIRONID=? and LOGFILEID in (" + getPlaceholders(requiredLFs.size()) + ");";
+            try (PreparedStatement ps = dbConnection.prepareStatement(pfsFromLfs);){
                 int parmNum = 1;
                 ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
-                String[] idsIn = getIds(requiredPFs).split(",");
-                for(int i=0; i<idsIn.length; i++) {
-                    ps.setString(parmNum++, idsIn[i]);
+                Iterator<Integer> lfi = requiredLFs.iterator();
+                while(lfi.hasNext()) {
+                    ps.setInt(parmNum++, lfi.next());
                 }
                 ResultSet rs = dbConnection.getResults(ps);
                 while (rs.next()) {
@@ -80,11 +84,9 @@ public class DBPhysicalFileReader extends DBReaderBase {
                         lf2pf.put(rs.getInt("LOGFILEID"), pfs);
                     }
                     pfs.add(rs.getInt("PHYFILEID"));
-                }
-                dbConnection.closeStatement(ps);
+                }                
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.atSevere().log("updateRequiredPfs failed: %s", e.getMessage());
             }
         }
     }
@@ -113,7 +115,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
         pf.setSqlText(getDefaultedString(rs.getString("DBMSSQL"), ""));
         pf.setDatabaseTable(getDefaultedString(rs.getString("DBMSTABLE"), ""));
         pf.setDatabaseRowFormat(DbmsRowFmtOptId.fromdbcode(getDefaultedString(rs.getString("DBMSROWFMTCD"), "NONE")));
-        pf.setIncludeNulls(rs.getBoolean("DBMSINCLNULLSIND"));
+        pf.setIncludeNulls(rs.getInt("DBMSINCLNULLSIND") == 0 ? false : true);
 		//Make sure these are not null
 		pf.setExtractDDName("");
 		pf.setDatabase("");

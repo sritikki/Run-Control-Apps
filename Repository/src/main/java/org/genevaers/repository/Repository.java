@@ -56,6 +56,8 @@ public class Repository {
 
 	private static Set<Short> extractFileNubers = new TreeSet<>();
 
+	private static Set<Integer> runviews = new TreeSet<>();
+
 	//Helper fields
 	private static LookupPath currentlp;
 	private static LookupPathStep currentLookupPathStep;
@@ -478,4 +480,20 @@ public class Repository {
 	public static boolean newErrorsDetected() {
 		return compilerErrors.size() > numErrors;
 	}
+
+	public static void setRunviews(Set<Integer> runviews) {
+		Repository.runviews.addAll(runviews);
+	}
+
+	public static Set<Integer> getRunviews() {
+		return runviews;
+	}
+
+    public static boolean isViewEnabled(int componentID) {
+        if(runviews.size() > 0) {
+			return runviews.contains(componentID) ? true : false;
+		} else {
+			return true;
+		}
+    }
 }

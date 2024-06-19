@@ -1,6 +1,7 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.compilers.base.EmittableASTNode;
+import org.genevaers.repository.data.CompilerMessageSource;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -28,6 +29,8 @@ public class ExtractOutputAST extends ExtractBaseAST implements EmittableASTNode
 
     @Override
     public void emit() {
+        currentViewColumnSource = null;
+        currentMessageSource = CompilerMessageSource.EXTRACT_OUTPUT;
         ltEmitter.setSuffixSeqNbr((short)0);
         emitChildNodes();
     }

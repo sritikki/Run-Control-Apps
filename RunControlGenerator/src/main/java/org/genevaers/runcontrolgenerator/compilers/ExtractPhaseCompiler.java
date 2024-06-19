@@ -50,6 +50,7 @@ public class ExtractPhaseCompiler {
 	private static LogicTableEmitter xltEmitter = new LogicTableEmitter();
 	private static LogicTableEmitter jltEmitter = new LogicTableEmitter();
 	private static ViewSourceAstNode vsnode;
+	private static Status status = Status.OK;
     
    	public ExtractPhaseCompiler(List<LogicGroup> lgs) {
 		logicGroups = lgs;
@@ -64,7 +65,6 @@ public class ExtractPhaseCompiler {
     }
 
     public static Status run(List<LogicGroup> lgs) {
-        Status status = Status.OK;
 		logicGroups = lgs;
 		buildTheAST();
 		if(Repository.getCompilerErrors().size() == 0) {
@@ -75,6 +75,7 @@ public class ExtractPhaseCompiler {
 			buildTheJoinLogicTable();
 			buildTheExtractLogicTable();
 			wholeViewChecks();
+
 		} else{
 			status = Status.ERROR;
 		}
@@ -219,7 +220,9 @@ public class ExtractPhaseCompiler {
 		boolean runEOC = true;
 		if(RunControlConfigration.getInputType().equalsIgnoreCase("VDPXML")) {
 			if(noWriteStatementMissing(vsnode)) {
-				runEOC = false; //There must have been a write in the last column
+				runEOC = false; //There must have been a write in the last column so don't generate write
+			} else {
+				runEOC = true; //need a write statement
 			}
 		}
 
@@ -249,6 +252,7 @@ public class ExtractPhaseCompiler {
 			ecc.processLogicAndAddNodes(vcsn);
 			if(Repository.newErrorsDetected()) {
 				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+				status = Status.ERROR;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -292,6 +296,7 @@ public class ExtractPhaseCompiler {
 	public static void buildTheExtractLogicTable() {
 		if(Repository.newErrorsDetected()) {
 			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+			status = Status.ERROR;
 		} else {
 			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
 			((EmittableASTNode)extractRoot).emit();
@@ -300,11 +305,6 @@ public class ExtractPhaseCompiler {
 
     public static void wholeViewChecks() {
 		checkWriteStatements(extractRoot);
-		lookForNoAssignments();
-	}
-
-
-    private static void checkAssignmentStatements() {
 		lookForNoAssignments();
 	}
 
@@ -318,9 +318,7 @@ public class ExtractPhaseCompiler {
 
 			} else {
 				ViewSourceAstNode vs = (ViewSourceAstNode)vcs.getParent();
-				CompilerMessage message = new CompilerMessage(vcs.getViewColumnSource().getViewId(), CompilerMessageSource.COLUMN,  
-				vs.getViewSource().getSourceLRID(), vs.getViewSource().getSourceLFID(), vcs.getViewColumnSource().getColumnNumber(), "Column not assigned");
-				Repository.addWarningMessage(message);              				
+				Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage("Column not assigned"));              				
 			}
 		}
 	}
@@ -330,9 +328,7 @@ public class ExtractPhaseCompiler {
 		if(noWriteStatementMissing(localvsnode)) {
 			logger.atInfo().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
 		} else {
-			CompilerMessage errMessage = new CompilerMessage(localvsnode.getViewSource().getViewId(), CompilerMessageSource.EXTRACT_OUTPUT,  
-			localvsnode.getViewSource().getSourceLRID(), localvsnode.getViewSource().getSourceLFID(), 0, "No write statements were found");
-			Repository.addErrorMessage(errMessage);              			
+			Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage("No write statements were found"));              			
 		}
 	}
 

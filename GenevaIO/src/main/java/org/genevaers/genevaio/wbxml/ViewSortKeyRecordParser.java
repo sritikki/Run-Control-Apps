@@ -114,7 +114,9 @@ public class ViewSortKeyRecordParser extends RecordParser {
 				case "KEYSEQNBR":
 					short s = (short) Integer.parseInt(text);
 					vsk.setSequenceNumber(s);
-					currentViewNode.addViewSortKey(vsk);
+					if (Repository.isViewEnabled(currentViewId)) {
+						currentViewNode.addViewSortKey(vsk);
+					}
 					break;
 				case "SORTSEQCD":
 					vsk.setSortorder(SortOrder.fromdbcode(text.trim()));

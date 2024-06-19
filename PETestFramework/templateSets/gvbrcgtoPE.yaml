@@ -1,10 +1,10 @@
 ---
-name: "JMR91toPE"
+name: "gvbrcgtoPE"
 templates:
 #
 # JCL templates
 #
-  - name: "jcl/JMR91.ftl"
+  - name: "jcl/gvbrcg.ftl"
     target: "${test}L"
     type: "JCL"
   - name: "jcl/MR91R.ftl"

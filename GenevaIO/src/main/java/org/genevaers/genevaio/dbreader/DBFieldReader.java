@@ -52,9 +52,9 @@ public class DBFieldReader extends DBReaderBase{
             + "from " + params.getSchema() + ".LRFIELD f "
             + "INNER JOIN " + params.getSchema() + ".LRFIELDATTR a "
             + "ON a.LRFIELDID = f.LRFIELDID and a.ENVIRONID = f.ENVIRONID "
-            + "where f.ENVIRONID = ? and f.logrecid in(" + dbConnection.getPlaceholders(getIds(requiredLRs)) + ") ";
+            + "where f.ENVIRONID = ? and f.logrecid in(" + getPlaceholders(requiredLRs.size()) + ") ";
         
-        executeAndWriteToRepo(dbConnection, query, params, getIds(requiredLRs));
+        executeAndWriteToRepo(dbConnection, query, params, requiredLRs);
         return hasErrors;
     }
 
@@ -68,7 +68,7 @@ public class DBFieldReader extends DBReaderBase{
         lrf.setOrdinalPosition(rs.getShort("ORDINALPOS"));
         lrf.setOrdinalOffset(rs.getShort("ORDINALOFFSET"));
         lrf.setDatatype(DataType.fromdbcode(rs.getString("FLDFMTCD")));
-        lrf.setSigned(rs.getBoolean("SIGNEDIND"));
+        lrf.setSigned(rs.getInt("SIGNEDIND") == 0 ? false : true);
         lrf.setLength(rs.getShort("MAXLEN"));
         lrf.setNumDecimalPlaces(rs.getShort("DECIMALCNT"));
         lrf.setRounding(rs.getShort("ROUNDING"));

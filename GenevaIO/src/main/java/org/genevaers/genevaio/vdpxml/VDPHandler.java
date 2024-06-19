@@ -16,9 +16,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.google.common.flogger.FluentLogger;
 
-public class VDPHandler extends DefaultHandler{
-    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-    
+public class VDPHandler extends DefaultHandler {
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
 	private StringBuilder data;
 	private BaseParser currentParser;
 	private int currentLRID;
@@ -28,7 +28,7 @@ public class VDPHandler extends DefaultHandler{
 
 	private boolean srcLR;
 
-	private ViewRecordParser currenctViewParser;
+	private ViewRecordParser currentViewParser;
 
 	private Attributes elAttributes;
 
@@ -39,52 +39,53 @@ public class VDPHandler extends DefaultHandler{
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-		switch(qName) {
+		switch (qName) {
 			case "JobInfo":
-			logger.atFine().log("Parsing Job Info");
-			//parseRecordsForElementWithParser(elementName, new SafrvdpParser(), "Database");
-			break;
+				logger.atFine().log("Parsing Job Info");
+				// parseRecordsForElementWithParser(elementName, new SafrvdpParser(),
+				// "Database");
+				break;
 			case "ControlRecord":
 				logger.atFine().log("Parsing ControlRecords");
 				currentParser = new CRRecordParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
 				break;
 			case "Partitions":
-					logger.atFine().log("Parsing Partitions");
-					currentParser = new PhysicalFileRecordParser();
+				logger.atFine().log("Parsing Partitions");
+				currentParser = new PhysicalFileRecordParser();
 				break;
 			// case "ExitRef":
-			// 	int exitRef = Integer.parseInt(attributes.getValue("ID"));
-			// 	ExitType exitType = ExitType.fromdbcode(attributes.getValue("Type"));
-			// 	switch (exitType) {
-			// 		case READ:
-			// 			((PhysicalFileRecordParser)currentParser).setExitRef(exitRef);
-			// 			break;
-				
-			// 		case WRITE:
-						
-			// 			break;
-			// 		case LOOKUP:
-			// 			((LookupStepParser)currentStepParser).setExitRef(exitRef);
-			// 		break;
-			// 		case FORMAT:
-			// 			break;
-			// 		default:
-			// 			break;
-			// 	}
-			// 	break;
+			// int exitRef = Integer.parseInt(attributes.getValue("ID"));
+			// ExitType exitType = ExitType.fromdbcode(attributes.getValue("Type"));
+			// switch (exitType) {
+			// case READ:
+			// ((PhysicalFileRecordParser)currentParser).setExitRef(exitRef);
+			// break;
+
+			// case WRITE:
+
+			// break;
+			// case LOOKUP:
+			// ((LookupStepParser)currentStepParser).setExitRef(exitRef);
+			// break;
+			// case FORMAT:
+			// break;
+			// default:
+			// break;
+			// }
+			// break;
 			case "LogicalFile":
 				logger.atFine().log("Logical Files");
 				currentParser = new LogicalFileRecordParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
 				break;
 			// case "PartitionRef":
-			// 	logger.atFine().log("Logical Files");
-			// 	String a0 = elAttributes.getValue("seq");
-			// 	String a1 = elAttributes.getValue("ID");
-			// 	currentParser = new LogicalFileRecordParser();
-			// 	currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
-			// 	break;
+			// logger.atFine().log("Logical Files");
+			// String a0 = elAttributes.getValue("seq");
+			// String a1 = elAttributes.getValue("ID");
+			// currentParser = new LogicalFileRecordParser();
+			// currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+			// break;
 			case "LogicalRecord":
 				logger.atFine().log("Logical Record");
 				currentParser = new LRRecordParser();
@@ -95,14 +96,14 @@ public class VDPHandler extends DefaultHandler{
 				logger.atFine().log("Logical Field");
 				currentParser = new LRFieldRecordParser();
 				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
-				((LRFieldRecordParser)currentParser).setCurrentLrId(currentLRID);
+				((LRFieldRecordParser) currentParser).setCurrentLrId(currentLRID);
 				break;
 			case "Index":
 				logger.atFine().log("Index");
 				currentParser = new LRIndexRecordParser();
 				currentIndexID = Integer.parseInt(attributes.getValue("ID"));
 				currentParser.setComponentID(currentIndexID);
-				((LRIndexRecordParser)currentParser).setCurrentLrId(currentLRID);
+				((LRIndexRecordParser) currentParser).setCurrentLrId(currentLRID);
 				break;
 			case "Lookup":
 				logger.atFine().log("Lookup");
@@ -118,60 +119,77 @@ public class VDPHandler extends DefaultHandler{
 			case "View":
 				logger.atFine().log("View");
 				currentParser = new ViewRecordParser();
-				currenctViewParser = (ViewRecordParser) currentParser;
+				currentViewParser = (ViewRecordParser) currentParser;
 				currentViewID = Integer.parseInt(attributes.getValue(0));
 				currentParser.setComponentID(currentViewID);
 				break;
 			case "ControlRecordRef":
-				logger.atFine().log("ControlRecordRef");
-				currenctViewParser.setContolRecord(Integer.parseInt(attributes.getValue(0)));
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("ControlRecordRef");
+					currentViewParser.setContolRecord(Integer.parseInt(attributes.getValue(0)));
+				}
 				break;
 			case "DataSource":
-				logger.atFine().log("DataSource");
-				currentParser = new ViewSourceRecordParser();
-				currentViewSourceID = Integer.parseInt(attributes.getValue(0));
-				currentParser.setComponentID(currentViewSourceID);
-				((ViewSourceRecordParser)currentParser).setViewId(currentViewID);
-				((ViewSourceRecordParser)currentParser).setSequenceNumber(Integer.parseInt(attributes.getValue("seq")));
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("DataSource");
+					currentParser = new ViewSourceRecordParser();
+					currentViewSourceID = Integer.parseInt(attributes.getValue(0));
+					currentParser.setComponentID(currentViewSourceID);
+					((ViewSourceRecordParser) currentParser).setViewId(currentViewID);
+					((ViewSourceRecordParser) currentParser)
+							.setSequenceNumber(Integer.parseInt(attributes.getValue("seq")));
+				}
 				break;
 			case "ColumnAssignment":
-				logger.atFine().log("ColumnAssignment");
-				currentParser = new ViewColumnSourceParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
-				((ViewColumnSourceParser)currentParser).setViewId(currentViewID);
-				((ViewColumnSourceParser)currentParser).setViewSourceId(currentViewSourceID);
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("ColumnAssignment");
+					currentParser = new ViewColumnSourceParser();
+					currentParser.setComponentID(Integer.parseInt(attributes.getValue(0)));
+					((ViewColumnSourceParser) currentParser).setViewId(currentViewID);
+					((ViewColumnSourceParser) currentParser).setViewSourceId(currentViewSourceID);
+				}
 				break;
 			case "Extract":
-				logger.atFine().log("Extract");
-				currentParser = currenctViewParser;
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("Extract");
+					currentParser = currentViewParser;
+				}
 				break;
 			case "ExtractColumn":
-				logger.atFine().log("ExtractColumn");
-				currentParser = new ViewColumnRecordParser();
-				int colId = Integer.parseInt(attributes.getValue("ID"));
-				currentParser.setComponentID(colId);
-				((ViewColumnRecordParser)currentParser).setViewId(currentViewID);
-				int seqNum = Integer.parseInt(attributes.getValue("seq"));
-				((ViewColumnRecordParser)currentParser).setSequenceNumber(seqNum);
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("ExtractColumn");
+					currentParser = new ViewColumnRecordParser();
+					int colId = Integer.parseInt(attributes.getValue("ID"));
+					currentParser.setComponentID(colId);
+					((ViewColumnRecordParser) currentParser).setViewId(currentViewID);
+					int seqNum = Integer.parseInt(attributes.getValue("seq"));
+					((ViewColumnRecordParser) currentParser).setSequenceNumber(seqNum);
+				}
 				break;
 			case "SortColumn":
-				logger.atFine().log("SortColumn");
-				currentParser = new ViewSortKeyRecordParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
-				((ViewSortKeyRecordParser)currentParser).setViewId(currentViewID);
-				((ViewSortKeyRecordParser)currentParser).setSeqNum(Integer.parseInt(attributes.getValue("seq")));
-				
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("SortColumn");
+					currentParser = new ViewSortKeyRecordParser();
+					currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
+					((ViewSortKeyRecordParser) currentParser).setViewId(currentViewID);
+					((ViewSortKeyRecordParser) currentParser).setSeqNum(Integer.parseInt(attributes.getValue("seq")));
+
+				}
 				break;
 			case "Output":
-				logger.atFine().log("Output");
-				fixupVCS();
-				currentParser = currenctViewParser;
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("Output");
+					fixupVCS();
+					currentParser = currentViewParser;
+				}
 				break;
 			case "FormatColumn":
-				logger.atFine().log("FormatColumn");
-				currentParser = new ViewColumnRecordParser();
-				currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
-				((ViewColumnRecordParser)currentParser).setViewId(currentViewID);
+				if (Repository.isViewEnabled(currentViewID)) {
+					logger.atFine().log("FormatColumn");
+					currentParser = new ViewColumnRecordParser();
+					currentParser.setComponentID(Integer.parseInt(attributes.getValue("ID")));
+					((ViewColumnRecordParser) currentParser).setViewId(currentViewID);
+				}
 				break;
 			default:
 				if (currentParser != null) {
@@ -179,8 +197,7 @@ public class VDPHandler extends DefaultHandler{
 				}
 				break;
 
-
-		}		
+		}
 		data = new StringBuilder();
 	}
 

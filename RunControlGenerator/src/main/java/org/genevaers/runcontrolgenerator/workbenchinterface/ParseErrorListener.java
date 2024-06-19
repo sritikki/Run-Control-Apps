@@ -30,7 +30,6 @@ import org.antlr.v4.runtime.Token;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.CompilerMessageSource;
 
 public class ParseErrorListener extends BaseErrorListener {
 	private List<String> errors = new ArrayList<String>();
@@ -51,7 +50,7 @@ public class ParseErrorListener extends BaseErrorListener {
         errors.add(err);
         CompilerMessage cerr = new CompilerMessage(
                     0, 
-                    CompilerMessageSource.COLUMN, 
+                    ExtractBaseAST.getCompilerMessageSource(), 
                     0, 
                     0, 
                     0,

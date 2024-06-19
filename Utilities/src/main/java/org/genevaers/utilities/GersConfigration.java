@@ -35,19 +35,40 @@ public class GersConfigration {
 
     private static List<String> linesRead = new ArrayList<>();
 
-    protected static final String PARMFILE = "PARMFILE";
-    protected static final String ZOSPARMFILE = "ZOSPARMFILE";
+    public static final String RCG_BASENAME = "GRCG";
+    public static final String RCA_BASENAME = "GRCA";
+
+    public static final String RCG_PARM_FILENAME = "GRCGPARM";
+    public static final String DEFAULT_ZOSPARM_FILENAME = "GRCGPARM";
+
+    public static final String RCA_PARM_FILENAME = RCA_BASENAME + "PARM";
+
+    public static final String PARMFILE = "PARMFILE";
+    public static final String ZOSPARMFILE = "ZOSPARMFILE";
 
     public static final String LOG_LEVEL = "LOG_LEVEL";
-    public static final String TRACE = "TRACE";
     public static final String LOG_FILE = "LOGFILE";
 
     public static final String XLT_DDNAME = "XLT";
     public static final String JLT_DDNAME = "JLT";
     public static final String VDP_DDNAME = "VDP";
     
+    public static final String XLT_REPORT = "XLT_REPORT";
+    public static final String JLT_REPORT = "JLT_REPORT";
+    public static final String VDP_REPORT = "VDP_REPORT";
+    public static final String RCA_REPORT = "RCA_REPORT";
+    public static final String REPORT_FORMAT = "REPORT_FORMAT";
+    
     public static final String ZOS = "ZOS";
     public static final String CURRENT_WORKING_DIRECTORY = "CWD";
+
+    public static final String DBVIEWS = "DBVIEWS";
+    public static final String DBFLDRS = "DBFLDRS";
+
+    public static final String RCA_RUNNAME = "gvbrca";
+    public static final String RCA_REPORTDIR = "rca/";
+    public static final String RCA_HTMLREPORTFILENAME = RCA_REPORTDIR + RCA_RUNNAME + ".html";
+    
     protected static Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
     private static boolean zos;
@@ -72,10 +93,10 @@ public class GersConfigration {
     }
 
 	public static Level getLogLevel() {
-		if(parmToValue.get(TRACE).getValue().equalsIgnoreCase("Y")){
-            return Level.FINE;
-        } else {
+		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("STANDARD")){
             return Level.INFO;
+        } else {
+            return Level.FINE;
         }
 	}
 

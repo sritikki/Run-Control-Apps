@@ -5,7 +5,6 @@ import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.CompilerMessageSource;
 
 public class CompareFlipLhs extends Rule{ 
 
@@ -16,15 +15,7 @@ public class CompareFlipLhs extends Rule{
         FormattedASTNode frmtLhs = ((FormattedASTNode) lhs);
         FormattedASTNode frmtRhs = ((FormattedASTNode) rhs);
         if (frmtLhs.getDataType() == DataType.ALPHANUMERIC && frmtRhs.isNumeric()) {
-                CompilerMessage warn = new CompilerMessage(
-                            999, 
-                            CompilerMessageSource.COLUMN, 
-                            ExtractBaseAST.getCurrentViewSource().getSourceLRID(), 
-                            ExtractBaseAST.getCurrentViewSource().getSourceLFID(), 
-                            333,
-                            String.format(MESSAGE, frmtLhs.getMessageName())
-                        );
-                Repository.addWarningMessage(warn);
+                Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(String.format(MESSAGE, frmtLhs.getMessageName())));
                 return RuleResult.RULE_WARNING;
         } else {
                 return RuleResult.RULE_PASSED;

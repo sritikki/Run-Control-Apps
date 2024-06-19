@@ -33,6 +33,8 @@ import org.genevaers.compilers.extract.emitters.LogicTableEmitter;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
+import org.genevaers.repository.data.CompilerMessage;
+import org.genevaers.repository.data.CompilerMessageSource;
 
 /**
  * The class represents a generic Extract AST Node.
@@ -60,6 +62,8 @@ public abstract class ExtractBaseAST extends ASTBase{
 
     protected ASTFactory.Type type = null;
     private boolean negative = false;
+
+    protected static CompilerMessageSource currentMessageSource;
 
 
     ExtractBaseAST() {
@@ -110,7 +114,7 @@ public abstract class ExtractBaseAST extends ASTBase{
     }
 
     public static short getCurrentColumnNumber() {
-        return (short) currentViewColumnSource.getColumnNumber();
+        return (short) (currentViewColumnSource != null ? currentViewColumnSource.getColumnNumber() : 0);
     }
 
     public static void setCurrentColumnNumber(short currentColumnNumber) {
@@ -197,7 +201,8 @@ public abstract class ExtractBaseAST extends ASTBase{
 
 
     public static int getLastColumnWithAWrite(ViewSource vs) {
-        return lastWriteColumnMap.get(vs);
+        Integer colNum = lastWriteColumnMap.get(vs);
+        return colNum == null ? 0 : colNum;
     }
 
     public static void setLastColumnWithAWrite() {
@@ -206,6 +211,30 @@ public abstract class ExtractBaseAST extends ASTBase{
 
     public static void clearLastColumnWithAWrite() {
         ExtractBaseAST.lastColumnWithAWrite = 0;
+    }
+
+    public static int getCurrentSourceOrColumnNumber() {
+        return currentViewColumnSource != null ? currentViewColumnSource.getColumnNumber() : currentViewSource.getSequenceNumber();
+    }
+
+    public static CompilerMessageSource getCompilerMessageSource() {
+        return currentMessageSource;
+    }
+
+    public static int getCurrentViewNumber() {
+        return currentViewSource.getViewId();
+    }
+
+    public static CompilerMessage makeCompilerMessage(String detail) {
+        return new CompilerMessage(getCurrentViewNumber(), 
+        getCompilerMessageSource(), 
+        getCurrentViewSource().getSourceLRID(), 
+        getCurrentViewSource().getSourceLFID(), 
+        getCurrentSourceOrColumnNumber(), detail);
+    }
+
+    public static void setCurrentMessageSource(CompilerMessageSource currentMessageSource) {
+        ExtractBaseAST.currentMessageSource = currentMessageSource;
     }
 
 }
