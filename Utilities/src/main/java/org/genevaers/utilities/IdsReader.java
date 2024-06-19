@@ -76,7 +76,7 @@ public class IdsReader {
 			parseLines(parmReader);
 		} catch (IOException e) {
 			result = IDS_RESULT.FAIL;
-			logger.atSevere().withCause(e).log("Read failed. Cannot open %s", parmName);
+			logger.atInfo().log("Read failed. Cannot open %s\n%s", parmName, e.getMessage());
 		}
 	}
 
