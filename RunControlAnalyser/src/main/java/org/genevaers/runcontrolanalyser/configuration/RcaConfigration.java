@@ -26,14 +26,9 @@ import com.google.common.flogger.FluentLogger;
 public class RcaConfigration extends GersConfigration {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String DEFAULT_PARM_FILENAME = "RCAPARM";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "RCAPARM";
+    public static final String DEFAULT_PARM_FILENAME = RCA_BASENAME + "PARM";
+    public static final String DEFAULT_ZOSPARM_FILENAME = RCA_BASENAME + "PARM";
 
-    public static final String XLT_REPORT = "XLT_REPORT";
-    public static final String JLT_REPORT = "JLT_REPORT";
-    public static final String VDP_REPORT = "VDP_REPORT";
-    public static final String RCA_REPORT = "RCA_REPORT";
-    public static final String REPORT_FORMAT = "REPORT_FORMAT";
     public static final String COMPARE = "COMPARE";
     public static final String COVERAGE = "COVERAGE";
  

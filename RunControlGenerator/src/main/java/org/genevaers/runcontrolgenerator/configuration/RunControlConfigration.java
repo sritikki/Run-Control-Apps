@@ -33,8 +33,8 @@ import com.google.common.flogger.FluentLogger;
 public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String DEFAULT_PARM_FILENAME = "GRCGParm.cfg";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "GRCGPARM";
+    public static final String RCG_PARM_FILENAME = RCG_BASENAME + "PARM.cfg";
+    public static final String RCG_ZOSPARM_FILENAME = RCG_BASENAME +  "PARM";
 
     public static final String INPUT_TYPE = "INPUT_TYPE";
 
@@ -85,8 +85,8 @@ public class RunControlConfigration extends GersConfigration{
         parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
 
         //Hidden defaults
-        parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
-        parmToValue.put(ZOSPARMFILE, new ConfigEntry(DEFAULT_ZOSPARM_FILENAME, true));
+        parmToValue.put(PARMFILE, new ConfigEntry(RCG_PARM_FILENAME, true));
+        parmToValue.put(ZOSPARMFILE, new ConfigEntry(RCG_ZOSPARM_FILENAME, true));
         parmToValue.put(REPORT_FILE, new ConfigEntry(REPORT_FILE, true));
         parmToValue.put(LOG_FILE, new ConfigEntry(LOG_FILE, true));
         parmToValue.put(WB_XML_FILES_SOURCE, new ConfigEntry(WB_XML_FILES_SOURCE, true));
