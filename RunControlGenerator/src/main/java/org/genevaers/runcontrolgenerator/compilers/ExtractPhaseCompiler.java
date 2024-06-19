@@ -50,6 +50,7 @@ public class ExtractPhaseCompiler {
 	private static LogicTableEmitter xltEmitter = new LogicTableEmitter();
 	private static LogicTableEmitter jltEmitter = new LogicTableEmitter();
 	private static ViewSourceAstNode vsnode;
+	private static Status status = Status.OK;
     
    	public ExtractPhaseCompiler(List<LogicGroup> lgs) {
 		logicGroups = lgs;
@@ -64,7 +65,6 @@ public class ExtractPhaseCompiler {
     }
 
     public static Status run(List<LogicGroup> lgs) {
-        Status status = Status.OK;
 		logicGroups = lgs;
 		buildTheAST();
 		if(Repository.getCompilerErrors().size() == 0) {
@@ -75,6 +75,7 @@ public class ExtractPhaseCompiler {
 			buildTheJoinLogicTable();
 			buildTheExtractLogicTable();
 			wholeViewChecks();
+
 		} else{
 			status = Status.ERROR;
 		}
@@ -251,6 +252,7 @@ public class ExtractPhaseCompiler {
 			ecc.processLogicAndAddNodes(vcsn);
 			if(Repository.newErrorsDetected()) {
 				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+				status = Status.ERROR;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -294,6 +296,7 @@ public class ExtractPhaseCompiler {
 	public static void buildTheExtractLogicTable() {
 		if(Repository.newErrorsDetected()) {
 			logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+			status = Status.ERROR;
 		} else {
 			ExtractBaseAST.setLogicTableEmitter(xltEmitter);
 			((EmittableASTNode)extractRoot).emit();
@@ -302,11 +305,6 @@ public class ExtractPhaseCompiler {
 
     public static void wholeViewChecks() {
 		checkWriteStatements(extractRoot);
-		lookForNoAssignments();
-	}
-
-
-    private static void checkAssignmentStatements() {
 		lookForNoAssignments();
 	}
 

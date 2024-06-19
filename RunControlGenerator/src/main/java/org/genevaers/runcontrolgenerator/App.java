@@ -2,6 +2,7 @@ package org.genevaers.runcontrolgenerator;
 
 import java.io.IOException;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.ParmReader;
@@ -29,6 +30,7 @@ import com.google.common.flogger.FluentLogger;
 
 public class App {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+    private static Status result = Status.ERROR;
 
     public static void main(String[] args) {
 		System.out.printf("GenevaERS RunControlGenerator version %s\n", "tbd");
@@ -43,6 +45,7 @@ public class App {
         } else {
             App.run("", "", RunControlConfigration.LOG_FILE, "", "", "");
         }
+        exitWithRC();
     } 
 
     public static void run(String parmFile, String reportFile, String logFile, String vdpFile, String xltFile, String jltFile) {
@@ -60,7 +63,7 @@ public class App {
             GersConfigration.setLinesRead(pr.getLinesRead());
             if(RunControlConfigration.isValid()) {
                 GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, GersConfigration.getLogLevel());
-                rcg.runFromConfig();
+                result = rcg.runFromConfig();
             } else {
                 logger.atSevere().log("Invalid configuration processing stopped");
             }
@@ -68,6 +71,20 @@ public class App {
             logger.atSevere().log("Unable to read PARM file");
         }
         GenevaLog.closeLogger(RunControlGenerator.class.getName());
+    }
+
+    private static void exitWithRC() {
+        switch (result) {
+            case ERROR:
+                System.exit(8);
+                break;
+            case WARNING:
+                System.exit(4);
+                break;
+            default:
+                System.exit(0);
+                break;
+        }
     }
 
 }

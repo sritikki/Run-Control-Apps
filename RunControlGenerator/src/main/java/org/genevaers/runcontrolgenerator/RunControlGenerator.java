@@ -48,7 +48,7 @@ public class RunControlGenerator {
 	private FileWriter reportWriter;
 	ReportWriter report = new ReportWriter();
 
-	private Status status;
+	private Status status = Status.OK;
 
 	private List<LogicGroup> logicGroups;
 
@@ -57,7 +57,7 @@ public class RunControlGenerator {
 	private LogicTable extractLogicTable;
 	private LogicTable joinLogicTable;
 
-	public void runFromConfig() {
+	public Status runFromConfig() {
 		GenevaLog.writeHeader("Run Control Generator");
 
 		if(buildComponentRepositoryFromSelectedInput() != Status.ERROR) {
@@ -74,6 +74,7 @@ public class RunControlGenerator {
 			logger.atSevere().log("Failed to build the component repository. No run control files will be written");
 		}
 		report.write();
+		return status;
 	}
 
 	private void writeRunControlFiles() {
@@ -106,7 +107,7 @@ public class RunControlGenerator {
 	private void runCompilers() {
 		GenevaLog.logNow("runCompilers");
 		if(status != Status.ERROR) {
-			ExtractPhaseCompiler.run(logicGroups);
+			status = ExtractPhaseCompiler.run(logicGroups);
 			extractLogicTable = ExtractPhaseCompiler.getExtractLogicTable();
 			joinLogicTable = ExtractPhaseCompiler.getJoinLogicTable();
 			FormatRecordsBuilder.run();
@@ -131,7 +132,8 @@ public class RunControlGenerator {
 
 	private Status buildComponentRepositoryFromSelectedInput() {
 		RepositoryBuilder rb = RepositoryBuilderFactory.get();
-		return rb != null ? rb.run() : Status.ERROR;
+		status = rb.run();
+		return status;
 	}
 
 }
