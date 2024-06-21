@@ -76,6 +76,8 @@ public class TestDriver {
 
 	private static HeldJobs heldJobs;
 
+	private static String appname = "GRCG";
+
 	public static boolean processSpecList() {
 		try {
 			initFreeMarkerConfiguration();
@@ -103,9 +105,13 @@ public class TestDriver {
 			String destHLQ = testHLQ + ".INPUT";
 			logger.atInfo().log("Write Event Files to " + destHLQ);
 			List<EventFile> eventFiles = getFileInfo(testPaths.getEventPath());
-			for (EventFile ef : eventFiles) {
-				Path input = testPaths.getEventPath().resolve("data").resolve(ef.getName());
-				ZosHelper.putEventFile(destHLQ, input.toFile(), ef.getName(), ef.getLrecl());
+			if(GersEnvironment.get("OSNAME").startsWith("Win")) {
+				logger.atInfo().log("Ignore put event files for Windows");
+			} else {
+				for (EventFile ef : eventFiles) {
+					Path input = testPaths.getEventPath().resolve("data").resolve(ef.getName());
+					ZosHelper.putEventFile(destHLQ, input.toFile(), ef.getName(), ef.getLrecl());
+				}
 			}
 		}
 	}
@@ -209,7 +215,7 @@ public class TestDriver {
 		}
 
 		Path xmlDir = buildTheXMLFiles(testToRun);
-		copyXMLFilesToPDS(xmlDir, testDataset + ".MR91.XMLS");
+		copyXMLFilesToPDS(xmlDir, testDataset + "." + appname + ".XMLS");
 
 		copyTheConfigFilesToPDS(testToRun, testDataset + ".PARM");
 		testJCLDirectory = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("jcl").resolve(testToRun.getFullName());
@@ -248,7 +254,7 @@ public class TestDriver {
 			substs.clear();
 		}
 		Path configFolder = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("Config").resolve(testToRun.getFullName());
-		Files.copy(configFolder.resolve("MR91PARM"), localTest.resolve("MR91PARM.cfg"), StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(configFolder.resolve(appname + "PARM"), localTest.resolve(appname + "PARM.cfg"), StandardCopyOption.REPLACE_EXISTING);
 		//copy config
 		//Create WBXMLI
 		//copy XML to above
