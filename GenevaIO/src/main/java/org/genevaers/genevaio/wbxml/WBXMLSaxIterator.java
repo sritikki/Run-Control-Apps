@@ -58,8 +58,7 @@ public class WBXMLSaxIterator {
         try {
             readWBXML();
         } catch (NumberFormatException | XMLStreamException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.atSevere().log("WBXMLSaxIterator readWBXML failed\n%s", e.getMessage());
         }
         dumpCatalog();
     }
