@@ -89,8 +89,7 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 			}
 			dd.close();
 		} catch (ZFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("readFromDataSet error %s", e.getMessage());
 		}
 	}
 

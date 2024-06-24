@@ -1,7 +1,5 @@
 package org.genevaers.runcontrolgenerator.repositorybuilders;
 
-import java.sql.Connection;
-
 import org.genevaers.genevaio.dbreader.DBReader;
 import org.genevaers.genevaio.dbreader.DatabaseConnection.DbType;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
@@ -13,8 +11,8 @@ public class WBConnectionBuilder implements RepositoryBuilder{
 
     private WBConnection databaseConnection;
 
-	public WBConnectionBuilder(Connection dbc) {
-		databaseConnection = new WBConnection(dbc);
+	public WBConnectionBuilder() {
+		databaseConnection = new WBConnection();
     }
 
     @Override

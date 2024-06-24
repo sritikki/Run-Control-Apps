@@ -14,8 +14,7 @@ public class WBConnection extends DatabaseConnection{
 
     private Connection sqlConnection;
 
-    public WBConnection(Connection c) {
-        sqlConnection = c;
+    public WBConnection() {
     }
 
     @Override

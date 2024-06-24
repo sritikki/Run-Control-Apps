@@ -80,11 +80,10 @@ public class FormatRecordsBuilder {
 						cc.addChildIfNotNull(ccast);
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+            		logger.atSevere().log("addColumnCalculations error %s", e.getMessage());
 				}
 			}
-			
+
 		}
 	}
 
@@ -100,8 +99,7 @@ public class FormatRecordsBuilder {
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("compileFormatFilter error %s", e.getMessage());
 		}
 	}
 

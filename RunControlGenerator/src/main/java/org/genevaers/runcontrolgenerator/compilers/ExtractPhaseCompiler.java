@@ -103,8 +103,7 @@ public class ExtractPhaseCompiler {
 		try {
 			efc.processLogicAndAddNodes(ef);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("buildViewSourceAST %s", e.getMessage());
 		}
 	}
 
@@ -131,8 +130,7 @@ public class ExtractPhaseCompiler {
 		try {
 			eoc.processLogicAndAddNodes(eo);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("buildViewSourceAST %s", e.getMessage());
 		}
 	}
 
@@ -188,8 +186,7 @@ public class ExtractPhaseCompiler {
 		try {
 			efc.processLogicAndAddNodes(ef);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("addViewSourceNodes %s", e.getMessage());
 		}
 	}
 
@@ -235,8 +232,7 @@ public class ExtractPhaseCompiler {
 			try {
 				eoc.processLogicAndAddNodes(eo);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.atSevere().log("compileExtractOutputLogic %s", e.getMessage());
 			}	
 		}
 	}
@@ -255,8 +251,7 @@ public class ExtractPhaseCompiler {
 				status = Status.ERROR;
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("noWriteStatementMissing %s", e.getMessage());
 		}	
 	}
 
