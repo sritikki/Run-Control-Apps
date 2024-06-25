@@ -7,7 +7,7 @@ import org.genevaers.repository.components.enums.DateCode;
 
 public class CanCompareDates extends Rule{ 
 
-    private static final String ERR_MESSAGE = "Incompatible date formats. Cannot compare %s to %s";
+    private static final String WARN_MESSAGE = "Incompatible date formats comparing %s to %s";
 
     @Override
     public RuleResult apply(final ExtractBaseAST lhs, final ExtractBaseAST rhs) {
@@ -17,8 +17,8 @@ public class CanCompareDates extends Rule{
             if(canCompareDates(frmtLhs.getDateCode(), frmtRhs.getDateCode())) {
                 return RuleResult.RULE_PASSED;                
             } else {
-                Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage(String.format(ERR_MESSAGE, frmtLhs.getDateCode(), frmtRhs.getDateCode())));
-                return RuleResult.RULE_ERROR;
+                Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(String.format(WARN_MESSAGE, frmtLhs.getDateCode(), frmtRhs.getDateCode())));
+                return RuleResult.RULE_WARNING;
             }
         } else {
                 return RuleResult.RULE_PASSED;
