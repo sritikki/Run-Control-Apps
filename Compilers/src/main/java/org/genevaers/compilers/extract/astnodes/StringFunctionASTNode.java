@@ -32,8 +32,7 @@ public class StringFunctionASTNode extends FormattedASTNode {
 
     @Override
     public int getMaxNumberOfDigits() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMaxNumberOfDigits'");
+        return length.length();
     }
 
 }
