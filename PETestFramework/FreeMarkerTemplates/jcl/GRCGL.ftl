@@ -107,6 +107,9 @@ export IBM_JAVA_OPTIONS="$IJO "
 //*
 //WBXMLI   DD DISP=SHR,DSN=<@qualifiedTest/>.GRCG.XMLS
 //GRCGPARM DD DISP=SHR,DSN=<@qualifiedTest/>.PARM(GRCGPARM) 
+<#if test.runviews??>
+//RUNVIEWS  DD *  
+${test.runviews}</#if>
 //*
 //*        OUTPUT FILES
 //*
