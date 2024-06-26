@@ -152,7 +152,6 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         short fieldlen = arg1.getFieldLength();
         if(length < fieldlen) { 
             arg1.setFieldLength(length);
-            ltEmitter.addToLogicTable((LTRecord)dtx);
         } else {
             //Error 
         }
