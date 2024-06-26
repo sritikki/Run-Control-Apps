@@ -8,7 +8,7 @@ public class StringFunctionASTNode extends FormattedASTNode {
     private String length;
 
     public int getLength() {
-        return length.length();
+        return Integer.valueOf(length);
     }
 
     public void setLength(String length) {
@@ -32,7 +32,7 @@ public class StringFunctionASTNode extends FormattedASTNode {
 
     @Override
     public int getMaxNumberOfDigits() {
-        return length.length();
+        return Integer.valueOf(length);
     }
 
 }

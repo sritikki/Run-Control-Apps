@@ -86,6 +86,9 @@ public class TestHelper {
 	public static final String CFAX_TEST = "CFAXTest[12051].xml";
 	public static final String CFXA_TEST = "CFXATest[12051].xml";
 	public static final String CONCAT = "ConcatNew[12150].xml";
+	public static final String RIGHT = "Right.xml";
+	public static final String LEFT = "Left.xml";
+	public static final String SUBSTR = "Substr.xml";
 	
     public static final String MERGESS = "mergeAssAll.xml";
 

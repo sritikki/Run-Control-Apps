@@ -169,7 +169,6 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         if(length < fieldlen) { 
             arg1.setStartPosition((short)(arg1.getStartPosition() + fieldlen - length));
             arg1.setFieldLength(length);
-            ltEmitter.addToLogicTable((LTRecord)dtx);
         } else {
             //Error 
         }
@@ -186,7 +185,6 @@ public class ColumnRefAST extends FormattedASTNode implements CalculationSource,
         if(length < fieldlen) { 
             arg1.setStartPosition((short)(arg1.getStartPosition() + start));
             arg1.setFieldLength(length);
-            ltEmitter.addToLogicTable((LTRecord)dtx);
         } else {
             //Error 
         }
