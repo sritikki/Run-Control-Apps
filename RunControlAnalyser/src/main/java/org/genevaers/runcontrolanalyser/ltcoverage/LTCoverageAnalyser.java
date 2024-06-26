@@ -141,8 +141,7 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
             LtCoverageHtmlWriter.init();
             LtCoverageHtmlWriter.writeTo(root.resolve("aggregateCov.html"), aggcov);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.atSevere().log("aggregateCoverage failed\n%s", e.getMessage());
         }
     }
 

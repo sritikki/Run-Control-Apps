@@ -2,11 +2,12 @@ package org.genevaers.runcontrolanalyser.ltcoverage;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.common.flogger.FluentLogger;
 
 public class LtCoverageYamlWriter {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private static ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());;
     
@@ -14,8 +15,7 @@ public class LtCoverageYamlWriter {
         try {
             yamlMapper.writeValue(output.toFile(), ltcovFile);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.atSevere().log("write coverage failed\n%s", e.getMessage());
         }
     }
 

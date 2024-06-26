@@ -28,6 +28,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.google.common.flogger.FluentLogger;
+
 import j2html.tags.specialized.DivTag;
 import j2html.tags.specialized.TableTag;
 import j2html.tags.specialized.TdTag;
@@ -35,6 +38,7 @@ import j2html.tags.specialized.ThTag;
 import j2html.tags.specialized.TrTag;
 
 public class LtCoverageHtmlWriter {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	public enum HITS_STATE {
 		NONE, SOME, ALL
@@ -114,8 +118,7 @@ public class LtCoverageHtmlWriter {
 					).renderFormatted());
 			testHtml.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            logger.atSevere().log("write coverage failed\n%s", e.getMessage());
 		}
 	}
 
