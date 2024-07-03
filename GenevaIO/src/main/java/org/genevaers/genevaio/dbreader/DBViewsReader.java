@@ -120,7 +120,7 @@ public class DBViewsReader extends DBReaderBase {
     private void verifyViewsExist(DatabaseConnection dbConnection, DatabaseConnectionParams params) {
         Set<Integer> viewsFound = new HashSet<>();
         String viewsQuery = "select VIEWID from " + params.getSchema() + ".view where ENVIRONID = ?"
-                + " and VIEWID IN(" + getPlaceholders(viewIds.size()) + ")";
+                + " and VIEWID IN(" + getPlaceholders(viewIds.size()) + ") and VIEWSTATUSCD='ACTVE'";
         try (PreparedStatement ps = dbConnection.prepareStatement(viewsQuery);) {
             int parmNum = 1;
             ps.setInt(parmNum++, params.getEnvironmentIdAsInt());
@@ -155,7 +155,7 @@ public class DBViewsReader extends DBReaderBase {
         logger.atSevere().log("Not all views found");
         Iterator<Integer> di = diff.iterator();
         while (di.hasNext()) {
-            logger.atSevere().log("view %d missing", di.next());
+            logger.atSevere().log("view %d missing or not active", di.next());
         }
     }
 
