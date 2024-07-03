@@ -36,7 +36,7 @@ public class SFCXEmitter extends StringComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF1 cfcx = (LogicTableF1) ltFact.getSFCX(((GenevaERSValue)lhs).getValueString(), ((ColumnRefAST) rhs).getViewColumn());
         LogicTableArg arg = cfcx.getArg();
-        EmitterArgHelper.setArgVal(lhs, arg);
+        EmitterArgHelper.setConstArgVal(lhs, arg);
         arg.setFieldId(((ColumnRefAST) rhs).getViewColumn().getColumnNumber());
         arg.setLogfileId(((ColumnRefAST) rhs).getViewColumn().getExtractArea().ordinal());
         return cfcx;

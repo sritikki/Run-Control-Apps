@@ -282,4 +282,14 @@ public class ASTFactory {
             return false;
         }
     }
+
+    public static boolean isDateCode(ExtractBaseAST n) {
+        switch (n.getType()) {
+            case RUNDATE:
+            case FISCALDATE:
+            return true;
+            default:
+            return false;
+        }
+    }
 }

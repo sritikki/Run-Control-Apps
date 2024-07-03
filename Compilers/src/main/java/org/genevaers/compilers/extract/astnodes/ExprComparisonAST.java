@@ -358,6 +358,8 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
                 if(lhs.getType() == ASTFactory.Type.DATEFUNC) {
                     ds = ((DateFunc)lhs).getNormalisedDate();
                     lhsDate = ((DateFunc)lhs).getDateCode();
+                } else if( ASTFactory.isDateCode(lhs) ) {
+                    lhsDate = ((LogicTableF1)ltfo).getArg().getFieldContentId();
                 }
             }
             if(lhsDate == rhsDate || lhsDate == DateCode.NONE || rhsDate == DateCode.NONE) {
