@@ -33,7 +33,7 @@ import com.google.common.flogger.FluentLogger;
 public class RunControlConfigration extends GersConfigration{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    public static final String RCG_PARM_FILENAME = RCG_BASENAME + "PARM.cfg";
+    public static final String RCG_PARM_FILENAME = RCG_BASENAME + "PARM";
     public static final String RCG_ZOSPARM_FILENAME = RCG_BASENAME +  "PARM";
 
     public static final String INPUT_TYPE = "INPUT_TYPE";
