@@ -18,8 +18,6 @@
 # Get the Grammar repo if it is not there
 # Install the DB2 Jars if needed
 
-echo "Install Grammar for Run Control Apps"
-./grammar.sh
 echo "Configure Build Run Control Apps"
 ./configBuild.sh
 echo "Build Run Control Apps"
