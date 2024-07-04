@@ -76,7 +76,7 @@ public class EmitterArgHelper {
         arg.setValue(cookie);
     }
 
-    public static void setArgVal(ExtractBaseAST node, LogicTableArg arg) {
+    public static void setConstArgVal(ExtractBaseAST node, LogicTableArg arg) {
         if(node.getType() == Type.NUMATOM) {
             arg.setValue(new Cookie(((NumAtomAST)node).getValueString()));
         } else if(node.getType() == Type.DATEFUNC) {
@@ -84,11 +84,9 @@ public class EmitterArgHelper {
         } else if(node.getType() == Type.FISCALDATE) {
             FiscaldateAST fn = ((FiscaldateAST)node);
             arg.setValue(new Cookie(fn.getCookieCode(), fn.getValue()));
-            arg.setFieldContentId(fn.getDateCode());
         } else if(node.getType() == Type.RUNDATE) {
             RundateAST rd = ((RundateAST)node);
             arg.setValue(new Cookie(rd.getCookieCode(), rd.getValue()));
-            arg.setFieldContentId(rd.getDateCode());
         } else {
             arg.setValue(new Cookie(((StringAtomAST)node).getValue()));
         }

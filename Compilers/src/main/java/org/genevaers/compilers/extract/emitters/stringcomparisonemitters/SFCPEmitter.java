@@ -36,8 +36,9 @@ public class SFCPEmitter extends StringComparisonEmitter{
         LtFuncCodeFactory ltFact = LtFactoryHolder.getLtFunctionCodeFactory();
         LogicTableF1 cfce = (LogicTableF1) ltFact.getSFCP(((GenevaERSValue)lhs).getValueString(), ((FieldReferenceAST) rhs).getRef());
         LogicTableArg arg = cfce.getArg();
-        EmitterArgHelper.setArgVal(lhs, arg);
+        EmitterArgHelper.setConstArgVal(lhs, arg);
         arg.setLogfileId(getLtEmitter().getFileId());
+        arg.setFieldContentId(((FieldReferenceAST) rhs).getRef().getDateTimeFormat());
         return cfce;
     }
 

@@ -271,4 +271,25 @@ public class ASTFactory {
                 return null;
         }
     }
+
+    public static boolean isStringFunction(ExtractBaseAST n) {
+        switch (n.getType()) {
+            case LEFT:
+            case RIGHT:
+            case SUBSTR:
+            return true;
+            default:
+            return false;
+        }
+    }
+
+    public static boolean isDateCode(ExtractBaseAST n) {
+        switch (n.getType()) {
+            case RUNDATE:
+            case FISCALDATE:
+            return true;
+            default:
+            return false;
+        }
+    }
 }

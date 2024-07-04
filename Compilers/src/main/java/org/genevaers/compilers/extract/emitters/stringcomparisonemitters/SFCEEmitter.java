@@ -41,7 +41,7 @@ public class SFCEEmitter extends StringComparisonEmitter{
             ce = (LogicTableF1) ltFact.getCFCE(((GenevaERSValue)lhs).getValueString(), ((FieldReferenceAST) rhs).getRef(), op);
         }
         LogicTableArg arg = ce.getArg();
-        EmitterArgHelper.setArgVal(lhs, arg);
+        EmitterArgHelper.setConstArgVal(lhs, arg);
         arg.setLogfileId(getLtEmitter().getFileId());
         return ce;
     }
