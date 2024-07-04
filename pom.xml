@@ -10,17 +10,13 @@
 		<min.jdk.version>11</min.jdk.version>
 		<maven.compiler.release>8</maven.compiler.release>
 		<maven-version>3.8.4</maven-version>
-		<!-- NOTE: when updating surefire version, double-check Import-Package statements generated
-		by bnd-maven-plugin and possibly adapt instructions in various bnd.bnd files -->
 		<surefire-version>2.22.2</surefire-version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<!-- our apps -->
-		<!-- <runcontrolgenerator.version>1.0.0-RC1</runcontrolgenerator.version>
-		<runcontrolanalyser.version>1.0.2</runcontrolanalyser.version> -->
-		<genevaers.version>1.0.2</genevaers.version>
+		<revision>1.0.2</revision>
 	</properties>
 
 	<licenses>
@@ -36,17 +32,12 @@
 	</organization>
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.ibm.com/SAFR/GenevaERS-Java-Frontend/issues</url>
+		<url>https://github.com/genevaers/Run-Control-Apps/issues</url>
 	</issueManagement>
-	<scm>
-		<url>https://github.ibm.com/SAFR/GenevaERS-Java-Frontend</url>
-		<connection>scm:git:git:https://github.ibm.com/SAFR/GenevaERS-Java-Fronten.git</connection>
-		<tag>HEAD</tag>
-	</scm>
 
 	<groupId>org.genevaers</groupId>
 	<artifactId>apps</artifactId>
-	<version>1.0.2</version>
+	<version>${revision}</version>
 	<packaging>pom</packaging>
 
 	<name>GenevaERS Apps</name>
@@ -55,6 +46,7 @@
 
 	<modules>
 		<module>prebuild</module>
+		<module>Grammar</module>
 		<module>ComponentGenerator</module>
 		<module>Utilities</module>
 		<module>Repository</module>
@@ -63,6 +55,7 @@
 		<module>PETestFramework</module>
 		<module>RunControlGenerator</module>
 		<module>RunControlAnalyser</module>
+		<module>AppChooser</module>
 	</modules>
 
 
@@ -199,7 +192,7 @@
 				<artifactId>jzos</artifactId>
 				<version>2.4.8</version>
 			</dependency>
-			</dependencies>
+		</dependencies>
 	</dependencyManagement>
 
 	<build>
@@ -257,7 +250,8 @@
 						</executions>
 						<configuration>
 							<licenses>
-								<license implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20">
+								<license
+									implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20">
 									<notes>Also allow the license url to be https.</notes>
 									<patterns>
 										<pattern>https://www.apache.org/licenses/LICENSE-2.0</pattern>
