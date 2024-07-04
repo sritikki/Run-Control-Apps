@@ -106,7 +106,6 @@ public class RunControlAnalyser {
 		htmlWriter.setJLTReportName(RcaConfigration.getJLTReportName());
 		htmlWriter.setVDPReportName(RcaConfigration.getVDPReportName());
 		htmlWriter.write(vmrs);
-		htmlWriter.close();
 	}
 
 	private void writeViewDiagrams(LogicTable xlt, String joinsFilter) throws IOException {
