@@ -28,7 +28,7 @@ import org.genevaers.utilities.ParmReader;
 import com.google.common.flogger.FluentLogger;
 
 
-public class App {
+public class RCGApp {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static Status result = Status.ERROR;
 
@@ -40,10 +40,10 @@ public class App {
             if(args[0].equals("rc")) {
                 //use name as prefix
                 String trgDir = args[1];
-                App.run("", trgDir + ".rpt", trgDir + ".log", trgDir + ".VDP", trgDir + ".XLT", trgDir + ".JLT");
+                RCGApp.run("", trgDir + ".rpt", trgDir + ".log", trgDir + ".VDP", trgDir + ".XLT", trgDir + ".JLT");
             }
         } else {
-            App.run("", "", RunControlConfigration.LOG_FILE, "", "", "");
+            RCGApp.run("", "", RunControlConfigration.LOG_FILE, "", "", "");
         }
         exitWithRC();
     } 
@@ -71,6 +71,10 @@ public class App {
             logger.atSevere().log("Unable to read PARM file");
         }
         GenevaLog.closeLogger(RunControlGenerator.class.getName());
+    }
+
+    public static Status getResult() {
+        return result;
     }
 
     private static void exitWithRC() {
