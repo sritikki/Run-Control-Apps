@@ -67,7 +67,7 @@ export A2E=-ofrom=ISO8859-1,to=IBM-1047
 export JAVA_HOME=/Java/J11.0_64                                                 
 export IBM_JAVA_OPTIONS="-Dfile.encoding=ISO8859-1"                             
                                                                                 
-export APPGIT=${env["GERS_GIT_REPO_DIR"]}/Run-Control-Apps                                   
+export APPGIT=${env["GERS_GIT_REPO_DIR"]}/Run-Control-Apps
 export APPTRG=AppChooser                                                        
 export BASE=$APPGIT/$APPTRG                                                     
 export APP_HOME=$BASE/target                                                    
