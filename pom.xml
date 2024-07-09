@@ -16,7 +16,7 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<!-- our apps -->
-		<revision>1.0.2</revision>
+		<revision>1.9.5</revision>
 	</properties>
 
 	<licenses>
@@ -37,7 +37,7 @@
 
 	<groupId>org.genevaers</groupId>
 	<artifactId>apps</artifactId>
-	<version>${revision}</version>
+	<version>1.1.0</version>
 	<packaging>pom</packaging>
 
 	<name>GenevaERS Apps</name>
@@ -63,28 +63,38 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.genevaers</groupId>
+				<artifactId>runcontrolgenerator</artifactId>
+				<version>1.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.genevaers</groupId>
+				<artifactId>runcontrolanalyser</artifactId>
+				<version>1.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.genevaers</groupId>
 				<artifactId>repository</artifactId>
-				<version>1.0.2</version>
+				<version>1.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.genevaers</groupId>
 				<artifactId>grammar</artifactId>
-				<version>1.0.0</version>
+				<version>1.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.genevaers</groupId>
 				<artifactId>compilers</artifactId>
-				<version>1.0.2</version>
+				<version>1.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.genevaers</groupId>
 				<artifactId>genevaio</artifactId>
-				<version>1.0.2</version>
+				<version>1.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.genevaers</groupId>
 				<artifactId>utilities</artifactId>
-				<version>1.0.2</version>
+				<version>1.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
