@@ -51,7 +51,7 @@ public class GenevaLog
     	jdkLogger.setUseParentHandlers(true);
 		Logger topLogger = jdkLogger.getParent();
 		Handler[] hndlrs = topLogger.getHandlers();
-		if(hndlrs.length > 0) {
+		if(hndlrs.length == 1) { //When used by the Workbench it has two handlers leave them be
 			topLogger.removeHandler(hndlrs[0]);
 		}
 		try {
@@ -127,8 +127,8 @@ public class GenevaLog
     	jdkLogger.setUseParentHandlers(true);
 		Logger topLogger = jdkLogger.getParent();
 		Handler[] hndlrs = topLogger.getHandlers();
-		hndlrs[0].close();
-		topLogger.removeHandler(hndlrs[0]);
+		hndlrs[hndlrs.length-1].close();
+		topLogger.removeHandler(hndlrs[hndlrs.length-1]);
     }
 
     public static void writeHeader(String hdr) {
