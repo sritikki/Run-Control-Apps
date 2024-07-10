@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2023
+Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright
+IBM Corporation 2023
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,34 +19,35 @@ under the License.
 -->
 
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.genevaers</groupId>
-  <artifactId>utilsprebuild</artifactId>
-  <version>1.0.2</version>
+	<groupId>org.genevaers</groupId>
+	<artifactId>utilsprebuild</artifactId>
 
-  <name>GenevaERS Utilites Pre-Build</name>
-  <url>https://genevaers.org/</url>
+	<name>GenevaERS Utilites Pre-Build</name>
 
-  <parent>
-    <groupId>org.genevaers</groupId>
-    <artifactId>apps</artifactId>
-    <version>1.0.2</version>
-  </parent>
+	<parent>
+		<groupId>org.genevaers</groupId>
+		<artifactId>apps</artifactId>
+		<version>${revision}</version>
+		<relativePath>../</relativePath>
+	</parent>
 
-  <properties>
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-  <dependencies>
-  </dependencies>
+	<dependencies>
+	</dependencies>
 
 
-   <build>
-    <plugins>
+	<build>
+		<plugins>
 			<plugin>
 				<artifactId>exec-maven-plugin</artifactId>
 				<groupId>org.codehaus.mojo</groupId>
@@ -66,38 +68,6 @@ under the License.
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.2.0</version>
-				<executions>
-					<execution>
-						<id>copy</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>com.j2html</groupId>
-									<artifactId>j2html</artifactId>
-									<version>1.6.0</version>
-									<overWrite>true</overWrite>
-									<outputDirectory>${user.dir}/plugins/genevagui/lib</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.apache.commons</groupId>
-									<artifactId>commons-csv</artifactId>
-									<version>1.10.0</version>
-									<overWrite>true</overWrite>
-									<outputDirectory>${user.dir}/plugins/genevagui/lib</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
-    </plugins>
-  </build>
+		</plugins>
+	</build>
 </project>

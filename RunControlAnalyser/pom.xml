@@ -27,13 +27,12 @@ under the License.
 		<groupId>org.genevaers</groupId>
 		<artifactId>apps</artifactId>
 		<relativePath>../</relativePath>
-		<version>1.0.2</version>
+		<version>${revision}</version>
 	</parent>
+	<groupId>org.genevaers</groupId>
 	<artifactId>runcontrolanalyser</artifactId>
-	<version>1.0.2</version>
 
 	<name>GenevaERS Run Control Analyser</name>
-	<url>https://genevaers.org/</url>
 
 	<properties>
 		<maven.compiler.release>8</maven.compiler.release>
@@ -132,7 +131,7 @@ under the License.
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>appassembler-maven-plugin</artifactId>
 				<version>1.10</version>
@@ -144,7 +143,6 @@ under the License.
 							<goal>assemble</goal>
 						</goals>
 						<configuration>
-							<!-- <windowsScriptTemplate>${project.basedir}/src/appassembler/windowsBinTemplate</windowsScriptTemplate> -->
 							<assembleDirectory>${project.build.directory}/</assembleDirectory>
                             <platforms>
                                 <platform>windows</platform>
@@ -159,7 +157,7 @@ under the License.
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 

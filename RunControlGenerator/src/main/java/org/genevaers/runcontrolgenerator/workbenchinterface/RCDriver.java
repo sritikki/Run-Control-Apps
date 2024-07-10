@@ -27,9 +27,12 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolanalyser.RCAApp;
+import org.genevaers.runcontrolgenerator.RCGApp;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.GersConfigration;
+
 
 import com.google.common.flogger.FluentLogger;
 
@@ -126,16 +129,9 @@ public class RCDriver {
 
     public static void runRCG(String relPath) {
         writeRCGParms();
-		CommandRunner cmd = new CommandRunner();
-        //want to run from the predefined paths
-        String cwd = Paths.get("").toAbsolutePath().toString();
-        logger.atInfo().log("cwd %s",cwd);
-        String rcg = cwd + "\\runcontrolapps\\runcontrolgenerator\\bin\\gvbrcg.bat";
-        String rca = cwd + "\\runcontrolapps\\runcontrolanalyser\\bin\\gvbrca.bat";
-        runApp(cmd, rcg);
-        runApp(cmd, rca);
-//        runRCG(cmd);
-//        runRCA(cmd);
+        RCGApp.setCurrentWorkingDirectory(relPath);
+        logger.atInfo().log("Run RCG from %s", relPath );
+        RCGApp.run("", "", "", "", "", "");
     }
 
     private static void runRCG(CommandRunner cmd) {
@@ -152,7 +148,7 @@ public class RCDriver {
     //No an issue with a local postgres really
     //Option to use workbench XML instead
     private static void writeRCGParms() {
-        logger.atInfo().log("Write MR91Parms to %s", rcPath.toString() );
+        logger.atInfo().log("Write GRCGParms to %s", rcPath.toString() );
         try (FileWriter fw = new FileWriter(rcPath.resolve(RunControlConfigration.RCG_PARM_FILENAME).toFile())) {
             fw.write("# Auto generated Run Control Generator Parms\n");
             if(inputType.equals("WBXML")) {
@@ -166,11 +162,17 @@ public class RCDriver {
                 fw.write(RunControlConfigration.DB_DATABASE + "=" + database + "\n");
                 fw.write(RunControlConfigration.DBVIEWS + "="+ dbviews + "\n");
             }
-            fw.write("OUTPUT_RUN_CONTROL_FILES=Y\n");
             fw.close();
         } catch (IOException e) {
             logger.atSevere().log("Unable to write RCG Parms %s", e.getMessage() );
         }
+    }
+
+    public static void runRCA(String relPath) {
+        writeRCAParms();
+        RCAApp.setCurrentWorkingDirectory(relPath);
+        logger.atInfo().log("Run RCA from %s", relPath );
+        RCAApp.run();
     }
 
     public static void runRCA(CommandRunner cmd) {
@@ -204,7 +206,7 @@ public class RCDriver {
             fw.write(GersConfigration.VDP_REPORT + "=Y\n");
             fw.write(GersConfigration.REPORT_FORMAT + "=" + rcaTextType + "\n");
             fw.write(GersConfigration.RCA_REPORT + "=Y\n");
-            fw.write(GersConfigration.LOG_FILE + "=STANDARD\n");
+            fw.write(GersConfigration.LOG_LEVEL + "=STANDARD\n");
             fw.close();
         } catch (IOException e) {
             logger.atSevere().log("Unable to write RCA Parms %s", e.getMessage() );

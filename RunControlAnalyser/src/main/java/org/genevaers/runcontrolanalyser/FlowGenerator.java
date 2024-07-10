@@ -141,7 +141,7 @@ public class FlowGenerator {
 			Path vfPath = cwd.resolve("views").resolve(String.format("VFF%07d.txt", v.getID()));
 			try (FileWriter fw = new FileWriter(vfPath.toFile())) {
 				fw.write(v.getFormatFilterLogic() + "\n\n");
-				fw.write(v.getFormatFilterCalcStack().toString());
+				fw.write(v.getFormatFilterCalcStack() != null ? v.getFormatFilterCalcStack().toString() : "");
 			} catch (IOException e) {
 				logger.atSevere().log("Cannot write format filter\n%s", e.getMessage());
 			}

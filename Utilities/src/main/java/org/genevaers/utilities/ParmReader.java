@@ -18,6 +18,7 @@ package org.genevaers.utilities;
  */
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.ZFile;
+import com.ibm.jzos.ZFileException;
 
 public class ParmReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -109,6 +111,39 @@ public class ParmReader {
 
 	public List<String> getLinesRead() {
 		return linesRead;
+	}
+
+	public boolean generatorParmExists() {
+		if (System.getProperty("os.name").startsWith("z")) {
+			return ddExists(GersConfigration.RCG_PARM_FILENAME);
+		} else {
+			return localParmExists(GersConfigration.getRCGParmFileName());
+		}
+	}
+
+	public boolean analyserParmExists() {
+		if (System.getProperty("os.name").startsWith("z")) {
+			return ddExists(GersConfigration.RCA_PARM_FILENAME);
+		} else {
+			return localParmExists(GersConfigration.getRCAParmFileName());
+		}
+	}
+
+	private boolean localParmExists(String parmName) {
+		File f = new File(parmName);
+		return f.exists();
+	}
+
+	private boolean ddExists(String ddname) {
+		boolean retval;
+		String dd = "//DD:" + ddname;
+		try {
+			retval = ZFile.exists(dd);
+		} catch (ZFileException e) {
+			retval = false;
+			logger.atSevere().log("Zfile %s", e.getMessage());
+		} 
+		return retval;
 	}
 
 }

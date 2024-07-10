@@ -101,15 +101,19 @@ public class GersConfigration {
 	}
 
     public static String getXLTFileName() {
-        return parmToValue.get(XLT_DDNAME).getValue();
+        return getCWDPrefix() + parmToValue.get(XLT_DDNAME).getValue();
     }
 
     public static String getVdpDdname() {
         return parmToValue.get(VDP_DDNAME).getValue();
     }
 
+    public static String getVdpFileName() {
+        return getCWDPrefix() + parmToValue.get(VDP_DDNAME).getValue();
+    }
+
     public static String getJLTFileName() {
-        return parmToValue.get(JLT_DDNAME).getValue();
+        return getCWDPrefix() + parmToValue.get(JLT_DDNAME).getValue();
     }
 
 	public static void overrideVDPFile(String vdpFile) {
@@ -165,11 +169,35 @@ public class GersConfigration {
 	}
 
 	public static String getParmFileName() {
-		return parmToValue.get(PARMFILE).getValue();
+		return getCWDPrefix() +  parmToValue.get(PARMFILE).getValue();
+	}
+
+	public static String getRCGParmFileName() {
+		return getCWDPrefix() +  RCG_PARM_FILENAME;
+	}
+
+	public static String getRCAParmFileName() {
+		return getCWDPrefix() +  RCA_PARM_FILENAME;
 	}
 
     public static boolean isZos() {
         return zos;
     }
 
+    public static void setCurrentWorkingDirectory(String cwd) {
+        if(cwd != null && cwd.length() > 0) {
+            parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry(cwd, true));
+        } else {
+            parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry(".", true));
+        }
+    }
+
+    public static String getCurrentWorkingDirectory() {
+        ConfigEntry cwdentry = parmToValue.get(CURRENT_WORKING_DIRECTORY);
+        return cwdentry != null ? cwdentry.getValue() : "";
+    }
+
+    protected static String getCWDPrefix() {
+		return getCurrentWorkingDirectory().length() > 0 ? getCurrentWorkingDirectory() + "/" : "";
+    }
 }

@@ -131,8 +131,8 @@
             "type": "java",
             "name": "Launch RCG from playpen",
             "request": "launch",
-            "mainClass": "org.genevaers.runcontrolgenerator.App",
-            "projectName": "runcontrolgenerator",
+            "mainClass": "org.genevaers.appchooser.Runner",
+            "projectName": "appchooser",
             "cwd": "${workspaceFolder}/../../../RunControlPlayPen"
         },
         {

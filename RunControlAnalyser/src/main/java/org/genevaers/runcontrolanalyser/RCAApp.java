@@ -1,8 +1,6 @@
 package org.genevaers.runcontrolanalyser;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.genevaers.utilities.GersConfigration;
@@ -29,20 +27,23 @@ import org.genevaers.utilities.ParmReader;
 import com.google.common.flogger.FluentLogger;
 
 
-public class App {
+public class RCAApp {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+    private static boolean ranOkay;
+    private static String cwd;
 
     public static void  main(String[] args) {
 		System.out.printf("GenevaERS Run Control Analyser %s\n", AnalyserDriver.readVersion());
 		System.out.printf("Java Vendor %s\n", System.getProperty("java.vendor"));
 		System.out.printf("Java Version %s\n", System.getProperty("java.version"));
-        App.run();
+        RCAApp.run();
     } 
 
     public static void run() {
-        boolean ranOkay = false;
+        ranOkay = false;
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
+        GersConfigration.setCurrentWorkingDirectory(cwd);
         pr.setConfig(rcac);
         try {
             pr.populateConfigFrom(GersConfigration.getParmFileName());
@@ -60,11 +61,17 @@ public class App {
         GenevaLog.closeLogger(RunControlAnalyser.class.getName());
         if(ranOkay) {
             System.out.println("Run control analyser completed");
-            System.exit(0);
         } else {
             System.out.println("Run control analyser failed. See log for details.");
-            System.exit(1);
         }
+    }
+
+    public static boolean ranOkay() {
+        return ranOkay;
+    }
+
+    public static void setCurrentWorkingDirectory(String dir) {
+        cwd = dir;
     }
 
 }

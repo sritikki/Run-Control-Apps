@@ -32,9 +32,9 @@ under the License.
 		<version>${revision}</version>
 	</parent>
 	<groupId>org.genevaers</groupId>
-	<artifactId>runcontrolgenerator</artifactId>
+	<artifactId>appchooser</artifactId>
 
-	<name>GenevaERS Run Control Generator</name>
+	<name>GenevaERS Run Control App Chooser</name>
 	<url>https://genevaers.org/</url>
 
 	<properties>
@@ -46,17 +46,8 @@ under the License.
 
 	<dependencies>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.genevaers</groupId>
-			<artifactId>repository</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.genevaers</groupId>
-			<artifactId>compilers</artifactId>
+			<artifactId>runcontrolgenerator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.genevaers</groupId>
@@ -75,10 +66,6 @@ under the License.
 			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.google.flogger</groupId>
 			<artifactId>flogger</artifactId>
 		</dependency>
@@ -86,103 +73,45 @@ under the License.
 			<groupId>com.google.flogger</groupId>
 			<artifactId>flogger-system-backend</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin> -->
-
-			<!-- <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>appassembler-maven-plugin</artifactId>
-				<version>1.10</version>
+				<version>3.7.1</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>org.genevaers.appchooser.Runner</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
 				<executions>
 					<execution>
-						<id>assemble-script</id>
+						<id>make-assembly</id>
 						<phase>package</phase>
 						<goals>
-							<goal>assemble</goal>
+							<goal>single</goal>
 						</goals>
-						<configuration>
-							<assembleDirectory>${project.build.directory}/</assembleDirectory>
-							<platforms>
-								<platform>windows</platform>
-								<platform>unix</platform>
-							</platforms>
-							<programs>
-								<program>
-									<mainClass>org.genevaers.runcontrolgenerator.App</mainClass>
-									<id>gvbrcg</id>
-								</program>
-							</programs>
-						</configuration>
 					</execution>
 				</executions>
-			</plugin> -->
-			<!-- <plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<classifier>spring-boot</classifier>
-							<mainClass>
-								org.genevaers.runcontrolgenerator.App
-							</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
+			</plugin>
 		</plugins>
-		<!-- <pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.7.1</version>
-					<configuration>
-						<descriptorRefs>
-							<descriptorRef>jar-with-dependencies</descriptorRef>
-						</descriptorRefs>
-						<archive>
-							<manifest>
-								<mainClass>org.genevaers.runcontrolgenerator.App</mainClass>
-							</manifest>
-						</archive>
-					</configuration>
-					<executions>
-						<execution>
-							<id>make-assembly</id>
-							<phase>package</phase>
-							<goals>
-								<goal>single</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement> -->
 		<resources>
 			<resource>
 				<filtering>true</filtering>
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>application.properties</include>
-					<include>GRCGRPT.ftl</include>
 				</includes>
 			</resource>
 		</resources>

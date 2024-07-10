@@ -48,7 +48,7 @@ public class WBXMLBuilder extends XMLBuilder{
 
     @Override
     protected String getXMLDirectory() {
-        return RunControlConfigration.getWBXMLDirectory();
+        return RunControlConfigration.getWBXMLWinDirectory();
     }
 
 
