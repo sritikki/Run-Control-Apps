@@ -2,6 +2,7 @@ package org.genevaers.runcontrolgenerator.configuration;
 
 
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import org.genevaers.repository.Repository;
@@ -170,15 +171,19 @@ public class RunControlConfigration extends GersConfigration{
 	}
 
 	public static String getLogFileName() {
-        return parmToValue.get(LOG_FILE).getValue();
+        return getCWDPrefix() + parmToValue.get(LOG_FILE).getValue();
 	}
 
 	public static String getReportFileName() {
-        return parmToValue.get(REPORT_FILE).getValue();
+        return getCWDPrefix() + parmToValue.get(REPORT_FILE).getValue();
 	}
 
     public static String getWBXMLDirectory() {
         return parmToValue.get(WB_XML_FILES_SOURCE).getValue();
+    }
+
+    public static String getWBXMLWinDirectory() {
+        return getCWDPrefix() + parmToValue.get(WB_XML_FILES_SOURCE).getValue();
     }
 
     public static boolean isXltDotEnabled() {
@@ -252,6 +257,5 @@ public class RunControlConfigration extends GersConfigration{
         ConfigEntry pv = parmToValue.get(parm);
         pv.setValue(val);
     }
-
 
 }

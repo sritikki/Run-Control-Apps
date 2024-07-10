@@ -117,7 +117,7 @@ public class ParmReader {
 		if (System.getProperty("os.name").startsWith("z")) {
 			return ddExists(GersConfigration.RCG_PARM_FILENAME);
 		} else {
-			return localParmExists(GersConfigration.RCG_PARM_FILENAME);
+			return localParmExists(GersConfigration.getRCGParmFileName());
 		}
 	}
 
@@ -125,7 +125,7 @@ public class ParmReader {
 		if (System.getProperty("os.name").startsWith("z")) {
 			return ddExists(GersConfigration.RCA_PARM_FILENAME);
 		} else {
-			return localParmExists(GersConfigration.RCA_PARM_FILENAME);
+			return localParmExists(GersConfigration.getRCAParmFileName());
 		}
 	}
 

@@ -1,6 +1,16 @@
 package org.genevaers.runcontrolgenerator;
 
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Calendar;
+
+import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
+import org.genevaers.compilers.format.astnodes.FormatBaseAST;
+import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
+import org.genevaers.genevaio.wbxml.RecordParser;
+import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
@@ -31,6 +41,7 @@ import com.google.common.flogger.FluentLogger;
 public class RCGApp {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static Status result = Status.ERROR;
+    private static String cwd;
 
     public static void main(String[] args) {
 		System.out.printf("GenevaERS RunControlGenerator version %s\n", "tbd");
@@ -49,6 +60,15 @@ public class RCGApp {
     } 
 
     public static void run(String parmFile, String reportFile, String logFile, String vdpFile, String xltFile, String jltFile) {
+        FormatRecordsBuilder.reset();
+        Repository.clearAndInitialise();
+        FormatBaseAST.resetStack();
+        Repository.setGenerationTime(Calendar.getInstance().getTime());
+        ExtractPhaseCompiler.reset();
+        ExtractBaseAST.setCurrentColumnNumber((short)0);
+        LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
+        RecordParser.clearAndInitialise();
+
         RunControlGenerator rcg = new RunControlGenerator();
         ParmReader pr = new ParmReader();
         pr.setConfig(new RunControlConfigration());
@@ -58,11 +78,12 @@ public class RCGApp {
         GersConfigration.overrideVDPFile(vdpFile);
         GersConfigration.overrideXLTFile(xltFile);
         GersConfigration.overrideJLTFile(jltFile);
+        GersConfigration.setCurrentWorkingDirectory(cwd);
         try {
             pr.populateConfigFrom(RunControlConfigration.getParmFileName());
             GersConfigration.setLinesRead(pr.getLinesRead());
             if(RunControlConfigration.isValid()) {
-                GenevaLog.initLogger(RunControlGenerator.class.getName(), logFile, GersConfigration.getLogLevel());
+                GenevaLog.initLogger(RunControlGenerator.class.getName(), RunControlConfigration.getLogFileName(), GersConfigration.getLogLevel());
                 result = rcg.runFromConfig();
             } else {
                 logger.atSevere().log("Invalid configuration processing stopped");
@@ -89,6 +110,10 @@ public class RCGApp {
                 System.exit(0);
                 break;
         }
+    }
+
+    public static void setCurrentWorkingDirectory(String dir) {
+        cwd = dir;
     }
 
 }

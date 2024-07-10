@@ -321,10 +321,7 @@ public class AnalyserDriver {
 
 	public static boolean runFromConfig() {
 		boolean ranOkay = true;
-		String locroot = System.getProperty("user.dir");
-    	//locroot = locroot.replaceAll("^[Cc]:", "");
-    	locroot = locroot.replace("\\", "/");
-    	Path root = Paths.get(locroot);
+    	Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
 		if(RcaConfigration.isXltReport()) {
 			generateXltPrint(root);
 		}
@@ -345,7 +342,7 @@ public class AnalyserDriver {
 		try {
 			makeRunControlAnalyserDataStore(root);
             setTargetDirectory("rca");
-            generateFlowDataFrom(".", 
+            generateFlowDataFrom(RcaConfigration.getCurrentWorkingDirectory(), 
              true,  //default to generate csv
             true,
             ""

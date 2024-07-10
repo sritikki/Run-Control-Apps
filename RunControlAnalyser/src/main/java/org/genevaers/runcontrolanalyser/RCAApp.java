@@ -30,6 +30,7 @@ import com.google.common.flogger.FluentLogger;
 public class RCAApp {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static boolean ranOkay;
+    private static String cwd;
 
     public static void  main(String[] args) {
 		System.out.printf("GenevaERS Run Control Analyser %s\n", AnalyserDriver.readVersion());
@@ -42,6 +43,7 @@ public class RCAApp {
         ranOkay = false;
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
+        GersConfigration.setCurrentWorkingDirectory(cwd);
         pr.setConfig(rcac);
         try {
             pr.populateConfigFrom(GersConfigration.getParmFileName());
@@ -68,5 +70,8 @@ public class RCAApp {
         return ranOkay;
     }
 
+    public static void setCurrentWorkingDirectory(String dir) {
+        cwd = dir;
+    }
 
 }

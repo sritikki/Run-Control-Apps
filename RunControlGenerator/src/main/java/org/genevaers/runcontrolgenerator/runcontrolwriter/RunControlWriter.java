@@ -63,7 +63,7 @@ public class RunControlWriter {
             logger.atSevere().log("LT write failed %s", e.getMessage());
         }
         VDPFileWriter vdpw = new VDPFileWriter();
-        vdpw.open(RunControlConfigration.getVdpDdname());
+        vdpw.open(RunControlConfigration.getVdpFileName());
         VDPManagementRecords vmrs = makeVDPManagementRecords();
         try {
             vdpw.writeVDPFrom(vmrs);
