@@ -36,6 +36,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
 import org.genevaers.compilers.extract.astnodes.ExtractAST2Dot;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
+import org.genevaers.genevaio.dbreader.DBReaderBase;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.genevaio.dbreader.LazyDBReader;
 import org.genevaers.genevaio.dbreader.WBConnection;
@@ -126,6 +127,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
         vdef.setViewType(ViewType.values()[vd.getTypeValue()]);
         currentView = Repository.getViewNodeMakeIfDoesNotExist(vdef);
 		currentView.setFormatFilterLogic(vd.getFormatFilter());
+		DBReaderBase.addViewId(vd.getId());
 	}
 
     public static void addColumn(ColumnData ci) {
@@ -313,6 +315,7 @@ public abstract class WorkbenchCompiler implements SyntaxChecker, DependencyAnal
 		currentView = null;
 		currentColumnNumber = 0;
 		columnRefs.clear();
+		DBReaderBase.clearViewIds();
 	}
 
 	public static String getDependenciesAsString() {

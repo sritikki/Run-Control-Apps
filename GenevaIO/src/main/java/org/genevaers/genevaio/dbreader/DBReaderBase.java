@@ -142,5 +142,12 @@ public abstract class DBReaderBase {
         return getPlaceholders(pls.length);
     }
 
+    public static void addViewId(int id) {
+        viewIds.add(id);
+    }
+
+    public static void clearViewIds() {
+        viewIds.clear();;
+    }
 
 }
