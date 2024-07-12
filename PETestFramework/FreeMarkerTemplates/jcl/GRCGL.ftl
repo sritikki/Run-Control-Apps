@@ -56,7 +56,7 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 //*
 //*******************************************************************
 //JAVA EXEC PROC=JVMPRC16,
-// JAVACLS='org.genevaers.appchooser.Runner'
+// JAVACLS='org.genevaers.rcapps.Runner'
 //STDENV DD *
 # This is a shell script which configures                                       
 # any environment variables for the Java JVM.                                   
@@ -68,10 +68,10 @@ export JAVA_HOME=/Java/J11.0_64
 export IBM_JAVA_OPTIONS="-Dfile.encoding=ISO8859-1"                             
                                                                                 
 export APPGIT=${env["GERS_GIT_REPO_DIR"]}/Run-Control-Apps
-export APPTRG=AppChooser                                                        
+export APPTRG=RCApps                                                        
 export BASE=$APPGIT/$APPTRG                                                     
 export APP_HOME=$BASE/target                                                    
-export APP_NAME=appchooser-1.0.2-jar-with-dependencies.jar                      
+export APP_NAME=rcapps-1.1.0-jar-with-dependencies.jar                      
 export CLASSPATH=$APP_HOME:"$JAVA_HOME"/lib                                     
                                                                                 
 LIBPATH=/lib:/usr/lib:"$JAVA_HOME"/bin                                          

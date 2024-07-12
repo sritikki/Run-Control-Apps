@@ -1,4 +1,4 @@
-package org.genevaers.appchooser;
+package org.genevaers.rcapps;
 
 import org.genevaers.utilities.ParmReader;
 
