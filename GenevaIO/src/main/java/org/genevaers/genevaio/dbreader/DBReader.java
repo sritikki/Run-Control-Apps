@@ -59,6 +59,7 @@ public class DBReader {
             } 
         } catch (ClassNotFoundException | SQLException e) {
             logger.atSevere().log("DBReader addViewsToRepository failed\n%s", e.getMessage());
+            hasErrors = true;
         }
     }
 

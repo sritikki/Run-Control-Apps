@@ -183,3 +183,8 @@ PETestFramework/xmlout/**
 Utilities/target/**
 mr91Outputs/**
 PETestFramework/mr91Outputs/**
+RCApps/target/classes/application.properties
+RCApps/target/maven-archiver/pom.properties
+RCApps/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+RCApps/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+RCApps/bin/pom.xml

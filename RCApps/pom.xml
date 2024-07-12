@@ -32,9 +32,9 @@ under the License.
 		<version>${revision}</version>
 	</parent>
 	<groupId>org.genevaers</groupId>
-	<artifactId>appchooser</artifactId>
+	<artifactId>rcapps</artifactId>
 
-	<name>GenevaERS Run Control App Chooser</name>
+	<name>GenevaERS Run Control Apps Runner</name>
 	<url>https://genevaers.org/</url>
 
 	<properties>
@@ -87,7 +87,7 @@ under the License.
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>org.genevaers.appchooser.Runner</mainClass>
+							<mainClass>org.genevaers.rcapps.Runner</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

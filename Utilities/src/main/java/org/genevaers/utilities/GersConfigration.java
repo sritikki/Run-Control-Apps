@@ -185,7 +185,7 @@ public class GersConfigration {
     }
 
     public static void setCurrentWorkingDirectory(String cwd) {
-        if(cwd != null && cwd.length() > 0) {
+        if(cwd != null) {
             parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry(cwd, true));
         } else {
             parmToValue.put(CURRENT_WORKING_DIRECTORY, new ConfigEntry(".", true));

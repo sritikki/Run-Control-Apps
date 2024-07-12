@@ -41,7 +41,7 @@ import com.google.common.flogger.FluentLogger;
 public class RCGApp {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static Status result = Status.ERROR;
-    private static String cwd;
+    private static String cwd = "";
 
     public static void main(String[] args) {
 		System.out.printf("GenevaERS RunControlGenerator version %s\n", "tbd");

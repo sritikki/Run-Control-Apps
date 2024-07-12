@@ -55,7 +55,7 @@
 		<module>PETestFramework</module>
 		<module>RunControlGenerator</module>
 		<module>RunControlAnalyser</module>
-		<module>AppChooser</module>
+		<module>RCApps</module>
 	</modules>
 
 
