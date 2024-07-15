@@ -99,7 +99,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
             defaultRequired = getEffDateValueIfSet();
         }
         if(defaultRequired) {
-            emitLKDC("");
+            emitLKDC(ASTFactory.getNodeOfType(ASTFactory.Type.STRINGATOM));
         }
     }
 
@@ -107,23 +107,14 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
     private boolean getEffDateValueIfSet() {
         boolean defaultRequired = true;
         Iterator<ASTBase> ci = effDateValue.getChildIterator();
-        String val = "";
         while (ci.hasNext()) {
             ExtractBaseAST c = (ExtractBaseAST)ci.next();
-            if(c.getType() == ASTFactory.Type.DATEFUNC) {
-                val = ((DateFunc)c).getNormalisedDate();
-                emitLKDC(val);
-                defaultRequired = false;
-            } else if(c.getType() == ASTFactory.Type.STRINGATOM) {
-                val = ((StringAtomAST)c).getValue();
-                emitLKDC(val);
-                defaultRequired = false;
-            } if(c.getType() == ASTFactory.Type.LRFIELD) {
-                //need to emit an LKDE
+            if(c.getType() == ASTFactory.Type.LRFIELD) {
                 emitLKDE((FieldReferenceAST) c);
                 defaultRequired = false;
             } else {
-                int bang = 1;               
+                emitLKDC(c);
+                defaultRequired = false;
             }
         }
         return  defaultRequired;
@@ -162,7 +153,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
 }
 
 
-    private void emitLKDC(String val) {
+    private void emitLKDC(ExtractBaseAST val) {
 
         LogicTableF1 lkd = new LogicTableF1();
         lkd.setRecordType(LtRecordType.F1);
@@ -174,11 +165,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
         arg.setFieldLength((short)4);
         arg.setFieldFormat(DataType.BINARY);
         arg.setJustifyId(JustifyId.NONE);
-        if(val.length() == 0) {
-            arg.setValue(new Cookie(Cookie.LTDateRunDay, "0"));  
-        } else {
-            arg.setValue(new Cookie(val));
-        }
+        EmitterArgHelper.setConstArgVal(val, arg);
         arg.setLogfileId(ExtractBaseAST.getLtEmitter().getFileId());
         lkd.setArg(arg);
         lkd.setCompareType(LtCompareType.EQ);

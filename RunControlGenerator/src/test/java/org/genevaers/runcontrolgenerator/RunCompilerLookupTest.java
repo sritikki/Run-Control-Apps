@@ -88,6 +88,42 @@ class RunCompilerLookupTest extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
     }
 
+    @Test void testFiscalEffectiveDateLookupfield() {
+        LogicTable xlt = runFromXMLOverrideLogic(12046, TestHelper.EFF_DATE_SYM_LOOKUP, "COLUMN = {SymbolKeyEffDateLookup.Description, FISCALDAY() }");
+        String[] expected = new String[]{ "JOIN", "LKS", "LKS", "LKS", "LKDC", "LUSM", "DTL", "GOTO", "DTC" };
+        int expectedGotos[][] = {{4,10,12},{9,10,12},{11,13,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 lkdc = (LogicTableF1)xlt.getFromPosition(8);
+        assertEquals("FISCAL(0)", lkdc.getArg().getValue().getPrintString());
+    }
+
+    @Test void testFiscalValEffectiveDateLookupfield() {
+        LogicTable xlt = runFromXMLOverrideLogic(12046, TestHelper.EFF_DATE_SYM_LOOKUP, "COLUMN = {SymbolKeyEffDateLookup.Description, FISCALDAY(-5) }");
+        String[] expected = new String[]{ "JOIN", "LKS", "LKS", "LKS", "LKDC", "LUSM", "DTL", "GOTO", "DTC" };
+        int expectedGotos[][] = {{4,10,12},{9,10,12},{11,13,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 lkdc = (LogicTableF1)xlt.getFromPosition(8);
+        assertEquals("FISCAL(-5)", lkdc.getArg().getValue().getPrintString());
+    }
+
+    @Test void testFiscalMonthValEffectiveDateLookupfield() {
+        LogicTable xlt = runFromXMLOverrideLogic(12046, TestHelper.EFF_DATE_SYM_LOOKUP, "COLUMN = {SymbolKeyEffDateLookup.Description, FISCALMONTH(-5) }");
+        String[] expected = new String[]{ "JOIN", "LKS", "LKS", "LKS", "LKDC", "LUSM", "DTL", "GOTO", "DTC" };
+        int expectedGotos[][] = {{4,10,12},{9,10,12},{11,13,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 lkdc = (LogicTableF1)xlt.getFromPosition(8);
+        assertEquals("FISCALMONTH(-5)", lkdc.getArg().getValue().getPrintString());
+    }
+
+    @Test void testRundaylValEffectiveDateLookupfield() {
+        LogicTable xlt = runFromXMLOverrideLogic(12046, TestHelper.EFF_DATE_SYM_LOOKUP, "COLUMN = {SymbolKeyEffDateLookup.Description, RUNDAY(-9) }");
+        String[] expected = new String[]{ "JOIN", "LKS", "LKS", "LKS", "LKDC", "LUSM", "DTL", "GOTO", "DTC" };
+        int expectedGotos[][] = {{4,10,12},{9,10,12},{11,13,0}};
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 lkdc = (LogicTableF1)xlt.getFromPosition(8);
+        assertEquals("RUNDAY(-9)", lkdc.getArg().getValue().getPrintString());
+    }
+
     @Test void testSymValueLookupfield() {
         LogicTable xlt = runFromXMLOverrideLogic(12045, TestHelper.SYM_LOOKUP, "COLUMN = {SymbolKeyLookup.Description; $Sym2=\"pppqqq\"}");
         String[] expected = new String[]{ "JOIN", "LKS", "LKS", "LKS", "LUSM", "DTL", "GOTO", "DTC" };
