@@ -86,6 +86,8 @@ class RunCompilerLookupTest extends RunCompilerBase {
         String[] expected = new String[]{ "JOIN", "LKS", "LKS", "LKS", "LKDC", "LUSM", "DTL", "GOTO", "DTC" };
         int expectedGotos[][] = {{4,10,12},{9,10,12},{11,13,0}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 lkdc = (LogicTableF1)xlt.getFromPosition(8);
+        assertEquals("RUNDAY(0)", lkdc.getArg().getValue().getPrintString());
     }
 
     @Test void testFiscalEffectiveDateLookupfield() {

@@ -99,7 +99,7 @@ public class LookupPathAST extends FormattedASTNode implements EmittableASTNode{
             defaultRequired = getEffDateValueIfSet();
         }
         if(defaultRequired) {
-            emitLKDC(ASTFactory.getNodeOfType(ASTFactory.Type.STRINGATOM));
+            emitLKDC(ASTFactory.getNodeOfType(ASTFactory.Type.RUNDATE));
         }
     }
 

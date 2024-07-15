@@ -31,7 +31,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
 
 public class RundateAST extends FormattedASTNode implements GenevaERSValue, Assignable{
 
-    private String value;
+    private String value = "RUNDAY";
 
     public RundateAST() {
         type = ASTFactory.Type.RUNDATE;
