@@ -10,10 +10,10 @@ templates:
   - name: "jcl/GRCGR.ftl"
     target: "${test}R"
     type: "JCL"
-  - name: "jcl/OLDRE.ftl"
+  - name: "jcl/GRCGEErr.ftl"
     target: "${test}E"
     type: "JCL"
-  - name: "jcl/OLDRF.ftl"
+  - name: "jcl/GRCGFErr.ftl"
     target: "${test}F"
     type: "JCL"
 # The two below are run if COVERAGE is set to Y - should this be managed by env vars?
