@@ -88,6 +88,10 @@ public class EffDateValue extends ExtractBaseAST implements EmittableASTNode{
                 key = "DTF_" + ((DateFunc)c).getValueString();
             } else if(c.getType() == ASTFactory.Type.STRINGATOM) {
                 key = "STR_" + ((StringAtomAST)c).getValueString();
+            } else if(c.getType() == ASTFactory.Type.FISCALDATE) {
+                key = "FIS_" + ((FiscaldateAST)c).getValueString();
+            } else if(c.getType() == ASTFactory.Type.RUNDATE) {
+                key = "RUN_" + ((RundateAST)c).getValueString();
             } else {
                 logger.atSevere().log("Unexpected Effective Date type " + c.getType());
             }
