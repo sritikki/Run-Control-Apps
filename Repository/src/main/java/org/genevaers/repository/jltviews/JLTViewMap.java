@@ -65,23 +65,24 @@ public class JLTViewMap<T> {
             case NORMAL:
                 jltv = new ReferenceJoin(lr, join);
                 jltv.setLookupType(LookupType.NORMAL);
-                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
+                logger.atFine().log("makeJTLView %d type %s for lr %d", join, type.toString(), lr);
                 break;
             case EXIT:
                 jltv = new ExitJoin(lr, join);
-                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
+                logger.atFine().log("makeJTLView %d type %s for lr %d", join, type.toString(), lr);
                 break;
             case EXTERNAL:
                 jltv = new ExternalJoin(lr, join);
-                //jltv.setUniqueKey(UniqueKeys.getUniqueKey());
+                jltv.calculateExternalKeyLength();
+                logger.atFine().log("makeJTLView %d type %s for lr %d", join, type.toString(), lr);
                 break;
             case SKT:
                 jltv = new ReferenceJoin(lr, join);
                 jltv.setLookupType(LookupType.SKT);
-                //jltv.setUniqueKey(UniqueKeys.getSktUniqueKey());
+                logger.atFine().log("makeJTLView %d type %s for lr %d", join, type.toString(), lr);
                 break;
             default:
-                logger.atSevere().log("JLTView tyoe %s not handled", type.toString());
+                logger.atSevere().log("JLTView type %s not handled", type.toString());
         }
         return jltv;
     }
@@ -96,7 +97,7 @@ public class JLTViewMap<T> {
         jltTable.append("\n");
         for(  Entry<JLTViewKey, T> jltes : jltViews.entrySet()) {
             JLTView jv = (JLTView) jltes.getValue();
-            jltTable.append(String.format("UniquKey %s -> %s  \n", jv.getUniqueKey(), jv.getRefViewNum()));
+            jltTable.append(String.format("UniqueKey %s -> %s  \n", jv.getUniqueKey(), jv.getRefViewNum()));
             jltTable.append(String.format("Read from LF %d LR %d -> %s with REDLR %d via genLR %s\n", sourceLF, jv.getLRid(), jv.getRefViewNum(), jv.getRedLR().getComponentId(), jv.getGenLR().getComponentId() ));
             jltTable.append(String.format("Original LK id %d  -- would be good to know why e.g. step etc\n", jv.getOrginalLookupId()));
             for(Reason r : jv.getReasons()) {

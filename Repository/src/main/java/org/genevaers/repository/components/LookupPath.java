@@ -25,7 +25,10 @@ import java.util.Map;
 
 import org.genevaers.repository.Repository;
 
+import com.google.common.flogger.FluentLogger;
+
 public class LookupPath extends ComponentNode {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private List<LookupPathStep> steps = new ArrayList<LookupPathStep>();
 	private int id;
@@ -190,5 +193,19 @@ public class LookupPath extends ComponentNode {
 
 	public Integer getLfFromLr(int lr) {
 		return lr2lf.get(lr);
+	}
+
+	public void dumpDetails(String from) {
+		logger.atInfo().log("LK %s from %s", name, from);
+		Iterator<LookupPathStep> sti = steps.iterator();
+		while (sti.hasNext()) {
+			LookupPathStep st = sti.next();
+			logger.atInfo().log("  Step %d", st.getStepNum());
+			Iterator<LookupPathKey> ki = st.getKeyIterator();
+			while (ki.hasNext()) {
+				LookupPathKey k = ki.next();
+				logger.atInfo().log("    Step %d", k.getKeyNumber());
+			}
+		}
 	}
 }
