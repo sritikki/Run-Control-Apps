@@ -26,7 +26,6 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 
-import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.base.EmittableASTNode;
 import org.genevaers.compilers.extract.BuildGenevaASTVisitor;
 import org.genevaers.compilers.extract.ExtractColumnCompiler;
@@ -51,13 +50,10 @@ import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
-import org.genevaers.repository.data.CompilerMessage;
-import org.genevaers.repository.data.CompilerMessageSource;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
 import org.genevaers.runcontrolgenerator.utility.Status;
-import org.genevaers.utilities.GersConfigration;
 import org.genevaers.visualisation.GraphVizRunner;
 
 import com.google.common.flogger.FluentLogger;
