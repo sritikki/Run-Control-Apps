@@ -83,25 +83,5 @@ public class LRIndexFieldRecordParser extends RecordParser {
 
 	@Override 
 	public void endRecord() {
-		//were there any effective date indexes?
-		addEffStartIndex();
-		addEffEndIndex();
-	}
-
-	private void addEffStartIndex() {
-		LRIndex effStartNdx = effdateStarts.get(ndxid);
-		if(effStartNdx != null) {
-			effStartNdx.setKeyNumber((short) (currentLR.getValuesOfIndexBySeq().size() + 1));
-			currentLR.addToIndexBySeq(effStartNdx);
-		}		
-	}
-
-	private void addEffEndIndex() {
-		LRIndex effEndNdx = effdateEnds.get(ndxid);
-		if(effEndNdx != null) {
-			effEndNdx.setKeyNumber((short) (currentLR.getValuesOfIndexBySeq().size() + 1));
-			currentLR.addToIndexBySeq(effEndNdx);
-		}
-		
 	}
 }

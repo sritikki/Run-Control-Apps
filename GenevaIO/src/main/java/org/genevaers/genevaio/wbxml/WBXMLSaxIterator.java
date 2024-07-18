@@ -107,6 +107,7 @@ public class WBXMLSaxIterator {
     private void readWBXML() throws NumberFormatException, XMLStreamException {
         readTheRecords();
         fixupTheAssociations();
+        RecordParserData.fixupEffectiveDateIndexes();
     }
 
     private void fixupTheAssociations() {

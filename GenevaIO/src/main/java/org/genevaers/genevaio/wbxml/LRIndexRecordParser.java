@@ -65,7 +65,7 @@ public class LRIndexRecordParser extends RecordParser {
 						ndx.setEffectiveDateEnd(false);
 						ndx.setEffectiveDateStart(true);
 						ndx.setName("Start Eff Date");
-						effdateStarts.put(indexID, ndx);
+						RecordParserData.effdateStarts.put(indexID, ndx);
 					}
 					break;
 				case "EFFDATEENDFLDID":
@@ -78,7 +78,7 @@ public class LRIndexRecordParser extends RecordParser {
 						ndx.setEffectiveDateEnd(true);
 						ndx.setEffectiveDateStart(false);
 						ndx.setName("End Eff Date");
-						effdateEnds.put(indexID, ndx);
+						RecordParserData.effdateEnds.put(indexID, ndx);
 					}
 					break;
 				default:
