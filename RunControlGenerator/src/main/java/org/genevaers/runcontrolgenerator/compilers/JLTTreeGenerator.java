@@ -80,11 +80,11 @@ public class JLTTreeGenerator {
     private void buildReferenceJoins() {
         Map<Integer, JLTViewMap<ReferenceJoin>> refDataset = Repository.getJoinViews().getReferenceDataSet();
 
-            Iterator<Entry<Integer, JLTViewMap<ReferenceJoin>>> refi = refDataset.entrySet().iterator();
-            while (refi.hasNext()) {
-                Entry<Integer, JLTViewMap<ReferenceJoin>> refEntry = refi.next();
-                buildJoinsForLF(refEntry);
-            }
+        Iterator<Entry<Integer, JLTViewMap<ReferenceJoin>>> refi = refDataset.entrySet().iterator();
+        while (refi.hasNext()) {
+            Entry<Integer, JLTViewMap<ReferenceJoin>> refEntry = refi.next();
+            buildJoinsForLF(refEntry);
+        }
     }
 
     private void buildJoinsForLF(Entry<Integer, JLTViewMap<ReferenceJoin>> refEntry) {
