@@ -502,7 +502,7 @@ public class JoinViewsManager {
 			JLTViewMap<ReferenceJoin> refd = refdi.next();
 			totalNumberOfJoins += refd.getNumberOfJoins();
 		}
-		return totalNumberOfJoins;
+		return totalNumberOfJoins + externalJoins.getNumberOfJoins();
 	}
 
 	public int getRTHViewNumber() {
