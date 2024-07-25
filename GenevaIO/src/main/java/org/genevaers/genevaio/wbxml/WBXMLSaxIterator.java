@@ -22,6 +22,7 @@ package org.genevaers.genevaio.wbxml;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.TreeMap;
 
@@ -73,6 +74,8 @@ public class WBXMLSaxIterator {
 
     private TreeMap<String, CatalogEntry> catalog = new TreeMap<>();
 
+    private Reader xmlReader;
+
     public void addToRepsitory() {
         initXMLFactories();
         try {
@@ -97,7 +100,8 @@ public class WBXMLSaxIterator {
 
         try {
             //reader = xmlInputFactory.createXMLStreamReader(inputStream);
-            reader = xmlInputFactory.createXMLStreamReader(inputBuffer);
+            //reader = xmlInputFactory.createXMLStreamReader(inputBuffer);
+            reader = xmlInputFactory.createXMLStreamReader(xmlReader);
         } catch (XMLStreamException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -291,6 +295,10 @@ public class WBXMLSaxIterator {
 
     public String getGenerationID() {
         return catalog.get("Generation0").getCreated();
+    }
+
+    public void setInputReader(Reader inputReader) {
+        xmlReader = inputReader;
     }
 
 }

@@ -23,8 +23,6 @@ package org.genevaers.runcontrolgenerator.repositorybuilders;
 import org.genevaers.genevaio.wbxml.WBXMLSaxIterator;
 import org.genevaers.repository.data.InputReport;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.runcontrolgenerator.utility.Status;
-
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
 
@@ -38,7 +36,7 @@ public class WBXMLBuilder extends XMLBuilder{
     protected void buildFromXML(InputReport ir) {
 		WBXMLSaxIterator wbReader = new WBXMLSaxIterator();
 		try {
-			wbReader.setInputBuffer(inputBuffer);
+			wbReader.setInputReader(inputReader);
 			wbReader.addToRepsitory();
 			ir.setGenerationID(wbReader.getGenerationID());
 		} catch (Exception e) {
