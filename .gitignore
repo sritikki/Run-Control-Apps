@@ -198,3 +198,12 @@ RunControlAnalyser/.settings/org.eclipse.core.resources.prefs
 RunControlAnalyser/.settings/org.eclipse.jdt.core.prefs
 RunControlAnalyser/.settings/org.eclipse.m2e.core.prefs
 prebuild/target/maven-archiver/pom.properties
+ZosUtilities/target/maven-archiver/pom.properties
+ZosUtilities/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+ZosUtilities/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+ZosIO/target/maven-archiver/pom.properties
+ZosIO/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+ZosIO/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+WinIO/target/maven-archiver/pom.properties
+WinIO/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+WinIO/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
