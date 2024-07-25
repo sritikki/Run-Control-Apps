@@ -92,11 +92,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.genevaers</groupId>
-				<artifactId>winio</artifactId>
-				<version>${revision}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.genevaers</groupId>
 				<artifactId>utilities</artifactId>
 				<version>${revision}</version>
 			</dependency>
@@ -305,18 +300,25 @@
 					<version>2.4.8</version>
 				</dependency>
 			</dependencies>
-			  </profile>	
-		  <profile>
+			  </profile>
+		<profile>
 			<id>windows</id>
 			<activation>
-			  <os> 
-				<family>windows</family>
-			  </os>
+				<os>
+					<family>windows</family>
+				</os>
 			</activation>
-				<modules>
-					<module>WinIO</module>
-				</modules>
-		  </profile>	
+			<modules>
+				<module>WinIO</module>
+			</modules>
+			<!-- <dependencies>
+				<dependency>
+					<groupId>org.genevaers</groupId>
+					<artifactId>winio</artifactId>
+					<version>1.1.0_RC1</version>
+				</dependency>
+			</dependencies> -->
+		</profile>
 	</profiles>
 
 </project>

@@ -60,7 +60,7 @@ public class RecordFileReaderWriter {
 			Constructor[] constructors = rrc.getConstructors();
 			rw = (RecordFileWriter) constructors[0].newInstance();
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			logger.atSevere().log("getWriter failed:\n %s", e.getMessage());
+			logger.atSevere().log("RecordFileWriter getWriter failed:\n %s", e.getMessage());
 		}
 		VDPFileObject.setSpaces(RecordFileWriter.getSpaces());
 		LTFileObject.setSpaces(RecordFileWriter.getSpaces());
