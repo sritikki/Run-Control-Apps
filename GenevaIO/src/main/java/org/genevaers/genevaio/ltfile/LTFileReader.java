@@ -65,6 +65,8 @@ public class LTFileReader {
 			logger.atFine().log("read LT record");
 		}
 		//rr.readRecord();
+		rr.close();
+		logger.atInfo().log("Close LT");
 		return logicTable;
 	}
 

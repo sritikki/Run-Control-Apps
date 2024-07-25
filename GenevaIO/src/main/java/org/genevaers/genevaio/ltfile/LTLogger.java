@@ -25,10 +25,10 @@ import java.util.Iterator;
 
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.GersFile;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
-import com.ibm.jzos.ZFile;
 
 public class LTLogger {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -118,29 +118,12 @@ public class LTLogger {
 	}
 
 	public static void writeRecordsTo(LogicTable lt, String ltPrint, String generation) {
-		ZFile dd;
-		if (GersConfigration.isZos()) {
-			try {
-				logger.atInfo().log("Write LT report to %s", ltPrint);
-				dd = new ZFile("//DD:" + ltPrint, "w");
-				writeTheLtDetailsToDnname(lt, dd, generation);
-				dd.close();
-			} catch (IOException e) {
-				logger.atSevere().log("Unable to create DDname %s", ltPrint);
-			}
-		} else {
-			writeTheLtDetailsToFile(lt, ltPrint, generation);
-		}
-		logger.atInfo().log("LT report written");
-	}
-
-	private static void writeTheLtDetailsToFile(LogicTable lt, String ltPrint, String generation) {
-		try (Writer out = new FileWriter(ltPrint);) {
+		try (Writer out = new GersFile().getWriter(ltPrint);) {
 			writeDetails(lt, out, generation);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
+		logger.atInfo().log("%s LT report written", ltPrint);
 	}
 
 	private static void writeDetails(LogicTable lt, Writer out, String generation) throws IOException {
@@ -153,16 +136,6 @@ public class LTLogger {
 			out.write(logme + "\n");
 		}
 		out.write("\nEnd of LT Records");
-	}
-
-	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd, String generation) throws IOException {
-		logger.atFine().log("Stream details");
-		try (Writer out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
-			writeDetails(lt, out, generation);
-		}
-		catch (Exception e) {
-			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
-		}
 	}
 
 	private static String getLogString(LTRecord ltr) {

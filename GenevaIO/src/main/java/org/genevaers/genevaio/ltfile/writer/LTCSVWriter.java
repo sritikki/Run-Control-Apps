@@ -17,9 +17,7 @@ package org.genevaers.genevaio.ltfile.writer;
  * under the License.
  */
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,11 +27,10 @@ import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.repository.components.enums.LtRecordType;
-import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.GersFile;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
-import com.ibm.jzos.ZFile;
 
 
 public class LTCSVWriter {
@@ -42,20 +39,13 @@ public class LTCSVWriter {
 	private static Set<LtRecordType> headerMap = new HashSet<>();
 
 	public static void write(LogicTable lt, String output) {
-		ZFile dd;
-		if (GersConfigration.isZos()) {
-			try {
-				logger.atInfo().log("Write LT CSV report to %s", output);
-				dd = new ZFile("//DD:" + output, "w");
-				writeTheLtDetailsToDnname(lt, dd);
-				dd.close();
-			} catch (IOException e) {
-				logger.atSevere().log("Unable to create DDname %s", output);
-			}
-		} else {
-			writeTheLtDetailsToFile(lt, output);
+		logger.atInfo().log("Write LT CSV report to %s", output);
+		try(Writer fw = new GersFile().getWriter(output)) {
+			writeRecords(lt, fw);
+		} catch (IOException e) {
+			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
-		logger.atInfo().log("LT report written");
+		logger.atInfo().log("%s LT report written", output);
 	}
 
 	private static void writeRecords(LogicTable lt, Writer fw) throws IOException {
@@ -64,24 +54,6 @@ public class LTCSVWriter {
 			LTRecord ltr = lti.next();
 			writeHeaderForTypeIfNeeded((LTFileObject) ltr, ltr.getRecordType(), fw);
 			writeRecordCSV((LTFileObject) ltr, fw);
-		}
-	}
-
-	private static void writeTheLtDetailsToFile(LogicTable lt, String output) {
-		try (Writer fw = new FileWriter(output)){
-			writeRecords(lt, fw);
-		} catch (IOException e) {
-			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
-		}
-	}
-
-	private static void writeTheLtDetailsToDnname(LogicTable lt, ZFile dd) {
-		logger.atFine().log("Stream details");
-		try (Writer fw = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
-			writeRecords(lt, fw);
-		}
-		catch (Exception e) {
-			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
 	}
 
