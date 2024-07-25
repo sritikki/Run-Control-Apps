@@ -39,6 +39,16 @@
 			<artifactId>utilities</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.genevaers</groupId>
+			<artifactId>zosutilities</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.genevaers</groupId>
+			<artifactId>zosio</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
