@@ -99,9 +99,7 @@ public class WBXMLSaxIterator {
         xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
 
         try {
-            //reader = xmlInputFactory.createXMLStreamReader(inputStream);
-            //reader = xmlInputFactory.createXMLStreamReader(inputBuffer);
-            reader = xmlInputFactory.createXMLStreamReader(xmlReader);
+           reader = xmlInputFactory.createXMLStreamReader(xmlReader);
         } catch (XMLStreamException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
