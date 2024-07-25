@@ -35,7 +35,6 @@ import org.genevaers.genevaio.vdpfile.VDPFileReader;
 import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
-import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.visualisation.GraphVizRunner;
 
@@ -56,24 +55,28 @@ public class RunControlAnalyser {
 		trg = Paths.get("RunControls");
 	}
 
-	public void readVDP(Path vdpPath, String ddName, boolean withCSV, MetadataNode recordsRoot, boolean compare) {
-		logger.atInfo().log("Read VDP %s csv flag %s", ddName, Boolean.toString(withCSV));
+	public void readVDP(Path vdpPath, String ddName, MetadataNode recordsRoot, boolean compare) {
+		logger.atInfo().log("Read %s", ddName);
 		if(vdpPath.toFile().exists()) {
 			VDPFileReader vdpr = new VDPFileReader();
-			vdpr.setCsvPath(trg);
 			vdpr.setRecordsRoot(recordsRoot);
 			vdpr.setCompare(compare);
 			vdpr.open(vdpPath, ddName);
-			vdpr.addToRepsitory(withCSV);
+			vdpr.addToRepsitory();
 			vmrs = vdpr.getViewManagementRecords();
+			try {
+				logger.atInfo().log("Close %s", ddName);
+				vdpr.close();
+			} catch (IOException e) {
+				logger.atSevere().log("VDP Close error %e",e.getMessage());
+			}
 		} else {
-			logger.atSevere().log("VDP %s not found");
+			logger.atSevere().log("VDP %s not found", ddName);
 		}
-		
 	}
 
-	public LogicTable readLT(Path ltPath, boolean withCSV, MetadataNode recordsRoot, boolean compare, String ddname) {
-		logger.atInfo().log("Read LT %s csv flag %s", ltPath, Boolean.toString(withCSV));
+	public LogicTable readLT(Path ltPath, MetadataNode recordsRoot, boolean compare, String ddname) {
+		logger.atInfo().log("Read LT %s", ltPath);
 		LTFileReader ltr = new LTFileReader();
 		ltr.setCompare(compare);
 		ltr.setRecordsRoot(recordsRoot);
@@ -146,42 +149,23 @@ public class RunControlAnalyser {
 		trg = trgPath;
 	}
 
-	public void generateFlowDataFrom(String baseFileName, boolean withCSV, boolean noBrowse, String joinsFilter) throws Exception {
+	public void generateFlowDataFrom(String baseFileName, String joinsFilter)
+			throws Exception {
 		File baseDir = new File(baseFileName);
-		if(baseDir.isDirectory()) {
-			if(!baseFileName.endsWith("/")) {
-				baseFileName += "/";
-			}
-			Path rcPath = Paths.get(baseFileName);
-			htmlFileName = "gvbrca.html";
+		Path rcPath = Paths.get(baseFileName);
+		htmlFileName = "gvbrca.html";
+		logger.atInfo().log("Write to %s", htmlFileName);
 
-			logger.atInfo().log("Read VDP File %s", rcPath);
-			logger.atInfo().log("Read XLT File %s", rcPath);
-			logger.atInfo().log("Read JLT File %s", rcPath);
-			logger.atInfo().log("Write to %s", htmlFileName);
-
-			readVDP(rcPath, GersConfigration.VDP_DDNAME, withCSV, null, false);
-			xlt = readLT(rcPath, withCSV, null, false, GersConfigration.XLT_DDNAME);
-			jlt = readLT(rcPath, withCSV, null, false, GersConfigration.JLT_DDNAME);
-			writeHTML(joinsFilter);
-			
-			if(noBrowse == false) {
-				openHTML();
-			}
+		//If we already read it above why read it again?
+		if(Repository.getViews().size() == 0) {
+			logger.atInfo().log("Flow VDP not previously read");
+			readVDP(rcPath.resolve(GersConfigration.VDP_DDNAME), GersConfigration.VDP_DDNAME, null, false);
 		} else {
-			logger.atSevere().log("Supplied run control argument %s is not a directory", baseFileName);
+			logger.atInfo().log("Processing previously read VDP");
 		}
+		xlt = readLT(rcPath, null, false, GersConfigration.XLT_DDNAME);
+		jlt = readLT(rcPath, null, false, GersConfigration.JLT_DDNAME);
+		writeHTML(joinsFilter);
 	}
 	
-	public void openHTML() throws IOException, InterruptedException {
-		Path showme = trg.resolve(htmlFileName);
-		String os = System.getProperty("os.name");
-		CommandRunner cmdRunner = new CommandRunner();
-		if(os.startsWith("Windows")) {
-			cmdRunner.run("cmd /C " + showme.toString(), showme.getParent().toFile());
-		} else {
-			cmdRunner.run("open /Applications/Firefox.app/ " + showme.toString(), showme.getParent().toFile());
-		}
-	}
-
 }

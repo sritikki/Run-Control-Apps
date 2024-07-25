@@ -49,6 +49,9 @@ public class RCAApp {
             pr.populateConfigFrom(GersConfigration.getParmFileName());
             GersConfigration.setLinesRead(pr.getLinesRead());
             GenevaLog.initLogger(RunControlAnalyser.class.getName(), RcaConfigration.getLogFileName(), GersConfigration.getLogLevel());
+            logger.atInfo().log("GenevaERS Run Control Analyser %s", AnalyserDriver.readVersion());
+            logger.atInfo().log("Java Vendor %s", System.getProperty("java.vendor"));
+            logger.atInfo().log("Java Version %s", System.getProperty("java.version"));
             logger.atInfo().log("Log level %s", GersConfigration.getLogLevel());
             if(RcaConfigration.isValid()) {
                 ranOkay = AnalyserDriver.runFromConfig();
