@@ -73,16 +73,12 @@ public class VDPFileReader{
 
 	private Path filePath;
 
-	private FileWriter csvFile;
-
 	private Set<String> csvHeaderWritten = new HashSet<String>();
 
 	private VDPManagementRecords vdpManagementRecords = new VDPManagementRecords();
 
 	private ViewManagementData currentVMD;
 	private int currentViewID;
-
-	private Path csvPath;
 
 	private short currentType;
 
@@ -92,24 +88,11 @@ public class VDPFileReader{
 	
 	public VDPFileReader() {}
 
-	public void addToRepsitory(boolean withCSV) {
-		writeCSV = withCSV;
-		if(withCSV) {
-			openCSVFile();
-		}
+	public void addToRepsitory() {
 		try {
 			readVDP();
 		} catch (Exception e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
-		}
-	}
-
-	private void openCSVFile() {
-		try {
-			Path trgCsv = csvPath.resolve(filePath.getFileName() + ".csv");
-			csvFile = new FileWriter(trgCsv.toFile());
-		} catch (IOException e) {
-			logger.atSevere().log("OpenCSV File failed",  e.getMessage());
 		}
 	}
 
@@ -121,17 +104,8 @@ public class VDPFileReader{
 		this.compare = comp;
 	}
 
-	public void setCsvPath(Path csvPath) {
-		this.csvPath = csvPath;
-	}
-
-	public void open(Path root, String name) {
-		if(GersConfigration.isZos()) {
-			vdpFile = new File(name);
-		} else {
-			filePath = root.resolve(name);
-			vdpFile = filePath.toFile();
-		}
+	public void open(Path vdpPath, String name) {
+			vdpFile = vdpPath.toFile();
 	}
 	
 	private void readVDP() throws Exception {
@@ -254,7 +228,6 @@ public class VDPFileReader{
 		default:
 			logger.atWarning().log("Rec Num " + numrecords + " Ignoring type" + recType);
 		}
-		writeCSVIfNeeded(vdpObject);
 		buildTreeIfNeeded(recType,vdpObject, viewID);
 	}
 
@@ -335,19 +308,6 @@ public class VDPFileReader{
 		cs.buildEntriesArrayFromTheBuffer();
 		currentView.setCalcStack(cs);
 		return ffs;
-	}
-
-	private void writeCSVIfNeeded( VDPFileObject vdpObject) throws IOException {
-		if(writeCSV && vdpObject != null){
-			if(csvHeaderWritten.contains(vdpObject.getClass().toString()) == false) {
-				vdpObject.writeCSVHeader(csvFile);
-				csvHeaderWritten.add(vdpObject.getClass().toString());				
-				csvFile.write("\n");
-			}
-			vdpObject.writeCSV(csvFile);
-			csvFile.write("\n");
-			csvFile.flush();
-		}
 	}
 
 	private VDPColumnCalculationLogic makeAndStoreColumnCalculation(VDPFileRecordReader recordReader, FileRecord rec) throws Exception {
