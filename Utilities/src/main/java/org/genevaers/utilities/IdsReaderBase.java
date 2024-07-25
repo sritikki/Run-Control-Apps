@@ -18,7 +18,13 @@ package org.genevaers.utilities;
  */
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,10 +32,10 @@ import java.util.TreeSet;
 
 import com.google.common.flogger.FluentLogger;
 
-public class IdsReader {
+public abstract class IdsReaderBase {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	static Set<Integer> ids = new TreeSet<>();
+	Set<Integer> ids = new TreeSet<>();
 	GersConfigration rcc;
 	static List<String> linesRead = new ArrayList<>();
 
@@ -39,18 +45,9 @@ public class IdsReader {
 
 	static IDS_RESULT result = IDS_RESULT.OK;
 
-	public static Set<Integer> getIdsFrom(String parmName) {
-		result = IDS_RESULT.OK;
-		logger.atInfo().log("Read %s", parmName);
-		try(BufferedReader br = new BufferedReader(new GersFile().getReader(parmName))) {
-			parseLines(br);
-		} catch (IOException e) {
-			logger.atSevere().withCause(e).log("Read failed. Cannot open %s", parmName);
-		}
-		return ids;
-	}
+	public abstract Set<Integer> readIds(String parmName);
 
-	protected static void parseLines(BufferedReader parmReader) throws IOException {
+	protected void parseLines(BufferedReader parmReader) throws IOException {
 		String line = parmReader.readLine();
 		while (line != null) {
 			// Parse the line to extract the parm name and value
@@ -61,7 +58,7 @@ public class IdsReader {
 		}
 	}
 
-	private static void parse(String line) {
+	private void parse(String line) {
 		if (line.length() > 0 && line.charAt(0) != '#' && line.charAt(0) != '*') {
 			String[] parts = line.trim().split(" ");
 			// Anything in part 2 is a comment
@@ -78,11 +75,11 @@ public class IdsReader {
 
 	}
 
-	public static IDS_RESULT getResult() {
+	public IDS_RESULT getResult() {
 		return result;
 	}
 
-	public static List<String> getLinesRead() {
+	public List<String> getLinesRead() {
 		return linesRead;
 	}
 

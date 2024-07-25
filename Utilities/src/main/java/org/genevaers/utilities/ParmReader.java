@@ -18,18 +18,11 @@ package org.genevaers.utilities;
  */
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.flogger.FluentLogger;
-import com.ibm.jzos.ZFile;
-import com.ibm.jzos.ZFileException;
 
 public class ParmReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -48,27 +41,8 @@ public class ParmReader {
 	}
 
 	public void populateConfigFrom(String parmName) throws IOException {
-		if (System.getProperty("os.name").startsWith("z")) {
-			readDDParm();
-		} else {
-			readSuppliedParm(parmName);	
-		}
-	}
-
-	private void readDDParm() throws IOException {
-		String ddname = "//DD:" + GersConfigration.getZosParmFileName();
-		logger.atInfo().log("Read %s", ddname);
-		BufferedReader br = new BufferedReader(new InputStreamReader(new ZFile(ddname, "r").getInputStream()));
-		logger.atInfo().log("Reading %s", ddname);
-		parseLines(br);
-		br.close();
-	}
-
-	private void readSuppliedParm(String parmName) {
-		Path parmPath = Paths.get(parmName);
-		try (BufferedReader parmReader = new BufferedReader(new FileReader(parmPath.toFile()))) {
-			logger.atInfo().log("Reading %s", parmName);
-			parseLines(parmReader);
+		try(BufferedReader br = new BufferedReader(new GersFile().getReader(parmName))) {
+			parseLines(br);
 		} catch (IOException e) {
 			result = PARM_RESULT.FAIL;
 			logger.atSevere().withCause(e).log("Read failed. Cannot open %s", parmName);
@@ -114,36 +88,11 @@ public class ParmReader {
 	}
 
 	public boolean generatorParmExists() {
-		if (System.getProperty("os.name").startsWith("z")) {
-			return ddExists(GersConfigration.RCG_PARM_FILENAME);
-		} else {
-			return localParmExists(GersConfigration.getRCGParmFileName());
-		}
+		return new GersFile().exists(GersConfigration.RCG_PARM_FILENAME);
 	}
 
 	public boolean analyserParmExists() {
-		if (System.getProperty("os.name").startsWith("z")) {
-			return ddExists(GersConfigration.RCA_PARM_FILENAME);
-		} else {
-			return localParmExists(GersConfigration.getRCAParmFileName());
-		}
-	}
-
-	private boolean localParmExists(String parmName) {
-		File f = new File(parmName);
-		return f.exists();
-	}
-
-	private boolean ddExists(String ddname) {
-		boolean retval;
-		String dd = "//DD:" + ddname;
-		try {
-			retval = ZFile.exists(dd);
-		} catch (ZFileException e) {
-			retval = false;
-			logger.atSevere().log("Zfile %s", e.getMessage());
-		} 
-		return retval;
+		return new GersFile().exists(GersConfigration.RCA_PARM_FILENAME);
 	}
 
 }
