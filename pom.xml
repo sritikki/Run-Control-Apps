@@ -290,7 +290,7 @@
 			<id>z/os</id>
 			<activation>
 			  <os> 
-				<family>mac</family>
+				<family>z/os</family>
 			  </os>
 			</activation>
 				<modules>
