@@ -83,10 +83,6 @@ under the License.
 			<version>42.7.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.ibm</groupId>
-			<artifactId>jzos</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 		</dependency>
@@ -98,21 +94,6 @@ under the License.
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
 		</dependency>
-			<dependency>
-				<groupId>com.ibm</groupId>
-				<artifactId>db2jcc_license_cu</artifactId>
-				<version>4</version>
-			</dependency>
-			<dependency>
-				<groupId>com.ibm</groupId>
-				<artifactId>db2jcc4</artifactId>
-				<version>4</version>
-			</dependency>
-			<dependency>
-				<groupId>com.ibm</groupId>
-				<artifactId>db2jcc_license_cisuz</artifactId>
-				<version>4</version>
-			</dependency>
 	</dependencies>
 
 	<build>
