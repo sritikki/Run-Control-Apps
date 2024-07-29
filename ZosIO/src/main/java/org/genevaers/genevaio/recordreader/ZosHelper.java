@@ -138,8 +138,8 @@ public class ZosHelper {
         return utf8charset.encode(data).array();
       }
   
-    //   public static boolean convertE2AAndCopyDataset2File(String dataset, File target, String recfm, String lrecl) {
-    //       boolean copied = false;
+      public static boolean convertE2AAndCopyDataset2File(String dataset, File target, String recfm, String lrecl) {
+          boolean copied = false;
     //       ZFile fileIn = null;
     //       BinRecordWriter fw = new BinRecordWriter();
     //       try {
@@ -164,8 +164,8 @@ public class ZosHelper {
     //             logger.atSevere().log("convertE2AAndCopyDataset2File Failed to close\n%s", e.getMessage());
     //           }
     //       }
-    //       return copied;
-    //   }
+          return copied;
+      }
 
       public static void putEventFile(String destDataset, File input, String name, String lrecl) {
         String datasetName = destDataset + "." + name;
