@@ -53,7 +53,7 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 
 	protected void readXMLs() {
 		for (GersFile gf : new GersFilesUtils().getGersFiles(RunControlConfigration.getWBXMLWinDirectory()) ){
-			logger.atFine().log("Read %s", gf.getName());
+			logger.atFine().log("Read XML file from %s", gf.getName());
 			try {
 				this.inputReader = gf.getReader(gf.getName());
 				InputReport ir = new InputReport();

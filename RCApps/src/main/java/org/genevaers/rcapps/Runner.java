@@ -44,16 +44,20 @@ public class Runner {
     } 
      
     private static void choose() {
+        new RunControlConfigration();
         ParmReader pr = new ParmReader();
         if(pr.generatorParmExists()) {
             System.out.printf("Running Run Control Generator\n");
             RCGApp.run("", "", RunControlConfigration.LOG_FILE, "", "", "");
             status = RCGApp.getResult();
+        } else {
+            System.out.printf("Unable to find generator parm file\n");
         }
         if(pr.analyserParmExists()) {
-            System.out.printf("Running Run Control Analyser\n");
             RCAApp.run();
             status = RCAApp.ranOkay() ? Status.OK : Status.ERROR;
+        } else {
+            System.out.printf("Unable to find analyser arm file\n");
         }
         String res = status == Status.OK ? "OK" : "with issues";
         System.out.printf("GenevaERS RunControls completed %s\n", res);

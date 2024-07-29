@@ -1,19 +1,11 @@
 package org.genevaers.utilities;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
-
 import com.google.common.flogger.FluentLogger;
-import com.ibm.jzos.FileFactory;
 import com.ibm.jzos.PdsDirectory;
 import com.ibm.jzos.PdsDirectory.MemberInfo;
 import com.ibm.jzos.ZFile;
@@ -48,7 +40,7 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 							String buildName = ddname + "(" + mname + ")";
 							logger.atInfo().log("Build Repo from " + buildName);
 							GersFile gf = new GersFile();
-							gf.setName(ddname);
+							gf.setName(buildName.substring(5)); //strip the //DD:
 							gersFiles.add(gf);
 						}
 					} catch (IOException e) {

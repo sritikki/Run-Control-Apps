@@ -22,12 +22,12 @@ public class GersFilesUtils {
 	public Collection<GersFile> getGersFiles(String dir) {
 		if (GersConfigration.isZos()) {
             try {
-                Class<?> rrc = Class.forName("org.genevaers.genevaio.recordreader.ZosGersFileUtils");
+                Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFilesUtils");
                 Constructor<?>[] constructors = rrc.getConstructors();
                 return ((GersFilesUtils) constructors[0].newInstance()).getGersFiles(dir);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | ClassNotFoundException e) {
-                logger.atSevere().log("exists failed %s", e.getMessage());
+                logger.atSevere().log("getGersFiles failed %s", e.getMessage());
             }
             return null;
 

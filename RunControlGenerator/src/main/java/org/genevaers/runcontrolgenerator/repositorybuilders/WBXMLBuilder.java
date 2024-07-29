@@ -34,6 +34,7 @@ public class WBXMLBuilder extends XMLBuilder{
 
     @Override
     protected void buildFromXML(InputReport ir) {
+		logger.atInfo().log("Read WBXML");
 		WBXMLSaxIterator wbReader = new WBXMLSaxIterator();
 		try {
 			wbReader.setInputReader(inputReader);

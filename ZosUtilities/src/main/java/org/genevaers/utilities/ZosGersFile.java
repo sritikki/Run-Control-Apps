@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.logging.StreamHandler;
+
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.ZFile;
 import com.ibm.jzos.ZFileException;
@@ -40,6 +42,11 @@ public class ZosGersFile extends GersFile{
 		return retval;
     }
 
+    public StreamHandler getFileHandler(String name) throws SecurityException, IOException {
+	    ZFileHandler zfh = new ZFileHandler();
+		zfh.setFile(name);
+		return zfh;
+    }
 	
 
 }

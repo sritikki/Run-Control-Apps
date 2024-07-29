@@ -24,7 +24,7 @@ public class GersFile {
     public Writer getWriter(String name) throws IOException {
         if (GersConfigration.isZos()) {
             try {
-                Class<?> rrc = Class.forName("org.genevaers.genevaio.recordreader.ZosGersFile");
+                Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFile");
                 Constructor<?>[] constructors = rrc.getConstructors();
                 return ((GersFile) constructors[0].newInstance()).getWriter(name);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -40,7 +40,7 @@ public class GersFile {
     public Reader getReader(String name) throws FileNotFoundException {
         if (GersConfigration.isZos()) {
             try {
-                Class<?> rrc = Class.forName("org.genevaers.genevaio.recordreader.ZosGersFile");
+                Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFile");
                 Constructor<?>[] constructors = rrc.getConstructors();
                 return ((GersFile) constructors[0].newInstance()).getReader(name);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -57,7 +57,7 @@ public class GersFile {
     public boolean exists(String name) {
         if (GersConfigration.isZos()) {
             try {
-                Class<?> rrc = Class.forName("org.genevaers.genevaio.recordreader.ZosGersFile");
+                Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFile");
                 Constructor<?>[] constructors = rrc.getConstructors();
                 return ((GersFile) constructors[0].newInstance()).exists(name);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
@@ -73,12 +73,12 @@ public class GersFile {
     public StreamHandler getFileHandler(String name) throws SecurityException, IOException {
         if (GersConfigration.isZos()) {
             try {
-                Class<?> rrc = Class.forName("org.genevaers.genevaio.recordreader.ZFileHandler");
+                Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFile");
                 Constructor<?>[] constructors = rrc.getConstructors();
-                return ((StreamHandler) constructors[0].newInstance("//DD:" + name.toUpperCase()));
+                return ((GersFile) constructors[0].newInstance()).getFileHandler("//DD:" + name.toUpperCase());
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | ClassNotFoundException e) {
-                logger.atSevere().log("exists failed %s", e.getMessage());
+                logger.atSevere().log("getFileHandler failed %s: %s", e.getMessage(), e.getCause());
             }
             return null;
         } else {

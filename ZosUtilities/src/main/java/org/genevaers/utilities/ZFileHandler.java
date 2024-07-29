@@ -29,7 +29,10 @@ import com.ibm.jzos.ZFileException;
 public class ZFileHandler extends StreamHandler{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    ZFileHandler(String ddname) {
+    ZFileHandler() {
+    }
+
+    public void setFile(String ddname) {
         try {
             ZFile dd = new ZFile(ddname, "w");
             setOutputStream(dd.getOutputStream());

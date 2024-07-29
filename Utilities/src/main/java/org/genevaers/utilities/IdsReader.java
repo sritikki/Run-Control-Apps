@@ -39,13 +39,17 @@ public class IdsReader {
 
 	static IDS_RESULT result = IDS_RESULT.OK;
 
-	public static Set<Integer> getIdsFrom(String parmName) {
+	public static Set<Integer> getIdsFrom(String idsFile) {
 		result = IDS_RESULT.OK;
-		logger.atInfo().log("Read %s", parmName);
-		try(BufferedReader br = new BufferedReader(new GersFile().getReader(parmName))) {
-			parseLines(br);
-		} catch (IOException e) {
-			logger.atSevere().withCause(e).log("Read failed. Cannot open %s", parmName);
+		logger.atInfo().log("Read %s", idsFile);
+		if(new GersFile().exists(idsFile)) {
+			try(BufferedReader br = new BufferedReader(new GersFile().getReader(idsFile))) {
+				parseLines(br);
+			} catch (IOException e) {
+				logger.atSevere().withCause(e).log("Read failed. Cannot open %s", idsFile);
+			}
+		} else {
+			logger.atInfo().log("Ids file %s not found", idsFile);
 		}
 		return ids;
 	}
