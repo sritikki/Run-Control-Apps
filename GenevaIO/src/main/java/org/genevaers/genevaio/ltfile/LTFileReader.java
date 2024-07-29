@@ -56,13 +56,13 @@ public class LTFileReader {
 		rr = RecordFileReaderWriter.getReader();
 		rr.readRecordsFrom(ltFile);
 		FileRecord rec = rr.readRecord();
-		logger.atFine().log("read LT record");
+		logger.atFiner().log("read LT record");
 		while (rr.isAtFileEnd() == false) {
 			numrecords++;
 			addToLTFromRecord(rec);
 			rec.bytes.clear();
 			rec = rr.readRecord();
-			logger.atFine().log("read LT record");
+			logger.atFiner().log("read LT record");
 		}
 		//rr.readRecord();
 		rr.close();
@@ -75,7 +75,7 @@ public class LTFileReader {
 		rec.bytes.rewind();
         int recType = rec.bytes.getInt(30);
 		rec.dump();
-		logger.atFine().log("Record Type %d",recType);
+		logger.atFiner().log("Record Type %d",recType);
         if(recType == LtRecordType.HD.ordinal()) {
 			addHD(rec);
         } else if(recType == LtRecordType.NV.ordinal()) {
