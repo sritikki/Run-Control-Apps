@@ -36,6 +36,7 @@ import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.GersFile;
 import org.genevaers.visualisation.GraphVizRunner;
 
 public class RunControlAnalyser {
@@ -57,7 +58,7 @@ public class RunControlAnalyser {
 
 	public void readVDP(Path vdpPath, String ddName, MetadataNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read %s", ddName);
-		if(vdpPath.toFile().exists()) {
+		if(new GersFile().exists(GersConfigration.VDP_DDNAME)) {
 			VDPFileReader vdpr = new VDPFileReader();
 			vdpr.setRecordsRoot(recordsRoot);
 			vdpr.setCompare(compare);
