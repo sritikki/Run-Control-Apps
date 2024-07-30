@@ -1,7 +1,7 @@
 digraph RunControlGeneratoFileFlowr {
 rankdir=LR
 //Nodes
-graph [label="Run Control Generator File Flow\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22];
+graph [label="Run Control Generator Only Flow\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22];
 labeljust=center;
 
 // Files
@@ -17,14 +17,12 @@ subgraph cluster_rcapps {
 }
 
 RCP[label="GRCGParm" shape=rect style=filled color=lightblue1]
-RAP[label="GCRAParm" shape=rect style=filled color=lightblue1]
 WBX[label="WB XML Files" shape=rect style=filled color=lightblue1 ]
 RPT[label="GRCGRPT" shape=rect style=filled color=beige ]
 LOG[label="GRCGLOG" shape=rect style=filled color=beige ]
 VDP[label="VDP" shape=rect style=filled color=pink ]
 XLT[label="XLT" shape=rect style=filled color=pink ]
 JLT[label="JLT" shape=rect style=filled color=pink ]
-HTM[label="RCA Report Files\n(Text/CSV/HTML)" shape=rect style=filled color=beige ]
 
 
 
@@ -38,15 +36,5 @@ RCG -> LOG
 RCG -> VDP [ltail=cluster_rcapps ]
 RCG -> XLT [ltail=cluster_rcapps ]
 RCG -> JLT [ltail=cluster_rcapps ]
-
-RAP -> RCA
-
-VDP -> RCA [ltail=cluster_rcapps ]
-XLT -> RCA
-JLT -> RCA
-
-RCA -> HTM
-
-
 
 }
