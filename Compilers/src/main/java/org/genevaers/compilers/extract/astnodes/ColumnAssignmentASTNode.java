@@ -88,7 +88,7 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
             // This is where we need the rules checking and data type adjustment
 
-            // The rhs will have its own emmitter since it will be assignable
+            // The rhs will have its own emitter since it will be assignable
             // If not ... boom
             AssignmentRulesChecker dataTypeChecker = AssignmentRulesCheckerFactory.getChecker(col, (FormattedASTNode)rhs);
             RuleResult res = dataTypeChecker.verifyOperands(col, (FormattedASTNode)rhs);

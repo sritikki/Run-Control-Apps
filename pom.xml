@@ -16,7 +16,7 @@
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 		<!-- our apps -->
-		<revision>1.1.0</revision>
+		<revision>1.1.0_RC1</revision>
 	</properties>
 
 	<licenses>
@@ -50,9 +50,8 @@
 		<module>ComponentGenerator</module>
 		<module>Utilities</module>
 		<module>Repository</module>
-		<module>GenevaIO</module>
 		<module>Compilers</module>
-		<module>PETestFramework</module>
+		<module>GenevaIO</module>
 		<module>RunControlGenerator</module>
 		<module>RunControlAnalyser</module>
 		<module>RCApps</module>
@@ -197,11 +196,6 @@
 				<artifactId>jansi</artifactId>
 				<version>2.4.1</version>
 			</dependency>
-			<dependency>
-				<groupId>com.ibm</groupId>
-				<artifactId>jzos</artifactId>
-				<version>2.4.8</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -286,6 +280,44 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>z/os</id>
+			<activation>
+			  <os> 
+				<family>z/os</family>
+			  </os>
+			</activation>
+				<modules>
+					<module>PETestFramework</module>
+					<module>ZosIO</module>
+					<module>ZosUtilities</module>
+				</modules>
+			<dependencies>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>jzos</artifactId>
+					<version>2.4.8</version>
+				</dependency>
+			</dependencies>
+			  </profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<modules>
+				<module>WinIO</module>
+			</modules>
+			<!-- <dependencies>
+				<dependency>
+					<groupId>org.genevaers</groupId>
+					<artifactId>winio</artifactId>
+					<version>1.1.0_RC1</version>
+				</dependency>
+			</dependencies> -->
 		</profile>
 	</profiles>
 

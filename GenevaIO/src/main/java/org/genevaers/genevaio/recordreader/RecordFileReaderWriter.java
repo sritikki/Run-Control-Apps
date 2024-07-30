@@ -18,6 +18,10 @@ package org.genevaers.genevaio.recordreader;
  */
 
 import com.google.common.flogger.FluentLogger;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.vdpfile.VDPFileObject;
 import org.genevaers.utilities.GersConfigration;
@@ -26,26 +30,37 @@ public class RecordFileReaderWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	public static RecordFileReader getReader() {
-		RecordFileReader rr;
-		if(GersConfigration.isZos()) {
-			logger.atFine().log("Using ZosRecordReader");
-			rr = new ZosRecordReader();
-		} else {
-			logger.atFine().log("Using BinRecordReader");
-			rr = new BinRecordReader();
+		RecordFileReader rr = null;
+		logger.atFine().log("Using ZosRecordReader");
+		try {
+			Class<?> rrc;
+			if (GersConfigration.isZos()) {
+				rrc = Class.forName("org.genevaers.genevaio.recordreader.ZosRecordReader");
+			} else {
+				rrc = Class.forName("org.genevaers.genevaio.recordreader.BinRecordReader");
+			}
+			Constructor[] constructors = rrc.getConstructors();
+			rr = (RecordFileReader) constructors[0].newInstance();
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			logger.atSevere().log("getReader failed:\n %s", e.getMessage());
 		}
 		return rr;
 	}
 
 	public static RecordFileWriter getWriter() {
-		RecordFileWriter rw;
-		if(GersConfigration.isZos()) {
-			logger.atFine().log("Using ZosRecordWriter");
-			rw = new ZosRecordWriter();
-			RecordFileWriter.setSpacesEBCDIC();
-		} else {
-			logger.atFine().log("Using BinRecordWriter");
-			rw = new BinRecordWriter();
+		RecordFileWriter rw = null;
+		try {
+			Class<?> rrc;
+			if (GersConfigration.isZos()) {
+				rrc = Class.forName("org.genevaers.genevaio.recordreader.ZosRecordWriter");
+				RecordFileWriter.setSpacesEBCDIC();
+			} else {
+				rrc = Class.forName("org.genevaers.genevaio.recordreader.BinRecordWriter");
+			}
+			Constructor[] constructors = rrc.getConstructors();
+			rw = (RecordFileWriter) constructors[0].newInstance();
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			logger.atSevere().log("RecordFileWriter getWriter failed:\n %s", e.getMessage());
 		}
 		VDPFileObject.setSpaces(RecordFileWriter.getSpaces());
 		LTFileObject.setSpaces(RecordFileWriter.getSpaces());

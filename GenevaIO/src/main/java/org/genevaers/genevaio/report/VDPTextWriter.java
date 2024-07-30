@@ -17,12 +17,8 @@ package org.genevaers.genevaio.report;
  * under the License.
  */
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,11 +34,10 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.UserExit;
-import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.GersFile;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
-import com.ibm.jzos.ZFile;
 
 public class VDPTextWriter {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -53,38 +48,13 @@ public class VDPTextWriter {
 	private static Map<Integer, LrDetails> lrDetailsById = new TreeMap<>();
 
 	public static void writeFromRecordNodes( MetadataNode recordsRoot, String filename, String generated) {
-		ZFile dd;
-		if (GersConfigration.isZos()) {
-			try {
-				logger.atInfo().log("Write VDP report to %s", filename);
-				dd = new ZFile("//DD:" + filename, "w");
-				writeTheVDPDetailsToDnname(recordsRoot, dd, generated);
-				dd.close();
-			} catch (IOException e) {
-				logger.atSevere().log("Unable to create DDname %s", filename);
-			}
-		} else {
-			writeTheLtDetailsToFile(recordsRoot, filename, generated);
-		}
-		logger.atInfo().log("LT report written");
-	}
-
-	private static void writeTheLtDetailsToFile(MetadataNode recordsRoot, String ltPrint, String generated) {
-		try (Writer out = new FileWriter(ltPrint);) {
-			writeDetails(recordsRoot, out, generated);
-		}
-		catch (Exception e) {
+		logger.atInfo().log("Write VDP report to %s", filename);
+		try(Writer fw = new GersFile().getWriter(filename)) {
+			writeDetails(recordsRoot, fw, generated);
+		} catch (IOException e) {
 			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
 		}
-	}
-	private static void writeTheVDPDetailsToDnname(MetadataNode recordsRoot, ZFile dd, String generated) throws IOException {
-		logger.atFine().log("Stream details");
-		try (Writer out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");) {
-			writeDetails(recordsRoot, out, generated);
-		}
-		catch (Exception e) {
-			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
-		}
+		logger.atInfo().log("VDP report written");
 	}
 
 	public static  void writeDetails( MetadataNode recordsRoot, Writer fw, String generated) throws IOException {

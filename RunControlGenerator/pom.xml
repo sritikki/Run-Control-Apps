@@ -94,88 +94,7 @@ under the License.
 
 	<build>
 		<plugins>
-			<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin> -->
-
-			<!-- <plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>appassembler-maven-plugin</artifactId>
-				<version>1.10</version>
-				<executions>
-					<execution>
-						<id>assemble-script</id>
-						<phase>package</phase>
-						<goals>
-							<goal>assemble</goal>
-						</goals>
-						<configuration>
-							<assembleDirectory>${project.build.directory}/</assembleDirectory>
-							<platforms>
-								<platform>windows</platform>
-								<platform>unix</platform>
-							</platforms>
-							<programs>
-								<program>
-									<mainClass>org.genevaers.runcontrolgenerator.App</mainClass>
-									<id>gvbrcg</id>
-								</program>
-							</programs>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
-			<!-- <plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<classifier>spring-boot</classifier>
-							<mainClass>
-								org.genevaers.runcontrolgenerator.App
-							</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
 		</plugins>
-		<!-- <pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>3.7.1</version>
-					<configuration>
-						<descriptorRefs>
-							<descriptorRef>jar-with-dependencies</descriptorRef>
-						</descriptorRefs>
-						<archive>
-							<manifest>
-								<mainClass>org.genevaers.runcontrolgenerator.App</mainClass>
-							</manifest>
-						</archive>
-					</configuration>
-					<executions>
-						<execution>
-							<id>make-assembly</id>
-							<phase>package</phase>
-							<goals>
-								<goal>single</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement> -->
 		<resources>
 			<resource>
 				<filtering>true</filtering>
@@ -188,4 +107,41 @@ under the License.
 		</resources>
 	</build>
 
+	<profiles>
+		<!-- <profile>
+			<id>z/os</id>
+			<activation>
+				<os>
+					<family>z/os</family>
+				</os>
+			</activation>
+			<modules>
+				<module>PETestFramework</module>
+				<module>ZosIO</module>
+				<module>ZosUtilities</module>
+			</modules>
+			<dependencies>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>jzos</artifactId>
+					<version>2.4.8</version>
+				</dependency>
+			</dependencies>
+		</profile> -->
+		<!-- <profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.genevaers</groupId>
+					<artifactId>WinIO</artifactId>
+					<version>${revision}</version>
+				</dependency>
+			</dependencies>
+		</profile> -->
+	</profiles>
 </project>

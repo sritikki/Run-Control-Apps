@@ -24,11 +24,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -55,13 +53,7 @@ public class GenevaLog
 			topLogger.removeHandler(hndlrs[0]);
 		}
 		try {
-			StreamHandler fh;
-			String os = System.getProperty("os.name");
-			if (os.startsWith("z")) {
-				fh = new ZFileHandler("//DD:" + filename.toUpperCase());
-			} else {
-				fh = new FileHandler(filename);
-			}
+			StreamHandler fh = new GersFile().getFileHandler(filename);
             topLogger.setLevel(minLevel);
 			fh.setLevel(minLevel);
 			fh.setFormatter(new Formatter() {

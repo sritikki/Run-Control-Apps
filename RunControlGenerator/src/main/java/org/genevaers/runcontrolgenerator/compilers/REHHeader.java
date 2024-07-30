@@ -141,7 +141,8 @@ public class REHHeader {
 
         makeHeaderField("File ID", dwordLen);
         makeHeaderField("LR ID", dwordLen);
-        makeHeaderField("Record Count", dwordLen);
+        LRField rc = makeHeaderField("Record Count", dwordLen);
+        rc.setSigned(false);
         makeHeaderField("Record Length", wordLen);
         makeHeaderField("Offest to Key", wordLen);
         makeHeaderField("Key Length", wordLen);
@@ -304,7 +305,7 @@ public class REHHeader {
         LRField hdrFld = Repository.makeNewField(hdrLR);
         hdrFld.setName(name);
         RepoHelper.setField(hdrFld, DataType.BINARY, startPos, len);
-        hdrFld.setSigned(true);
+        hdrFld.setSigned(false);
         hdrLR.addToFieldsByID(hdrFld);
         hdrLR.addToFieldsByName(hdrFld);
         startPos += len;

@@ -512,14 +512,17 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         LookupPathRefAST lkRef = (LookupPathRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPREF);
         lkRef.setCharPostionInLine(ctx.getStart().getCharPositionInLine());
         lkRef.setLineNumber(ctx.getStart().getLine());
+        System.out.printf("Number of lookup ctx children %s %d\n", ctx.getText(), ctx.getChildCount());
         if(ctx.getChildCount() == 1) {
             String lkname = ctx.getText();
             int braceNdx = lkname.indexOf("{");
             int endNdx = lkname.indexOf("}");
             String strippedName = lkname.substring(braceNdx+1, endNdx);
             addLookupReferenceToNode(lkRef, strippedName);
-        } else if(ctx.getChildCount() == 4) {
+        } else if(ctx.getChildCount() >= 4) {
             addLookupReferenceToNode(lkRef, ctx.getChild(1).getText());
+        } else {
+            logger.atSevere().log("visitLookup lookup not found for %s\n", ctx.getText());
         }
         if(ctx.symbollist() != null) {
             lkRef.addChildIfNotNull(visitSymbollist(ctx.symbollist()));
@@ -540,7 +543,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             lkRef.resolveLookup(lookup);
             Repository.getDependencyCache().addLookupIfAbsent(lkname, lookup);
 		} else {
-            lkRef.addError("Unknown Lookup " + lkname);
+            logger.atSevere().log("addLookupReferenceToNode null lookup for %s\n", lkname);
         }		
     }
 
@@ -548,6 +551,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) ASTFactory.getNodeOfType(ASTFactory.Type.LOOKUPFIELDREF);
 		String fullName = ctx.getChild(1).getText();
 		String[] parts = fullName.split("\\.");
+        System.out.printf("Number of lookup field ctx children %s %d\n", ctx.getText(), ctx.getChildCount());
         LookupPath lookup =  dataProvider.getLookup(parts[0]);
 		if(lookup != null) {
             lkfieldRef.resolveField(lookup, parts[1]);
@@ -566,6 +570,8 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         }
 		if(lookup != null) {
             lkfieldRef.makeUnique();
+        } else {
+            logger.atSevere().log("visitLookupField null lookup for %s",fullName);
         }
         return lkfieldRef;
     }

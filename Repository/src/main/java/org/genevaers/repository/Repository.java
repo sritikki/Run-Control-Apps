@@ -247,6 +247,7 @@ public class Repository {
 			lookups.add(lkup, lkup.getID(), lkup.getName());
 		} else if (currentStepNumber != lpk.getStepNumber()) {
 			makeANewStep(lpk);
+			currentStepNumber = lpk.getStepNumber();
 		} else {
 			makeAKeyStep(lpk);
 		}

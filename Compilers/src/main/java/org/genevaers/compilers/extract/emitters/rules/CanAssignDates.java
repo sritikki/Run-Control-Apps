@@ -35,7 +35,7 @@ public class CanAssignDates extends Rule{
     public RuleResult apply(final ExtractBaseAST op1, final ExtractBaseAST op2) {
         final ViewColumn vc = ((ColumnAST)op1).getViewColumn();
         FormattedASTNode f = ((FormattedASTNode)op2);
-        if (vc.getDateCode() != DateCode.NONE &&  f.getDateCode() != DateCode.NONE) {
+        if (( vc.getDateCode() != null && vc.getDateCode() != DateCode.NONE) &&  f.getDateCode() != DateCode.NONE) {
             if(canAssignDates(vc.getDateCode(), f.getDateCode())) {
                 return RuleResult.RULE_PASSED;                
             } else {

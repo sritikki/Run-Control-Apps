@@ -1,0 +1,29 @@
+digraph RunControlGeneratoFileFlowr {
+rankdir=LR
+//Nodes
+graph [label="Run Control Analyser Only Flow\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22];
+labeljust=center;
+
+subgraph cluster_rcapps {
+    label = "Run Control Apps\n\n";
+    node [shape = plaintext;];
+    RCG[label="Run Control Generator" shape=oval style=filled color=PaleGreen]
+    RCA[label="Run Control Analyzer" shape=oval style=filled color=PaleGreen]
+}
+
+RAP[label="GCRAParm" shape=rect style=filled color=lightblue1]
+VDP[label="VDP" shape=rect style=filled color=pink ]
+XLT[label="XLT" shape=rect style=filled color=pink ]
+JLT[label="JLT" shape=rect style=filled color=pink ]
+HTM[label="RCA Report Files\n(Text/CSV/HTML)" shape=rect style=filled color=beige ]
+
+
+RAP -> RCA
+
+VDP -> RCA [ltail=cluster_rcapps ]
+XLT -> RCA
+JLT -> RCA
+
+RCA -> HTM
+
+}

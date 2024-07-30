@@ -157,12 +157,18 @@ public class LazyDBReader implements CompilerDataProvider {
     }
 
     private void getDependenciesForLookup(LookupPath lk) {
-        getLogicalRecord(lk.getTargetLRID());
-        getLogicalFile(lk.getTargetLFID());
+        DBLogicalRecordReader lrReader = new DBLogicalRecordReader();
+        lrReader.addToRepo(databaseConnection, params);
+        DBFieldReader fr = new DBFieldReader();
+        fr.addToRepo(databaseConnection, params);
+        DBLRIndexReader lrir = new DBLRIndexReader();
+        lrir.addToRepo(databaseConnection, params);
         DBLogicalFileReader lfReader = new DBLogicalFileReader();
         lfReader.addToRepo(databaseConnection, params);
         DBPhysicalFileReader pFileReader = new DBPhysicalFileReader();
         pFileReader.addToRepo(databaseConnection, params);
+        DBExitReader er = new DBExitReader();
+        er.addToRepo(databaseConnection, params);
     }
 
     private LogicalFile getLogicalFile(int lfid) {

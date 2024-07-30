@@ -49,9 +49,6 @@ abstract public class RecordParser {
 	protected String elementName;
 	protected static TreeMap<String, CatalogEntry> catalog;
 
-	protected static Map<Integer, LRIndex> effdateStarts = new HashMap<>();
-	protected static Map<Integer, LRIndex> effdateEnds = new HashMap<>();
-
 	protected static Map<Integer, List<LookupPathKey>> lookupStepKeys = new HashMap<>();
 
 	public RecordParser() {
@@ -95,11 +92,6 @@ abstract public class RecordParser {
 	}
 
 	public static void clearAndInitialise() {
-		//protected static TreeMap<String, CatalogEntry> catalog;
-
-		effdateStarts = new HashMap<>();
-		effdateEnds = new HashMap<>();
-	
 		lookupStepKeys = new HashMap<>();	
 		RecordParserData.clearAndInitialise();
 	}

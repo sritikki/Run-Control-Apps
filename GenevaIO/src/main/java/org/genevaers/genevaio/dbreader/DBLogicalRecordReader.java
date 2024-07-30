@@ -51,7 +51,11 @@ public class DBLogicalRecordReader extends DBReaderBase {
         lr.setComponentId(rs.getInt("LOGRECID"));
         lr.setName(rs.getString("NAME"));
         lr.setStatus(LrStatus.fromdbcode(rs.getString("LRSTATUSCD")));
-        lr.setLookupExitID(rs.getInt("LOOKUPEXITID"));
+        int le = rs.getInt("LOOKUPEXITID");
+        lr.setLookupExitID(le);
+        if(le > 0) {
+            requiredExits.add(le);
+        }
         lr.setLookupExitParams(getDefaultedString(rs.getString("LOOKUPEXITSTARTUP"), ""));
         Repository.addLogicalRecord(lr);
     }

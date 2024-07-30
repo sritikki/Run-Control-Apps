@@ -113,4 +113,46 @@ under the License.
 		</resources>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>z/os</id>
+			<activation>
+				<os>
+					<family>z/os</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.ibm</groupId>
+					<artifactId>jzos</artifactId>
+					<version>2.4.8</version>
+				</dependency>
+				<dependency>
+					<groupId>org.genevaers</groupId>
+					<artifactId>zosutilities</artifactId>
+					<version>${revision}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.genevaers</groupId>
+					<artifactId>zosio</artifactId>
+					<version>${revision}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.genevaers</groupId>
+					<artifactId>winio</artifactId>
+					<version>${revision}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>

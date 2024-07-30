@@ -476,7 +476,14 @@ public class JLTView {
     }
 
     public LRField getRedFieldFromLookupField(int id) {
-        return refFieldToRedField.get(id);
+        //If this is an external lookup we need to apply a field position fixup
+        //Subtract the key length
+        if(lookupType == LookupType.NORMAL) {
+            return  refFieldToRedField.get(id);
+        } else {
+            LRField lrf = Repository.getLogicalRecords().get(lrid).findFromFieldsByID(id);
+            return RepoHelper.cloneFieldWithNewStartPos(lrf, keyLen);
+        }
     }
 
     public String getUniqueKey() {
@@ -544,5 +551,21 @@ public class JLTView {
     public void setSourceLFID(Integer lfOfKey) {
         sourceLF = lfOfKey;
     }
-    
+
+    public int calculateExternalKeyLength() {
+        genStartPos = 1;
+        LogicalRecord targetlr = Repository.getLogicalRecords().get(lrid);
+        Iterator<LRIndex> ii = targetlr.getIteratorForIndexBySeq();
+        while(ii.hasNext()) {
+            LRIndex ndx = ii.next();
+            LRField keyFld = Repository.getFields().get(ndx.getFieldID());
+            if(ndx.isEffectiveDateStart() || ndx.isEffectiveDateEnd()) {
+                keyLen += 4;
+            } else {
+                keyLen += keyFld.getLength();
+            }
+        }
+
+        return keyLen;
+    }
 }

@@ -36,7 +36,6 @@ import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
-import org.genevaers.utilities.FTPSession;
 import org.genevaers.utilities.GersConfigration;
 
 import com.google.common.flogger.FluentLogger;
@@ -45,19 +44,7 @@ import com.google.common.flogger.FluentLogger;
 public class AnalyserDriver {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	private RcaConfigration rcac;
-
-	/**
-	 *
-	 */
-	private static final String TO = "' to ";
-	/**
-	 *
-	 */
-	private static final String FTP_GET = "FTP Get ";
 	private static RunControlAnalyser fa = new RunControlAnalyser();
-	private Object cwd;
-	private static Path dataStore;
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
 
 	private static String version;
@@ -65,79 +52,50 @@ public class AnalyserDriver {
 	private static String generation;
 
 	private boolean jlt1Present;
-
 	private boolean jlt2Present;
 
-	public void ftpRunControlDatasets(String host, String dataset, String rc, String  user, String password) throws IOException {
-
-		FTPSession session = new FTPSession(host);
-		session.setUserAndPassword(user, password);
-		session.connect();
-		Path newcwd = Paths.get(rc);
-		newcwd.toFile().mkdirs();
-		String vdpDataset = dataset + ".VDP";
-		String xltDataset = dataset + ".XLT";
-		String jltDataset = dataset + ".JLT";
-		Path vdpPath = Paths.get(rc).resolve("VDP");
-		Path xltPath = Paths.get(rc).resolve("XLT");
-		Path jltPath = Paths.get(rc).resolve("JLT");
-		session.setRDW();
-		session.setBinary();
-		System.out.println(FTP_GET + vdpDataset + TO
-				+ vdpPath.toString());
-		session.getFile("'" + dataset + ".VDP" + "'", vdpPath.toFile());
-		System.out.println(FTP_GET + xltDataset + TO
-				+ xltPath.toString());
-		session.getFile("'" + dataset + ".XLT" + "'", xltPath.toFile());
-		System.out.println(FTP_GET + jltDataset + TO
-				+ jltPath.toString());
-		session.getFile("'" + dataset + ".JLT" + "'", jltPath.toFile());
-		System.out.println("FTP transfers complete");
-		session.disconnect();
+	public static boolean runFromConfig() {
+		boolean ranOkay = true;
+    	Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
+		if(RcaConfigration.isXltReport()) {
+			generateXltPrint(root);
+		}
+		if(RcaConfigration.isJltReport()) {
+			generateJltPrint(root);
+		}
+		if(RcaConfigration.isVdpReport()) {
+			generateVdpPrint(root);
+		}
+		if(RcaConfigration.isRcaReport()) {
+			ranOkay = generateRcaPrint(root);
+		}
+		return ranOkay;
 	}
 
-	public static void generateFlowDataFrom(String baseFileName, boolean withCSV, boolean noBrowse, String joinsFilter) throws Exception {
-		fa.generateFlowDataFrom(baseFileName, withCSV, noBrowse, joinsFilter);
+	private static boolean generateRcaPrint(Path root) {
+		boolean ranOkay = true;
+		try {
+            setTargetDirectory(root, "rca");
+            generateFlowDataFrom(RcaConfigration.getCurrentWorkingDirectory(), 
+             ""
+            );
+        } catch (Exception e) {
+			ranOkay = false;
+            logger.atSevere().log("Problem running the analyser. %s", e.getMessage());
+        }
+		return ranOkay;
 	}
 
-	public static void setTargetDirectory(String trg) {
-		Path trgPath = dataStore.resolve(trg);
+	public static void generateFlowDataFrom(String baseFileName, String joinsFilter) throws Exception {
+		fa.generateFlowDataFrom(baseFileName, joinsFilter);
+	}
+
+	public static void setTargetDirectory(Path root, String trg) {
+		Path trgPath = root.resolve(trg);
 		if(trgPath.toFile().exists() == false) {
 			trgPath.toFile().mkdirs();
 		}
 		fa.setTargetDirectory(trgPath);
-	}
-
-	public void openDataStore() {
-		try {
-			//On a mac this will be different
-			Runtime.getRuntime().exec("explorer.exe /root," + dataStore.toString());
-		} catch (IOException e) {
-			logger.atSevere().log("Cannot open the data store\n%s", e.getMessage());
-		}
-	}
-
-	public static void makeRunControlAnalyserDataStore(Path root) {
-		if(root == null) {
-			String home = System.getProperty("user.home");
-			//locroot = locroot.replaceAll("^[Cc]:", "");
-			home = home.replace("\\", "/");
-			Path homePath = Paths.get(home);
-			dataStore = homePath.resolve(".gersflows");
-		} else {
-			dataStore = root;
-		}
-		if(dataStore.toFile().exists() == false) {
-			dataStore.toFile().mkdirs();
-		}
-	}
-
-	public Path getDataStore() {
-		return dataStore;
-	}
-
-	public String[] getRcSets() {
-		return dataStore.toFile().list();
 	}
 
 	public static void generateXltPrint(Path root) {
@@ -150,19 +108,18 @@ public class AnalyserDriver {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 			case "TXT":
-				LogicTable tlt = fa.readLT(root, false, null, false, ddname); //readLT(root, ddname);
+				LogicTable tlt = fa.readLT(root, null, false, ddname);
 				LTLogger.writeRecordsTo(tlt, ltReportDdname, generation);
 				break;
 			case "CSV":
-				LogicTable cxlt = fa.readLT(root, false, null, false, ddname); //readLT(root, ddname);
+				LogicTable cxlt = fa.readLT(root, null, false, ddname);
 				LTCSVWriter.write(cxlt, ltReportDdname);
 				break;
 			case "HTML":
 				MetadataNode recordsRoot = new MetadataNode();
 				recordsRoot.setName("Root");
 				recordsRoot.setSource1(root.toString());
-				// recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
-				fa.readLT(root, false, recordsRoot, false, ddname);
+				fa.readLT(root, recordsRoot, false, ddname);
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
 				ltrw.setIgnores();
 				ltrw.writeFromRecordNodes(recordsRoot, ltReportDdname);
@@ -188,7 +145,8 @@ public class AnalyserDriver {
 		logger.atInfo().log("Generate %s", RcaConfigration.getVDPReportName());
 		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Root");
-		fa.readVDP(root, GersConfigration.VDP_DDNAME, false, recordsRoot, false);
+		Path vdpp = root.resolve(GersConfigration.VDP_DDNAME);
+		fa.readVDP(vdpp, GersConfigration.VDP_DDNAME, recordsRoot, false);
 		writeVDPReport(recordsRoot, RcaConfigration.getVDPReportName());
 		//collectCoverageDataFrom(xltp, xlt);
 	}
@@ -241,10 +199,10 @@ public class AnalyserDriver {
 			recordsRoot.setName("Root");
 			recordsRoot.setSource1(root.relativize(rc1.resolve("JLT1")).toString());
 			recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
-			fa.readLT(rc1.resolve("JLT"), false, recordsRoot, false, "JLT1");
+			fa.readLT(rc1.resolve("JLT"), recordsRoot, false, "JLT1");
 			logger.atInfo().log("JLT Tree built from %s", rc1.toString());
 			Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
-			fa.readLT(rc2.resolve("JLT"), false, recordsRoot, true, "JLT2");
+			fa.readLT(rc2.resolve("JLT"), recordsRoot, true, "JLT2");
 			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
 			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
 			LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -258,10 +216,10 @@ public class AnalyserDriver {
 		recordsRoot.setName("Root");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("XLT1")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("XLT2")).toString());
-		fa.readLT(rc1.resolve("XLT"), false, recordsRoot, false, "XLT1");
+		fa.readLT(rc1.resolve("XLT"), recordsRoot, false, "XLT1");
 		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
-		fa.readLT(rc2.resolve("XLT"), false, recordsRoot, true, "XLT2");
+		fa.readLT(rc2.resolve("XLT"), recordsRoot, true, "XLT2");
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
 		LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -274,13 +232,13 @@ public class AnalyserDriver {
 		recordsRoot.setName("Root");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
-		fa.readVDP(rc1.resolve("VDP"), GersConfigration.VDP_DDNAME, false, recordsRoot, false);
+		fa.readVDP(rc1.resolve("VDP"), GersConfigration.VDP_DDNAME, recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
 		VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
 		vdprw.setIgnores();
 		vdprw.writeFromRecordNodes(recordsRoot, "VDP1.html");
 		Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
-		fa.readVDP(rc2.resolve("VDP"), GersConfigration.VDP_DDNAME, false, recordsRoot, true);
+		fa.readVDP(rc2.resolve("VDP"), GersConfigration.VDP_DDNAME, recordsRoot, true);
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
 		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
 		vdprw.writeFromRecordNodes(recordsRoot, "VDPDiff.html");
@@ -317,41 +275,6 @@ public class AnalyserDriver {
 		Path vdpPath = rc.resolve("VDP");
 		Path xltPath = rc.resolve("XLT");
 		return vdpPath.toFile().exists() &&	xltPath.toFile().exists();
-	}
-
-	public static boolean runFromConfig() {
-		boolean ranOkay = true;
-    	Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
-		if(RcaConfigration.isXltReport()) {
-			generateXltPrint(root);
-		}
-		if(RcaConfigration.isJltReport()) {
-			generateJltPrint(root);
-		}
-		if(RcaConfigration.isVdpReport()) {
-			generateVdpPrint(root);
-		}
-		if(RcaConfigration.isRcaReport()) {
-			ranOkay = generateRcaPrint(root);
-		}
-		return ranOkay;
-	}
-
-	private static boolean generateRcaPrint(Path root) {
-		boolean ranOkay = true;
-		try {
-			makeRunControlAnalyserDataStore(root);
-            setTargetDirectory("rca");
-            generateFlowDataFrom(RcaConfigration.getCurrentWorkingDirectory(), 
-             true,  //default to generate csv
-            true,
-            ""
-            );
-        } catch (Exception e) {
-			ranOkay = false;
-            logger.atSevere().log("Problem running the analyser. %s", e.getMessage());
-        }
-		return ranOkay;
 	}
 
 	public static String readVersion() {

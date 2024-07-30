@@ -19,6 +19,8 @@ import org.genevaers.repository.components.enums.RecordDelimiter;
 import org.genevaers.repository.components.enums.SubtotalType;
 import org.genevaers.repository.components.enums.TextDelimiter;
 
+import com.google.common.flogger.FluentLogger;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
  * 
@@ -38,6 +40,7 @@ import org.genevaers.repository.components.enums.TextDelimiter;
 
 
 public class RepoHelper {
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private RepoHelper() {}
 
@@ -170,59 +173,77 @@ public class RepoHelper {
 
     public static int getMaxNumberOfDigitsForType(DataType t, int length) {
         int numDigits = 0;
-        switch (t)
-        {
-            case ZONED:
-                numDigits = length;
-            break;
-            case ALPHA:
-            case ALPHANUMERIC:
-            case EDITED:
-                numDigits = length;
-                break;
-            case MASKED:
-                //Need to consider the code and presence of decimals?
-                numDigits = length;
-                break;
-            case BCD:
-                numDigits = length * 2;
-                break;
-            case BINARY:
-            case BSORT:
-            switch (length)
-            {
-            case 1:
-                numDigits = 3;
-                break;
-            case 2:
-                numDigits = 5;
-                break;
-            case 4:
-                numDigits = 10;
-                break;
-            case 8:
-                numDigits = 20;
-                break;
-            default:
-                numDigits = 0;
-                break;
+        if (t != null) {
+            switch (t) {
+                case ZONED:
+                    numDigits = length;
+                    break;
+                case ALPHA:
+                case ALPHANUMERIC:
+                case EDITED:
+                    numDigits = length;
+                    break;
+                case MASKED:
+                    // Need to consider the code and presence of decimals?
+                    numDigits = length;
+                    break;
+                case BCD:
+                    numDigits = length * 2;
+                    break;
+                case BINARY:
+                case BSORT:
+                    switch (length) {
+                        case 1:
+                            numDigits = 3;
+                            break;
+                        case 2:
+                            numDigits = 5;
+                            break;
+                        case 4:
+                            numDigits = 10;
+                            break;
+                        case 8:
+                            numDigits = 20;
+                            break;
+                        default:
+                            numDigits = 0;
+                            break;
+                    }
+                    break;
+                case CONSTDATE:
+                case CONSTNUM:
+                case CONSTSTRING:
+                case FLOAT:
+                case GENEVANUMBER:
+                case INVALID:
+                    break;
+                case PSORT:
+                case PACKED:
+                    numDigits = (length * 2) - 1;
+                    break;
+                default:
+                    break;
             }
-                break;
-            case CONSTDATE:
-            case CONSTNUM:
-            case CONSTSTRING:
-            case FLOAT:
-            case GENEVANUMBER:
-            case INVALID:
-                break;
-            case PSORT:
-            case PACKED:
-                numDigits = (length * 2) - 1;
-                break;
-            default:
-                break;
+        } else {
+            logger.atSevere().log("getMaxNumberOfDigitsForType date type is null");
         }
         return numDigits;
-    
+
     }
+
+    public static LRField cloneFieldWithNewStartPos(LRField fld, short offset) {
+        LRField clone = new LRField();
+        clone.setDatatype(fld.getDatatype());
+        clone.setDateTimeFormat(fld.getDateTimeFormat());
+        clone.setJustification(fld.getJustification());
+        clone.setStartPosition((short)(fld.getStartPosition() - offset));
+        clone.setLength(fld.getLength());
+        clone.setMask(fld.getMask());
+        clone.setNumDecimalPlaces(fld.getNumDecimalPlaces());
+        clone.setRounding(fld.getRounding());
+        clone.setSigned(fld.isSigned());
+        clone.setDbColName("");
+        return clone;
+    }
+
 }

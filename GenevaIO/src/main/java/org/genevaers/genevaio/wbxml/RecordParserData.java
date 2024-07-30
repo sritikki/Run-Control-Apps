@@ -25,10 +25,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRIndex;
 import org.genevaers.repository.components.LogicalFile;
+import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
@@ -206,4 +206,18 @@ public class RecordParserData {
 		lfpfs = new HashMap<>();
 	}
 
+	public static void fixupEffectiveDateIndexes() {
+		addEffDateKeyFrom(effdateStarts.entrySet().iterator());
+		addEffDateKeyFrom(effdateEnds.entrySet().iterator());
+	}
+
+	private static void addEffDateKeyFrom(Iterator<Entry<Integer, LRIndex>> efdi) {
+		while (efdi.hasNext()) {
+			Entry<Integer, LRIndex> efde = efdi.next();
+			LRIndex effStartNdx = efde.getValue();
+			LogicalRecord lr = Repository.getLogicalRecords().get(effStartNdx.getLrId());
+			effStartNdx.setKeyNumber((short) (lr.getValuesOfIndexBySeq().size() + 1));
+			lr.addToIndexBySeq(effStartNdx);
+		}
+	}
 }

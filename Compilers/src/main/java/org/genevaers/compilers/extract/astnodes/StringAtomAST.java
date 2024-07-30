@@ -34,7 +34,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
 
 public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, Assignable, Concatable {
 
-    private String value;
+    private String value = "";
 
     public StringAtomAST() {
         type = ASTFactory.Type.STRINGATOM;

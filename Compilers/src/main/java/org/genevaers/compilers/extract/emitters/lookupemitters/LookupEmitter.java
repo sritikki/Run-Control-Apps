@@ -87,7 +87,7 @@ public class LookupEmitter extends CodeEmitter {
         LookupPath lookup = lookupAST.getLookup();
         optimizable = isLookupOptimizable(lookup);
         Iterator<LookupPathStep> si = lookup.getStepIterator();
-
+        //Uncomment me for some help lookup.dumpDetails("emitJoin");
         while (si.hasNext()) {
             LookupPathStep step = si.next();
             if (step.getStepNum() == 1 && optimizable && parentAST.getType() != Type.SORTTITLE) {

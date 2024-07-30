@@ -52,6 +52,14 @@ under the License.
 			<artifactId>jansi</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
@@ -59,10 +67,6 @@ under the License.
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.5.0-M1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.ibm</groupId>
-			<artifactId>jzos</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.google.flogger</groupId>

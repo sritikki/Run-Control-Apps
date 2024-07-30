@@ -19,10 +19,8 @@ package org.genevaers.runcontrolgenerator;
  * under the License.
  */
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +31,9 @@ import org.genevaers.genevaio.dbreader.DBViewsReader;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersEnvironment;
-import com.google.common.flogger.FluentLogger;
-import com.ibm.jzos.ZFile;
+import org.genevaers.utilities.GersFile;
 
+import com.google.common.flogger.FluentLogger;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -101,20 +99,11 @@ public class ReportWriter {
 
 
 	private  void generateTemplatedOutput(Template template, Map<String, Object> nodeMap, String reportFileName) {
-		try {
-			String os = System.getProperty("os.name");
-            Writer out;
-			if (os.startsWith("z")) {
-                ZFile dd = new ZFile("//DD:" + reportFileName, "w");
-                out = new OutputStreamWriter(dd.getOutputStream(), "IBM-1047");
-			} else {
-                out = new FileWriter(reportFileName);
-			}
-	    	template.process(nodeMap, out);
-            out.close();
-        } catch (IOException | TemplateException e) {
-            logger.atSevere().log("Cannot generate template %s", e.getMessage());
-        }
+        try(Writer fw = new GersFile().getWriter(reportFileName)) {
+	    	template.process(nodeMap, fw);
+		} catch (IOException | TemplateException e) {
+			logger.atSevere().log("Template generation failed %e", e.getMessage());;
+		}
     }
 
 

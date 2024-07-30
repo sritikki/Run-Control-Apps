@@ -18,18 +18,13 @@ package org.genevaers.utilities;
  */
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.flogger.FluentLogger;
-import com.ibm.jzos.ZFile;
 
 public class IdsReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -44,43 +39,22 @@ public class IdsReader {
 
 	static IDS_RESULT result = IDS_RESULT.OK;
 
-	public static Set<Integer> getIdsFrom(String parmName) {
-		ids.clear();
-		linesRead.clear();
+	public static Set<Integer> getIdsFrom(String idsFile) {
 		result = IDS_RESULT.OK;
-		try {
-			if (System.getProperty("os.name").startsWith("z")) {
-				readDDIds(parmName);
-			} else {
-				readSuppliedIds(parmName);
+		logger.atInfo().log("Read %s", idsFile);
+		if(new GersFile().exists(idsFile)) {
+			try(BufferedReader br = new BufferedReader(new GersFile().getReader(idsFile))) {
+				parseLines(br);
+			} catch (IOException e) {
+				logger.atSevere().withCause(e).log("Read failed. Cannot open %s", idsFile);
 			}
-		} catch (IOException e) {
-			logger.atSevere().withCause(e).log("Error reading ids %s", parmName);
+		} else {
+			logger.atInfo().log("Ids file %s not found", idsFile);
 		}
 		return ids;
 	}
 
-	private static void readDDIds(String parmName) throws IOException  {
-		String ddname = "//DD:" + parmName;
-		logger.atInfo().log("Read %s", ddname);
-			BufferedReader br = new BufferedReader(new InputStreamReader(new ZFile(ddname, "r").getInputStream()));
-			logger.atInfo().log("Reading %s", ddname);
-			parseLines(br);
-			br.close();
-	}
-
-	private static void readSuppliedIds(String parmName) {
-		Path parmPath = Paths.get(parmName);
-		try (BufferedReader parmReader = new BufferedReader(new FileReader(parmPath.toFile()))) {
-			logger.atInfo().log("Reading %s", parmName);
-			parseLines(parmReader);
-		} catch (IOException e) {
-			result = IDS_RESULT.FAIL;
-			logger.atInfo().log("Read failed. Cannot open %s\n%s", parmName, e.getMessage());
-		}
-	}
-
-	private static void parseLines(BufferedReader parmReader) throws IOException {
+	protected static void parseLines(BufferedReader parmReader) throws IOException {
 		String line = parmReader.readLine();
 		while (line != null) {
 			// Parse the line to extract the parm name and value
@@ -92,11 +66,11 @@ public class IdsReader {
 	}
 
 	private static void parse(String line) {
-		if (line.length() > 0 && line.charAt(0) != '#'  && line.charAt(0) != '*') {
+		if (line.length() > 0 && line.charAt(0) != '#' && line.charAt(0) != '*') {
 			String[] parts = line.trim().split(" ");
-			//Anything in part 2 is a comment
+			// Anything in part 2 is a comment
 			String[] idStrings = parts[0].split(",");
-			for(int i=0; i<idStrings.length; i++) {
+			for (int i = 0; i < idStrings.length; i++) {
 				try {
 					ids.add(Integer.valueOf(idStrings[i]));
 				} catch (NumberFormatException e) {
