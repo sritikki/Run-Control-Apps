@@ -1,6 +1,5 @@
 digraph RunControlGeneratoFileFlowr {
 rankdir=LR
-//Nodes
 graph [label="Run Control Generator File Flow\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22];
 labeljust=center;
 
@@ -10,43 +9,48 @@ WB[label="Workbench" shape=square style=filled color=lawngreen]
 DB[label="Database" shape=circle style=filled color=tan]
 
 subgraph cluster_rcapps {
-    label = "Run Control Apps\n\n";
+    label = "Run Control Apps\n\n"; 
     node [shape = plaintext;];
-    RCG[label="Run Control Generator" shape=oval style=filled color=PaleGreen]
-    RCA[label="Run Control Analyzer" shape=oval style=filled color=PaleGreen]
+
+    subgraph cluster_rcg {
+        label = "RC Apps phase 1\n\n";
+        node [shape = plaintext;];
+        RCG[label="Run Control Generator" shape=oval style=filled color=PaleGreen]
+    }
+    VDP[label="VDP" shape=rect style=filled color=pink ]
+    XLT[label="XLT" shape=rect style=filled color=pink ]
+    JLT[label="JLT" shape=rect style=filled color=pink ]
+    subgraph cluster_rca {
+        label = "RC Apps phase 2\n\n";
+        node [shape = plaintext;];
+        RCA[label="Run Control Analyzer" shape=oval style=filled color=PaleGreen]
+    }
 }
 
 RCP[label="GRCGParm" shape=rect style=filled color=lightblue1]
-RAP[label="GCRAParm" shape=rect style=filled color=lightblue1]
+RAP[label="GRCAParm" shape=rect style=filled color=lightblue1]
 WBX[label="WB XML Files" shape=rect style=filled color=lightblue1 ]
-RPT[label="GRCGRPT" shape=rect style=filled color=beige ]
-LOG[label="GRCGLOG" shape=rect style=filled color=beige ]
-VDP[label="VDP" shape=rect style=filled color=pink ]
-XLT[label="XLT" shape=rect style=filled color=pink ]
-JLT[label="JLT" shape=rect style=filled color=pink ]
-HTM[label="RCA Report Files\n(Text/CSV/HTML)" shape=rect style=filled color=beige ]
-
-
-
+RPT[label="Run Report" shape=rect style=filled color=beige ]
+LOG[label="Log" shape=rect style=filled color=beige ]
+REPS[label="Analyser Reports" shape=rect style=filled color=beige ]
 
 DB -> WB -> WBX
 DB -> RCG
-RCP -> RCG [lhead=cluster_rcapps ]
+RCP -> RCG
 WBX -> RCG
-RCG -> RPT
-RCG -> LOG
-RCG -> VDP [ltail=cluster_rcapps ]
-RCG -> XLT [ltail=cluster_rcapps ]
-RCG -> JLT [ltail=cluster_rcapps ]
+RCG -> VDP
+RCG -> XLT
+RCG -> JLT
 
-RAP -> RCA
-
-VDP -> RCA [ltail=cluster_rcapps ]
+VDP -> RCA
 XLT -> RCA
 JLT -> RCA
 
-RCA -> HTM
+RCA -> REPS
 
+RCA -> RPT [ltail=rca]
+RCA -> LOG
 
+RAP -> RCA
 
 }
