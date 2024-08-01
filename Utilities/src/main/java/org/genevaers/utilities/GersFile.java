@@ -59,7 +59,7 @@ public class GersFile {
         }
     }
 
-    public static boolean exists(String name) {
+    public boolean exists(String name) {
         if (GersConfigration.isZos()) {
             try {
                 Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFile");

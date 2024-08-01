@@ -31,7 +31,7 @@ public class ZosGersFile extends GersFile{
 		return null;
     }
 
-    public static boolean exists(String name) {
+    public boolean exists(String name) {
 		boolean retval = false;
 		String dd = "//DD:" + name;
 		try {

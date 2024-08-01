@@ -58,7 +58,7 @@ public class RunControlAnalyser {
 
 	public void readVDP(Path vdpPath, String ddName, MetadataNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read %s, from %s", ddName, vdpPath.toString());
-		if(GersFile.exists(vdpPath.toString())) {
+		if(new GersFile().exists(vdpPath.toString())) {
 			VDPFileReader vdpr = new VDPFileReader();
 			vdpr.setRecordsRoot(recordsRoot);
 			vdpr.setCompare(compare);
