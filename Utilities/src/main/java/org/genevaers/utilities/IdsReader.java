@@ -43,7 +43,7 @@ public class IdsReader {
 		result = IDS_RESULT.OK;
 		logger.atInfo().log("Read %s", idsFile);
 		ids.clear();
-		if(GersFile.exists(idsFile)) {
+		if(new GersFile().exists(idsFile)) {
 			try(BufferedReader br = new BufferedReader(new GersFile().getReader(idsFile))) {
 				parseLines(br);
 			} catch (IOException e) {
