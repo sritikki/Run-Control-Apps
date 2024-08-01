@@ -50,28 +50,6 @@ public class RCDriver {
 
     private static String rcaTextType;
 
-//     private static 
-//     #INPUT_TYPE=PG            # WBXML or VDPML or DB2
-// #INPUT_TYPE=VDPXML            # WBXML or VDPML or DB2
-// INPUT_TYPE=POSTGRES            # WBXML or VDPML or DB2
-// DB_ENVIRONMENT_ID=5
-// DB_SCHEMA=gendev
-// DB_PORT=5432
-// DB_SERVER=localhost
-// DB_DATABASE=genevaers
-
-// DBVIEWS=12156
-
-// OUTPUT_RUN_CONTROL_FILES=Y
-// DOT_XLT=Y
-// DOT_JLT=Y
-// DOT_FORMAT=Y
-// #COLUMN_DOTS=3
-// #VIEW_DOTS=11265
-// LOG_LEVEL=FINE
-// TRACE=Y
-
-
     public static void initialise() {
         new RunControlConfigration();
         Repository.clearAndInitialise();
