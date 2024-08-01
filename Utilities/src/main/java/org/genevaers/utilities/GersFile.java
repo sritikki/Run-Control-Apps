@@ -1,6 +1,5 @@
 package org.genevaers.utilities;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,6 +9,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.FileHandler;
 import java.util.logging.StreamHandler;
@@ -49,12 +49,17 @@ public class GersFile {
             }
             return null;
         } else {
-            return new BufferedReader(new FileReader(Paths.get(name).toFile()));
+            File f = Paths.get(name).toFile();
+            if(f.exists()) {
+                return new FileReader(Paths.get(name).toFile());
+            } else {
+                return null;
+            }
 
         }
     }
 
-    public boolean exists(String name) {
+    public static boolean exists(String name) {
         if (GersConfigration.isZos()) {
             try {
                 Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFile");
@@ -66,7 +71,7 @@ public class GersFile {
             }
             return false;
         } else {
-            return new File(name).exists();
+            return Files.exists(Paths.get(name));
         }
     }
 

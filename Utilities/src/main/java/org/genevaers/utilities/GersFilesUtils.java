@@ -20,6 +20,7 @@ public class GersFilesUtils {
 	static Collection<GersFile> gersFiles = new ArrayList<>();
 
 	public Collection<GersFile> getGersFiles(String dir) {
+		gersFiles.clear();
 		if (GersConfigration.isZos()) {
             try {
                 Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFilesUtils");

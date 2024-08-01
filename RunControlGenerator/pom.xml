@@ -108,18 +108,13 @@ under the License.
 	</build>
 
 	<profiles>
-		<!-- <profile>
+		<profile>
 			<id>z/os</id>
 			<activation>
 				<os>
 					<family>z/os</family>
 				</os>
 			</activation>
-			<modules>
-				<module>PETestFramework</module>
-				<module>ZosIO</module>
-				<module>ZosUtilities</module>
-			</modules>
 			<dependencies>
 				<dependency>
 					<groupId>com.ibm</groupId>
@@ -127,8 +122,8 @@ under the License.
 					<version>2.4.8</version>
 				</dependency>
 			</dependencies>
-		</profile> -->
-		<!-- <profile>
+		</profile>
+		<profile>
 			<id>windows</id>
 			<activation>
 				<os>
@@ -138,10 +133,9 @@ under the License.
 			<dependencies>
 				<dependency>
 					<groupId>org.genevaers</groupId>
-					<artifactId>WinIO</artifactId>
-					<version>${revision}</version>
+					<artifactId>winio</artifactId>
 				</dependency>
 			</dependencies>
-		</profile> -->
+		</profile>
 	</profiles>
 </project>
