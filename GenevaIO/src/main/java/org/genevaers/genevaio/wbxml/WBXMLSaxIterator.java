@@ -70,7 +70,6 @@ public class WBXMLSaxIterator {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private XMLStreamReader reader;
-    private BufferedInputStream inputBuffer;
 
     private TreeMap<String, CatalogEntry> catalog = new TreeMap<>();
 
@@ -285,10 +284,6 @@ public class WBXMLSaxIterator {
 
     public Collection<CatalogEntry> getCatalogEntries() {
         return catalog.values();
-    }
-
-    public void setInputBuffer(BufferedInputStream ib) {
-        inputBuffer = ib;
     }
 
     public String getGenerationID() {

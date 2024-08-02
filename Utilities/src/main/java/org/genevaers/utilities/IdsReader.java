@@ -42,6 +42,7 @@ public class IdsReader {
 	public static Set<Integer> getIdsFrom(String idsFile) {
 		result = IDS_RESULT.OK;
 		logger.atInfo().log("Read %s", idsFile);
+		ids.clear();
 		if(new GersFile().exists(idsFile)) {
 			try(BufferedReader br = new BufferedReader(new GersFile().getReader(idsFile))) {
 				parseLines(br);

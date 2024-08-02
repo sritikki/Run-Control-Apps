@@ -23,6 +23,8 @@ package org.genevaers.runcontrolgenerator.repositorybuilders;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.Reader;
+import java.util.Collection;
+
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.data.InputReport;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
@@ -52,7 +54,10 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 	protected abstract String getXMLDirectory();
 
 	protected void readXMLs() {
-		for (GersFile gf : new GersFilesUtils().getGersFiles(RunControlConfigration.getWBXMLWinDirectory()) ){
+		//GersFilesUtils.clear();
+		Collection<GersFile> gfs = new GersFilesUtils().getGersFiles(RunControlConfigration.getWBXMLWinDirectory());
+		logger.atInfo().log("found %d files in %s", gfs.size(), RunControlConfigration.getWBXMLWinDirectory());
+		for (GersFile gf : gfs) {
 			logger.atFine().log("Read XML file from %s", gf.getName());
 			try {
 				this.inputReader = gf.getReader(gf.getName());

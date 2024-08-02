@@ -57,8 +57,8 @@ public class RunControlAnalyser {
 	}
 
 	public void readVDP(Path vdpPath, String ddName, MetadataNode recordsRoot, boolean compare) {
-		logger.atInfo().log("Read %s", ddName);
-		if(new GersFile().exists(GersConfigration.VDP_DDNAME)) {
+		logger.atInfo().log("Read %s, from %s", ddName, vdpPath.toString());
+		if(new GersFile().exists(vdpPath.toString())) {
 			VDPFileReader vdpr = new VDPFileReader();
 			vdpr.setRecordsRoot(recordsRoot);
 			vdpr.setCompare(compare);
@@ -157,13 +157,7 @@ public class RunControlAnalyser {
 		htmlFileName = "gvbrca.html";
 		logger.atInfo().log("Write to %s", htmlFileName);
 
-		//If we already read it above why read it again?
-		if(Repository.getViews().size() == 0) {
-			logger.atInfo().log("Flow VDP not previously read");
-			readVDP(rcPath.resolve(GersConfigration.VDP_DDNAME), GersConfigration.VDP_DDNAME, null, false);
-		} else {
-			logger.atInfo().log("Processing previously read VDP");
-		}
+		readVDP(rcPath.resolve(GersConfigration.VDP_DDNAME), GersConfigration.VDP_DDNAME, null, false);
 		xlt = readLT(rcPath, null, false, GersConfigration.XLT_DDNAME);
 		jlt = readLT(rcPath, null, false, GersConfigration.JLT_DDNAME);
 		writeHTML(joinsFilter);

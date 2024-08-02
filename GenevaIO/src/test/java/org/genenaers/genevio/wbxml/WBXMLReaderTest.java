@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-
+import java.io.FileReader;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -132,8 +132,8 @@ public class WBXMLReaderTest {
     }
 
     private void addFileToRepo(WBXMLSaxIterator wbxmlReader, Path readme) {
-        try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(readme.toFile()))) {
-            wbxmlReader.setInputBuffer(bis);
+        try(FileReader fr = new FileReader(readme.toFile())) {
+            wbxmlReader.setInputReader(fr);
             wbxmlReader.addToRepsitory();
         } catch (Exception e) {
             logger.atSevere().log("Failed to addToRepository\n%s", e.getMessage());

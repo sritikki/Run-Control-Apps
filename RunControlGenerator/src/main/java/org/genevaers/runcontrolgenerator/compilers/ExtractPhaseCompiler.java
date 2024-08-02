@@ -78,6 +78,7 @@ public class ExtractPhaseCompiler {
 		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
 		ExtractBaseAST.clearLastColumnWithAWrite();
 		vsnode = null;
+		status =  Status.OK;
     }
 
     public static Status run(List<LogicGroup> lgs) {
