@@ -18,9 +18,7 @@ package org.genevaers.runcontrolgenerator;
  */
 
 
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -31,7 +29,6 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.runcontrolwriter.RunControlWriter;
