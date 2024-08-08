@@ -63,6 +63,14 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             if(currentViewColumnSource != null) {
                 jv.updateLastReason(currentViewColumnSource.getViewId(), currentViewColumnSource.getColumnNumber());
                 Repository.getDependencyCache().addNamedLookupField(lookup, fld);
+            } else if(currentViewSource != null) {
+                jv.updateLastReason(currentViewSource.getViewId(), currentViewSource.getSequenceNumber());
+                Repository.getDependencyCache().addNamedLookupField(lookup, fld);
+            } else {
+                ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);
+                String eString = String.format("resolve lookup %s Field %s with no source ",lk.getName(), fieldName);
+                err.addError(eString);
+                addChildIfNotNull(err);                    
             }
         } else {
             ErrorAST err = (ErrorAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERRORS);

@@ -133,6 +133,7 @@ public class LazyDBReader implements CompilerDataProvider {
 
     @Override
     public LogicalRecord getLogicalRecord(int id) {
+        //Uncomment me for more info Repository.dumpLRs();
         LogicalRecord lr = Repository.getLogicalRecords().get(id);
         if(lr == null) {
           loadLR(environmentId, id);
