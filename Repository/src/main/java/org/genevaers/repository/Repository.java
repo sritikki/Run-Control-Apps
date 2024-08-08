@@ -64,8 +64,6 @@ public class Repository {
 	private static int currentLookupPathID;
 	private static int currentStepNumber;
 	private static LookupPathKey currentLookupKey;
-	private static int currentLRID = 0;
-	private static LogicalRecord currentLR;
 	private static int maxViewID = 0;
 	private static int maxComponentLRID = 0;
 	private static int maxFieldID = 0;
@@ -120,8 +118,6 @@ public class Repository {
 		currentLookupPathID = 0;
 		currentStepNumber = 0;
 		currentLookupKey = null;
-		currentLRID = 0;
-		currentLR = null;
 		maxViewID = 0;
 		maxComponentLRID = 0;
 		maxFieldID = 0;
@@ -210,23 +206,22 @@ public class Repository {
 		if(maxComponentLRID < lr.getComponentId())
 			maxComponentLRID = lr.getComponentId();
 		lrs.add(lr, lr.getComponentId(), lr.getName());
+		logger.atInfo().log("Add LR %s", lr.getName());
 	}
 
 	public static void addLRField(LRField lrf) {
 		if(maxFieldID < lrf.getComponentId())
 			maxFieldID = lrf.getComponentId();
 		fields.add(lrf, lrf.getComponentId(), lrf.getName());
-		if (lrf.getLrID() != currentLRID || currentLR == null) {
-			currentLRID = lrf.getLrID();
-			currentLR = lrs.get(currentLRID);
-		}
-		if (currentLR != null) {
-			currentLR.addToFieldsByID(lrf);
+		LogicalRecord lr = lrs.get(lrf.getLrID());
+		if (lr != null) {
+			lr.addToFieldsByID(lrf);
 			if(lrf.getName() != null) { //Can be from tests
-				currentLR.addToFieldsByName(lrf);
+				logger.atInfo().log("Add Field %s to LR %s",lrf.getName() ,lr.getName());
+				lr.addToFieldsByName(lrf);
 			}
 		} else {
-			logger.atInfo().log("Ignoring Null LR for field %s" + lrf.getName());
+			logger.atSevere().log("Null LR for field %s" + lrf.getName());
 		}
 	}
 
@@ -497,4 +492,18 @@ public class Repository {
 			return true;
 		}
     }
+	
+	public static void dumpLRs() {
+		logger.atInfo().log("Repo LRs");
+		Iterator<LogicalRecord> lri = lrs.getIterator();
+		while(lri.hasNext()) {
+			LogicalRecord lr = lri.next();
+			logger.atInfo().log(lr.getName());
+			Iterator<LRField> lrfi = lr.getIteratorForFieldsByName();
+			while (lrfi.hasNext()) {
+				LRField lrf = lrfi.next();
+				logger.atInfo().log("    %s",lrf.getName());
+			}
+		}
+	}
 }
