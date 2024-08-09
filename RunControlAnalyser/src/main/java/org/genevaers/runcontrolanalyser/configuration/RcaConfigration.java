@@ -101,4 +101,15 @@ public class RcaConfigration extends GersConfigration {
         return isZos() ? VDP_REPORT_DDNAME : getCWDPrefix() + VDP_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
     }
     
+    public static String getRelativeXLTReport() {
+        return isZos() ? XLT_REPORT_DDNAME : "../" + XLT_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getRelativeJLTReport() {
+        return isZos() ? JLT_REPORT_DDNAME : "../" + JLT_REPORT_DDNAME + "." + parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getRelativeVDPReport() {
+        return isZos() ? VDP_REPORT_DDNAME : "../" + VDP_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
 }
