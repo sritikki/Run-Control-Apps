@@ -106,9 +106,9 @@ public class RunControlAnalyser {
 		htmlWriter.setCurrentWorkingDirectory(trg);
 		htmlWriter.setFileName(htmlFileName);
 		htmlWriter.setReportType(RcaConfigration.getReportFormat());
-		htmlWriter.setXLTReportName(RcaConfigration.getXLTReportName());
-		htmlWriter.setJLTReportName(RcaConfigration.getJLTReportName());
-		htmlWriter.setVDPReportName(RcaConfigration.getVDPReportName());
+		htmlWriter.setXLTReportName(RcaConfigration.getRelativeXLTReport());
+		htmlWriter.setJLTReportName(RcaConfigration.getRelativeJLTReport());
+		htmlWriter.setVDPReportName(RcaConfigration.getRelativeVDPReport());
 		htmlWriter.write(vmrs);
 	}
 

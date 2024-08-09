@@ -185,20 +185,20 @@ public class RCAFrameworkHTMLWriter {
 	private DomContent vdpReport() {
 		return a().withText("VDP Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
-				.withHref("../" + vdpReportName)
+				.withHref(vdpReportName)
 				.withTarget(PAGE_IFRAME);
 	}
 	private DomContent jltreport() {
 		return a().withText("JLT Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
-				.withHref("../" + jltReportName)
+				.withHref(jltReportName)
 				.withTarget(PAGE_IFRAME);
 	}
 
 	private DomContent xltreport() {
 		return a().withText("XLT Report (" + reportFormat + ")")
 				.withClass(MENU_CLASS)
-				.withHref("../" + xltReportName)
+				.withHref(xltReportName)
 				.withTarget(PAGE_IFRAME);
 	}
 

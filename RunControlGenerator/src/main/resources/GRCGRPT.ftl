@@ -144,24 +144,26 @@ ${rth.outputFile.outputDDName}   ${rth.ID?c}  ${rth.name?right_pad(40)}
 ===============================
 ~WRNS - Warnings:
 ===============================
+View    Loc            SrcLR   SrcLF Col Message
+------- ------------ ------- ------- --- -------------------------------------------------------------------------------
 <#if warnings?size == 0> 
 <none>
 <#else>
 <#list warnings as warn>
-View(${warn.viewid?c}) Loc(${warn.source}) SrcLR(${warn.srcLR?c})  SrcLF(${warn.srcLF?c}) Col(${warn.columnNumber})
- ${warn.detail}
+${warn.viewid?c?left_pad(7)} ${warn.source?right_pad(12)} ${warn.srcLR?c?left_pad(7)} ${warn.srcLF?c?left_pad(7)} ${warn.columnNumber?left_pad(3)} ${warn.detail}
 </#list>
 </#if> 
  
 =============================
 ~ERRS - Errors:
 =============================
+View    Loc            SrcLR   SrcLF Col Message
+------- ------------ ------- ------- --- -------------------------------------------------------------------------------
 <#if compErrs?size == 0> 
 <none>
 <#else>
 <#list compErrs as err>
-View(${err.viewid?c}) Loc(${err.source!"none"}) SrcLR(${err.srcLR?c})  SrcLF(${err.srcLF?c}) Col(${err.columnNumber})
- ${err.detail}
+${err.viewid?c?left_pad(7)} ${err.source?right_pad(12)} ${err.srcLR?c?left_pad(7)} ${err.srcLF?c?left_pad(7)} ${err.columnNumber?left_pad(3)} ${err.detail}
 </#list>
 </#if>
 
