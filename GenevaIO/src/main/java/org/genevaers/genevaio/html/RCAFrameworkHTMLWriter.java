@@ -161,11 +161,19 @@ public class RCAFrameworkHTMLWriter {
 								vdpReport(),
 								xltreport(),
 								jltreport(),
+								grcgreport(),
 								functionCodeCoverage()
 						).withClass("w3-container w3-dark-grey")
 					).withClass("w3-sidebar w3-bar-block w3-light-grey").withStyle("width:25%; height:100%");
 	}
 
+
+	private DomContent grcgreport() {
+		return a().withText("GRCGRPT")
+				.withClass(MENU_CLASS)
+				.withHref("../GRCGRPT")
+				.withTarget(PAGE_IFRAME);
+	}
 
 	private DomContent reportsBreaker() {
 		return h3("Reports").withClass("w3-dark-grey");
