@@ -93,11 +93,13 @@ public abstract class HTMLRecordsWriter {
 		try(Writer tfw = new GersFile().getWriter(filename)) {
 			fw = (FileWriter) tfw;
 			writeFile(recordsRoot);
+			fw.close();
+			logger.atInfo().log("HTMLRecordsWriter closed");
 		} catch (IOException e) {
 			logger.atSevere().log("HTMLRecordsWriter failed\n%s", e.getMessage());
 		}
 	}
-	
+
 	private void writeFile(MetadataNode recordsRoot) throws IOException {
 		fw.write(
 				html(
