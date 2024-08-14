@@ -53,6 +53,7 @@ public class RcaConfigration extends GersConfigration {
         parmToValue.put(XLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(JLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(VDP_REPORT, new ConfigEntry("N", false));
+        parmToValue.put(COMPARE, new ConfigEntry("N", false));
         parmToValue.put(RCA_REPORT, new ConfigEntry("N", false));
         parmToValue.put(REPORT_FORMAT, new ConfigEntry("TXT", false));
     }
@@ -83,6 +84,10 @@ public class RcaConfigration extends GersConfigration {
 
     public static boolean isRcaReport() {
         return parmToValue.get(RCA_REPORT).getValue().equalsIgnoreCase("Y");
+    }
+
+    public static boolean isCompare() {
+        return parmToValue.get(COMPARE).getValue().equalsIgnoreCase("Y");
     }
 
     public static String getReportFormat() {

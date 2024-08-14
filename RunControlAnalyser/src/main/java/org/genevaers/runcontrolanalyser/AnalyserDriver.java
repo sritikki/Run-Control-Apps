@@ -56,20 +56,36 @@ public class AnalyserDriver {
 
 	public static boolean runFromConfig() {
 		boolean ranOkay = true;
-    	Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
-		if(RcaConfigration.isXltReport()) {
-			generateXltPrint(root);
-		}
-		if(RcaConfigration.isJltReport()) {
-			generateJltPrint(root);
-		}
-		if(RcaConfigration.isVdpReport()) {
-			generateVdpPrint(root);
-		}
-		if(RcaConfigration.isRcaReport()) {
-			ranOkay = generateRcaPrint(root);
+		Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
+		if (RcaConfigration.isCompare()) {
+			logger.atInfo().log("We are in compare mode.... best figure out how to do this");
+			compareRunControlFiles(root);
+		} else {
+			if (RcaConfigration.isXltReport()) {
+				generateXltPrint(root);
+			}
+			if (RcaConfigration.isJltReport()) {
+				generateJltPrint(root);
+			}
+			if (RcaConfigration.isVdpReport()) {
+				generateVdpPrint(root);
+			}
+			if (RcaConfigration.isRcaReport()) {
+				ranOkay = generateRcaPrint(root);
+			}
 		}
 		return ranOkay;
+	}
+
+	private static void compareRunControlFiles(Path root) {
+		Path vdp1 = root.resolve("VDP1");
+		Path vdp2 = root.resolve("VDP2");
+		try {
+			generateVDPDiffReport(root, vdp1, vdp2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static boolean generateRcaPrint(Path root) {
@@ -227,21 +243,30 @@ public class AnalyserDriver {
 		ltrw.writeFromRecordNodes(recordsRoot, "XLT.html");
 	}
 
-	private void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
+	private static void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
 		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Root");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
-		fa.readVDP(rc1.resolve("VDP"), GersConfigration.VDP_DDNAME, recordsRoot, false);
+		Path vdp1p = root.resolve(GersConfigration.VDP_DDNAME  + "1");
+		fa.readVDP(vdp1p, GersConfigration.VDP_DDNAME + "1", recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
 		VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
 		vdprw.setIgnores();
-		vdprw.writeFromRecordNodes(recordsRoot, "VDP1.html");
-		Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
-		fa.readVDP(rc2.resolve("VDP"), GersConfigration.VDP_DDNAME, recordsRoot, true);
+		//vdprw.writeFromRecordNodes(recordsRoot, "VDP1.html");
+		//Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
+		Path vdp2p = root.resolve(GersConfigration.VDP_DDNAME  + "2");
+		fa.readVDP(vdp2p, GersConfigration.VDP_DDNAME + "2", recordsRoot, true);
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
-		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
-		vdprw.writeFromRecordNodes(recordsRoot, "VDPDiff.html");
+		//Records2Dot.write(recordsRoot, root.resolve("records.gv"));
+		switch(RcaConfigration.getReportFormat()) {
+			case "TEXT":
+			VDPTextWriter.writeFromRecordNodes(recordsRoot, "VDPDIFF", generation);
+			break;
+			case "HTML":
+			vdprw.writeFromRecordNodes(recordsRoot, "VDPDIFF");
+			break;
+		}		
 	}
 
 	private boolean runControlFilesPresent(Path root) {
