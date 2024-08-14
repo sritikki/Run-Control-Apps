@@ -67,7 +67,7 @@ import j2html.tags.specialized.TrTag;
 public abstract class HTMLRecordsWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	
-	private  FileWriter fw;
+	private  Writer fw;
 	private  final String POPUP = "w3-modal-content w3-animate-zoom";
 	 String toggleScript = "function toggleDiv(divname) {" +
 			"var ele = document.getElementById(divname);" +
@@ -91,7 +91,7 @@ public abstract class HTMLRecordsWriter {
 	public  void writeFromRecordNodes( MetadataNode recordsRoot, String filename) {
 
 		try(Writer tfw = new GersFile().getWriter(filename)) {
-			fw = (FileWriter) tfw;
+			fw = tfw;
 			writeFile(recordsRoot);
 			fw.close();
 			logger.atInfo().log("HTMLRecordsWriter closed");
