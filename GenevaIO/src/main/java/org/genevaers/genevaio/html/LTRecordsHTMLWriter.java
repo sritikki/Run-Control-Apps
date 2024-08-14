@@ -18,41 +18,20 @@ package org.genevaers.genevaio.html;
  */
 
 
-import static j2html.TagCreator.body;
-import static j2html.TagCreator.div;
 import static j2html.TagCreator.each;
-import static j2html.TagCreator.h2;
-import static j2html.TagCreator.head;
-import static j2html.TagCreator.html;
 import static j2html.TagCreator.join;
-import static j2html.TagCreator.link;
-import static j2html.TagCreator.meta;
-import static j2html.TagCreator.script;
 import static j2html.TagCreator.table;
 import static j2html.TagCreator.tbody;
-import static j2html.TagCreator.td;
 import static j2html.TagCreator.th;
 import static j2html.TagCreator.tr;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-
-import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.FunctionCodeNode;
-import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
-import org.genevaers.genevaio.fieldnodes.RecordNode;
-import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 
 import j2html.tags.DomContent;
 import j2html.tags.UnescapedText;
-import j2html.tags.specialized.DivTag;
-import j2html.tags.specialized.TdTag;
-import j2html.tags.specialized.ThTag;
 import j2html.tags.specialized.TrTag;
 
 public class LTRecordsHTMLWriter extends HTMLRecordsWriter{

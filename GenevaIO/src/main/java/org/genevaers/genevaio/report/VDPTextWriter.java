@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
@@ -47,6 +48,8 @@ public class VDPTextWriter {
 	private static Map<Integer, LookupDetails> lookupDetailsById = new TreeMap<>();
 	private static Map<Integer, LrDetails> lrDetailsById = new TreeMap<>();
 
+	private static int numDiffs;
+
 	public static void writeFromRecordNodes( MetadataNode recordsRoot, String filename, String generated) {
 		logger.atInfo().log("Write VDP report to %s", filename);
 		try(Writer fw = new GersFile().getWriter(filename)) {
@@ -67,8 +70,16 @@ public class VDPTextWriter {
 		writeLfSummaries(recordsRoot, fw);
 		writePfSummaries(recordsRoot, fw);
 		writeContent(recordsRoot,fw);
+		writeComparisonSummary(recordsRoot, fw);
 	}
 	
+	private static void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
+		if(recordsRoot.getName().equals("Compare")) {
+			fw.write("\n\nComparison Results\n==================\n\n");
+			fw.write(String.format("%-20s: %7d\n\n\n", "Number of diffs", numDiffs));
+		}
+	}
+
 	private static void writeHeader(String generated, Writer fw) throws IOException {
 		fw.write(String.format("VDP Report: %s\n\n", generated));
 	}
@@ -147,7 +158,12 @@ public class VDPTextWriter {
 
 	private static void writeSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
         Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
-		fw.write("Summary\n=======\n\n");
+
+		if(recordsRoot.getName().equals("Compare")) {
+			fw.write("Comparison Summary\n==================\n\n");
+		} else {
+			fw.write("Summary\n=======\n\n");
+		}
 		fw.write(String.format("%-20s: %7s\n", "Component", "Count"));
 		fw.write(StringUtils.repeat('=', 29)+"\n");
 		int numViews = 0;
@@ -252,14 +268,13 @@ public class VDPTextWriter {
 
 	private static void writeContent(MetadataNode recordsRoot, Writer fw) throws IOException {
 		fw.write(String.format("\nRecord Level Reports\n"));
-	fw.write(String.format("====================\n"));
+		fw.write(String.format("====================\n"));
         Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
         while (fi.hasNext()) {
             FieldNodeBase n = (FieldNodeBase) fi.next();
             writeComponents(n, fw);
             //writeFields(child, n, fw);
         }
-		fw.close();
 	}
 	private static void writeComponents(FieldNodeBase c, Writer fw) throws IOException {
 			if(c.getFieldNodeType() == FieldNodeType.VIEW) {
@@ -311,7 +326,7 @@ public class VDPTextWriter {
 			case NOCOMPONENT:
 				break;
 			case NUMBERFIELD:
-			fw.write(String.format("        %-25s: %d\n",f.getName(),((NumericFieldNode) f).getValue( )));
+			fw.write(String.format("        %-25s: %s\n",f.getName(),((NumericFieldNode) f).getValueString()));
 			break;
 			case RECORD:
 				break;
@@ -327,6 +342,9 @@ public class VDPTextWriter {
 			default:
 				break;
 
+		}
+		if(f.getState() == ComparisonState.DIFF) {
+			numDiffs++;
 		}
 	}
 }

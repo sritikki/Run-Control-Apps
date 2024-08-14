@@ -33,6 +33,7 @@ import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
+import org.genevaers.genevaio.report.LogicTableTextWriter;
 import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
@@ -80,8 +81,18 @@ public class AnalyserDriver {
 	private static void compareRunControlFiles(Path root) {
 		Path vdp1 = root.resolve("VDP1");
 		Path vdp2 = root.resolve("VDP2");
+		Path xlt1 = root.resolve("XLT1");
+		Path xlt2 = root.resolve("XLT2");
 		try {
-			generateVDPDiffReport(root, vdp1, vdp2);
+			if (RcaConfigration.isXltReport()) {
+				generateXLTDiffReport(root, xlt1, xlt2);
+			}
+			if (RcaConfigration.isJltReport()) {
+				generateJLTDiffReport(root, xlt1, xlt2);
+			}
+			if (RcaConfigration.isVdpReport()) {
+				generateVDPDiffReport(root, vdp1, vdp2);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,43 +220,55 @@ public class AnalyserDriver {
 		}
     }
 
-	private void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
-		if(jlt1Present) {
-			MetadataNode recordsRoot = new MetadataNode();
-			recordsRoot.setName("Root");
-			recordsRoot.setSource1(root.relativize(rc1.resolve("JLT1")).toString());
-			recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
-			fa.readLT(rc1.resolve("JLT"), recordsRoot, false, "JLT1");
-			logger.atInfo().log("JLT Tree built from %s", rc1.toString());
-			Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
-			fa.readLT(rc2.resolve("JLT"), recordsRoot, true, "JLT2");
-			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
-			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
-			LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
-			ltrw.setIgnores();
-			ltrw.writeFromRecordNodes(recordsRoot, "JLT.html");
+	private static void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
+		MetadataNode recordsRoot = new MetadataNode();
+		recordsRoot.setName("Compare");
+		recordsRoot.setSource1(root.relativize(rc1.resolve("JLT1")).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
+		fa.readLT(root, recordsRoot, false, "JLT1");
+		logger.atInfo().log("JLT Tree built from %s", rc1.toString());
+		//Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
+		fa.readLT(root, recordsRoot, true, "JLT2");
+		logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
+		//Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
+		switch (RcaConfigration.getReportFormat()) {
+			case "TEXT":
+				LogicTableTextWriter.writeFromRecordNodes(recordsRoot, "JLTDIFF", generation);
+				break;
+			case "HTML":
+				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+				ltrw.setIgnores();
+				ltrw.writeFromRecordNodes(recordsRoot, "JLTDIFF");
+				break;
 		}
 	}
 
-	private void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
+	private static void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
 		MetadataNode recordsRoot = new MetadataNode();
-		recordsRoot.setName("Root");
+		recordsRoot.setName("Compare");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("XLT1")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("XLT2")).toString());
-		fa.readLT(rc1.resolve("XLT"), recordsRoot, false, "XLT1");
+		fa.readLT(root, recordsRoot, false, "XLT1");
 		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
-		fa.readLT(rc2.resolve("XLT"), recordsRoot, true, "XLT2");
+		fa.readLT(root, recordsRoot, true, "XLT2");
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
-		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
-		LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
-		ltrw.setIgnores();
-		ltrw.writeFromRecordNodes(recordsRoot, "XLT.html");
+		// Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
+		switch (RcaConfigration.getReportFormat()) {
+			case "TEXT":
+				LogicTableTextWriter.writeFromRecordNodes(recordsRoot, "XLTDIFF", generation);
+				break;
+			case "HTML":
+				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+				ltrw.setIgnores();
+				ltrw.writeFromRecordNodes(recordsRoot, "XLTDIFF");
+				break;
+		}
 	}
 
 	private static void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
 		MetadataNode recordsRoot = new MetadataNode();
-		recordsRoot.setName("Root");
+		recordsRoot.setName("Compare");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
 		Path vdp1p = root.resolve(GersConfigration.VDP_DDNAME  + "1");
