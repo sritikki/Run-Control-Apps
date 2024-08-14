@@ -267,6 +267,7 @@ public class AnalyserDriver {
 			vdprw.writeFromRecordNodes(recordsRoot, "VDPDIFF");
 			break;
 		}		
+		logger.atInfo().log("VDP Diff Completed");
 	}
 
 	private boolean runControlFilesPresent(Path root) {
