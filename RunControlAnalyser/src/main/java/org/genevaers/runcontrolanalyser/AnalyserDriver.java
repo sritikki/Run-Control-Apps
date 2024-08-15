@@ -79,10 +79,10 @@ public class AnalyserDriver {
 	}
 
 	private static void compareRunControlFiles(Path root) {
-		Path vdp1 = root.resolve("VDP1");
-		Path vdp2 = root.resolve("VDP2");
-		Path xlt1 = root.resolve("XLT1");
-		Path xlt2 = root.resolve("XLT2");
+		Path vdp1 = root.resolve(GersConfigration.VDP_DDNAME);
+		Path vdp2 = root.resolve(GersConfigration.VDPOLD_DDNAME);
+		Path xlt1 = root.resolve(GersConfigration.XLT_DDNAME);
+		Path xlt2 = root.resolve(GersConfigration.XLTOLD_DDNAME);
 		try {
 			if (RcaConfigration.isXltReport()) {
 				generateXLTDiffReport(root, xlt1, xlt2);
@@ -162,7 +162,7 @@ public class AnalyserDriver {
 
 	public static void generateJltPrint(Path root) {
 		logger.atInfo().log("Generate %s", RcaConfigration.JLT_REPORT_DDNAME);
-		Path jltp = root.resolve("JLT");
+		Path jltp = root.resolve(GersConfigration.JLT_DDNAME);
 		if(GersConfigration.isZos() || jltp.toFile().exists()) {
 			writeLtReport(root, GersConfigration.JLT_DDNAME, RcaConfigration.getJLTReportName());
 		}
@@ -224,23 +224,23 @@ public class AnalyserDriver {
 	private static void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
 		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Compare");
-		recordsRoot.setSource1(root.relativize(rc1.resolve("JLT1")).toString());
-		recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
-		fa.readLT(root, recordsRoot, false, "JLT1");
+		recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.JLT_DDNAME)).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve(GersConfigration.JLTOLD_DDNAME)).toString());
+		fa.readLT(root, recordsRoot, false, GersConfigration.JLT_DDNAME);
 		logger.atInfo().log("JLT Tree built from %s", rc1.toString());
 		//Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
-		fa.readLT(root, recordsRoot, true, "JLT2");
+		fa.readLT(root, recordsRoot, true, GersConfigration.JLTOLD_DDNAME);
 		logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
 		//Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
-				lttw.writeFromRecordNodes(recordsRoot, "JLTRPT", generation);
+				lttw.writeFromRecordNodes(recordsRoot, RcaConfigration.getJLTReportName(), generation);
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
 				ltrw.setIgnores();
-				ltrw.writeFromRecordNodes(recordsRoot, "JLTRPT");
+				ltrw.writeFromRecordNodes(recordsRoot, RcaConfigration.getJLTReportName());
 				break;
 		}
 	}
@@ -248,23 +248,23 @@ public class AnalyserDriver {
 	private static void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
 		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Compare");
-		recordsRoot.setSource1(root.relativize(rc1.resolve("XLT1")).toString());
-		recordsRoot.setSource2(root.relativize(rc2.resolve("XLT2")).toString());
-		fa.readLT(root, recordsRoot, false, "XLT1");
+		recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.XLT_DDNAME)).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve(GersConfigration.XLTOLD_DDNAME)).toString());
+		fa.readLT(root, recordsRoot, false, GersConfigration.XLT_DDNAME);
 		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
-		fa.readLT(root, recordsRoot, true, "XLT2");
+		fa.readLT(root, recordsRoot, true, GersConfigration.XLTOLD_DDNAME);
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
 		// Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
-				lttw.writeFromRecordNodes(recordsRoot, "XLTRPT", generation);
+				lttw.writeFromRecordNodes(recordsRoot, RcaConfigration.getXLTReportName(), generation);
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
 				ltrw.setIgnores();
-				ltrw.writeFromRecordNodes(recordsRoot, "XLTRPT");
+				ltrw.writeFromRecordNodes(recordsRoot, RcaConfigration.getXLTReportName());
 				break;
 		}
 	}
@@ -274,24 +274,24 @@ public class AnalyserDriver {
 		recordsRoot.setName("Compare");
 		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
 		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
-		Path vdp1p = root.resolve(GersConfigration.VDP_DDNAME  + "1");
-		fa.readVDP(vdp1p, GersConfigration.VDP_DDNAME + "1", recordsRoot, false);
+		Path vdp1p = root.resolve(GersConfigration.VDP_DDNAME);
+		fa.readVDP(vdp1p, GersConfigration.VDP_DDNAME, recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
 		VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
 		vdprw.setIgnores();
 		//vdprw.writeFromRecordNodes(recordsRoot, "VDP1.html");
 		//Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
-		Path vdp2p = root.resolve(GersConfigration.VDP_DDNAME  + "2");
-		fa.readVDP(vdp2p, GersConfigration.VDP_DDNAME + "2", recordsRoot, true);
+		Path vdp2p = root.resolve(GersConfigration.VDPOLD_DDNAME);
+		fa.readVDP(vdp2p, GersConfigration.VDPOLD_DDNAME, recordsRoot, true);
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
 		//Records2Dot.write(recordsRoot, root.resolve("records.gv"));
 		switch(RcaConfigration.getReportFormat()) {
 			case "TEXT":
 			VDPTextWriter vdptw = new VDPTextWriter();
-			vdptw.writeFromRecordNodes(recordsRoot, "VDPRPT", generation);
+			vdptw.writeFromRecordNodes(recordsRoot, RcaConfigration.getVDPReportName(), generation);
 			break;
 			case "HTML":
-			vdprw.writeFromRecordNodes(recordsRoot, "VDPRPT");
+			vdprw.writeFromRecordNodes(recordsRoot, RcaConfigration.getVDPReportName());
 			break;
 		}		
 		logger.atInfo().log("VDP Diff Completed");

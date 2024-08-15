@@ -52,6 +52,9 @@ public class GersConfigration {
     public static final String XLT_DDNAME = "XLT";
     public static final String JLT_DDNAME = "JLT";
     public static final String VDP_DDNAME = "VDP";
+    public static final String XLTOLD_DDNAME = "XLTOLD";
+    public static final String JLTOLD_DDNAME = "JLTOLD";
+    public static final String VDPOLD_DDNAME = "VDPOLD";
     
     public static final String XLT_REPORT = "XLT_REPORT";
     public static final String JLT_REPORT = "JLT_REPORT";
