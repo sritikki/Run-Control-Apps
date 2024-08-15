@@ -182,7 +182,8 @@ public class AnalyserDriver {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 			case "TXT":
-				VDPTextWriter.writeFromRecordNodes(recordsRoot, vdpReportDdname, generation);
+				VDPTextWriter vdptw = new VDPTextWriter();
+				vdptw.writeFromRecordNodes(recordsRoot, vdpReportDdname, generation);
 				break;
 			case "CSV":
 				break;
@@ -233,7 +234,8 @@ public class AnalyserDriver {
 		//Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
-				LogicTableTextWriter.writeFromRecordNodes(recordsRoot, "JLTDIFF", generation);
+				LogicTableTextWriter lttw = new LogicTableTextWriter();
+				lttw.writeFromRecordNodes(recordsRoot, "JLTDIFF", generation);
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -256,7 +258,8 @@ public class AnalyserDriver {
 		// Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
-				LogicTableTextWriter.writeFromRecordNodes(recordsRoot, "XLTDIFF", generation);
+				LogicTableTextWriter lttw = new LogicTableTextWriter();
+				lttw.writeFromRecordNodes(recordsRoot, "XLTDIFF", generation);
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -284,7 +287,8 @@ public class AnalyserDriver {
 		//Records2Dot.write(recordsRoot, root.resolve("records.gv"));
 		switch(RcaConfigration.getReportFormat()) {
 			case "TEXT":
-			VDPTextWriter.writeFromRecordNodes(recordsRoot, "VDPDIFF", generation);
+			VDPTextWriter vdptw = new VDPTextWriter();
+			vdptw.writeFromRecordNodes(recordsRoot, "VDPDIFF", generation);
 			break;
 			case "HTML":
 			vdprw.writeFromRecordNodes(recordsRoot, "VDPDIFF");

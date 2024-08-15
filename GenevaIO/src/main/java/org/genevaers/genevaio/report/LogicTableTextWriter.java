@@ -19,77 +19,54 @@ package org.genevaers.genevaio.report;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
 
-import org.apache.commons.lang3.StringUtils;
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
-import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
-import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
-import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.LogicalFile;
-import org.genevaers.repository.components.PhysicalFile;
-import org.genevaers.repository.components.UserExit;
-import org.genevaers.utilities.GersFile;
-
+import org.genevaers.genevaio.fieldnodes.FunctionCodeNode;
 import com.google.common.flogger.FluentLogger;
-import com.google.common.flogger.StackSize;
 
-public class LogicTableTextWriter {
+public class LogicTableTextWriter extends TextRecordWriter {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	
-	protected Map<String, Boolean> ignoreTheseDiffs = new HashMap<>();
-	private static Map<Integer, ViewDetails> viewDetailsById = new TreeMap<>();
-	private static Map<Integer, LookupDetails> lookupDetailsById = new TreeMap<>();
-	private static Map<Integer, LrDetails> lrDetailsById = new TreeMap<>();
-
-	private static int numDiffs;
-
-	public static void writeFromRecordNodes( MetadataNode recordsRoot, String filename, String generated) {
-		logger.atInfo().log("Write LT report to %s", filename);
-		try(Writer fw = new GersFile().getWriter(filename)) {
-			writeDetails(recordsRoot, fw, generated);
-		} catch (IOException e) {
-			logger.atSevere().withCause(e).withStackTrace(StackSize.FULL);
-		}
-		logger.atInfo().log("LT report written");
+	public LogicTableTextWriter() {
+		setIgnores();
 	}
 
-	public static  void writeDetails( MetadataNode recordsRoot, Writer fw, String generated) throws IOException {
+	@Override
+	public void writeDetails( MetadataNode recordsRoot, Writer fw, String generated) throws IOException {
 		writeHeader(generated, fw);
 		writeContent(recordsRoot,fw);
 		writeComparisonSummary(recordsRoot, fw);
 	}
 	
-	private static void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
+	private void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
 		if(recordsRoot.getName().equals("Compare")) {
 			fw.write("\n\nComparison Results\n==================\n\n");
 			fw.write(String.format("%-20s: %7d\n\n\n", "Number of diffs", numDiffs));
 		}
 	}
 
-	private static void writeHeader(String generated, Writer fw) throws IOException {
+	private void writeHeader(String generated, Writer fw) throws IOException {
 		fw.write(String.format("LT Report: %s\n\n", generated));
 	}
 
 
-	private static void writeContent(MetadataNode recordsRoot, Writer fw) throws IOException {
+	private void writeContent(MetadataNode recordsRoot, Writer fw) throws IOException {
 		fw.write(String.format("\nRecord Level Reports\n"));
 		fw.write(String.format("====================\n"));
         Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
         while (fi.hasNext()) {
             FieldNodeBase n = (FieldNodeBase) fi.next();
+			preCheckAndChangeRowState(n);
 			writeRecord(n, fw);
         }
 	}
 
 
-	private static void writeRecord(FieldNodeBase r, Writer fw) throws IOException {
+	private void writeRecord(FieldNodeBase r, Writer fw) throws IOException {
 		fw.write("    Record:\n");
 		Iterator<FieldNodeBase> fi = r.getChildren().iterator();
 		while (fi.hasNext()) {
@@ -102,7 +79,7 @@ public class LogicTableTextWriter {
 		}
 	}
 
-	private static void writeArg(FieldNodeBase r, Writer fw) throws IOException {
+	private void writeArg(FieldNodeBase r, Writer fw) throws IOException {
 		fw.write("    Arg:\n");
 		Iterator<FieldNodeBase> fi = r.getChildren().iterator();
 		while (fi.hasNext()) {
@@ -115,35 +92,60 @@ public class LogicTableTextWriter {
 		}
 	}
 
+	@Override
+	public void setIgnores() {
+		ignoreTheseDiffs.put("GEN_fileId", true); 
+		ignoreTheseDiffs.put("GEN_timeHh", true); 
+		ignoreTheseDiffs.put("GEN_timeMm", true); 
+		ignoreTheseDiffs.put("GEN_timeSs", true); 
+		ignoreTheseDiffs.put("GEN_desc", true); 
+		ignoreTheseDiffs.put("GEN_padding", true); 
+		ignoreTheseDiffs.put("HD_fileId", true); 
+		ignoreTheseDiffs.put("HD_time", true); 
+		ignoreTheseDiffs.put("sourceSeqNbr", true); 
+		ignoreTheseDiffs.put("GOTO_viewId", true); 
+		ignoreTheseDiffs.put("DTC_lrId", true); 
+		ignoreTheseDiffs.put("JOIN_fieldId", true); 
+		ignoreTheseDiffs.put("JOIN_fieldFormat", true); 
+		ignoreTheseDiffs.put("JOIN_startPosition", true); 
+		ignoreTheseDiffs.put("JOIN_ordinalPosition", true); 
+		ignoreTheseDiffs.put("JOIN_justifyId", true); 
+		ignoreTheseDiffs.put("LKE_ordinalPosition", true); 
+		ignoreTheseDiffs.put("DTL_ordinalPosition", true); 
+		ignoreTheseDiffs.put("CFLC_ordinalPosition", true); 
+	}
 
-	private static void writeField(FieldNodeBase f, Writer fw) throws IOException {
-		switch(f.getFieldNodeType()) {
-			case FUNCCODE:
-				break;
-			case METADATA:
-				break;
-			case NOCOMPONENT:
-				break;
-			case NUMBERFIELD:
-			fw.write(String.format("        %-25s: %s\n",f.getName(),((NumericFieldNode) f).getValueString()));
-			break;
-			case RECORD:
-				break;
-			case RECORDPART:
-				break;
-			case ROOT:
-				break;
-			case STRINGFIELD:
-			fw.write(String.format("        %-25s: %s\n",f.getName(),((StringFieldNode) f).getValue( )));
-				break;
-			case VIEW:
-				break;
-			default:
-				break;
 
+	protected  void preCheckAndChangeRowState(FieldNodeBase r) {
+		boolean updateRowState = true;
+		for( FieldNodeBase n : r.getChildren()) {
+			if(n.getFieldNodeType() == FieldNodeType.RECORDPART) {
+				preCheckAndChangeRowState(n);
+			} else {
+				if(n.getState() == ComparisonState.DIFF) {
+					if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
+						n.setState(ComparisonState.IGNORED);
+					} else {
+						updateRowState = false;
+					}
+				}
+			}
 		}
-		if(f.getState() == ComparisonState.DIFF) {
-			numDiffs++;
+		if(updateRowState) {
+			r.setState(ComparisonState.INSTANCE);
+		}
+	}
+
+	@Override
+	protected String getDiffKey(FieldNodeBase n) {
+		if(n.getName().equals("sourceSeqNbr")) {
+			return n.getName();
+		} else {
+			if(n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
+				return ((FunctionCodeNode)n.getParent().getParent()).getFunctionCode() + "_" + n.getName();
+			} else {
+				return ((FunctionCodeNode)n.getParent()).getFunctionCode() + "_" + n.getName();
+			}
 		}
 	}
 }
