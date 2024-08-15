@@ -235,12 +235,12 @@ public class AnalyserDriver {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
-				lttw.writeFromRecordNodes(recordsRoot, "JLTDIFF", generation);
+				lttw.writeFromRecordNodes(recordsRoot, "JLTRPT", generation);
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
 				ltrw.setIgnores();
-				ltrw.writeFromRecordNodes(recordsRoot, "JLTDIFF");
+				ltrw.writeFromRecordNodes(recordsRoot, "JLTRPT");
 				break;
 		}
 	}
@@ -259,12 +259,12 @@ public class AnalyserDriver {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
-				lttw.writeFromRecordNodes(recordsRoot, "XLTDIFF", generation);
+				lttw.writeFromRecordNodes(recordsRoot, "XLTRPT", generation);
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
 				ltrw.setIgnores();
-				ltrw.writeFromRecordNodes(recordsRoot, "XLTDIFF");
+				ltrw.writeFromRecordNodes(recordsRoot, "XLTRPT");
 				break;
 		}
 	}
@@ -288,10 +288,10 @@ public class AnalyserDriver {
 		switch(RcaConfigration.getReportFormat()) {
 			case "TEXT":
 			VDPTextWriter vdptw = new VDPTextWriter();
-			vdptw.writeFromRecordNodes(recordsRoot, "VDPDIFF", generation);
+			vdptw.writeFromRecordNodes(recordsRoot, "VDPRPT", generation);
 			break;
 			case "HTML":
-			vdprw.writeFromRecordNodes(recordsRoot, "VDPDIFF");
+			vdprw.writeFromRecordNodes(recordsRoot, "VDPRPT");
 			break;
 		}		
 		logger.atInfo().log("VDP Diff Completed");
