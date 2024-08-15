@@ -69,7 +69,7 @@ public abstract class TextRecordWriter {
 			case NOCOMPONENT:
 				break;
 			case NUMBERFIELD:
-			fw.write(String.format("%s        %-22s: %s\n", getIgnore(f), f.getName(),((NumericFieldNode) f).getValueString()));
+			fw.write(String.format("%s        %-22s: %s\n", highlightDiff(f), f.getName(),((NumericFieldNode) f).getValueString()));
 			break;
 			case RECORD:
 				break;
@@ -78,7 +78,7 @@ public abstract class TextRecordWriter {
 			case ROOT:
 				break;
 			case STRINGFIELD:
-			fw.write(String.format("%s        %-22s: %s\n", getIgnore(f), f.getName(),((StringFieldNode) f).getValue( )));
+			fw.write(String.format("%s        %-22s: %s\n", highlightDiff(f), f.getName(),((StringFieldNode) f).getValue( )));
 				break;
 			case VIEW:
 				break;
@@ -91,8 +91,8 @@ public abstract class TextRecordWriter {
 		}
 	}
 
-	private String getIgnore(FieldNodeBase f) {
-		return f.getState() == ComparisonState.IGNORED ? "***" : "   ";
+	private String highlightDiff(FieldNodeBase f) {
+		return f.getState() == ComparisonState.DIFF ? "***" : "   ";
 	}
 
 
