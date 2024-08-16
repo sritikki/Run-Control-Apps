@@ -20,21 +20,12 @@ package org.genevaers.genevaio.report;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeMap;
-
-import org.apache.commons.lang3.StringUtils;
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
-import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
-import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.LogicalFile;
-import org.genevaers.repository.components.PhysicalFile;
-import org.genevaers.repository.components.UserExit;
 import org.genevaers.utilities.GersFile;
 
 import com.google.common.flogger.FluentLogger;
@@ -69,7 +60,7 @@ public abstract class TextRecordWriter {
 			case NOCOMPONENT:
 				break;
 			case NUMBERFIELD:
-			fw.write(String.format("%s        %-22s: %s\n", highlightDiff(f), f.getName(),((NumericFieldNode) f).getValueString()));
+			fw.write(String.format("%s    %-18s: %s\n", highlightDiff(f), f.getName(),((NumericFieldNode) f).getValueString()));
 			break;
 			case RECORD:
 				break;
@@ -78,7 +69,7 @@ public abstract class TextRecordWriter {
 			case ROOT:
 				break;
 			case STRINGFIELD:
-			fw.write(String.format("%s        %-22s: %s\n", highlightDiff(f), f.getName(),((StringFieldNode) f).getValue( )));
+			fw.write(String.format("%s    %-18s: %s\n", highlightDiff(f), f.getName(),((StringFieldNode) f).getValue( )));
 				break;
 			case VIEW:
 				break;
@@ -92,9 +83,27 @@ public abstract class TextRecordWriter {
 	}
 
 	private String highlightDiff(FieldNodeBase f) {
-		return f.getState() == ComparisonState.DIFF ? "***" : "   ";
+		String retval = "       ";
+		switch(f.getState()) {
+			case DIFF:
+			retval = "***    ";
+			break;
+			case ORIGINAL:
+			retval = "Missing";
+			break;
+			case NEW:
+			retval = "Added  ";
+			break;
+		}
+		return retval;
 	}
 
+	public int getNumDiffs() {
+		return numDiffs;
+	}
 
+	public boolean diffsFound() {
+		return numDiffs > 0;
+	}
 
 }

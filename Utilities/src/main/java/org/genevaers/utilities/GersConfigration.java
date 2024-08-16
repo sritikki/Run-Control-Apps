@@ -35,11 +35,11 @@ public class GersConfigration {
 
     private static List<String> linesRead = new ArrayList<>();
 
-    public static final String RCG_BASENAME = "GRCG";
-    public static final String RCA_BASENAME = "GRCA";
+    public static final String RCG_BASENAME = "RCG";
+    public static final String RCA_BASENAME = "RCA";
 
-    public static final String RCG_PARM_FILENAME = "GRCGPARM";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "GRCGPARM";
+    public static final String RCG_PARM_FILENAME = "RCGPARM";
+    public static final String DEFAULT_ZOSPARM_FILENAME = "RCGPARM";
 
     public static final String RCA_PARM_FILENAME = RCA_BASENAME + "PARM";
 
@@ -202,5 +202,9 @@ public class GersConfigration {
 
     protected static String getCWDPrefix() {
 		return getCurrentWorkingDirectory().length() > 0 ? getCurrentWorkingDirectory() + "/" : "";
+    }
+
+    public static void clear() {
+        parmToValue.clear();
     }
 }

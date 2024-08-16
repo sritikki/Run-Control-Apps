@@ -126,7 +126,7 @@ public class RCDriver {
     //No an issue with a local postgres really
     //Option to use workbench XML instead
     private static void writeRCGParms() {
-        logger.atInfo().log("Write GRCGParms to %s", rcPath.toString() );
+        logger.atInfo().log("Write RCGParms to %s", rcPath.toString() );
         try (FileWriter fw = new FileWriter(rcPath.resolve(RunControlConfigration.RCG_PARM_FILENAME).toFile())) {
             fw.write("# Auto generated Run Control Generator Parms\n");
             if(inputType.equals("WBXML")) {

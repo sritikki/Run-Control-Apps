@@ -49,8 +49,8 @@ public class RunControlConfigration extends GersConfigration{
     public static final String DBVIEWS = "DBVIEWS";
     public static final String RUNVIEWS = "RUNVIEWS";
 
-    public static final String REPORT_FILE = "GRCGRPT";
-    public static final String LOG_FILE = "GRCGLOG";
+    public static final String REPORT_FILE = "RCGRPT";
+    public static final String LOG_FILE = "RCGLOG";
 
     public static final String DOT_XLT = "DOT_XLT";
     public static final String DOT_JLT = "DOT_JLT";

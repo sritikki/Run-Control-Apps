@@ -43,7 +43,7 @@ public class RunControlGenerator {
 
 	//RunControlConfigration rcc;
 	private FileWriter reportWriter;
-	ReportWriter report = new ReportWriter();
+	private ReportWriter report = new ReportWriter();
 
 	private Status status = Status.OK;
 

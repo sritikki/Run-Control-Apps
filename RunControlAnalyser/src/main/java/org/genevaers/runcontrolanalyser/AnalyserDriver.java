@@ -47,10 +47,17 @@ public class AnalyserDriver {
 
 	private static RunControlAnalyser fa = new RunControlAnalyser();
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
+	private static ReportWriter report = new ReportWriter();
 
 	private static String version;
 
 	private static String generation;
+
+	private static int numXLTDiffs;
+
+	private static int numJLTDiffs;
+
+	private static int numVDPDiffs;
 
 	private boolean jlt1Present;
 	private boolean jlt2Present;
@@ -75,6 +82,7 @@ public class AnalyserDriver {
 				ranOkay = generateRcaPrint(root);
 			}
 		}
+		report.write(numVDPDiffs, numXLTDiffs, numJLTDiffs);
 		return ranOkay;
 	}
 
@@ -207,20 +215,6 @@ public class AnalyserDriver {
 		ltCoverageAnalyser.aggregateCoverage();
 	}
 
-    public void diffReport(Path root) throws Exception {
-		//What kind of diff report?
-		//Based on what data?
-		// RCG case
-		// Look for Run Control Files
-		if(runControlFilesPresent(root)) {
-			Path rc1 = root.resolve("RC1");
-			Path rc2 = root.resolve("RC2");
-			generateVDPDiffReport(root, rc1, rc2);
-			generateXLTDiffReport(root, rc1, rc2);
-			generateJLTDiffReport(root, rc1, rc2);
-		}
-    }
-
 	private static void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
 		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Compare");
@@ -236,6 +230,7 @@ public class AnalyserDriver {
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
 				lttw.writeFromRecordNodes(recordsRoot, RcaConfigration.getJLTReportName(), generation);
+				numJLTDiffs = lttw.getNumDiffs();
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -260,6 +255,7 @@ public class AnalyserDriver {
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
 				lttw.writeFromRecordNodes(recordsRoot, RcaConfigration.getXLTReportName(), generation);
+				numXLTDiffs = lttw.getNumDiffs();
 				break;
 			case "HTML":
 				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
@@ -289,6 +285,7 @@ public class AnalyserDriver {
 			case "TEXT":
 			VDPTextWriter vdptw = new VDPTextWriter();
 			vdptw.writeFromRecordNodes(recordsRoot, RcaConfigration.getVDPReportName(), generation);
+			numVDPDiffs = vdptw.getNumDiffs();
 			break;
 			case "HTML":
 			vdprw.writeFromRecordNodes(recordsRoot, RcaConfigration.getVDPReportName());

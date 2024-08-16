@@ -16,10 +16,10 @@ subgraph cluster_rcapps {
     RCA[label="Run Control Analyzer" shape=oval style=filled color=PaleGreen]
 }
 
-RCP[label="GRCGParm" shape=rect style=filled color=lightblue1]
+RCP[label="RCGParm" shape=rect style=filled color=lightblue1]
 WBX[label="WB XML Files" shape=rect style=filled color=lightblue1 ]
-RPT[label="GRCGRPT" shape=rect style=filled color=beige ]
-LOG[label="GRCGLOG" shape=rect style=filled color=beige ]
+RPT[label="RCGRPT" shape=rect style=filled color=beige ]
+LOG[label="RCGLOG" shape=rect style=filled color=beige ]
 VDP[label="VDP" shape=rect style=filled color=pink ]
 XLT[label="XLT" shape=rect style=filled color=pink ]
 JLT[label="JLT" shape=rect style=filled color=pink ]

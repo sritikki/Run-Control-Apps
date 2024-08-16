@@ -41,6 +41,7 @@ public class RCAApp {
 
     public static void run() {
         ranOkay = false;
+        GersConfigration.clear();
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
         GersConfigration.setCurrentWorkingDirectory(cwd);
