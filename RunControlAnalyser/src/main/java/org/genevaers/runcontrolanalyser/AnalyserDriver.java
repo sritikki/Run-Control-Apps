@@ -268,8 +268,8 @@ public class AnalyserDriver {
 	private static void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
 		MetadataNode recordsRoot = new MetadataNode();
 		recordsRoot.setName("Compare");
-		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
-		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
+		recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.VDP_DDNAME)).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve(GersConfigration.VDPOLD_DDNAME)).toString());
 		Path vdp1p = root.resolve(GersConfigration.VDP_DDNAME);
 		fa.readVDP(vdp1p, GersConfigration.VDP_DDNAME, recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
@@ -322,8 +322,8 @@ public class AnalyserDriver {
 	}
 
 	private boolean rcFilesPresent(Path rc) {
-		Path vdpPath = rc.resolve("VDP");
-		Path xltPath = rc.resolve("XLT");
+		Path vdpPath = rc.resolve(GersConfigration.VDP_DDNAME);
+		Path xltPath = rc.resolve(GersConfigration.XLT_DDNAME);
 		return vdpPath.toFile().exists() &&	xltPath.toFile().exists();
 	}
 

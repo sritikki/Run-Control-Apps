@@ -48,6 +48,7 @@ import org.genevaers.testframework.yamlreader.Spec;
 import org.genevaers.testframework.yamlreader.XMLFile;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FileProcessor;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Substitution;
 import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.menu.Menu;
@@ -310,8 +311,8 @@ public class TestDriver {
 		Path outPath = rootPath.resolve("out");
 		// Look to see VDP and XLT generated -> Gennerated/Pass
 		Path resultFolder = outPath.resolve(test.getFullName());
-		Path vdp = resultFolder.resolve("VDP");
-		Path xlt = resultFolder.resolve("XLT");
+		Path vdp = resultFolder.resolve(GersConfigration.VDP_DDNAME);
+		Path xlt = resultFolder.resolve(GersConfigration.XLT_DDNAME);
 		logger.atInfo().log("Check existenc in " + resultFolder.toString());
 		if (vdp.toFile().exists() && xlt.toFile().exists()) {
 			test.getResult().setMessage("generated");

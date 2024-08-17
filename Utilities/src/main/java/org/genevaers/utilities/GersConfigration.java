@@ -49,9 +49,9 @@ public class GersConfigration {
     public static final String LOG_LEVEL = "LOG_LEVEL";
     public static final String LOG_FILE = "LOGFILE";
 
-    public static final String XLT_DDNAME = "XLT";
-    public static final String JLT_DDNAME = "JLT";
-    public static final String VDP_DDNAME = "VDP";
+    public static final String XLT_DDNAME = "XLTNEW";
+    public static final String JLT_DDNAME = "JLTNEW";
+    public static final String VDP_DDNAME = "VDPNEW";
     public static final String XLTOLD_DDNAME = "XLTOLD";
     public static final String JLTOLD_DDNAME = "JLTOLD";
     public static final String VDPOLD_DDNAME = "VDPOLD";
