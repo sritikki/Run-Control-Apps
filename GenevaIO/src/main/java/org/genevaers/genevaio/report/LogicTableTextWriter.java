@@ -24,12 +24,14 @@ import java.util.Iterator;
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
+import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
 import org.genevaers.genevaio.fieldnodes.FunctionCodeNode;
 import com.google.common.flogger.FluentLogger;
 
 public class LogicTableTextWriter extends TextRecordWriter {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+	boolean jlt;
 	
 	public LogicTableTextWriter() {
 		setIgnores();
@@ -37,11 +39,24 @@ public class LogicTableTextWriter extends TextRecordWriter {
 
 	@Override
 	public void writeDetails( MetadataNode recordsRoot, Writer fw, String generated) throws IOException {
+		addJLTIgnores(recordsRoot);
 		writeHeader(generated, fw);
 		writeContent(recordsRoot,fw);
 		writeComparisonSummary(recordsRoot, fw);
 	}
 	
+	private void addJLTIgnores(MetadataNode recordsRoot) {
+		FieldNodeBase gen = recordsRoot.getChildrenByName("LT_0");
+		if(((StringFieldNode)gen.getChildrenByName("extract")).getValue().equals("False")) {
+			jlt = true;
+			ignoreTheseDiffs.put("viewId", true); 
+			ignoreTheseDiffs.put("columnId", true); 
+			ignoreTheseDiffs.put("ordinalPosition", true); 
+			ignoreTheseDiffs.put("DTA_signedInd", true); 
+			ignoreTheseDiffs.put("DTA_logfileId", true); 
+		}
+	}
+
 	private void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
 		if(recordsRoot.getName().equals("Compare")) {
 			fw.write("\n\nComparison Results\n==================\n\n");
@@ -113,6 +128,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("LKE_ordinalPosition", true); 
 		ignoreTheseDiffs.put("DTL_ordinalPosition", true); 
 		ignoreTheseDiffs.put("CFLC_ordinalPosition", true); 
+		ignoreTheseDiffs.put("SETC_viewId_lRecordCount", true); 
 	}
 
 
@@ -124,6 +140,8 @@ public class LogicTableTextWriter extends TextRecordWriter {
 			} else {
 				if(n.getState() == ComparisonState.DIFF) {
 					if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
+						n.setState(ComparisonState.IGNORED);
+					} else if(jlt && ((StringFieldNode)n).getValue().startsWith("Reserve")) {
 						n.setState(ComparisonState.IGNORED);
 					} else {
 						updateRowState = false;
@@ -142,9 +160,21 @@ public class LogicTableTextWriter extends TextRecordWriter {
 			return n.getName();
 		} else {
 			if(n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
-				return ((FunctionCodeNode)n.getParent().getParent()).getFunctionCode() + "_" + n.getName();
+				if(jlt && (n.getName().equals("ordinalPosition"))) {
+					return n.getName();
+				} else {
+					return ((FunctionCodeNode)n.getParent().getParent()).getFunctionCode() + "_" + n.getName();
+				}
 			} else {
-				return ((FunctionCodeNode)n.getParent()).getFunctionCode() + "_" + n.getName();
+				if( ((FunctionCodeNode)n.getParent()).getFunctionCode().equals("SETC") ){
+					FieldNodeBase setcacc = (((FunctionCodeNode)n.getParent()).getChildrenByName("tableName"));
+					return ((FunctionCodeNode)n.getParent()).getFunctionCode() + "_" + n.getName() + "_" + ((StringFieldNode)setcacc).getValue();
+				} else if(jlt && 
+				(n.getName().equals("viewId") || n.getName().equals("columnId") || n.getName().equals("ordinalPosition"))) {
+					return n.getName();
+				} else {
+					return ((FunctionCodeNode)n.getParent()).getFunctionCode() + "_" + n.getName();
+				}
 			}
 		}
 	}
