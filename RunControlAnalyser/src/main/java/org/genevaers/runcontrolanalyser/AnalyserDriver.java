@@ -92,14 +92,14 @@ public class AnalyserDriver {
 		Path xlt1 = root.resolve(GersConfigration.XLT_DDNAME);
 		Path xlt2 = root.resolve(GersConfigration.XLTOLD_DDNAME);
 		try {
+			if (RcaConfigration.isVdpReport()) {
+				generateVDPDiffReport(root, vdp1, vdp2);
+			}
 			if (RcaConfigration.isXltReport()) {
 				generateXLTDiffReport(root, xlt1, xlt2);
 			}
 			if (RcaConfigration.isJltReport()) {
 				generateJLTDiffReport(root, xlt1, xlt2);
-			}
-			if (RcaConfigration.isVdpReport()) {
-				generateVDPDiffReport(root, vdp1, vdp2);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

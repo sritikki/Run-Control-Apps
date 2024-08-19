@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.report;
 
+import org.genevaers.genevaio.fieldnodes.ComparisonState;
+
 /*
  * Copyright Contributors to the GenevaERS Project.
 								SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation
@@ -27,4 +29,5 @@ public class LrDetails {
 	int keyLen;
 	int lookupExitId;
 	String exitParms;
+	ComparisonState state;
 }

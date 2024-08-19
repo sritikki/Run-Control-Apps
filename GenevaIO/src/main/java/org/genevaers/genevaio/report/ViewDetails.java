@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.report;
 
+import org.genevaers.genevaio.fieldnodes.ComparisonState;
+
 /*
  * Copyright Contributors to the GenevaERS Project.
 								SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation
@@ -26,4 +28,5 @@ public class ViewDetails {
 	int numberOfColumns;
 	int numberOfSources;
 	String viewType;
+	ComparisonState state;
 }

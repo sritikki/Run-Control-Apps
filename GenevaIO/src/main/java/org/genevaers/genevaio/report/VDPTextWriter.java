@@ -19,8 +19,10 @@ package org.genevaers.genevaio.report;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +44,10 @@ public class VDPTextWriter extends TextRecordWriter {
 	private Map<Integer, ViewDetails> viewDetailsById = new TreeMap<>();
 	private Map<Integer, LookupDetails> lookupDetailsById = new TreeMap<>();
 	private Map<Integer, LrDetails> lrDetailsById = new TreeMap<>();
+	private Set<Integer> ignoredLrs = new HashSet<>();
 
+	private boolean cppCompare;
+	private boolean compareMode;
 
 	public VDPTextWriter() {
 		setIgnores();
@@ -50,21 +55,42 @@ public class VDPTextWriter extends TextRecordWriter {
 
 	@Override
 	public void writeDetails( MetadataNode recordsRoot, Writer fw, String generated) throws IOException {
+		checkIfOldIsCpp(recordsRoot);
+		addCppIgnores();
+		setIgnores();
 		writeHeader(generated, fw);
 		writeSummary(recordsRoot,fw);
 		writeViewSummaries(recordsRoot, fw);
 		writeLookupSummaries(recordsRoot, fw);
 		writeLRSummaries(recordsRoot, fw);
-		writeExitSummaries(recordsRoot, fw);
-		writeLfSummaries(recordsRoot, fw);
-		writePfSummaries(recordsRoot, fw);
+		if(compareMode == false) {
+			writeExitSummaries(recordsRoot, fw);
+			writeLfSummaries(recordsRoot, fw);
+			writePfSummaries(recordsRoot, fw);
+		}
 		writeContent(recordsRoot,fw);
 		writeComparisonSummary(recordsRoot, fw);
 	}
 	
+	private void addCppIgnores() {
+		ignoreTheseDiffs.put("Generation_lrCount", true); 
+		ignoreTheseDiffs.put("Generation_lrFieldCount", true); 
+		ignoreTheseDiffs.put("Generation_vdpByteCount", true); 
+		ignoreTheseDiffs.put("Generation_recordCount", true); 
+		ignoreTheseDiffs.put("View_Definition_outputPageSizeMax", true); 
+		ignoreTheseDiffs.put("View_Definition_outputLineSizeMax", true); 
+	}
+
+	private void checkIfOldIsCpp(MetadataNode recordsRoot) {
+		compareMode = recordsRoot.getName().equals("Compare");
+		FieldNodeBase desc = recordsRoot.getChildrenByName("Generation").getChildrenByName("1_0_1").getChildrenByName("description");
+		cppCompare = ((StringFieldNode)desc).getDiffValue().contains("GVBMR91");
+	}
+
 	private void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
-		if(recordsRoot.getName().equals("Compare")) {
+		if(compareMode) {
 			fw.write("\n\nComparison Results\n==================\n\n");
+			fw.write(String.format("%-20s: %s\n", "Comparison mode", cppCompare ? "CPP" : "JAVA"));			
 			fw.write(String.format("%-20s: %7d\n\n\n", "Number of diffs", numDiffs));
 		}
 	}
@@ -88,24 +114,30 @@ public class VDPTextWriter extends TextRecordWriter {
 	private void writeLfSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
 		fw.write("\nLogical Files\n");
 		fw.write("==================\n");
+		addStateColumIfCompareMode(fw);
 		fw.write(String.format("%7s %-48s %-7s\n", "ID", "Name", "Num PFs"));
 		fw.write(StringUtils.repeat('-', 64)+"\n");
-		Iterator<LogicalFile> lfi = Repository.getLogicalFiles().getIterator();
-		while (lfi.hasNext()) {
-			LogicalFile lf = lfi.next();
-			fw.write(String.format("%7s %-48s %-7d\n",lf.getID(), lf.getName(), lf.getNumberOfPFs()));
-		}
+		// Iterator<LogicalFile> lfi = Repository.getLogicalFiles().getIterator();
+		// while (lfi.hasNext()) {
+		// 	LogicalFile lf = lfi.next();
+		// 	addStateValueIfCompareMode(fw, lrd.state);
+		// 	fw.write(String.format("%7s %-48s %-7d\n",lf.getID(), lf.getName(), lf.getNumberOfPFs()));
+		// }
 	}
 
 	private void writeExitSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
 		fw.write("\nUser Exit Routines\n");
 		fw.write("==================\n");
-		fw.write(String.format("%7s %-48s %-6s %-9s %8s %10s \n", "ID", "Name", "Type", "Optimized", "Language", "Executable"));
-		fw.write(StringUtils.repeat('-', 93)+"\n");
-		Iterator<UserExit> ei = Repository.getUserExits().getIterator();
-		while (ei.hasNext()) {
-			UserExit e = ei.next();
-			fw.write(String.format("%7s %-48s %-6s %-9s %8s %10s \n",e.getComponentId(), e.getName(), e.getExitType().toString(), e.isOptimizable(), e.getProgramType(), e.getExecutable()));
+		if(Repository.getUserExits().size() < 0) {
+			fw.write(String.format("%7s %-48s %-6s %-9s %8s %10s \n", "ID", "Name", "Type", "Optimized", "Language", "Executable"));
+			fw.write(StringUtils.repeat('-', 93)+"\n");
+			Iterator<UserExit> ei = Repository.getUserExits().getIterator();
+			while (ei.hasNext()) {
+				UserExit e = ei.next();
+				fw.write(String.format("%7s %-48s %-6s %-9s %8s %10s \n",e.getComponentId(), e.getName(), e.getExitType().toString(), e.isOptimizable(), e.getProgramType(), e.getExecutable()));
+			}
+		} else {
+			fw.write("<none>\n");
 		}
 	}
 
@@ -113,12 +145,54 @@ public class VDPTextWriter extends TextRecordWriter {
 		Iterator<LrDetails> lrds = lrDetailsById.values().iterator();
 		fw.write("\nLogical Record Summaries\n");
 		fw.write("========================\n");
+		addStateColumIfCompareMode(fw);
 		fw.write(String.format("%7s %-48s %-9s %7s %7s %-48s\n", "ID", "Name", "NumFields", "KeyLen", "ExitId", "Parms"));
-		fw.write(StringUtils.repeat('-', 88)+"\n");
+		fw.write(StringUtils.repeat('-', 95)+"\n");
 		while (lrds.hasNext()) {
 			LrDetails lrd = lrds.next();
+			addStateValueIfCompareMode(fw, lrd.state);
 			fw.write(String.format("%7d %-48s %9s %7d %7d %-48s\n", lrd.id, lrd.name, lrd.numberOfFields, lrd.keyLen, lrd.lookupExitId, lrd.exitParms));
 		}
+	}
+
+	private void addStateValueIfCompareMode(Writer fw, ComparisonState state) throws IOException {
+		if(compareMode ) {
+			if(state == ComparisonState.ORIGINAL && cppCompare) {
+				fw.write(String.format("%-7s ", "RCGFile"));
+			} else {
+				fw.write(String.format("%-7s ", getRecordState(state)));
+			}
+		}
+	}
+
+	private void addStateColumIfCompareMode(Writer fw) throws IOException {
+		if(cppCompare) {
+			fw.write(String.format("%-7s ","State"));
+		}
+	}
+
+	private String getRecordState(ComparisonState state) {
+		switch (state) {
+			case CHANGED:
+				break;
+			case DIFF:
+				return "***";
+			case IGNORED:
+				break;
+			case INSTANCE:
+				break;
+			case NEW:
+				return "Added";
+			case ORIGINAL:
+				return "Missing";
+			case RECIGNORE:
+				return "RCGFile";
+			case CPPONLY:
+				return "CPPOnly";
+			default:
+				break;
+		}
+		return "";
 	}
 
 	private void writeLookupSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
@@ -137,10 +211,12 @@ public class VDPTextWriter extends TextRecordWriter {
 		Iterator<ViewDetails> vds = viewDetailsById.values().iterator();
 		fw.write("View Summaries\n");
 		fw.write("==============\n");
+		addStateColumIfCompareMode(fw);
 		fw.write(String.format("%7s %-48s %-8s %-4s %s\n", "ID", "Name", "Type", "Cols", "Sources"));
 		fw.write(StringUtils.repeat('-', 78)+"\n");
 		while (vds.hasNext()) {
 			ViewDetails vd = vds.next();
+			addStateValueIfCompareMode(fw, vd.state);
 			fw.write(String.format("%7d %-48s %-8s %4d %7d\n", vd.id, vd.name, vd.viewType, vd.numberOfColumns, vd.numberOfSources));
 		}
 	}
@@ -148,22 +224,26 @@ public class VDPTextWriter extends TextRecordWriter {
 	private void writeSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
         Iterator<FieldNodeBase> fi = recordsRoot.getChildren().iterator();
 
-		if(recordsRoot.getName().equals("Compare")) {
+		if(compareMode) {
 			fw.write("Comparison Summary\n==================\n\n");
+			fw.write("Source1: " + recordsRoot.getSource1() + "\n");
+			fw.write(String.format("Source2: %s from %s\n\n", recordsRoot.getSource2(), cppCompare ? "C++ MR91" : "Java RCG"));
 		} else {
 			fw.write("Summary\n=======\n\n");
 		}
-		fw.write(String.format("%-20s: %7s\n", "Component", "Count"));
-		fw.write(StringUtils.repeat('=', 29)+"\n");
+		fw.write(String.format("%-22s: %7s\n", "Component", "Count"));
+		fw.write(StringUtils.repeat('=', 31)+"\n");
 		int numViews = 0;
         while (fi.hasNext()) {
             FieldNodeBase n = (FieldNodeBase) fi.next();
 			if(n.getFieldNodeType() != FieldNodeType.VIEW) {
-				fw.write(String.format("%-20s: %7d\n", n.getName(), n.getChildren().size()));
+				fw.write(String.format("%-22s: %7d\n", n.getName(), n.getChildren().size()));
 				if(n.getName().equals("Lookup_Paths")) {
 					collectLookupDetails(n, fw);
 				} else if(n.getName().equals("Logical_Records")) {
-					collectLrDetails(n, fw);
+					collectLrDetails(n, fw, recordsRoot);
+				} else if(n.getName().equals("Logical_Files")) {
+					collectLfDetails(n, fw);
 				} else if(n.getName().equals("LR_Fields")) {
 					//collectLrFieldDetails(n, fw);
 				}
@@ -173,25 +253,68 @@ public class VDPTextWriter extends TextRecordWriter {
 				collectViewDetails(n, fw);
 			}
 		}
-		fw.write(String.format("%-20s: %7d\n\n\n", "Views", numViews));
+		fw.write(String.format("%-22s: %7d\n\n\n", "Views", numViews));
 	}
 
-	private void collectLrDetails(FieldNodeBase n, Writer fw) {
+	private void collectLfDetails(FieldNodeBase n, Writer fw) {
         Iterator<FieldNodeBase> fi = n.getChildren().iterator();
 		int currentID = 0 ;
 		LrDetails lrds = null;
         while (fi.hasNext()) {
-            FieldNodeBase lk = (FieldNodeBase) fi.next();
-			int id = ((NumericFieldNode)(lk.getChildrenByName("recordId"))).getValue();
+            FieldNodeBase lr = (FieldNodeBase) fi.next();
+			int id = ((NumericFieldNode)(lr.getChildrenByName("recordId"))).getValue();
 			if(id != currentID) {
 				lrds = new LrDetails();
 				lrds.id = id;
-				lrds.name = ((StringFieldNode)(lk.getChildrenByName("lrName"))).getValue();
+				lrds.state = lr.getState();
+				if(cppCompare && lrds.state == ComparisonState.DIFF && lrds.id > 900000) {
+					lr.getChildrenByName("lrName").setState(ComparisonState.INSTANCE);
+					lrds.state = ComparisonState.INSTANCE;
+				}
+				lrds.name = ((StringFieldNode)(lr.getChildrenByName("lrName"))).getValue();
 				lrDetailsById.put(lrds.id, lrds);
 				lrds.numberOfFields = Repository.getLogicalRecords().get(id).getValuesOfFieldsByID().size();
 				lrds.keyLen = Repository.getLrKeyLen(id);
-				lrds.lookupExitId = ((NumericFieldNode)(lk.getChildrenByName("exitPgmId"))).getValue(); 
-				lrds.exitParms = ((StringFieldNode)(lk.getChildrenByName("exitStartup"))).getValue();
+				lrds.lookupExitId = ((NumericFieldNode)(lr.getChildrenByName("exitPgmId"))).getValue(); 
+				lrds.exitParms = ((StringFieldNode)(lr.getChildrenByName("exitStartup"))).getValue();
+			}
+		}
+	}
+
+
+	private void collectLrDetails(FieldNodeBase n, Writer fw, MetadataNode recordsRoot) {
+        Iterator<FieldNodeBase> fi = n.getChildren().iterator();
+		int currentID = 0 ;
+		LrDetails lrds = null;
+        while (fi.hasNext()) {
+            FieldNodeBase lr = (FieldNodeBase) fi.next();
+			int id = ((NumericFieldNode)(lr.getChildrenByName("recordId"))).getValue();
+			if(id != currentID) {
+				lrds = new LrDetails();
+				lrds.id = id;
+				lrds.state = lr.getState();
+				if(cppCompare && (lrds.state == ComparisonState.DIFF || lrds.state == ComparisonState.ORIGINAL) && lrds.id > 900000) {
+					lr.getChildrenByName("lrName").setState(ComparisonState.RECIGNORE);
+					lrds.state = ComparisonState.RECIGNORE;
+					ignoredLrs.add(id);
+				}
+				lrds.name = ((StringFieldNode)(lr.getChildrenByName("lrName"))).getValue();
+				lrDetailsById.put(lrds.id, lrds);
+				lrds.numberOfFields = Repository.getLogicalRecords().get(id).getValuesOfFieldsByID().size();
+				lrds.keyLen = Repository.getLrKeyLen(id);
+				lrds.lookupExitId = ((NumericFieldNode)(lr.getChildrenByName("exitPgmId"))).getValue(); 
+				lrds.exitParms = ((StringFieldNode)(lr.getChildrenByName("exitStartup"))).getValue();
+			}
+		}
+	}
+
+	private void propagate(FieldNodeBase rec, ComparisonState newState) {
+		Iterator<FieldNodeBase> ri = rec.getChildren().iterator();
+		while (ri.hasNext()) {
+			FieldNodeBase child = ri.next();
+			child.setState(newState);
+			if(child.getChildren().size() > 0) {
+				propagate(child, newState);
 			}
 		}
 	}
@@ -221,6 +344,7 @@ public class VDPTextWriter extends TextRecordWriter {
 	private void collectViewDetails(FieldNodeBase v, Writer fw) throws IOException {
         Iterator<FieldNodeBase> fi = v.getChildren().iterator();
 		ViewDetails vds = new ViewDetails();
+		vds.state = v.getState();
         while (fi.hasNext()) {
             FieldNodeBase n = (FieldNodeBase) fi.next();
 			if(n.getName().equals("View_Definition")) {
@@ -274,11 +398,17 @@ public class VDPTextWriter extends TextRecordWriter {
 	}
 
 	private void writeComponent(FieldNodeBase c, Writer fw) throws IOException {
-		fw.write(String.format("\n~%s (%s)\n",c.getName(), ((NumericFieldNode)c.getChildren().get(0).getChildrenByName("recordType")).getValue()));
+		int recordType = ((NumericFieldNode)c.getChildren().get(0).getChildrenByName("recordType")).getValue();
+		int recordId = ((NumericFieldNode)c.getChildren().get(0).getChildrenByName("recordId")).getValue();
+		fw.write(String.format("\n~%s (%d)\n",c.getName(), recordType));
+		if(recordType == 300 && ignoredLrs.contains(recordId)) {
+			propagate(c, ComparisonState.IGNORED);
+		}
 		writeComponentEntries(c, fw);
 	}
 
 	private void writeComponentEntries(FieldNodeBase c, Writer fw) throws IOException {
+
 		Iterator<FieldNodeBase> fi = c.getChildren().iterator();
 		while (fi.hasNext()) {
 			FieldNodeBase n = (FieldNodeBase) fi.next();
@@ -299,10 +429,35 @@ public class VDPTextWriter extends TextRecordWriter {
 	}
 
 	private void writeRecord(FieldNodeBase r, Writer fw) throws IOException {
+		int recordType = ((NumericFieldNode)r.getChildrenByName("recordType")).getValue();
+		int recordId = ((NumericFieldNode)r.getChildrenByName("recordId")).getValue();
+		if(recordType == 300 && ignoredLrs.contains(recordId)) {
+			r.setState(ComparisonState.RECIGNORE);
+		}
+		if(recordType == 400) {
+			int lrid = ((NumericFieldNode)r.getChildrenByName("lrId")).getValue();
+		 	if(ignoredLrs.contains(lrid)) {
+				r.setState(ComparisonState.RECIGNORE);
+			}
+		}
+		if(recordType == 1650 || recordType == 651 || recordType == 800) {
+			r.setState(ComparisonState.CPPONLY);
+		}
+		if(cppCompare && recordType == 3000 && recordId > 900000) {
+			r.setState(ComparisonState.RECIGNORE);
+		}
+
+
 		fw.write("    Record:\n");
 		Iterator<FieldNodeBase> fi = r.getChildren().iterator();
 		while (fi.hasNext()) {
 			FieldNodeBase n = (FieldNodeBase) fi.next();
+			if(n.getParent().getState() == ComparisonState.RECIGNORE) {
+				n.setState(ComparisonState.RECIGNORE);
+			}
+			if(n.getParent().getState() == ComparisonState.CPPONLY) {
+				n.setState(ComparisonState.CPPONLY);
+			}
 			writeField(n, fw);
 		}
 	}
@@ -349,7 +504,6 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("LR_Indexes_columnId", true); 
 		ignoreTheseDiffs.put("LR_Indexes_lrIndexName", true); 
 		ignoreTheseDiffs.put("View_Definition_viewName", true); 
-		ignoreTheseDiffs.put("View_Definition_outputLineSizeMax", true); 
 		ignoreTheseDiffs.put("View_Definition_ownerUser", true); 
 		ignoreTheseDiffs.put("View_Output_File_name", true); 
 		ignoreTheseDiffs.put("View_Output_File_recordDelimId", true); 

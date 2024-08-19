@@ -168,8 +168,8 @@ public class JLTView {
         refViewNum = JOINVIEWBASE + ddNum;
         vd.setComponentId(refViewNum);
         String ddname = String.format("REFR%03d", ddNum);
-        //TODO C++ has the input DDName as well
-        String name = "Generated to write " + ddname + " data";
+        String pfDdname = Repository.getLogicalFiles().get(lfid).getPFIterator().next().getInputDDName();
+        String name = String.format("Ref-phase work file %03d from %s",ddNum,  pfDdname);
         vd.setName(name);
         vd.setOutputMedia(OutputMedia.FILE);
         vd.setViewType(ViewType.EXTRACT);

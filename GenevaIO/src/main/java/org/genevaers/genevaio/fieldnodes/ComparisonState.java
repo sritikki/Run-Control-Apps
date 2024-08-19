@@ -26,5 +26,7 @@ public enum ComparisonState {
     DIFF,
     CHANGED, // means there is a DIFF below
     INSTANCE,
-    IGNORED
+    IGNORED,
+    RECIGNORE,
+    CPPONLY
 }

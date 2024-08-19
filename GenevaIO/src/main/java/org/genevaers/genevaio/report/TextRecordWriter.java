@@ -94,6 +94,19 @@ public abstract class TextRecordWriter {
 			case NEW:
 			retval = "Added  ";
 			break;
+			case CHANGED:
+				break;
+			case IGNORED:
+				retval = "Ignored";
+				break;
+			case RECIGNORE:
+				return "RCGFile";
+			case CPPONLY:
+				return "CPPOnly";
+			case INSTANCE:
+				break;
+			default:
+				break;
 		}
 		return retval;
 	}
