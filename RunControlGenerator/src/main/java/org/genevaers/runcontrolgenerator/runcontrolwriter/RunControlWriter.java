@@ -32,8 +32,8 @@ import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.Status;
 
 import com.google.common.flogger.FluentLogger;
 

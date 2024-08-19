@@ -1,6 +1,7 @@
 package org.genevaers.rcapps;
 
 import org.genevaers.utilities.ParmReader;
+import org.genevaers.utilities.Status;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -27,7 +28,6 @@ import java.util.Properties;
 import org.genevaers.runcontrolanalyser.RCAApp;
 import org.genevaers.runcontrolgenerator.RCGApp;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.runcontrolgenerator.utility.Status;
 
 
 

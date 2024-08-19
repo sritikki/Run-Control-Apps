@@ -37,8 +37,8 @@ import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
-import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.Status;
 
 public class SinglePassOptimiser {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();

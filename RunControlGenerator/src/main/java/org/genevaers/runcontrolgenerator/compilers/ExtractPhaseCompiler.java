@@ -53,7 +53,7 @@ import org.genevaers.repository.components.ViewSource;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
-import org.genevaers.runcontrolgenerator.utility.Status;
+import org.genevaers.utilities.Status;
 import org.genevaers.visualisation.GraphVizRunner;
 
 import com.google.common.flogger.FluentLogger;

@@ -34,8 +34,9 @@ import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFac
 import org.genevaers.runcontrolgenerator.runcontrolwriter.RunControlWriter;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
-import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.Status;
+
 import com.google.common.flogger.FluentLogger;
 
 public class RunControlGenerator {

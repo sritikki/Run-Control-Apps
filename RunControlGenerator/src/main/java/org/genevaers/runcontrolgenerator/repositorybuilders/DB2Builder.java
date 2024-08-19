@@ -24,7 +24,7 @@ import org.genevaers.genevaio.dbreader.DBReader;
 import org.genevaers.genevaio.dbreader.DatabaseConnection.DbType;
 import org.genevaers.genevaio.dbreader.DatabaseConnectionParams;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.runcontrolgenerator.utility.Status;
+import org.genevaers.utilities.Status;
 
 public class DB2Builder implements RepositoryBuilder{
 
