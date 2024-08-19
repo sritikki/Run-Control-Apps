@@ -38,6 +38,7 @@ import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.Status;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -48,6 +49,7 @@ public class AnalyserDriver {
 	private static RunControlAnalyser fa = new RunControlAnalyser();
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
 	private static ReportWriter report = new ReportWriter();
+	private static Status status = Status.OK;
 
 	private static String version;
 
@@ -62,8 +64,7 @@ public class AnalyserDriver {
 	private boolean jlt1Present;
 	private boolean jlt2Present;
 
-	public static boolean runFromConfig() {
-		boolean ranOkay = true;
+	public static Status runFromConfig() {
 		Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
 		if (RcaConfigration.isCompare()) {
 			logger.atInfo().log("We are in compare mode.... best figure out how to do this");
@@ -79,11 +80,16 @@ public class AnalyserDriver {
 				generateVdpPrint(root);
 			}
 			if (RcaConfigration.isRcaReport()) {
-				ranOkay = generateRcaPrint(root);
+				generateRcaPrint(root);
 			}
 		}
 		report.write(numVDPDiffs, numXLTDiffs, numJLTDiffs);
-		return ranOkay;
+		setStatus(numVDPDiffs, numXLTDiffs, numJLTDiffs);
+		return status;
+	}
+
+	private static void setStatus(int numVDPDiffs, int numXLTDiffs, int numJLTDiffs) {
+		status =  numVDPDiffs > 0 || numXLTDiffs > 0 || numJLTDiffs > 0 ? Status.DIFF : Status.OK;
 	}
 
 	private static void compareRunControlFiles(Path root) {

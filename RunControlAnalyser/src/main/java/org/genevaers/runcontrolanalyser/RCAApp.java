@@ -5,6 +5,7 @@ import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.ParmReader;
+import org.genevaers.utilities.Status;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -29,7 +30,7 @@ import com.google.common.flogger.FluentLogger;
 
 public class RCAApp {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-    private static boolean ranOkay;
+    private static Status ranOkay;
     private static String cwd = "";
 
     public static void  main(String[] args) {
@@ -40,7 +41,7 @@ public class RCAApp {
     } 
 
     public static void run() {
-        ranOkay = false;
+        ranOkay = Status.OK;
         GersConfigration.clear();
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
@@ -60,17 +61,18 @@ public class RCAApp {
                 logger.atSevere().log("Invalid configuration. Processing stopped");
             }
         } catch (IOException e) {
+            ranOkay = Status.ERROR;
             logger.atSevere().log("Unable to read PARM file");
         }
         GenevaLog.closeLogger(RunControlAnalyser.class.getName());
-        if(ranOkay) {
+        if(ranOkay != Status.OK) {
             System.out.println("Run control analyser completed");
         } else {
             System.out.println("Run control analyser failed. See log for details.");
         }
     }
 
-    public static boolean ranOkay() {
+    public static Status ranOkay() {
         return ranOkay;
     }
 

@@ -20,6 +20,7 @@ package org.genevaers.utilities;
 
 public enum Status {
     OK,
+    DIFF,
     WARNING,
     ERROR;
 }
