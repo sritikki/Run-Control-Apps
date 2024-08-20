@@ -110,7 +110,8 @@ public class DBPhysicalFileReader extends DBReaderBase {
         pf.setMinimumLength(rs.getShort("MINRECLEN"));
         pf.setMaximumLength(rs.getShort("MAXRECLEN"));
         pf.setOutputDDName(getDefaultedString(rs.getString("DDNAMEOUTPUT"), ""));
-        pf.setRecfm(FileRecfm.fromdbcode(getDefaultedString(rs.getString("RECFM"), "INVALID")));
+        pf.setRecfm(FileRecfm.fromdbcode(getDefaultedString(rs.getString("RECFM"), "VB")));
+        pf.setDatabaseRowFormat(DbmsRowFmtOptId.DB2);
         pf.setDatabaseConnection(getDefaultedString(rs.getString("DBMSSUBSYS"), ""));
         pf.setSqlText(getDefaultedString(rs.getString("DBMSSQL"), ""));
         pf.setDatabaseTable(getDefaultedString(rs.getString("DBMSTABLE"), ""));
@@ -120,8 +121,8 @@ public class DBPhysicalFileReader extends DBReaderBase {
 		pf.setExtractDDName("");
 		pf.setDatabase("");
 		pf.setFieldDelimiter(FieldDelimiter.FIXEDWIDTH);
-		pf.setRecordDelimiter(RecordDelimiter.FIXED);
-		pf.setTextDelimiter(TextDelimiter.DOUBLEQUOTE);
+		pf.setRecordDelimiter(RecordDelimiter.CR);
+		pf.setTextDelimiter(TextDelimiter.INVALID);
         Repository.addPhysicalFileOnly(pf);
     }
 
