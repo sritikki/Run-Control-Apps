@@ -160,7 +160,7 @@ public class VDPTextWriter extends TextRecordWriter {
 	private void addStateValueIfCompareMode(Writer fw, ComparisonState state) throws IOException {
 		if(compareMode ) {
 			if(state == ComparisonState.ORIGINAL && cppCompare) {
-				fw.write(String.format("%-7s ", "RGCOnly"));
+				fw.write(String.format("%-7s ", "RCGOnly"));
 				//find the lr and propagate the state
 
 			} else {
@@ -190,7 +190,7 @@ public class VDPTextWriter extends TextRecordWriter {
 			case ORIGINAL:
 				return "Missing";
 			case RECIGNORE:
-				return "RGCOnly";
+				return "RCGOnly";
 			case CPPONLY:
 				return "CPPOnly";
 			default:
