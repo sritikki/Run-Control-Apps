@@ -114,11 +114,14 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("GEN_timeHh", true); 
 		ignoreTheseDiffs.put("GEN_timeMm", true); 
 		ignoreTheseDiffs.put("GEN_timeSs", true); 
+		ignoreTheseDiffs.put("GEN_timeTt", true); 
 		ignoreTheseDiffs.put("GEN_desc", true); 
+		ignoreTheseDiffs.put("GEN_padding", true); 
 		ignoreTheseDiffs.put("GEN_padding", true); 
 		ignoreTheseDiffs.put("HD_fileId", true); 
 		ignoreTheseDiffs.put("HD_time", true); 
 		ignoreTheseDiffs.put("HD_date", true); 
+		ignoreTheseDiffs.put("NV_littleEndian", true); 
 		ignoreTheseDiffs.put("sourceSeqNbr", true); 
 		ignoreTheseDiffs.put("GOTO_viewId", true); 
 		ignoreTheseDiffs.put("DTC_lrId", true); 
