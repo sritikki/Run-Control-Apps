@@ -60,7 +60,7 @@ public abstract class TextRecordWriter {
 			case NOCOMPONENT:
 				break;
 			case NUMBERFIELD:
-			fw.write(String.format("%s    %-18s: %s\n", highlightDiff(f), f.getName(),((NumericFieldNode) f).getValueString()));
+			fw.write(String.format("%s    %-19s: %s\n", highlightDiff(f), f.getName(),((NumericFieldNode) f).getValueString()));
 			break;
 			case RECORD:
 				break;
@@ -69,7 +69,7 @@ public abstract class TextRecordWriter {
 			case ROOT:
 				break;
 			case STRINGFIELD:
-			fw.write(String.format("%s    %-18s: %s\n", highlightDiff(f), f.getName(),((StringFieldNode) f).getValue( )));
+			fw.write(String.format("%s    %-19s: %s\n", highlightDiff(f), f.getName(),((StringFieldNode) f).getValue( )));
 				break;
 			case VIEW:
 				break;
@@ -100,7 +100,7 @@ public abstract class TextRecordWriter {
 				retval = "Ignored";
 				break;
 			case RECIGNORE:
-				return "RCGFile";
+				return "RCGOnly";
 			case CPPONLY:
 				return "CPPOnly";
 			case INSTANCE:

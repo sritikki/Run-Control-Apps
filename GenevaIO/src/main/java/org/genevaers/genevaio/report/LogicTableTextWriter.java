@@ -110,6 +110,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 	@Override
 	public void setIgnores() {
 		ignoreTheseDiffs.put("GEN_fileId", true); 
+		ignoreTheseDiffs.put("GEN_dateDd", true); 
 		ignoreTheseDiffs.put("GEN_timeHh", true); 
 		ignoreTheseDiffs.put("GEN_timeMm", true); 
 		ignoreTheseDiffs.put("GEN_timeSs", true); 
@@ -117,6 +118,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("GEN_padding", true); 
 		ignoreTheseDiffs.put("HD_fileId", true); 
 		ignoreTheseDiffs.put("HD_time", true); 
+		ignoreTheseDiffs.put("HD_date", true); 
 		ignoreTheseDiffs.put("sourceSeqNbr", true); 
 		ignoreTheseDiffs.put("GOTO_viewId", true); 
 		ignoreTheseDiffs.put("DTC_lrId", true); 
@@ -141,8 +143,10 @@ public class LogicTableTextWriter extends TextRecordWriter {
 				if(n.getState() == ComparisonState.DIFF) {
 					if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
 						n.setState(ComparisonState.IGNORED);
-					} else if(jlt && ((StringFieldNode)n).getValue().startsWith("Reserve")) {
-						n.setState(ComparisonState.IGNORED);
+					} else if(jlt) {
+						if(n.getFieldNodeType() == FieldNodeType.STRINGFIELD && ((StringFieldNode)n).getValue().startsWith("Reserve"))  {
+							n.setState(ComparisonState.IGNORED);
+						}
 					} else {
 						updateRowState = false;
 					}

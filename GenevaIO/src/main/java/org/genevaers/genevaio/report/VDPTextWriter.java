@@ -160,7 +160,9 @@ public class VDPTextWriter extends TextRecordWriter {
 	private void addStateValueIfCompareMode(Writer fw, ComparisonState state) throws IOException {
 		if(compareMode ) {
 			if(state == ComparisonState.ORIGINAL && cppCompare) {
-				fw.write(String.format("%-7s ", "RCGFile"));
+				fw.write(String.format("%-7s ", "RGCOnly"));
+				//find the lr and propagate the state
+
 			} else {
 				fw.write(String.format("%-7s ", getRecordState(state)));
 			}
@@ -188,7 +190,7 @@ public class VDPTextWriter extends TextRecordWriter {
 			case ORIGINAL:
 				return "Missing";
 			case RECIGNORE:
-				return "RCGFile";
+				return "RGCOnly";
 			case CPPONLY:
 				return "CPPOnly";
 			default:
@@ -296,6 +298,11 @@ public class VDPTextWriter extends TextRecordWriter {
 				lrds.id = id;
 				lrds.state = lr.getState();
 				if(cppCompare && (lrds.state == ComparisonState.DIFF || lrds.state == ComparisonState.ORIGINAL) && lrds.id > 900000) {
+					lr.getChildrenByName("lrName").setState(ComparisonState.RECIGNORE);
+					lrds.state = ComparisonState.RECIGNORE;
+					ignoredLrs.add(id);
+				}
+				if(lrds.state == ComparisonState.ORIGINAL && cppCompare) {
 					lr.getChildrenByName("lrName").setState(ComparisonState.RECIGNORE);
 					lrds.state = ComparisonState.RECIGNORE;
 					ignoredLrs.add(id);

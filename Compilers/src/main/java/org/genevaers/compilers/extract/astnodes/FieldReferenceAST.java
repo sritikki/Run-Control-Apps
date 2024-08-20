@@ -109,7 +109,7 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         ViewColumn vc = ((ColumnAST)lhs).getViewColumn();
         LTFileObject ltEntry = null;
         LRField field = ((FieldReferenceAST)rhs).getRef();
-        if(field != null) {
+        if(field != null && field.getLength() > 0) {
             ltEntry =((ColumnAST)lhs).getFieldLtEntry(field);
             //How many args do we have
             //and why do we care? we should just set the values
@@ -271,7 +271,11 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
 
     @Override
     public int getMaxNumberOfDigits() {
-        return RepoHelper.getMaxNumberOfDigitsForType(getDataType(), ref.getLength());
+        if(ref != null) {
+            return RepoHelper.getMaxNumberOfDigitsForType(getDataType(), ref.getLength());
+        } else {
+            return 0; //make not truncation
+        }
     }
 
 }
