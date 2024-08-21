@@ -79,6 +79,10 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("Generation_recordCount", true); 
 		ignoreTheseDiffs.put("View_Definition_outputPageSizeMax", true); 
 		ignoreTheseDiffs.put("View_Definition_outputLineSizeMax", true); 
+		ignoreTheseDiffs.put("Sources_columnId", true); 
+		ignoreTheseDiffs.put("Lookup_Paths_valueLength", true); 
+		ignoreTheseDiffs.put("Physical_Files_ddnameOutput", true); 
+		ignoreTheseDiffs.put("Physical_Files_ddnameInput", true); 
 	}
 
 	private void checkIfOldIsCpp(MetadataNode recordsRoot) {
