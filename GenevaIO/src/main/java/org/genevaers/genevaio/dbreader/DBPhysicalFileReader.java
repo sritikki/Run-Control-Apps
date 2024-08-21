@@ -111,11 +111,10 @@ public class DBPhysicalFileReader extends DBReaderBase {
         pf.setMaximumLength(rs.getShort("MAXRECLEN"));
         pf.setOutputDDName(getDefaultedString(rs.getString("DDNAMEOUTPUT"), ""));
         pf.setRecfm(FileRecfm.fromdbcode(getDefaultedString(rs.getString("RECFM"), "VB")));
-        pf.setDatabaseRowFormat(DbmsRowFmtOptId.DB2);
         pf.setDatabaseConnection(getDefaultedString(rs.getString("DBMSSUBSYS"), ""));
         pf.setSqlText(getDefaultedString(rs.getString("DBMSSQL"), ""));
         pf.setDatabaseTable(getDefaultedString(rs.getString("DBMSTABLE"), ""));
-        pf.setDatabaseRowFormat(DbmsRowFmtOptId.fromdbcode(getDefaultedString(rs.getString("DBMSROWFMTCD"), "NONE")));
+        pf.setDatabaseRowFormat(DbmsRowFmtOptId.fromdbcode(getDefaultedString(rs.getString("DBMSROWFMTCD"), "DB2")));
         pf.setIncludeNulls(rs.getInt("DBMSINCLNULLSIND") == 0 ? false : true);
 		//Make sure these are not null
 		pf.setExtractDDName("");
