@@ -144,7 +144,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
     public void addToRepoByName(DatabaseConnection databaseConnection, DatabaseConnectionParams params, String pfName) {
         //Then get the PFs
         String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-        + "where ENVIRONID= ? and NAME = ?;";
+        + "where ENVIRONID= ? and UPPER(name) = ?;";
         executeAndWriteToRepo(databaseConnection, pfRecs, params, pfName);
      }
 }

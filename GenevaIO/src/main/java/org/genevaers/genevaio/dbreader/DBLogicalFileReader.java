@@ -64,7 +64,7 @@ public class DBLogicalFileReader extends DBReaderBase{
 
     public boolean addToRepoByName(DatabaseConnection dbConnection, DatabaseConnectionParams params, String name) {
         String query = "select * from " + params.getSchema() +".LOGFILE "
-        + " where ENVIRONID= ? and NAME = ?;";
+        + " where ENVIRONID= ? and UPPER(name) = ?;";
         executeAndWriteToRepo(dbConnection, query, params, name);
         return false;
     }

@@ -33,7 +33,7 @@ public class LogicalFile extends ComponentNode {
 
 	private int id = 0;
 	List<PhysicalFile> pfs = new ArrayList<>();
-	Map<String, PhysicalFile> pfsByName = new TreeMap<>();
+	Map<String, PhysicalFile> pfsByName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	String name;
 
 	// @Override

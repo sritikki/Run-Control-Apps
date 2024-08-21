@@ -87,7 +87,7 @@ public class JLTViewTest {
 
         //RED LR should just have the one field... f2 transposed
         //Generation should have f1 and f2
-        assertEquals(2, genLR.getValuesOfFieldsByID().size());
+        assertEquals(4, genLR.getValuesOfFieldsByID().size());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class JLTViewTest {
 
         //RED LR should just have the one field... f2 transposed
         //Generation should have f1 and f2
-        assertEquals(3, genLR.getValuesOfFieldsByID().size());
+        assertEquals(5, genLR.getValuesOfFieldsByID().size());
     }
 
     @Test
@@ -147,7 +147,7 @@ public class JLTViewTest {
 
         //RED LR should just have the one field... f2 transposed
         //Generation should have f1 and f2
-        assertEquals(3, genLR.getValuesOfFieldsByID().size());
+        assertEquals(5, genLR.getValuesOfFieldsByID().size());
         Iterator<LRField> gfi = genLR.getIteratorForFieldsByID();
         assertEquals(1, gfi.next().getStartPosition());
         assertEquals(11, gfi.next().getStartPosition());
@@ -184,7 +184,7 @@ public class JLTViewTest {
 
         //RED LR should just have the one field... f2 transposed
         //Generation should have f1 and f2
-        assertEquals(4, genLR.getValuesOfFieldsByID().size());
+        assertEquals(6, genLR.getValuesOfFieldsByID().size());
         Iterator<LRField> gfi = genLR.getIteratorForFieldsByID();
         assertEquals(1, gfi.next().getStartPosition());
         assertEquals(11, gfi.next().getStartPosition());
@@ -223,7 +223,7 @@ public class JLTViewTest {
 
         assertEquals("Ref Generation LR for Lookup lr 1", genLR.getName());
 
-        assertEquals(4, genLR.getValuesOfFieldsByID().size());
+        assertEquals(6, genLR.getValuesOfFieldsByID().size());
         Iterator<LRField> gfi = genLR.getIteratorForFieldsByID();
         assertEquals(1, gfi.next().getStartPosition());
         assertEquals(11, gfi.next().getStartPosition());
@@ -268,7 +268,7 @@ public class JLTViewTest {
 
         assertEquals("Ref Generation LR for Lookup lr 1", genLR.getName());
 
-        assertEquals(4, genLR.getValuesOfFieldsByID().size());
+        assertEquals(6, genLR.getValuesOfFieldsByID().size());
         Iterator<LRField> gfi = genLR.getIteratorForFieldsByID();
         assertEquals(1, gfi.next().getStartPosition());
         assertEquals(11, gfi.next().getStartPosition());

@@ -185,7 +185,7 @@ public class DBLookupsReader extends DBReaderBase{
                 + "ON(s.LRLFASSOCID = t.LRLFASSOCID AND l.environid = t.environid) "
                 + "where l.environid = ? and UPPER(l.name) = ? "
                 + "ORDER BY l.LOOKUPID, s.STEPSEQNBR, k.KEYSEQNBR; ";
-            executeAndWriteToRepo(dbConnection, query, params, name.toUpperCase());
+            executeAndWriteToRepo(dbConnection, query, params, name);
             return hasErrors;
         } else {
             logger.atInfo().log("No Lookups required");

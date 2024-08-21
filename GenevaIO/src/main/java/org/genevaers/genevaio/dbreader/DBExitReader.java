@@ -84,9 +84,9 @@ public class DBExitReader extends DBReaderBase {
         + "FROM " + params.getSchema() + ".exit e "
         + "where e.environid = ?";
         if(proc) {
-            query += " and e.moduleid = ?;";
+            query += " and upper(e.moduleid) = ?;";
         } else {
-            query += " and e.name = ?;";
+            query += " and upper(e.name) = ?;";
         }
         procedure = proc;
         executeAndWriteToRepo(dbConnection, query, params, name);
