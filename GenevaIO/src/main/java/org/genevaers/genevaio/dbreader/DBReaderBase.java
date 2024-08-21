@@ -60,7 +60,7 @@ public abstract class DBReaderBase {
     protected void executeAndWriteToRepo(DatabaseConnection dbConnection, String query, DatabaseConnectionParams params, String name) {
         try(PreparedStatement ps = dbConnection.prepareStatement(query);) {
             ps.setInt(1, params.getEnvironmentIdAsInt());
-            ps.setString(2, name);
+            ps.setString(2, name.toUpperCase());
             executeAndAddResultSetToRepo(ps);
         } catch (SQLException e) {
             logger.atSevere().log("executeAndWriteToRepo %s", e.getMessage());

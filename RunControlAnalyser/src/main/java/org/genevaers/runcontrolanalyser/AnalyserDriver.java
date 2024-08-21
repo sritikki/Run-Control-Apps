@@ -33,10 +33,12 @@ import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
+import org.genevaers.genevaio.report.LogicTableTextWriter;
 import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.Status;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -46,30 +48,69 @@ public class AnalyserDriver {
 
 	private static RunControlAnalyser fa = new RunControlAnalyser();
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
+	private static ReportWriter report = new ReportWriter();
+	private static Status status = Status.OK;
 
 	private static String version;
 
 	private static String generation;
 
+	private static int numXLTDiffs;
+
+	private static int numJLTDiffs;
+
+	private static int numVDPDiffs;
+
 	private boolean jlt1Present;
 	private boolean jlt2Present;
 
-	public static boolean runFromConfig() {
-		boolean ranOkay = true;
-    	Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
-		if(RcaConfigration.isXltReport()) {
-			generateXltPrint(root);
+	public static Status runFromConfig() {
+		Path root = Paths.get(RcaConfigration.getCurrentWorkingDirectory());
+		if (RcaConfigration.isCompare()) {
+			logger.atInfo().log("We are in compare mode.... best figure out how to do this");
+			compareRunControlFiles(root);
+		} else {
+			if (RcaConfigration.isXltReport()) {
+				generateXltPrint(root);
+			}
+			if (RcaConfigration.isJltReport()) {
+				generateJltPrint(root);
+			}
+			if (RcaConfigration.isVdpReport()) {
+				generateVdpPrint(root);
+			}
+			if (RcaConfigration.isRcaReport()) {
+				generateRcaPrint(root);
+			}
 		}
-		if(RcaConfigration.isJltReport()) {
-			generateJltPrint(root);
+		report.write(numVDPDiffs, numXLTDiffs, numJLTDiffs);
+		setStatus(numVDPDiffs, numXLTDiffs, numJLTDiffs);
+		return status;
+	}
+
+	private static void setStatus(int numVDPDiffs, int numXLTDiffs, int numJLTDiffs) {
+		status =  numVDPDiffs > 0 || numXLTDiffs > 0 || numJLTDiffs > 0 ? Status.DIFF : Status.OK;
+	}
+
+	private static void compareRunControlFiles(Path root) {
+		Path vdp1 = root.resolve(GersConfigration.VDP_DDNAME);
+		Path vdp2 = root.resolve(GersConfigration.VDPOLD_DDNAME);
+		Path xlt1 = root.resolve(GersConfigration.XLT_DDNAME);
+		Path xlt2 = root.resolve(GersConfigration.XLTOLD_DDNAME);
+		try {
+			if (RcaConfigration.isVdpReport()) {
+				generateVDPDiffReport(root, vdp1, vdp2);
+			}
+			if (RcaConfigration.isXltReport()) {
+				generateXLTDiffReport(root, xlt1, xlt2);
+			}
+			if (RcaConfigration.isJltReport()) {
+				generateJLTDiffReport(root, xlt1, xlt2);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if(RcaConfigration.isVdpReport()) {
-			generateVdpPrint(root);
-		}
-		if(RcaConfigration.isRcaReport()) {
-			ranOkay = generateRcaPrint(root);
-		}
-		return ranOkay;
 	}
 
 	private static boolean generateRcaPrint(Path root) {
@@ -135,7 +176,7 @@ public class AnalyserDriver {
 
 	public static void generateJltPrint(Path root) {
 		logger.atInfo().log("Generate %s", RcaConfigration.JLT_REPORT_DDNAME);
-		Path jltp = root.resolve("JLT");
+		Path jltp = root.resolve(GersConfigration.JLT_DDNAME);
 		if(GersConfigration.isZos() || jltp.toFile().exists()) {
 			writeLtReport(root, GersConfigration.JLT_DDNAME, RcaConfigration.getJLTReportName());
 		}
@@ -155,7 +196,8 @@ public class AnalyserDriver {
 		switch (RcaConfigration.getReportFormat()) {
 			case "TEXT":
 			case "TXT":
-				VDPTextWriter.writeFromRecordNodes(recordsRoot, vdpReportDdname, generation);
+				VDPTextWriter vdptw = new VDPTextWriter();
+				vdptw.writeFromRecordNodes(recordsRoot, vdpReportDdname, generation);
 				break;
 			case "CSV":
 				break;
@@ -179,69 +221,83 @@ public class AnalyserDriver {
 		ltCoverageAnalyser.aggregateCoverage();
 	}
 
-    public void diffReport(Path root) throws Exception {
-		//What kind of diff report?
-		//Based on what data?
-		// RCG case
-		// Look for Run Control Files
-		if(runControlFilesPresent(root)) {
-			Path rc1 = root.resolve("RC1");
-			Path rc2 = root.resolve("RC2");
-			generateVDPDiffReport(root, rc1, rc2);
-			generateXLTDiffReport(root, rc1, rc2);
-			generateJLTDiffReport(root, rc1, rc2);
-		}
-    }
-
-	private void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
-		if(jlt1Present) {
-			MetadataNode recordsRoot = new MetadataNode();
-			recordsRoot.setName("Root");
-			recordsRoot.setSource1(root.relativize(rc1.resolve("JLT1")).toString());
-			recordsRoot.setSource2(root.relativize(rc2.resolve("JLT2")).toString());
-			fa.readLT(rc1.resolve("JLT"), recordsRoot, false, "JLT1");
-			logger.atInfo().log("JLT Tree built from %s", rc1.toString());
-			Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
-			fa.readLT(rc2.resolve("JLT"), recordsRoot, true, "JLT2");
-			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
-			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
-			LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
-			ltrw.setIgnores();
-			ltrw.writeFromRecordNodes(recordsRoot, "JLT.html");
+	private static void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
+		MetadataNode recordsRoot = new MetadataNode();
+		recordsRoot.setName("Compare");
+		recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.JLT_DDNAME)).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve(GersConfigration.JLTOLD_DDNAME)).toString());
+		fa.readLT(root, recordsRoot, false, GersConfigration.JLT_DDNAME);
+		logger.atInfo().log("JLT Tree built from %s", rc1.toString());
+		//Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
+		fa.readLT(root, recordsRoot, true, GersConfigration.JLTOLD_DDNAME);
+		logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
+		//Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
+		switch (RcaConfigration.getReportFormat()) {
+			case "TEXT":
+				LogicTableTextWriter lttw = new LogicTableTextWriter();
+				lttw.writeFromRecordNodes(recordsRoot, RcaConfigration.getJLTReportName(), generation);
+				numJLTDiffs = lttw.getNumDiffs();
+				break;
+			case "HTML":
+				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+				ltrw.setIgnores();
+				ltrw.writeFromRecordNodes(recordsRoot, RcaConfigration.getJLTReportName());
+				break;
 		}
 	}
 
-	private void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
+	private static void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
 		MetadataNode recordsRoot = new MetadataNode();
-		recordsRoot.setName("Root");
-		recordsRoot.setSource1(root.relativize(rc1.resolve("XLT1")).toString());
-		recordsRoot.setSource2(root.relativize(rc2.resolve("XLT2")).toString());
-		fa.readLT(rc1.resolve("XLT"), recordsRoot, false, "XLT1");
+		recordsRoot.setName("Compare");
+		recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.XLT_DDNAME)).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve(GersConfigration.XLTOLD_DDNAME)).toString());
+		fa.readLT(root, recordsRoot, false, GersConfigration.XLT_DDNAME);
 		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
 		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
-		fa.readLT(rc2.resolve("XLT"), recordsRoot, true, "XLT2");
+		fa.readLT(root, recordsRoot, true, GersConfigration.XLTOLD_DDNAME);
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
-		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
-		LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
-		ltrw.setIgnores();
-		ltrw.writeFromRecordNodes(recordsRoot, "XLT.html");
+		// Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
+		switch (RcaConfigration.getReportFormat()) {
+			case "TEXT":
+				LogicTableTextWriter lttw = new LogicTableTextWriter();
+				lttw.writeFromRecordNodes(recordsRoot, RcaConfigration.getXLTReportName(), generation);
+				numXLTDiffs = lttw.getNumDiffs();
+				break;
+			case "HTML":
+				LTRecordsHTMLWriter ltrw = new LTRecordsHTMLWriter();
+				ltrw.setIgnores();
+				ltrw.writeFromRecordNodes(recordsRoot, RcaConfigration.getXLTReportName());
+				break;
+		}
 	}
 
-	private void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
+	private static void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
 		MetadataNode recordsRoot = new MetadataNode();
-		recordsRoot.setName("Root");
-		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
-		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
-		fa.readVDP(rc1.resolve("VDP"), GersConfigration.VDP_DDNAME, recordsRoot, false);
+		recordsRoot.setName("Compare");
+		recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.VDP_DDNAME)).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve(GersConfigration.VDPOLD_DDNAME)).toString());
+		Path vdp1p = root.resolve(GersConfigration.VDP_DDNAME);
+		fa.readVDP(vdp1p, GersConfigration.VDP_DDNAME, recordsRoot, false);
 		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
 		VDPRecordsHTMLWriter vdprw = new VDPRecordsHTMLWriter();
 		vdprw.setIgnores();
-		vdprw.writeFromRecordNodes(recordsRoot, "VDP1.html");
-		Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
-		fa.readVDP(rc2.resolve("VDP"), GersConfigration.VDP_DDNAME, recordsRoot, true);
+		//vdprw.writeFromRecordNodes(recordsRoot, "VDP1.html");
+		//Records2Dot.write(recordsRoot, root.resolve("records1.gv"));
+		Path vdp2p = root.resolve(GersConfigration.VDPOLD_DDNAME);
+		fa.readVDP(vdp2p, GersConfigration.VDPOLD_DDNAME, recordsRoot, true);
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
-		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
-		vdprw.writeFromRecordNodes(recordsRoot, "VDPDiff.html");
+		//Records2Dot.write(recordsRoot, root.resolve("records.gv"));
+		switch(RcaConfigration.getReportFormat()) {
+			case "TEXT":
+			VDPTextWriter vdptw = new VDPTextWriter();
+			vdptw.writeFromRecordNodes(recordsRoot, RcaConfigration.getVDPReportName(), generation);
+			numVDPDiffs = vdptw.getNumDiffs();
+			break;
+			case "HTML":
+			vdprw.writeFromRecordNodes(recordsRoot, RcaConfigration.getVDPReportName());
+			break;
+		}		
+		logger.atInfo().log("VDP Diff Completed");
 	}
 
 	private boolean runControlFilesPresent(Path root) {
@@ -272,8 +328,8 @@ public class AnalyserDriver {
 	}
 
 	private boolean rcFilesPresent(Path rc) {
-		Path vdpPath = rc.resolve("VDP");
-		Path xltPath = rc.resolve("XLT");
+		Path vdpPath = rc.resolve(GersConfigration.VDP_DDNAME);
+		Path xltPath = rc.resolve(GersConfigration.XLT_DDNAME);
 		return vdpPath.toFile().exists() &&	xltPath.toFile().exists();
 	}
 

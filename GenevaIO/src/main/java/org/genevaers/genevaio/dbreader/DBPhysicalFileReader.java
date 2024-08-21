@@ -110,18 +110,18 @@ public class DBPhysicalFileReader extends DBReaderBase {
         pf.setMinimumLength(rs.getShort("MINRECLEN"));
         pf.setMaximumLength(rs.getShort("MAXRECLEN"));
         pf.setOutputDDName(getDefaultedString(rs.getString("DDNAMEOUTPUT"), ""));
-        pf.setRecfm(FileRecfm.fromdbcode(getDefaultedString(rs.getString("RECFM"), "INVALID")));
+        pf.setRecfm(FileRecfm.fromdbcode(getDefaultedString(rs.getString("RECFM"), "VB")));
         pf.setDatabaseConnection(getDefaultedString(rs.getString("DBMSSUBSYS"), ""));
         pf.setSqlText(getDefaultedString(rs.getString("DBMSSQL"), ""));
         pf.setDatabaseTable(getDefaultedString(rs.getString("DBMSTABLE"), ""));
-        pf.setDatabaseRowFormat(DbmsRowFmtOptId.fromdbcode(getDefaultedString(rs.getString("DBMSROWFMTCD"), "NONE")));
+        pf.setDatabaseRowFormat(DbmsRowFmtOptId.fromdbcode(getDefaultedString(rs.getString("DBMSROWFMTCD"), "DB2")));
         pf.setIncludeNulls(rs.getInt("DBMSINCLNULLSIND") == 0 ? false : true);
 		//Make sure these are not null
 		pf.setExtractDDName("");
 		pf.setDatabase("");
 		pf.setFieldDelimiter(FieldDelimiter.FIXEDWIDTH);
-		pf.setRecordDelimiter(RecordDelimiter.FIXED);
-		pf.setTextDelimiter(TextDelimiter.DOUBLEQUOTE);
+		pf.setRecordDelimiter(RecordDelimiter.CR);
+		pf.setTextDelimiter(TextDelimiter.INVALID);
         Repository.addPhysicalFileOnly(pf);
     }
 
@@ -144,7 +144,7 @@ public class DBPhysicalFileReader extends DBReaderBase {
     public void addToRepoByName(DatabaseConnection databaseConnection, DatabaseConnectionParams params, String pfName) {
         //Then get the PFs
         String pfRecs = "select * from " + params.getSchema() + ".PHYFILE "
-        + "where ENVIRONID= ? and NAME = ?;";
+        + "where ENVIRONID= ? and UPPER(name) = ?;";
         executeAndWriteToRepo(databaseConnection, pfRecs, params, pfName);
      }
 }

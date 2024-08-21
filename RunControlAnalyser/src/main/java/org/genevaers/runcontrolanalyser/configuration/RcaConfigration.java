@@ -35,6 +35,7 @@ public class RcaConfigration extends GersConfigration {
     public static final String XLT_REPORT_DDNAME = "XLTRPT";
     public static final String JLT_REPORT_DDNAME = "JLTRPT";
     public static final String VDP_REPORT_DDNAME = "VDPRPT";
+    public static final String REPORT_DDNAME = "RCARPT";
 
     public static final String RCA_DIR = "RCA/";
     public RcaConfigration() {
@@ -45,7 +46,7 @@ public class RcaConfigration extends GersConfigration {
         parmToValue.put(PARMFILE, new ConfigEntry(DEFAULT_PARM_FILENAME, true));
         parmToValue.put(ZOSPARMFILE, new ConfigEntry(DEFAULT_ZOSPARM_FILENAME, true));
         // parmToValue.put(REPORT_FILE, new ConfigEntry(REPORT_FILE, true));
-        parmToValue.put(LOG_FILE, new ConfigEntry("GRCALOG", true));
+        parmToValue.put(LOG_FILE, new ConfigEntry("RCALOG", true));
         parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", true));
         parmToValue.put(XLT_DDNAME, new ConfigEntry("XLT", true));
         parmToValue.put(JLT_DDNAME, new ConfigEntry("JLT", true));
@@ -53,6 +54,7 @@ public class RcaConfigration extends GersConfigration {
         parmToValue.put(XLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(JLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(VDP_REPORT, new ConfigEntry("N", false));
+        parmToValue.put(COMPARE, new ConfigEntry("N", false));
         parmToValue.put(RCA_REPORT, new ConfigEntry("N", false));
         parmToValue.put(REPORT_FORMAT, new ConfigEntry("TXT", false));
     }
@@ -83,6 +85,10 @@ public class RcaConfigration extends GersConfigration {
 
     public static boolean isRcaReport() {
         return parmToValue.get(RCA_REPORT).getValue().equalsIgnoreCase("Y");
+    }
+
+    public static boolean isCompare() {
+        return parmToValue.get(COMPARE).getValue().equalsIgnoreCase("Y");
     }
 
     public static String getReportFormat() {

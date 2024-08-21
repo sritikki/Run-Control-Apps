@@ -1,9 +1,9 @@
 ---
 name: "gvbrcgOnly"
 templates:
-  - name: "jcl/GRCGL.ftl"
+  - name: "jcl/RCGL.ftl"
     target: "${test}L.JCL"
     type: "JCL"
   - name: "cfg/mr91CFG.ftl"
-    target: "GRCGPARM"
+    target: "RCGPARM"
     type: "Config"

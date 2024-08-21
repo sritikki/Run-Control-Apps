@@ -56,11 +56,13 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
     @Override
     public LTFileObject getAssignmentEntry(ColumnAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        LTRecord ltr;
+        LTRecord ltr = null;
         if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
             ltr = (LTRecord)fcf.getCTC(value, lhs.getViewColumn());
         } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
-            ltr = (LTRecord)fcf.getDTC(value, lhs.getViewColumn());
+            if(lhs.getViewColumn().getFieldLength() > 0) {
+                ltr = (LTRecord)fcf.getDTC(value, lhs.getViewColumn());
+            }
         } else {
             ltr = (LTRecord)fcf.getSKC(value, lhs.getViewColumn());
             ViewSortKey sk = Repository.getViews().get(lhs.getViewColumn().getViewId()).getViewSortKeyFromColumnId(lhs.getViewColumn().getComponentId());
@@ -68,7 +70,9 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
             arg.setFieldLength(sk.getSkFieldLength());
             arg.setStartPosition(sk.getSkStartPosition());
         }
-        ltr.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
+        if(ltr != null) {
+            ltr.setSourceSeqNbr((short) (ltEmitter.getLogicTable().getNumberOfRecords()));
+        }
         return (LTFileObject) ltr;
     }
 

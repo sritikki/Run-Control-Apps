@@ -1,4 +1,4 @@
-package org.genevaers.runcontrolgenerator;
+package org.genevaers.runcontrolanalyser;
 
 
 
@@ -29,7 +29,7 @@ import java.util.Properties;
 import org.genevaers.genevaio.dbreader.DBFoldersReader;
 import org.genevaers.genevaio.dbreader.DBViewsReader;
 import org.genevaers.repository.Repository;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.GersFile;
 
@@ -43,7 +43,7 @@ public class ReportWriter {
 
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final static String REPORT_TEMPLATE = "RCGRPT.ftl";
+    private final static String REPORT_TEMPLATE = "RCARPT.ftl";
 
     private static final String LOCALROOT = "LOCALROOT";
 	private  Configuration cfg;
@@ -54,7 +54,7 @@ public class ReportWriter {
 
     private int vdpRecordsWritten;
 
-	public  void write(){
+	public  void write(int numVDPDiffs, int numXLTDiffs, int numJLTDiffs){
 		GersEnvironment.initialiseFromTheEnvironment();
 		configureFreeMarker();
         Template template;
@@ -68,29 +68,15 @@ public class ReportWriter {
             template = cfg.getTemplate(REPORT_TEMPLATE);
             Map<String, Object> nodeMap = new HashMap<>();
             nodeMap.put("env", "stuff");
-            nodeMap.put("parmsRead", RunControlConfigration.getLinesRead());
-            nodeMap.put("optsInEffect", RunControlConfigration.getOptionsInEffect());
-            nodeMap.put("dbfolders", DBFoldersReader.getLinesRead());
-            nodeMap.put("dbviews", DBViewsReader.getLinesRead());
-            nodeMap.put("runviews", RunControlConfigration.getRunviewsContents());
-            nodeMap.put("inputReports", Repository.getInputReports());
-            nodeMap.put("compErrs", Repository.getCompilerErrors());
-            nodeMap.put("warnings", Repository.getWarnings());
-            nodeMap.put("rcgversion", readVersion());
-            if(Repository.getCompilerErrors().isEmpty()) {
-                nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
-                nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
-                nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
-                nodeMap.put("views", Repository.getViews().getValues());
-                nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
-                nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getREHViewNumber()));
-                nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getRTHViewNumber()));
-                nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
-                nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
-            }
+            nodeMap.put("parmsRead", RcaConfigration.getLinesRead());
+            nodeMap.put("optsInEffect", RcaConfigration.getOptionsInEffect());
+            nodeMap.put("rcaversion", readVersion());
+            nodeMap.put("numVDPDiffs", numVDPDiffs);
+            nodeMap.put("numXLTDiffs", numXLTDiffs);
+            nodeMap.put("numJLTDiffs", numJLTDiffs);
 
-            logger.atInfo().log(RunControlConfigration.getReportFileName());
-            generateTemplatedOutput(template, nodeMap, RunControlConfigration.getReportFileName());
+            logger.atInfo().log(RcaConfigration.REPORT_DDNAME);
+            generateTemplatedOutput(template, nodeMap, RcaConfigration.REPORT_DDNAME);
         } catch (IOException e) {
             logger.atSevere().log("Report Writer error %s",e.getMessage());
         }

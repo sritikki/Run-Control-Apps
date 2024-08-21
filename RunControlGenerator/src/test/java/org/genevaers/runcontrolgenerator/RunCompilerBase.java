@@ -43,8 +43,8 @@ import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
-import org.genevaers.runcontrolgenerator.utility.Status;
 import org.genevaers.utilities.ParmReader;
+import org.genevaers.utilities.Status;
 
 import com.google.common.flogger.FluentLogger;
 

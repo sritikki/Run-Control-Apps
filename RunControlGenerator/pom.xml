@@ -101,7 +101,7 @@ under the License.
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>application.properties</include>
-					<include>GRCGRPT.ftl</include>
+					<include>RCGRPT.ftl</include>
 				</includes>
 			</resource>
 		</resources>

@@ -1,6 +1,7 @@
 package org.genevaers.rcapps;
 
 import org.genevaers.utilities.ParmReader;
+import org.genevaers.utilities.Status;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -27,7 +28,6 @@ import java.util.Properties;
 import org.genevaers.runcontrolanalyser.RCAApp;
 import org.genevaers.runcontrolgenerator.RCGApp;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.runcontrolgenerator.utility.Status;
 
 
 
@@ -55,7 +55,7 @@ public class Runner {
         }
         if(pr.analyserParmExists()) {
             RCAApp.run();
-            status = RCAApp.ranOkay() ? Status.OK : Status.ERROR;
+            status = RCAApp.ranOkay();
         } else {
             System.out.printf("Unable to find analyser arm file\n");
         }
@@ -70,6 +70,9 @@ public class Runner {
                 break;
             case WARNING:
                 System.exit(4);
+                break;
+            case DIFF:
+                System.exit(1);
                 break;
             default:
                 System.exit(0);

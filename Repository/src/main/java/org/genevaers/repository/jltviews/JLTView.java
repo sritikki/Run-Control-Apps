@@ -43,10 +43,13 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.ColumnSourceType;
 import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.JustifyId;
 import org.genevaers.repository.components.enums.OutputMedia;
 import org.genevaers.repository.components.enums.ViewStatus;
 import org.genevaers.repository.components.enums.ViewType;
+
+import com.google.common.flogger.FluentLogger;
 
 /**
  * Java MR91 deals only with plain lookups
@@ -72,6 +75,7 @@ import org.genevaers.repository.components.enums.ViewType;
  * 
  */
 public class JLTView {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     /**
      *
@@ -168,8 +172,8 @@ public class JLTView {
         refViewNum = JOINVIEWBASE + ddNum;
         vd.setComponentId(refViewNum);
         String ddname = String.format("REFR%03d", ddNum);
-        //TODO C++ has the input DDName as well
-        String name = "Generated to write " + ddname + " data";
+        String pfDdname = Repository.getLogicalFiles().get(lfid).getPFIterator().next().getInputDDName();
+        String name = String.format("Ref-phase work file %03d from %s",ddNum,  pfDdname);
         vd.setName(name);
         vd.setOutputMedia(OutputMedia.FILE);
         vd.setViewType(ViewType.EXTRACT);
@@ -200,10 +204,8 @@ public class JLTView {
     private void addPaddingIfNeeded(short genStartPos, ViewSource vs) {
         //genStartPos is the start of the next field
         //if it is on and multiple of 8 + 1 no padding needed
-        int padSize = 8 - (genStartPos-1) % 8;
-        if(padSize < 8) {
-            addPadToViewColumnSources(genStartPos, padSize, vs);
-        }
+        int padSize = (8 - (genStartPos-1) % 8)%8;
+        addPadToViewColumnSources(genStartPos, padSize, vs);
     }
 
     private void addPadToViewColumnSources(short genStartPos, int padSize, ViewSource vs) {
@@ -223,7 +225,7 @@ public class JLTView {
         vcs.setLogicText("Padding " + padSize);
         vs.addToColumnSourcesByNumber(vcs);
         colNum++;
-}
+    }
 
     private ViewSource addViewSource(int lfid) {
         ViewSource vs = new ViewSource();
@@ -247,21 +249,24 @@ public class JLTView {
         colNum = 1;
         while(fi.hasNext()) {
             LRField f = fi.next();
-            ViewColumn vc = vn.makeJLTColumn(f.getName(), colNum);
-            RepoHelper.setViewColumnFromLRField(vc, f);
-            ViewColumnSource vcs = new ViewColumnSource();
-            vcs.setColumnID(vc.getComponentId());
-            vcs.setColumnNumber(colNum);
-            vcs.setComponentId(colNum);
-            vcs.setSequenceNumber((short)1);
-            vcs.setSourceType(ColumnSourceType.EVENTLR);
-            vcs.setViewId(vn.getID());
-            vcs.setViewSourceId(vs.getComponentId());
-            vcs.setViewSrcLrFieldId(genFieldToRefField.get(f.getComponentId()).getComponentId());
-            vcs.setViewSrcLrId(genLR.getComponentId());
-            vcs.setLogicText("Ref from " + f.getName());
-            vs.addToColumnSourcesByNumber(vcs);
-            colNum++;
+                if(f.getName().startsWith("Quadword")) {
+                } else {
+                    ViewColumn vc = vn.makeJLTColumn(f.getName(), colNum);
+                    RepoHelper.setViewColumnFromLRField(vc, f);
+                    ViewColumnSource vcs = new ViewColumnSource();
+                    vcs.setColumnID(vc.getComponentId());
+                    vcs.setColumnNumber(colNum);
+                    vcs.setComponentId(colNum);
+                    vcs.setSequenceNumber((short)1);
+                    vcs.setSourceType(ColumnSourceType.EVENTLR);
+                    vcs.setViewId(vn.getID());
+                    vcs.setViewSourceId(vs.getComponentId());
+                    vcs.setViewSrcLrFieldId(genFieldToRefField.get(f.getComponentId()) != null ? genFieldToRefField.get(f.getComponentId()).getComponentId() : 0);
+                    vcs.setViewSrcLrId(genLR.getComponentId());
+                    vcs.setLogicText("Ref from " + f.getName());
+                        vs.addToColumnSourcesByNumber(vcs);
+                    colNum++;
+                }
         }       
     }
 
@@ -332,6 +337,27 @@ public class JLTView {
             }
             refFieldToRedField.put(refFld.getComponentId(), redFld);
         }
+        quadWordAlignAfter(genFld);
+        
+    }
+
+    private void quadWordAlignAfter(LRField genFld) {
+        int alignStartPosition = genFld.getStartPosition() + genFld.getLength();
+        int genLen = alignStartPosition - 1;
+        int alignmentLength = (8 - (genLen % 8))%8;
+        logger.atInfo().log("Generarion LR length %d", genLen);
+        logger.atInfo().log("Generarion LR needs alignment of %d", alignmentLength);
+        LRField alignField = Repository.makeNewField(genLR);
+        alignField.setName("QuadwordAlign");
+        alignField.setDatatype(DataType.ALPHANUMERIC);
+        alignField.setLength((short)alignmentLength);
+        alignField.setDateTimeFormat(DateCode.NONE);
+        alignField.setJustification(JustifyId.LEFT);
+        alignField.setStartPosition((short)alignStartPosition);
+        LRField genalignField = makeGenFld(alignField);
+        genFieldToRefField.put(genalignField.getComponentId(), alignField);
+        genLR.addToFieldsByID(alignField);
+        genLR.addToFieldsByName(alignField);
     }
 
     private LRField makeGenFld(LRField refFld) {

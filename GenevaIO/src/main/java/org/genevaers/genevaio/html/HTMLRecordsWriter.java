@@ -38,6 +38,7 @@ import static j2html.TagCreator.tr;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,8 +51,10 @@ import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
 import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.ViewFieldNode;
+import org.genevaers.utilities.GersFile;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.common.flogger.StackSize;
 
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
 
@@ -64,7 +67,7 @@ import j2html.tags.specialized.TrTag;
 public abstract class HTMLRecordsWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	
-	private  FileWriter fw;
+	private  Writer fw;
 	private  final String POPUP = "w3-modal-content w3-animate-zoom";
 	 String toggleScript = "function toggleDiv(divname) {" +
 			"var ele = document.getElementById(divname);" +
@@ -87,26 +90,30 @@ public abstract class HTMLRecordsWriter {
 
 	public  void writeFromRecordNodes( MetadataNode recordsRoot, String filename) {
 
-		File output = new File(filename);
-		try {
-			
-			fw = new FileWriter(output);
-			fw.write(
-					html(
-							head(
-									meta().withContent("text/html; charset=UTF-8"),
-									link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/w3css/4/w3.css"),
-									link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/lib/w3-colors-flat.css"),
-									link().withRel("stylesheet").withType("text/css").withHref("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
-									script(join(toggleScript)).withLang("Javascript")
-							),
-							body(
-									bodyContent(recordsRoot)
-							)).withStyle("overflow-x: scroll").renderFormatted());
+		try(Writer tfw = new GersFile().getWriter(filename)) {
+			fw = tfw;
+			writeFile(recordsRoot);
 			fw.close();
+			logger.atInfo().log("HTMLRecordsWriter closed");
 		} catch (IOException e) {
 			logger.atSevere().log("HTMLRecordsWriter failed\n%s", e.getMessage());
 		}
+	}
+
+	private void writeFile(MetadataNode recordsRoot) throws IOException {
+		fw.write(
+				html(
+						head(
+								meta().withContent("text/html; charset=UTF-8"),
+								link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/w3css/4/w3.css"),
+								link().withRel("stylesheet").withType("text/css").withHref("https://www.w3schools.com/lib/w3-colors-flat.css"),
+								link().withRel("stylesheet").withType("text/css").withHref("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"),
+								script(join(toggleScript)).withLang("Javascript")
+						),
+						body(
+								bodyContent(recordsRoot)
+						)).withStyle("overflow-x: scroll").renderFormatted());
+		fw.close();
 	}
 	
 	private  DivTag bodyContent(MetadataNode recordsRoot) {

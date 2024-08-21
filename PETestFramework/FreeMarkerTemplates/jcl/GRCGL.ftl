@@ -22,18 +22,18 @@
 //SYSIN     DD *
 <#macro qualifiedTest>
 ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
- DELETE  <@qualifiedTest/>.GRCG.JLT PURGE
+ DELETE  <@qualifiedTest/>.RCG.JLT PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
 
- DELETE  <@qualifiedTest/>.GRCG.VDP PURGE
+ DELETE  <@qualifiedTest/>.RCG.VDP PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
 
- DELETE  <@qualifiedTest/>.GRCG.XLT PURGE
+ DELETE  <@qualifiedTest/>.RCG.XLT PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
- DELETE  <@qualifiedTest/>.GRCGLOG PURGE
+ DELETE  <@qualifiedTest/>.RCGLOG PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
 //*********************************************************************
@@ -71,7 +71,7 @@ export APPGIT=${env["GERS_GIT_REPO_DIR"]}/Run-Control-Apps
 export APPTRG=RCApps                                                        
 export BASE=$APPGIT/$APPTRG                                                     
 export APP_HOME=$BASE/target                                                    
-export APP_NAME=rcapps-1.1.0_RC2-jar-with-dependencies.jar                      
+export APP_NAME=rcapps-1.1.0_RC3-jar-with-dependencies.jar                      
 export CLASSPATH=$APP_HOME:"$JAVA_HOME"/lib                                     
                                                                                 
 LIBPATH=/lib:/usr/lib:"$JAVA_HOME"/bin                                          
@@ -105,39 +105,39 @@ export IBM_JAVA_OPTIONS="$IJO "
 //*
 //*        INPUTS
 //*
-//WBXMLI   DD DISP=SHR,DSN=<@qualifiedTest/>.GRCG.XMLS
-//GRCGPARM DD DISP=SHR,DSN=<@qualifiedTest/>.PARM(GRCGPARM) 
+//WBXMLI   DD DISP=SHR,DSN=<@qualifiedTest/>.RCG.XMLS
+//RCGPARM DD DISP=SHR,DSN=<@qualifiedTest/>.PARM(RCGPARM) 
 <#if test.runviews??>
 //RUNVIEWS  DD *  
 ${test.runviews}</#if>
 //*
 //*        OUTPUT FILES
 //*
-//VDP      DD DSN=<@qualifiedTest/>.GRCG.VDP,
+//VDP      DD DSN=<@qualifiedTest/>.RCG.VDP,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=8192,BLKSIZE=0)
 //*
-//JLT      DD DSN=<@qualifiedTest/>.GRCG.JLT,
+//JLT      DD DSN=<@qualifiedTest/>.RCG.JLT,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(TRK,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=4004,BLKSIZE=32036)
 //*
-//XLT      DD DSN=<@qualifiedTest/>.GRCG.XLT,
+//XLT      DD DSN=<@qualifiedTest/>.RCG.XLT,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=4004,BLKSIZE=32036)
-//GRCGRPT  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
-//GRCGLOG  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
+//RCGRPT  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
+//RCGLOG  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
 //*
 //*******************************************************************
 //* SUBMIT NEXT JOB
 //*******************************************************************
 <#if test.mr91only?matches("Y")>
-//* GRCG only run - stop here
+//* RCG only run - stop here
 //
 </#if>
 //*

@@ -78,9 +78,9 @@ public class LazyDBReader implements CompilerDataProvider {
     @Override
     public Integer findPFAssocID(String lfName, String pfName) {
         DBLogicalFileReader lfReader = new DBLogicalFileReader();
-        lfReader.addToRepoByName(databaseConnection, params, lfName);
+        lfReader.addToRepoByName(databaseConnection, params, lfName.toUpperCase());
         DBPhysicalFileReader pFileReader = new DBPhysicalFileReader();
-        pFileReader.addToRepoByName(databaseConnection, params, pfName);
+        pFileReader.addToRepoByName(databaseConnection, params, pfName.toUpperCase());
         LogicalFile lf = Repository.getLogicalFiles().get(lfName);
         if(lf != null) {
             PhysicalFile pf = Repository.getPhysicalFiles().get(pfName);

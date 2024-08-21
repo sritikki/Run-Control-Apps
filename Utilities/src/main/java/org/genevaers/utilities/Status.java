@@ -1,4 +1,4 @@
-package org.genevaers.runcontrolgenerator.utility;
+package org.genevaers.utilities;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -20,6 +20,7 @@ package org.genevaers.runcontrolgenerator.utility;
 
 public enum Status {
     OK,
+    DIFF,
     WARNING,
     ERROR;
 }

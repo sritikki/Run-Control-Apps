@@ -24,7 +24,7 @@ package org.genevaers.runcontrolgenerator.repositorybuilders;
 import org.genevaers.genevaio.vdpxml.VDPXMLSaxIterator;
 import org.genevaers.repository.data.InputReport;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.runcontrolgenerator.utility.Status;
+import org.genevaers.utilities.Status;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;

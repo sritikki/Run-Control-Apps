@@ -1,7 +1,7 @@
 <#assign aDateTime = .now>
 <#assign aDate = aDateTime?date>
 <#assign aTime = aDateTime?time>
-~GRCGRPT
+~RCGRPT
  
 GenevaERS - The Single-Pass Optimization Engine
 (https://genevaers.org)
@@ -15,7 +15,7 @@ Built:           ${rcgversion}
  
 Executed:        ${aDate} : ${aTime}
  
-Report DD Name:  GRCGRPT
+Report DD Name:  RCGRPT
 Report Title:    GVBRCG Control Report
  
  
@@ -25,7 +25,7 @@ Report Sections:
  
     Tag    Section name
     -----  ------------------------------------------------------
-    ~PARM  Contents of GRCGPARM file
+    ~PARM  Contents of RCGPARM file
     ~OPTS  Options in effect
     ~DFOL  Contents of DBFLDRS file
     ~RUNV  Contents of RUNVIEWS file
@@ -42,7 +42,7 @@ Report Sections:
  
  
 ==================================
-~PARM - Contents of GRCGPARM file:
+~PARM - Contents of RCGPARM file:
 ==================================
 
 <#list parmsRead as parm>

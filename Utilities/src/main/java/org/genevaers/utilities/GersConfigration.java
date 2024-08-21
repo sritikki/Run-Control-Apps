@@ -35,11 +35,11 @@ public class GersConfigration {
 
     private static List<String> linesRead = new ArrayList<>();
 
-    public static final String RCG_BASENAME = "GRCG";
-    public static final String RCA_BASENAME = "GRCA";
+    public static final String RCG_BASENAME = "RCG";
+    public static final String RCA_BASENAME = "RCA";
 
-    public static final String RCG_PARM_FILENAME = "GRCGPARM";
-    public static final String DEFAULT_ZOSPARM_FILENAME = "GRCGPARM";
+    public static final String RCG_PARM_FILENAME = "RCGPARM";
+    public static final String DEFAULT_ZOSPARM_FILENAME = "RCGPARM";
 
     public static final String RCA_PARM_FILENAME = RCA_BASENAME + "PARM";
 
@@ -49,9 +49,12 @@ public class GersConfigration {
     public static final String LOG_LEVEL = "LOG_LEVEL";
     public static final String LOG_FILE = "LOGFILE";
 
-    public static final String XLT_DDNAME = "XLT";
-    public static final String JLT_DDNAME = "JLT";
-    public static final String VDP_DDNAME = "VDP";
+    public static final String XLT_DDNAME = "XLTNEW";
+    public static final String JLT_DDNAME = "JLTNEW";
+    public static final String VDP_DDNAME = "VDPNEW";
+    public static final String XLTOLD_DDNAME = "XLTOLD";
+    public static final String JLTOLD_DDNAME = "JLTOLD";
+    public static final String VDPOLD_DDNAME = "VDPOLD";
     
     public static final String XLT_REPORT = "XLT_REPORT";
     public static final String JLT_REPORT = "JLT_REPORT";
@@ -199,5 +202,9 @@ public class GersConfigration {
 
     protected static String getCWDPrefix() {
 		return getCurrentWorkingDirectory().length() > 0 ? getCurrentWorkingDirectory() + "/" : "";
+    }
+
+    public static void clear() {
+        parmToValue.clear();
     }
 }
