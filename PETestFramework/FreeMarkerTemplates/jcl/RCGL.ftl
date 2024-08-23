@@ -113,19 +113,19 @@ ${test.runviews}</#if>
 //*
 //*        OUTPUT FILES
 //*
-//VDP      DD DSN=<@qualifiedTest/>.RCG.VDP,
+//VDPNEW   DD DSN=<@qualifiedTest/>.RCG.VDP,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=8192,BLKSIZE=0)
 //*
-//JLT      DD DSN=<@qualifiedTest/>.RCG.JLT,
+//JLTNEW   DD DSN=<@qualifiedTest/>.RCG.JLT,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(TRK,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=4004,BLKSIZE=32036)
 //*
-//XLT      DD DSN=<@qualifiedTest/>.RCG.XLT,
+//XLTNEW   DD DSN=<@qualifiedTest/>.RCG.XLT,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
