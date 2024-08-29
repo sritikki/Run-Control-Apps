@@ -471,7 +471,7 @@ public class VDPTextWriter extends TextRecordWriter {
 			if(n.getParent().getState() == ComparisonState.CPPONLY) {
 				n.setState(ComparisonState.CPPONLY);
 			}
-			writeField(n, fw);
+			writeField(n, fw, compareMode);
 		}
 	}
 
