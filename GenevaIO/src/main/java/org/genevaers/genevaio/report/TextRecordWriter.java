@@ -90,11 +90,11 @@ public abstract class TextRecordWriter {
 			break;
 			case ORIGINAL:
 			if(compareMode) {
-				retval = "Missing";
+				retval = "New    ";
 			}
 			break;
 			case NEW:
-			retval = "Added  ";
+			retval = "Old    ";
 			break;
 			case CHANGED:
 				break;
