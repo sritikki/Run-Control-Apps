@@ -41,6 +41,7 @@ public class RunControlWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private LogicTable extractLogicTable;
     private LogicTable joinLogicTable;
+    private Status status = Status.OK;
 
     private int numVDPRecords;
 
@@ -61,6 +62,7 @@ public class RunControlWriter {
             xltw.close();
         } catch (IOException e) {
             logger.atSevere().log("LT write failed %s", e.getMessage());
+            status = Status.ERROR;
         }
         VDPFileWriter vdpw = new VDPFileWriter();
         vdpw.open(RunControlConfigration.getVdpFileName());
@@ -72,8 +74,9 @@ public class RunControlWriter {
             logger.atInfo().log("VDP Written");
         } catch (Exception e) {
             logger.atSevere().log("VDP write failed %s", e.getMessage());
+            status = Status.ERROR;
         }
-        return Status.OK;
+        return status;
 	}
 
     private VDPManagementRecords makeVDPManagementRecords() {

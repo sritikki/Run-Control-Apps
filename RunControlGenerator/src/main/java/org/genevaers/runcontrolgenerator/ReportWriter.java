@@ -32,6 +32,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.GersFile;
+import org.genevaers.utilities.Status;
 
 import com.google.common.flogger.FluentLogger;
 import freemarker.template.Configuration;
@@ -54,7 +55,7 @@ public class ReportWriter {
 
     private int vdpRecordsWritten;
 
-	public  void write(){
+	public  void write(Status status){
 		GersEnvironment.initialiseFromTheEnvironment();
 		configureFreeMarker();
         Template template;
@@ -77,6 +78,7 @@ public class ReportWriter {
             nodeMap.put("compErrs", Repository.getCompilerErrors());
             nodeMap.put("warnings", Repository.getWarnings());
             nodeMap.put("rcgversion", readVersion());
+            nodeMap.put("status", status.toString());
             if(Repository.getCompilerErrors().isEmpty()) {
                 nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
                 nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
