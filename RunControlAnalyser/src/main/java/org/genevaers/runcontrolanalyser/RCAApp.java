@@ -65,7 +65,7 @@ public class RCAApp {
             logger.atSevere().log("Unable to read PARM file");
         }
         GenevaLog.closeLogger(RunControlAnalyser.class.getName());
-        if(ranOkay != Status.OK) {
+        if(ranOkay == Status.OK) {
             System.out.println("Run control analyser completed");
         } else {
             System.out.println("Run control analyser failed. See log for details.");

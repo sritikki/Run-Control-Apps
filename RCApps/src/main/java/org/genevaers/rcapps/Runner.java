@@ -55,7 +55,7 @@ public class Runner {
         }
         if(pr.analyserParmExists()) {
             RCAApp.run();
-            status = RCAApp.ranOkay();
+            status = status == Status.OK ? RCAApp.ranOkay() : status;
         } else {
             System.out.printf("Unable to find analyser arm file\n");
         }

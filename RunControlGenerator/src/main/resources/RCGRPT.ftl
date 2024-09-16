@@ -179,7 +179,10 @@ Number of reference-phase views: ${numrefviews!0?c?left_pad(11)}
 Number of extract-phase views:   ${numextviews!0?c?left_pad(11)}
  
 <#if compErrs?size == 0> 
-Process completed successfully
+Compilation completed successfully
 <#else>
 There were errors. No Run Control Files written.
 </#if>
+
+Overall Status: ${status}
+See log file for details.
