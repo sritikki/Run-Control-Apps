@@ -99,7 +99,7 @@ class RunCompilerArithTests extends RunCompilerBase {
      }
 
      @Test void testFieldTimesConstant() {
-        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Binary1} * 3");
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = (((({Binary1} * 3))))");
         String[] expected = new String[]{ "DIMN", "SETE", "MULC", "DTA" };
         int expectedGotos[][] = {{}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
