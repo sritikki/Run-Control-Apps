@@ -8,6 +8,7 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
@@ -57,9 +58,10 @@ public class StringAtomAST extends FormattedASTNode implements GenevaERSValue, A
     public LTFileObject getAssignmentEntry(ColumnAST lhs, ExtractBaseAST rhs) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         LTRecord ltr = null;
-        if(currentViewColumn.getExtractArea() == ExtractArea.AREACALC) {
+        ViewColumn vc = lhs.getViewColumn();
+        if(vc.getExtractArea() == ExtractArea.AREACALC) {
             ltr = (LTRecord)fcf.getCTC(value, lhs.getViewColumn());
-        } else if(currentViewColumn.getExtractArea() == ExtractArea.AREADATA) {
+        } else if(vc.getExtractArea() == ExtractArea.AREADATA) {
             if(lhs.getViewColumn().getFieldLength() > 0) {
                 ltr = (LTRecord)fcf.getDTC(value, lhs.getViewColumn());
             }
