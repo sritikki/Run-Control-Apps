@@ -320,22 +320,54 @@ class RunCompilerArithTests extends RunCompilerBase {
         assertEquals("Ginger", dtc.getArg().getValue().getString());
     }
 
-    //     //This gets us into the whole Cookie debacle 
-    // @Test void testRundayAssignment() throws IOException {
-    //     LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = RUNDAY()");
-    //     String[] expected = new String[]{ "DTC" };
-    //     int expectedGotos[][] = {{}};
-    //     TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-    //     LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(4);
-    //     assertEquals("Ginger", dtc.getArg().getValue());
-    // }
-
-    @Test void testNumricConstAssignment() {
-        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, "COLUMN = 25");
-        String[] expected = new String[]{ "DTC" };
-        int expectedGotos[][] = {{}};
+    // This gets us into the whole Cookie debacle
+    @Test
+    void testRundayAssignment() throws IOException {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = RUNDAY()");
+        String[] expected = new String[] { "DTC" };
+        int expectedGotos[][] = { {} };
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(4);
+        LogicTableF1 dtc = (LogicTableF1) xlt.getFromPosition(4);
+        assertEquals("RUNDAY(0)", dtc.getArg().getValue().getPrintString());
+    }
+
+    @Test
+    void testNegativeRundayAssignment() throws IOException {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = RUNDAY(-3)");
+        String[] expected = new String[] { "DTC" };
+        int expectedGotos[][] = { {} };
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 dtc = (LogicTableF1) xlt.getFromPosition(4);
+        assertEquals("RUNDAY(-3)", dtc.getArg().getValue().getPrintString());
+    }
+
+    @Test
+    void testFiscaldayAssignment() throws IOException {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = FISCALDAY(6)");
+        String[] expected = new String[] { "DTC" };
+        int expectedGotos[][] = { {} };
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 dtc = (LogicTableF1) xlt.getFromPosition(4);
+        assertEquals("FISCALDAY(6)", dtc.getArg().getValue().getPrintString());
+    }
+
+    @Test
+    void testNegativeFiscaldayAssignment() throws IOException {
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = FISCALDAY(-9)");
+        String[] expected = new String[] { "DTC" };
+        int expectedGotos[][] = { {} };
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 dtc = (LogicTableF1) xlt.getFromPosition(4);
+        assertEquals("FISCALDAY(-9)", dtc.getArg().getValue().getPrintString());
+    }
+
+    @Test
+    void testNumricConstAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12044, TestHelper.ONE_COL_LOOKUP, "COLUMN = 25");
+        String[] expected = new String[] { "DTC" };
+        int expectedGotos[][] = { {} };
+        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
+        LogicTableF1 dtc = (LogicTableF1) xlt.getFromPosition(4);
         assertEquals("25", dtc.getArg().getValue().getString());
     }
 
