@@ -1573,12 +1573,13 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         colarg.setFieldFormat(vc.getDataType());
         colarg.setFieldId(0);
         //TODO the start pos is dependent on extract type
-        colarg.setStartPosition(vc.getExtractAreaPosition());
         colarg.setOrdinalPosition(vc.getOrdinalPosition());
         if(vc.getExtractArea() == ExtractArea.AREACALC) {
+            colarg.setStartPosition(vc.getExtractAreaPosition());
             colarg.setFieldLength((short)12);
         } else {
             colarg.setFieldLength(vc.getFieldLength());
+            colarg.setStartPosition(vc.getStartPosition());
         }
         colarg.setJustifyId(vc.getJustifyId() == null ? JustifyId.NONE : vc.getJustifyId());
         colarg.setSignedInd(vc.isSigned());
