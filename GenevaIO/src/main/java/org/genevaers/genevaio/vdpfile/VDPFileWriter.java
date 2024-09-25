@@ -119,6 +119,7 @@ public class VDPFileWriter {
 	    logger.atInfo().log("------------------");
 	    logger.atInfo().log("Write View %d", view.getID());
 		writeViewDefinition(view.getViewDefinition());
+		
 		ViewManagementData vmd = vdpMgmtRecs.getViewManagmentData(view.getViewDefinition().getComponentId());
 		// if(vmd.getFormatFile() == null) {
 		// 	makeViewFormatRecord(view);  //This is a silly name for the view output record (basically its DDname)
@@ -456,9 +457,16 @@ public class VDPFileWriter {
 		vcl.setSequenceNbr((short) 0);
 		vcl.setRecordId(vcs.getComponentId());
 		vcl.setInputFileId(vcs.getComponentId());
-		vcl.setLogicLength((short) cl.length());
-		vcl.setRecLen((short) (26 + cl.length()));
-		vcl.setLogic(cl);
+        if(cl.length() > 8162) {
+			vcl.setLogicLength((short) 8162);
+			vcl.setRecLen((short) (26 + 8162));
+			vcl.setLogic(cl.substring(0, 8162));
+            logger.atWarning().log("Truncating logic text record for view %s column %d, length was %d", vcs.getViewId(), vcs.getColumnNumber(), cl.length());
+        } else {
+			vcl.setLogicLength((short) cl.length());
+			vcl.setRecLen((short) (26 + cl.length()));
+			vcl.setLogic(cl);
+        }
 		vcl.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.setLengthFromPosition(); //Need this for the variable length records
 		VDPWriter.writeAndClearTheRecord();
