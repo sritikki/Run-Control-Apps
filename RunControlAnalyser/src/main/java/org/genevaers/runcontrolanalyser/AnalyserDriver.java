@@ -35,6 +35,7 @@ import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.report.LogicTableTextWriter;
 import org.genevaers.genevaio.report.VDPTextWriter;
+import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolanalyser.configuration.RcaConfigration;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.GersConfigration;
@@ -77,6 +78,7 @@ public class AnalyserDriver {
 				generateJltPrint(root);
 			}
 			if (RcaConfigration.isVdpReport()) {
+				Repository.clearAndInitialise();
 				generateVdpPrint(root);
 			}
 			if (RcaConfigration.isRcaReport()) {
