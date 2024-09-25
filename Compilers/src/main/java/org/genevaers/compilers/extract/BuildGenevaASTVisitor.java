@@ -24,6 +24,7 @@ import java.util.List;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.genevaers.compilers.extract.astnodes.ASTFactory;
+import org.genevaers.compilers.extract.astnodes.AllAST;
 import org.genevaers.compilers.extract.astnodes.BetweenFunc;
 import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
 import org.genevaers.genevaio.dataprovider.CompilerDataProvider;
@@ -293,8 +294,6 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         return fnd;
      }
   
-  
-
     public ExtractBaseAST visitADataSource(GenevaERSParser.ADataSourceContext ctx) {
         return this.visitChildren(ctx);
      }
@@ -883,6 +882,13 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         btw.addChildIfNotNull(visit(ctx.getChild(4)));
         return btw;
      }
+
+     @Override public ExtractBaseAST  visitAll(GenevaERSParser.AllContext ctx) { 
+        AllAST allAst = null;
+        allAst = (AllAST) ASTFactory.getNodeOfType(ASTFactory.Type.ALL);
+        allAst.setValue(ctx.string().getText().replace("\"", ""));
+        return allAst ; 
+    }
 
     public void setViewColumnSource(ViewColumnSource viewColumnSource) {
         this.viewColumnSource = viewColumnSource;
