@@ -46,9 +46,8 @@ public class RCAApp {
         ParmReader pr = new ParmReader();
         RcaConfigration rcac = new RcaConfigration();
         GersConfigration.setCurrentWorkingDirectory(cwd);
-        pr.setConfig(rcac);
         try {
-            pr.populateConfigFrom(GersConfigration.getParmFileName());
+            pr.populateConfigFrom(GersConfigration.RCA_PARM_FILENAME);
             GersConfigration.setLinesRead(pr.getLinesRead());
             GenevaLog.initLogger(RunControlAnalyser.class.getName(), RcaConfigration.getLogFileName(), GersConfigration.getLogLevel());
             logger.atInfo().log("GenevaERS Run Control Analyser %s", AnalyserDriver.readVersion());

@@ -47,19 +47,11 @@ public class RCGApp {
 		System.out.printf("GenevaERS RunControlGenerator version %s\n", "tbd");
 		System.out.printf("Java Vendor %s\n", System.getProperty("java.vendor"));
 		System.out.printf("Java Version %s\n", System.getProperty("java.version"));
-        if(args.length == 2) {
-            if(args[0].equals("rc")) {
-                //use name as prefix
-                String trgDir = args[1];
-                RCGApp.run("", trgDir + ".rpt", trgDir + ".log", trgDir + ".VDP", trgDir + ".XLT", trgDir + ".JLT");
-            }
-        } else {
-            RCGApp.run("", "", RunControlConfigration.LOG_FILE, "", "", "");
-        }
+        RCGApp.run();
         exitWithRC();
     } 
 
-    public static void run(String parmFile, String reportFile, String logFile, String vdpFile, String xltFile, String jltFile) {
+    public static void run() {
         FormatRecordsBuilder.reset();
         Repository.clearAndInitialise();
         FormatBaseAST.resetStack();
@@ -70,26 +62,22 @@ public class RCGApp {
         RecordParser.clearAndInitialise();
 
         RunControlGenerator rcg = new RunControlGenerator();
-        ParmReader pr = new ParmReader();
-        pr.setConfig(new RunControlConfigration());
-        RunControlConfigration.overrideParmFile(parmFile);
-        RunControlConfigration.overrideReportFile(reportFile);
-        RunControlConfigration.overrideLogFile(logFile);
-        GersConfigration.overrideVDPFile(vdpFile);
-        GersConfigration.overrideXLTFile(xltFile);
-        GersConfigration.overrideJLTFile(jltFile);
-        GersConfigration.setCurrentWorkingDirectory(cwd);
-        try {
-            pr.populateConfigFrom(RunControlConfigration.getParmFileName());
-            GersConfigration.setLinesRead(pr.getLinesRead());
-            if(RunControlConfigration.isValid()) {
-                GenevaLog.initLogger(RunControlGenerator.class.getName(), RunControlConfigration.getLogFileName(), GersConfigration.getLogLevel());
-                result = rcg.runFromConfig();
-            } else {
-                logger.atSevere().log("Invalid configuration processing stopped");
-            }
-        } catch (IOException e) {
-            logger.atSevere().log("Unable to read PARM file");
+        // ParmReader pr = new ParmReader();
+        // pr.setConfig(new RunControlConfigration());
+        // RunControlConfigration.overrideParmFile(parmFile);
+        // RunControlConfigration.overrideReportFile(reportFile);
+        // RunControlConfigration.overrideLogFile(logFile);
+        // GersConfigration.overrideVDPFile(vdpFile);
+        // GersConfigration.overrideXLTFile(xltFile);
+        // GersConfigration.overrideJLTFile(jltFile);
+        //GersConfigration.setCurrentWorkingDirectory(cwd);
+        // pr.populateConfigFrom(RunControlConfigration.getParmFileName());
+        // GersConfigration.setLinesRead(pr.getLinesRead());
+        if(RunControlConfigration.isValid()) {
+            GenevaLog.initLogger(RunControlGenerator.class.getName(), GersConfigration.getLogFileName(), GersConfigration.getLogLevel());
+            result = rcg.runFromConfig();
+        } else {
+            logger.atSevere().log("Invalid configuration processing stopped");
         }
         GenevaLog.closeLogger(RunControlGenerator.class.getName());
     }

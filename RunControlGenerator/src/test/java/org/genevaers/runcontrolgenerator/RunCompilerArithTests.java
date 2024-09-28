@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 
 import org.genevaers.compilers.base.ASTBase;
+import org.genevaers.compilers.extract.ExtractCompiler;
 import org.genevaers.compilers.extract.astnodes.ASTFactory;
 import org.genevaers.compilers.extract.astnodes.ColumnAssignmentASTNode;
 import org.genevaers.compilers.extract.astnodes.ErrorAST;
@@ -30,6 +31,7 @@ import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.GersConfigration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -72,6 +74,8 @@ class RunCompilerArithTests extends RunCompilerBase {
         RecordParser.clearAndInitialise();
         java.nio.file.Path target = Paths.get("target/test-logs/");
         target.toFile().mkdirs();
+        GersConfigration.clear();
+        GersConfigration.initialise();
         GenevaLog.initLogger(RunCompilerArithTests.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);
     }
 
@@ -302,11 +306,8 @@ class RunCompilerArithTests extends RunCompilerBase {
 
 
     @Test void testFieldAssignment() throws IOException {
-        TestHelper.setupWithOneColumnView();
-        readConfigAndBuildRepo();
-        TestHelper.setColumn1Logic(9956, "COLUMN = {ZONED}");
-        RunControlConfigration.setDotFilter("9956", "1,2", "N");
-        ExtractBaseAST root = (ExtractBaseAST)CompileAndGenerateDots();
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {ZONED}");
+        ExtractBaseAST root = ExtractPhaseCompiler.getXltRoot();
         ColumnAssignmentASTNode colAss = (ColumnAssignmentASTNode) root.getChildNodesOfType(ASTFactory.Type.COLUMNASSIGNMENT).get(0);
         assertEquals("ZONED", ((FieldReferenceAST)colAss.getFirstLeafNode()).getName());
     }
@@ -372,20 +373,15 @@ class RunCompilerArithTests extends RunCompilerBase {
     }
 
     @Test void testNoneExistingFieldAssignment() throws IOException {
-        TestHelper.setupWithOneColumnView();
-        readConfigAndBuildRepo();
-        TestHelper.setColumn1Logic(9956, "COLUMN = {Rubbish}");
-        RunControlConfigration.setDotFilter("9956", "1", "N");
-        ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = {Rubbish}");
+        GersConfigration.setDotFilter("9956", "1", "N");
+        ExtractBaseAST root = ExtractPhaseCompiler.getXltRoot();
         assertTrue(Repository.getCompilerErrors().size() > 0);
     }
 
     @Test void testBadSyntaxAssignment() throws IOException {
-        TestHelper.setupWithOneColumnView();
-        readConfigAndBuildRepo();
-        TestHelper.setColumn1Logic(9956, "COLUMN = oops}");
-        RunControlConfigration.setDotFilter("9956", "1", "N");
-        ExtractBaseAST root = (ExtractBaseAST) CompileAndGenerateDots();
+        LogicTable xlt = runFromXMLOverrideLogic(9956, TestHelper.ONE_COL, "COLUMN = oops}");
+        ExtractBaseAST root = ExtractPhaseCompiler.getXltRoot();
         assertTrue(Repository.getCompilerErrors().size() > 0);
     }
 

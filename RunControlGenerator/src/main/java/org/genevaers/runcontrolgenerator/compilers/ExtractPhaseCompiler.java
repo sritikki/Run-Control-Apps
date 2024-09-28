@@ -53,6 +53,7 @@ import org.genevaers.repository.components.ViewSource;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Status;
 import org.genevaers.visualisation.GraphVizRunner;
 
@@ -160,10 +161,10 @@ public class ExtractPhaseCompiler {
 
 
 	private static void writeXLTDotIfEnabled() {
-		if(RunControlConfigration.isXltDotEnabled()) {
-			ExtractAST2Dot.setFilter(RunControlConfigration.getViewDots().length() >0 || RunControlConfigration.getColumnDots().length()>0);
-			ExtractAST2Dot.setViews(RunControlConfigration.getViewDots().split(","));
-			ExtractAST2Dot.setCols(RunControlConfigration.getColumnDots().split(","));
+		if(GersConfigration.isXltDotEnabled()) {
+			ExtractAST2Dot.setFilter(GersConfigration.getViewDots().length() >0 || GersConfigration.getColumnDots().length()>0);
+			ExtractAST2Dot.setViews(GersConfigration.getViewDots().split(","));
+			ExtractAST2Dot.setCols(GersConfigration.getColumnDots().split(","));
 			ExtractAST2Dot.write(extractRoot, Paths.get("target/XLT.dot"));
 		}
 	}
@@ -172,7 +173,7 @@ public class ExtractPhaseCompiler {
 		lg.getLfID();
 		LFAstNode lfNode = (LFAstNode)ASTFactory.getNodeOfType(ASTFactory.Type.LF);
 		lfNode.setLogicalFile(lg.getLogicalFile());
-		if(RunControlConfigration.isPFDotEnabled()) {
+		if(GersConfigration.isPFDotEnabled()) {
 			addPFNodes(lfNode);
 		} else {
 			extractRoot.addChildIfNotNull(lfNode);
@@ -300,7 +301,7 @@ public class ExtractPhaseCompiler {
 	}
 
 	private static void writeJltDotIfEnabled() {
-		if(RunControlConfigration.isJltDotEnabled()) {
+		if(GersConfigration.isJltDotEnabled()) {
         	ExtractAST2Dot.write(joinsRoot, Paths.get("target/JLT.dot"));
 		}
 	}

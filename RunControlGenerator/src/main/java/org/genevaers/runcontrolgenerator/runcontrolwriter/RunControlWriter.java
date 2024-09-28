@@ -33,6 +33,7 @@ import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Status;
 
 import com.google.common.flogger.FluentLogger;
@@ -55,17 +56,17 @@ public class RunControlWriter {
         LTWriter jltw = new LTWriter();
         try {
             logger.atInfo().log("Write Join Logic Table");
-            jltw.write(joinLogicTable, Paths.get(RunControlConfigration.getJLTFileName()));
+            jltw.write(joinLogicTable, Paths.get(GersConfigration.getJLTFileName()));
             jltw.close();
             logger.atInfo().log("Write Extract Logic Table");
-            xltw.write(extractLogicTable, Paths.get(RunControlConfigration.getXLTFileName()));
+            xltw.write(extractLogicTable, Paths.get(GersConfigration.getXLTFileName()));
             xltw.close();
         } catch (IOException e) {
             logger.atSevere().log("LT write failed %s", e.getMessage());
             status = Status.ERROR;
         }
         VDPFileWriter vdpw = new VDPFileWriter();
-        vdpw.open(RunControlConfigration.getVdpFileName());
+        vdpw.open(GersConfigration.getVDPFileName());
         VDPManagementRecords vmrs = makeVDPManagementRecords();
         try {
             vdpw.writeVDPFrom(vmrs);
@@ -133,7 +134,7 @@ public class RunControlWriter {
     }
 
     private void setNumberNode(VDPGenerationRecord gen) {
-        if(RunControlConfigration.isNumberModeStandard()) {
+        if(GersConfigration.isNumberModeStandard()) {
             gen.setMaxDecimalDigits((byte)23);
             gen.setMaxDecimalPlaces((byte)8);
         } else {

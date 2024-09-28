@@ -30,6 +30,7 @@ import org.genevaers.genevaio.dbreader.DBFoldersReader;
 import org.genevaers.genevaio.dbreader.DBViewsReader;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.GersFile;
 import org.genevaers.utilities.Status;
@@ -69,8 +70,8 @@ public class ReportWriter {
             template = cfg.getTemplate(REPORT_TEMPLATE);
             Map<String, Object> nodeMap = new HashMap<>();
             nodeMap.put("env", "stuff");
-            nodeMap.put("parmsRead", RunControlConfigration.getLinesRead());
-            nodeMap.put("optsInEffect", RunControlConfigration.getOptionsInEffect());
+            nodeMap.put("parmsRead", GersConfigration.getLinesRead());
+            nodeMap.put("optsInEffect", GersConfigration.getOptionsInEffect());
             nodeMap.put("dbfolders", DBFoldersReader.getLinesRead());
             nodeMap.put("dbviews", DBViewsReader.getLinesRead());
             nodeMap.put("runviews", RunControlConfigration.getRunviewsContents());
@@ -91,8 +92,8 @@ public class ReportWriter {
                 nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
             }
 
-            logger.atInfo().log(RunControlConfigration.getReportFileName());
-            generateTemplatedOutput(template, nodeMap, RunControlConfigration.getReportFileName());
+            logger.atInfo().log(GersConfigration.getReportFileName());
+            generateTemplatedOutput(template, nodeMap, GersConfigration.getReportFileName());
         } catch (IOException e) {
             logger.atSevere().log("Report Writer error %s",e.getMessage());
         }

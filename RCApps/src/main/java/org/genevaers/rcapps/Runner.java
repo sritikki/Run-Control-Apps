@@ -1,5 +1,6 @@
 package org.genevaers.rcapps;
 
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.ParmReader;
 import org.genevaers.utilities.Status;
 
@@ -27,9 +28,6 @@ import java.util.Properties;
 
 import org.genevaers.runcontrolanalyser.RCAApp;
 import org.genevaers.runcontrolgenerator.RCGApp;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-
-
 
 public class Runner {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -44,20 +42,20 @@ public class Runner {
     } 
      
     private static void choose() {
-        new RunControlConfigration();
+        GersConfigration.initialise();
         ParmReader pr = new ParmReader();
-        if(pr.generatorParmExists()) {
-            System.out.printf("Running Run Control Generator\n");
-            RCGApp.run("", "", RunControlConfigration.LOG_FILE, "", "", "");
-            status = RCGApp.getResult();
+        if(pr.RCAParmExists()) {
+            System.out.printf("Reading Run Control Parm\n");
+            if(GersConfigration.generatorRunRequested()) {
+                RCGApp.run();
+                status = RCGApp.getResult();
+            }
+            if(status != Status.ERROR && GersConfigration.analyserRunRequested())  {
+                RCAApp.run();
+                status = status == Status.OK ? RCAApp.ranOkay() : status;    
+            }
         } else {
             System.out.printf("Unable to find generator parm file\n");
-        }
-        if(pr.analyserParmExists()) {
-            RCAApp.run();
-            status = status == Status.OK ? RCAApp.ranOkay() : status;
-        } else {
-            System.out.printf("Unable to find analyser arm file\n");
         }
         String res = status == Status.OK ? "OK" : "with issues";
         System.out.printf("GenevaERS RunControls completed %s\n", res);

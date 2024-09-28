@@ -31,6 +31,7 @@ import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.GersConfigration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -75,6 +76,8 @@ class RunCompilerTest extends RunCompilerBase {
         LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();
         java.nio.file.Path target = Paths.get("target/test-logs/");
         target.toFile().mkdirs();
+        GersConfigration.clear();
+        GersConfigration.initialise();
         GenevaLog.initLogger(RunCompilerTest.class.getName(), target.resolve(info.getDisplayName()).toString(), Level.FINE);
     }
 

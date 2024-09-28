@@ -56,7 +56,7 @@ public class RCDriver {
     }
 
     public static void addViewsToConfig(String viewIDs) {
-        RunControlConfigration.set(RunControlConfigration.DBVIEWS, viewIDs);
+        GersConfigration.set(GersConfigration.DBVIEWS, viewIDs);
     }
 
     public static void setDbType(String dbt) {
@@ -109,7 +109,7 @@ public class RCDriver {
         writeRCGParms();
         RCGApp.setCurrentWorkingDirectory(relPath);
         logger.atInfo().log("Run RCG from %s", relPath );
-        RCGApp.run("", "", "", "", "", "");
+        RCGApp.run();
     }
 
     private static void runRCG(CommandRunner cmd) {
@@ -127,18 +127,18 @@ public class RCDriver {
     //Option to use workbench XML instead
     private static void writeRCGParms() {
         logger.atInfo().log("Write RCGParms to %s", rcPath.toString() );
-        try (FileWriter fw = new FileWriter(rcPath.resolve(RunControlConfigration.RCG_PARM_FILENAME).toFile())) {
+        try (FileWriter fw = new FileWriter(rcPath.resolve(GersConfigration.RCA_PARM_FILENAME).toFile())) {
             fw.write("# Auto generated Run Control Generator Parms\n");
             if(inputType.equals("WBXML")) {
-                fw.write(RunControlConfigration.INPUT_TYPE +"=" + inputType + "\n");
+                fw.write(GersConfigration.INPUT_TYPE +"=" + inputType + "\n");
             } else {
-                fw.write(RunControlConfigration.INPUT_TYPE + "=" + inputType + "\n");
-                fw.write(RunControlConfigration.ENVIRONMENT_ID + "=" + environmentID + "\n");
-                fw.write(RunControlConfigration.DB_SCHEMA + "=" + schema + "\n");
-                fw.write(RunControlConfigration.DB_PORT + "=" + port + "\n");
-                fw.write(RunControlConfigration.DB_SERVER + "=" + server + "\n");
-                fw.write(RunControlConfigration.DB_DATABASE + "=" + database + "\n");
-                fw.write(RunControlConfigration.DBVIEWS + "="+ dbviews + "\n");
+                fw.write(GersConfigration.INPUT_TYPE + "=" + inputType + "\n");
+                fw.write(GersConfigration.ENVIRONMENT_ID + "=" + environmentID + "\n");
+                fw.write(GersConfigration.DB_SCHEMA + "=" + schema + "\n");
+                fw.write(GersConfigration.DB_PORT + "=" + port + "\n");
+                fw.write(GersConfigration.DB_SERVER + "=" + server + "\n");
+                fw.write(GersConfigration.DB_DATABASE + "=" + database + "\n");
+                fw.write(GersConfigration.DBVIEWS + "="+ dbviews + "\n");
             }
             fw.close();
         } catch (IOException e) {

@@ -27,7 +27,6 @@ import com.google.common.flogger.FluentLogger;
 public class ParmReader {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	GersConfigration rcc;
 	List<String> linesRead = new ArrayList<>();
 
 	public enum PARM_RESULT {
@@ -35,10 +34,6 @@ public class ParmReader {
 	}
 
 	PARM_RESULT result = PARM_RESULT.OK;
-
-	public void setConfig(GersConfigration rcc) {
-		this.rcc = rcc;
-	}
 
 	public void populateConfigFrom(String parmName) throws IOException {
 		try(BufferedReader br = new BufferedReader(new GersFile().getReader(parmName))) {
@@ -68,8 +63,8 @@ public class ParmReader {
 				String value = parts[1].trim();
 				// There may be comments or something after the value
 				String[] values = value.split(" ");
-				if (rcc.isParmExpected(parmName)) {
-					rcc.addParmValue(parmName, values[0].trim());
+				if (GersConfigration.isParmExpected(parmName)) {
+					GersConfigration.addParmValue(parmName, values[0].trim());
 				} else {
 					result = PARM_RESULT.WARN_IGNORED;
 					logger.atWarning().log("Ignoring unknown parm %s=%s", parmName, values[0].trim());
@@ -87,11 +82,7 @@ public class ParmReader {
 		return linesRead;
 	}
 
-	public boolean generatorParmExists() {
-		return new GersFile().exists(GersConfigration.RCG_PARM_FILENAME);
-	}
-
-	public boolean analyserParmExists() {
+	public boolean RCAParmExists() {
 		return new GersFile().exists(GersConfigration.RCA_PARM_FILENAME);
 	}
 

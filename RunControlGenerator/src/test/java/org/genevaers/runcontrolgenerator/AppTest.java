@@ -1,6 +1,5 @@
 package org.genevaers.runcontrolgenerator;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /*
@@ -22,22 +21,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 import java.io.File;
+import java.io.IOException;
 
 import org.genevaers.genevaio.wbxml.RecordParser;
-import org.genevaers.genevaio.wbxml.RecordParserData;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
+import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.ParmReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class AppTest {
     
+    private ParmReader pr;
+
     @BeforeEach
     public void initEach(){
         ExtractPhaseCompiler.reset();
         Repository.clearAndInitialise();
         RecordParser.clearAndInitialise();
+        GersConfigration.clear();
+        GersConfigration.initialise();
     }
 
     @Test public void testOneColumnLookup() {
@@ -57,7 +62,7 @@ public class AppTest {
         //Or that can be an addon
         //We'll need lookups with multiple steps and multiple source keys of different types
         TestHelper.setupWithView("OneColLookup.xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -70,7 +75,7 @@ public class AppTest {
 
     @Test public void testOneColumnWriteExit() {
         TestHelper.setupWithView("OneColWriteExit[12052].xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -83,7 +88,7 @@ public class AppTest {
 
     @Test public void testDemo1() {
         TestHelper.setupWithView("V0010689.xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+         RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -96,7 +101,7 @@ public class AppTest {
 
     @Test public void testDemo3() {
         TestHelper.setupWithView("V0010702.xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -109,7 +114,7 @@ public class AppTest {
 
     @Test public void testIfAndOrFieldFromWBXML() {
         TestHelper.setupWithView("IfANDORField.xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -121,7 +126,7 @@ public class AppTest {
 
     @Test public void testIfOrFieldFromWBXML() {
         TestHelper.setupWithView("IfORField.xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -133,7 +138,7 @@ public class AppTest {
 
     @Test public void testIfANDFieldFromWBXML() {
         TestHelper.setupWithView("IfANDField.xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -144,7 +149,7 @@ public class AppTest {
 
     @Test public void testIfFieldFromWBXML() {
         TestHelper.setupWithView("IfField.xml");
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -154,8 +159,8 @@ public class AppTest {
     }
 
     @Test public void testXLTWrittenFromWBXML() {
-        TestHelper.setupWithOneColumnView();
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        TestHelper.setupWithView(TestHelper.ONE_COL);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -166,7 +171,7 @@ public class AppTest {
 
     @Test public void testDTEFromWBXML() {
         TestHelper.setupWithView(TestHelper.DTCDTE);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -177,7 +182,7 @@ public class AppTest {
 
     @Test public void testSelectIFDTEFromWBXML() {
         TestHelper.setupWithView(TestHelper.SELECTIF);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -188,7 +193,7 @@ public class AppTest {
 
     @Test public void testOrderSalesFromWBXML() {
         TestHelper.setupWithView(TestHelper.ORDER_SALES);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -199,7 +204,7 @@ public class AppTest {
 
     @Test public void testOrderStateSalesFromWBXML() {
         TestHelper.setupWithView(TestHelper.STATE_SALES);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -210,7 +215,7 @@ public class AppTest {
 
     @Test public void testDemoExtractWithLookupsFromWBXML() {
         TestHelper.setupWithView(TestHelper.DEMO_LOOKUPS);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -221,7 +226,7 @@ public class AppTest {
 
     @Test public void testDemoProdStateFromWBXML() {
         TestHelper.setupWithView(TestHelper.PROD_STATE);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -232,7 +237,7 @@ public class AppTest {
 
     @Test @Disabled
     public void testDBGeneration() {
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -244,7 +249,7 @@ public class AppTest {
     @Test 
     public void testFormatFilter() {
         TestHelper.setupWithView(TestHelper.FORMAT_COMPILE);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -256,7 +261,7 @@ public class AppTest {
     @Test 
     public void testSortKeyTitleLookup() {
         TestHelper.setupWithView(TestHelper.SKT_LOOKUP);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -268,7 +273,7 @@ public class AppTest {
     @Test 
     public void testLookupExit() {
         TestHelper.setupWithView(TestHelper.LOOKUP_EXIT);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -280,7 +285,7 @@ public class AppTest {
     @Test 
     public void testMergeAss() {
         TestHelper.setupWithView(TestHelper.MERGESS);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();
@@ -292,7 +297,7 @@ public class AppTest {
     @Test 
     public void testArithAll() {
         TestHelper.setupWithView(TestHelper.ALL_ARITH);
-        RCGApp.run(TestHelper.TEST_PARMNAME, TestHelper.TEST_REPORTNAME, TestHelper.TEST_LOGNAME, TestHelper.TEST_VDP, TestHelper.TEST_XLT, TestHelper.TEST_JLT);
+        RCGApp.run();
         File report = TestHelper.getReport();
         assertTrue(report.exists());
         File logfile = TestHelper.getLog();

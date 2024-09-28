@@ -43,6 +43,7 @@ import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.SinglePassOptimiser;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.ParmReader;
 import org.genevaers.utilities.Status;
 
@@ -59,9 +60,8 @@ class RunCompilerBase {
 
     protected void readConfigAndBuildRepo() {
         pr = new ParmReader();
-        pr.setConfig(new RunControlConfigration());
         try {
-            pr.populateConfigFrom(TestHelper.getTestParmName());
+            pr.populateConfigFrom(GersConfigration.getParmFileName());
             RepositoryBuilder rb = RepositoryBuilderFactory.get();
             Status retval = rb.run();
             assertEquals(Status.OK, retval);
@@ -74,9 +74,9 @@ class RunCompilerBase {
     }
 
     protected ASTBase CompileAndGenerateDots() {
-        ExtractAST2Dot.setFilter(RunControlConfigration.isXltDotEnabled());
-        ExtractAST2Dot.setViews(RunControlConfigration.getViewDots().split(","));
-        ExtractAST2Dot.setCols(RunControlConfigration.getColumnDots().split(","));
+        ExtractAST2Dot.setFilter(GersConfigration.isXltDotEnabled());
+        ExtractAST2Dot.setViews(GersConfigration.getViewDots().split(","));
+        ExtractAST2Dot.setCols(GersConfigration.getColumnDots().split(","));
         ExtractAST2Dot.writeRawSources(TestHelper.getMR91origdotPath());
         SinglePassOptimiser spo = new SinglePassOptimiser();
         spo.run();
@@ -98,10 +98,11 @@ class RunCompilerBase {
     protected LogicTable runFromXMLOverrideLogic(int viewNum, String fileName, String logic) {
         TestHelper.setupWithView(fileName);
         readConfigAndBuildRepo();
-        if (logic.length() > 0)
+        if (logic.length() > 0) {
             TestHelper.setColumn1Logic(viewNum, logic);
-        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
-        RunControlConfigration.setJltDotFilter("", "", "");
+        }
+        GersConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
+        GersConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
         return ExtractPhaseCompiler.getExtractLogicTable();
     }
@@ -112,8 +113,8 @@ class RunCompilerBase {
         if (logic.length() > 0){
             TestHelper.setColumnNLogic(viewNum, logic, c);
         }
-        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
-        RunControlConfigration.setJltDotFilter("", "", "");
+        GersConfigration.setDotFilter(Integer.toString(viewNum), "", "N");
+        GersConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
         return ExtractPhaseCompiler.getExtractLogicTable();
     }
@@ -124,8 +125,8 @@ class RunCompilerBase {
         if (logic.length() > 0) {
             TestHelper.setExtractFilter(viewNum, logic);
         }
-        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1,2", "N");
-        RunControlConfigration.setJltDotFilter("", "", "");
+        GersConfigration.setDotFilter(Integer.toString(viewNum), "1,2", "N");
+        GersConfigration.setJltDotFilter("", "", "");
         CompileAndGenerateDots();
         return ExtractPhaseCompiler.getExtractLogicTable();
     }
@@ -136,7 +137,7 @@ class RunCompilerBase {
         if (logic.length() > 0) {
             TestHelper.setOutputLogic(viewNum, logic);
         }
-        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
+        GersConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
         CompileAndGenerateDots();
         return ExtractPhaseCompiler.getExtractLogicTable();
     }
@@ -147,7 +148,7 @@ class RunCompilerBase {
         if (logic.length() > 0) {
             TestHelper.setFormatFilter(viewNum, logic);
         }
-        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
+        GersConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
 
         return FormatRecordsBuilder.run();
     }
@@ -158,7 +159,7 @@ class RunCompilerBase {
         if (logic.length() > 0) {
             TestHelper.setColumnCalculation(viewNum, colNum, logic);
         }
-        RunControlConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
+        GersConfigration.setDotFilter(Integer.toString(viewNum), "1", "N");
         FormatBaseAST.setCurrentView(viewNum);
         return FormatRecordsBuilder.run();
     }
