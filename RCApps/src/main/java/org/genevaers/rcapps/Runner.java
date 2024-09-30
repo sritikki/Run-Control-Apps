@@ -33,7 +33,7 @@ import org.genevaers.runcontrolgenerator.RCGApp;
 
 public class Runner {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-	private static Status status = Status.ERROR;
+	private static Status status = Status.OK;
 
     public static void main(String[] args) {
 		System.out.printf("GenevaERS RunControls version %s\n", Runner.getVersion());
