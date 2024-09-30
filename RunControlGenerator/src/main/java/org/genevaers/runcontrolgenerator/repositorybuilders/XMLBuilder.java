@@ -27,7 +27,6 @@ import java.util.Collection;
 
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.data.InputReport;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.GersFile;
 import org.genevaers.utilities.GersFilesUtils;

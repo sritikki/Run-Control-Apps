@@ -24,13 +24,11 @@ package org.genevaers.runcontrolgenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Set;
 
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.IdsReader;
 import org.genevaers.utilities.ParmReader;

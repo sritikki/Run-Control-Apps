@@ -1,7 +1,5 @@
 package org.genevaers.runcontrolgenerator;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Calendar;
 
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
@@ -11,10 +9,7 @@ import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
-import org.genevaers.utilities.GenevaLog;
 import org.genevaers.utilities.GersConfigration;
-import org.genevaers.utilities.ParmReader;
 import org.genevaers.utilities.Status;
 
 /*
@@ -62,24 +57,11 @@ public class RCGApp {
         RecordParser.clearAndInitialise();
 
         RunControlGenerator rcg = new RunControlGenerator();
-        // ParmReader pr = new ParmReader();
-        // pr.setConfig(new RunControlConfigration());
-        // RunControlConfigration.overrideParmFile(parmFile);
-        // RunControlConfigration.overrideReportFile(reportFile);
-        // RunControlConfigration.overrideLogFile(logFile);
-        // GersConfigration.overrideVDPFile(vdpFile);
-        // GersConfigration.overrideXLTFile(xltFile);
-        // GersConfigration.overrideJLTFile(jltFile);
-        //GersConfigration.setCurrentWorkingDirectory(cwd);
-        // pr.populateConfigFrom(RunControlConfigration.getParmFileName());
-        // GersConfigration.setLinesRead(pr.getLinesRead());
-        if(RunControlConfigration.isValid()) {
-            GenevaLog.initLogger(RunControlGenerator.class.getName(), GersConfigration.getLogFileName(), GersConfigration.getLogLevel());
+        if(GersConfigration.isRCGValid()) {
             result = rcg.runFromConfig();
         } else {
             logger.atSevere().log("Invalid configuration processing stopped");
         }
-        GenevaLog.closeLogger(RunControlGenerator.class.getName());
     }
 
     public static Status getResult() {

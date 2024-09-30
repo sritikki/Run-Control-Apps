@@ -31,7 +31,6 @@ import org.genevaers.genevaio.vdpfile.VDPGenerationRecord;
 import org.genevaers.genevaio.vdpfile.VDPManagementRecords;
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 import org.genevaers.repository.Repository;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GenevaLog;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Status;
@@ -111,7 +110,7 @@ public class RunControlWriter {
         gen.setDate(dateFormat.format(dt));
         gen.setRunDate(dateFormat1.format(dt));
         gen.setTime(timeFormat.format(dt));
-        gen.setDescription("Java MR91 via " + RunControlConfigration.getInputType());
+        gen.setDescription("Java MR91 via " + GersConfigration.getInputType());
         gen.setPadding4("");
         gen.setPadding5("");
         setNumberNode(gen);

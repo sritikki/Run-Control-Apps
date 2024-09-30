@@ -113,6 +113,7 @@ public class GersConfigration {
     private static boolean zos;
 
     public static void initialise() {
+        clear();
 		String os = System.getProperty("os.name");
 		logger.atFine().log("Operating System %s", os);
 		zos = os.startsWith("z");
@@ -132,8 +133,8 @@ public class GersConfigration {
         parmToValue.put(PF_DOTS, new ConfigEntry("N", true));
         parmToValue.put(DOT_FORMAT, new ConfigEntry("N", true));
 
-        parmToValue.put(GENERATE, new ConfigEntry("Y", true));
-        parmToValue.put(INPUT_TYPE, new ConfigEntry("", true));
+        parmToValue.put(GENERATE, new ConfigEntry("Y", false));
+        parmToValue.put(INPUT_TYPE, new ConfigEntry("", false));
 
         parmToValue.put(XLT_DDNAME, new ConfigEntry("XLTNEW", true));
         parmToValue.put(JLT_DDNAME, new ConfigEntry("JLTNEW", true));
@@ -417,5 +418,27 @@ public class GersConfigration {
     
     public static String getRelativeVDPReport() {
         return isZos() ? VDP_REPORT_DDNAME : "../" + VDP_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+
+    public static boolean isRCGValid() {
+        boolean valid = true;
+        switch(parmToValue.get(INPUT_TYPE).getValue()) {
+            case "WBXML":
+            break;
+            case "VDPXML":
+            break;
+            case "DB2":
+            break;
+            case "POSTGRES":
+            break;
+            default:
+                valid = false;
+
+        }
+        return valid;
+    }
+
+    public static String getInputType() {
+        return parmToValue.get(INPUT_TYPE).getValue();
     }
 }

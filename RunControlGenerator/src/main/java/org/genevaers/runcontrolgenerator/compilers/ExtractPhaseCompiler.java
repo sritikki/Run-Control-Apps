@@ -50,7 +50,6 @@ import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewSource;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.ViewSourceWrapper;
 import org.genevaers.utilities.GersConfigration;
@@ -233,7 +232,7 @@ public class ExtractPhaseCompiler {
 
 	private static void compileExtractOutputLogic(ViewSourceAstNode vsnode) {
 		boolean runEOC = true;
-		if(RunControlConfigration.getInputType().equalsIgnoreCase("VDPXML")) {
+		if(GersConfigration.getInputType().equalsIgnoreCase("VDPXML")) {
 			if(noWriteStatementMissing(vsnode)) {
 				runEOC = false; //There must have been a write in the last column so don't generate write
 			} else {

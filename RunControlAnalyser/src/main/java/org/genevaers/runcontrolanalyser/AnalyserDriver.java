@@ -84,9 +84,9 @@ public class AnalyserDriver {
 				generateRcaPrint(root);
 			}
 		}
-		report.write(numVDPDiffs, numXLTDiffs, numJLTDiffs);
-		report.
-		setStatus(numVDPDiffs, numXLTDiffs, numJLTDiffs);
+		// report.write(numVDPDiffs, numXLTDiffs, numJLTDiffs);
+		// report.
+		// setStatus(numVDPDiffs, numXLTDiffs, numJLTDiffs);
 		return status;
 	}
 
@@ -348,10 +348,6 @@ public class AnalyserDriver {
     	String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		generation = String.format("Generated %s version %s",formattedDate, version);
 		return generation;
-	}
-
-	public static void setReport(RCAReportWriter report) {
-		AnalyserDriver.report = report;
 	}
 
 	public static int getNumVDPDiffs() {

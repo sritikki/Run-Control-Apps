@@ -22,7 +22,6 @@ package org.genevaers.runcontrolgenerator.repositorybuilders;
 
 import org.genevaers.genevaio.wbxml.WBXMLSaxIterator;
 import org.genevaers.repository.data.InputReport;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersConfigration;
 
 import com.google.common.flogger.FluentLogger;

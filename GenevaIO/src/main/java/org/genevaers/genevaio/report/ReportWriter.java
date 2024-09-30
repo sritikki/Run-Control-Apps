@@ -1,4 +1,4 @@
-package org.genevaers.runcontrolgenerator;
+package org.genevaers.genevaio.report;
 
 
 
@@ -22,6 +22,7 @@ package org.genevaers.runcontrolgenerator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -29,7 +30,6 @@ import java.util.Properties;
 import org.genevaers.genevaio.dbreader.DBFoldersReader;
 import org.genevaers.genevaio.dbreader.DBViewsReader;
 import org.genevaers.repository.Repository;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.GersFile;
@@ -45,18 +45,18 @@ public class ReportWriter {
 
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-    private final static String REPORT_TEMPLATE = "RCGRPT.ftl";
+    private final static String REPORT_TEMPLATE = "RCApps.ftl";
 
     private static final String LOCALROOT = "LOCALROOT";
-	private  Configuration cfg;
+	private static  Configuration cfg;
 
-    private int jltRecordsWritten;
+    private static int jltRecordsWritten;
+    private static int xltRecordsWritten;
+    private static int vdpRecordsWritten;
 
-    private int xltRecordsWritten;
+    private static Status rcgStatus = Status.ERROR;
 
-    private int vdpRecordsWritten;
-
-	public  void write(Status status){
+	public static void write(Status status){
 		GersEnvironment.initialiseFromTheEnvironment();
 		configureFreeMarker();
         Template template;
@@ -70,16 +70,17 @@ public class ReportWriter {
             template = cfg.getTemplate(REPORT_TEMPLATE);
             Map<String, Object> nodeMap = new HashMap<>();
             nodeMap.put("env", "stuff");
+            nodeMap.put("generate", GersConfigration.generatorRunRequested());
             nodeMap.put("parmsRead", GersConfigration.getLinesRead());
             nodeMap.put("optsInEffect", GersConfigration.getOptionsInEffect());
             nodeMap.put("dbfolders", DBFoldersReader.getLinesRead());
             nodeMap.put("dbviews", DBViewsReader.getLinesRead());
-            nodeMap.put("runviews", RunControlConfigration.getRunviewsContents());
+            nodeMap.put("runviews", Repository.getRunviews());
             nodeMap.put("inputReports", Repository.getInputReports());
             nodeMap.put("compErrs", Repository.getCompilerErrors());
             nodeMap.put("warnings", Repository.getWarnings());
             nodeMap.put("rcgversion", readVersion());
-            nodeMap.put("status", status.toString());
+            nodeMap.put("status", rcgStatus.toString());
             if(Repository.getCompilerErrors().isEmpty()) {
                 nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
                 nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
@@ -101,7 +102,7 @@ public class ReportWriter {
 	}
 
 
-	private  void generateTemplatedOutput(Template template, Map<String, Object> nodeMap, String reportFileName) {
+	private static  void generateTemplatedOutput(Template template, Map<String, Object> nodeMap, String reportFileName) {
         try(Writer fw = new GersFile().getWriter(reportFileName)) {
 	    	template.process(nodeMap, fw);
 		} catch (IOException | TemplateException e) {
@@ -110,29 +111,29 @@ public class ReportWriter {
     }
 
 
-    private  void configureFreeMarker() {
+    private  static void configureFreeMarker() {
 		cfg = new Configuration(Configuration.VERSION_2_3_31);
-        cfg.setClassForTemplateLoading(this.getClass(), "/");
+        cfg.setClassForTemplateLoading(ReportWriter.class, "/");
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 	}
 
 
-    public void setNumJLTRecordsWritten(int numberOfRecords) {
+    public static void setNumJLTRecordsWritten(int numberOfRecords) {
         jltRecordsWritten = numberOfRecords;
     }
 
 
-    public void setNumXLTRecordsWritten(int numberOfRecords) {
+    public static void setNumXLTRecordsWritten(int numberOfRecords) {
         xltRecordsWritten = numberOfRecords;
     }
 
 
-    public void setNumVDPRecordsWritten(int numberOfRecords) {
+    public static void setNumVDPRecordsWritten(int numberOfRecords) {
         vdpRecordsWritten = numberOfRecords;
     }
 
-	public String readVersion() {
+	public static String readVersion() {
 		String version = "unknown";
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties();
@@ -145,5 +146,7 @@ public class ReportWriter {
 		return version;
 	}
 
-
+    public static void setRCGStatus(Status s) {
+        rcgStatus = s;
+    }
 }

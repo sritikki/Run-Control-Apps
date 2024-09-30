@@ -21,24 +21,18 @@ package org.genevaers.runcontrolgenerator;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.compilers.extract.astnodes.ExtractAST2Dot;
-import org.genevaers.compilers.format.FormatAST2Dot;
 import org.genevaers.compilers.format.astnodes.FormatBaseAST;
-import org.genevaers.genevaio.ltfile.LTFileObject;
-import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.runcontrolgenerator.compilers.FormatRecordsBuilder;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilder;
 import org.genevaers.runcontrolgenerator.repositorybuilders.RepositoryBuilderFactory;
 import org.genevaers.runcontrolgenerator.singlepassoptimiser.LogicGroup;

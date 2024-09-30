@@ -1,5 +1,6 @@
 package org.genevaers.rcapps;
 
+import org.genevaers.utilities.GenevaLog;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.ParmReader;
 import org.genevaers.utilities.Status;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.genevaers.genevaio.report.ReportWriter;
 import org.genevaers.runcontrolanalyser.RCAApp;
 import org.genevaers.runcontrolgenerator.RCGApp;
 
@@ -42,10 +44,13 @@ public class Runner {
     } 
      
     private static void choose() {
-        GersConfigration.initialise();
+       GersConfigration.initialise();
         ParmReader pr = new ParmReader();
         if(pr.RCAParmExists()) {
             System.out.printf("Reading Run Control Parm\n");
+            pr.populateConfigFrom(GersConfigration.getParmFileName());
+            GenevaLog.initLogger(Runner.class.getName(), GersConfigration.getLogFileName(), GersConfigration.getLogLevel());
+            GersConfigration.setLinesRead(pr.getLinesRead());
             if(GersConfigration.generatorRunRequested()) {
                 RCGApp.run();
                 status = RCGApp.getResult();
@@ -57,8 +62,10 @@ public class Runner {
         } else {
             System.out.printf("Unable to find generator parm file\n");
         }
+        ReportWriter.write(status);
         String res = status == Status.OK ? "OK" : "with issues";
         System.out.printf("GenevaERS RunControls completed %s\n", res);
+        GenevaLog.closeLogger(Runner.class.getName());
     }
 
     private static void exitWithRC() {

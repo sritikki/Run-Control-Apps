@@ -17,9 +17,9 @@ import org.genevaers.genevaio.dbreader.PostgresConnection;
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.wbxml.RecordParser;
 import org.genevaers.repository.Repository;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.runcontrolgenerator.workbenchinterface.WorkbenchCompiler;
 import org.genevaers.utilities.GenevaLog;
+import org.genevaers.utilities.GersConfigration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -69,7 +69,7 @@ import com.google.common.flogger.FluentLogger;
 
   @BeforeEach
   public void initEach(TestInfo info) {
-    new RunControlConfigration();
+    GersConfigration.initialise();
     Repository.setGenerationTime(Calendar.getInstance().getTime());
     RecordParser.clearAndInitialise();
     LtFactoryHolder.getLtFunctionCodeFactory().clearAccumulatorMap();

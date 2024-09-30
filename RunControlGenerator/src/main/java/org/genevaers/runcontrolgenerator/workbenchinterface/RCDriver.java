@@ -23,13 +23,10 @@ package org.genevaers.runcontrolgenerator.workbenchinterface;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.apache.commons.io.FileUtils;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolanalyser.RCAApp;
 import org.genevaers.runcontrolgenerator.RCGApp;
-import org.genevaers.runcontrolgenerator.configuration.RunControlConfigration;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.GersConfigration;
 
@@ -51,7 +48,7 @@ public class RCDriver {
     private static String rcaTextType;
 
     public static void initialise() {
-        new RunControlConfigration();
+        GersConfigration.initialise();
         Repository.clearAndInitialise();
     }
 

@@ -27,22 +27,24 @@ Report Sections:
     -----  ------------------------------------------------------
     ~PARM  Contents of RCGPARM file
     ~OPTS  Options in effect
+<#if generate> 
     ~DFOL  Contents of DBFLDRS file
-    ~RUNV  Contents of RUNVIEWS file
     ~DVWS  Contents of DBVIEWS file
-    ~OINI  Contents of DSNAOINI file
     ~RUNV  Contents of RUNVIEWS file
     ~VIEW  Views selected
+</#if>
     ~IFIL  Input files
     ~OFIL  Output files
+<#if generate> 
     ~REFW  Reference Work Files
     ~WRNS  SAFR compiler warnings
     ~ERRS  SAFR compiler errors
+</#if>
     ~EXEC  Execution summary
  
  
 ==================================
-~PARM - Contents of RCGPARM file:
+~PARM - Contents of RCAPARM file:
 ==================================
 
 <#list parmsRead as parm>
@@ -58,6 +60,8 @@ ${parm}
 ${opt}
 </#list>
  
+<#if generate> 
+
 ==================================
 ~DFOL - Contents of DBFLDRS file:
 ==================================
@@ -167,12 +171,14 @@ ${err.viewid?c?left_pad(7)} ${err.source?right_pad(12)} ${err.srcLR?c?left_pad(7
 </#list>
 </#if>
 
+</#if>
  
  
 ==========================
 ~EXEC - Execution summary:
 ==========================
  
+<#if generate> 
 Number of warnings:              ${warnings?size!0?c?left_pad(11)}
 Number of errors:                ${compErrs?size!0?c?left_pad(11)}
 Number of reference-phase views: ${numrefviews!0?c?left_pad(11)}
@@ -181,7 +187,8 @@ Number of extract-phase views:   ${numextviews!0?c?left_pad(11)}
 <#if compErrs?size == 0> 
 Compilation completed successfully
 <#else>
-There were errors. No Run Control Files written.
+There were compilation errors. No Run Control Files written.
+</#if>
 </#if>
 
 Overall Status: ${status}
