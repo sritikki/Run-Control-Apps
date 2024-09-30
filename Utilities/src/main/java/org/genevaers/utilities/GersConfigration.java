@@ -100,6 +100,11 @@ public class GersConfigration {
     public static final String COMPARE = "COMPARE";
     public static final String COVERAGE = "COVERAGE";
 
+    public static final String XLT_REPORT_DDNAME = "XLTRPT";
+    public static final String JLT_REPORT_DDNAME = "JLTRPT";
+    public static final String VDP_REPORT_DDNAME = "VDPRPT";
+    public static final String REPORT_DDNAME = "RCARPT";
+
     public static final String RCA_RUNNAME = "gvbrca";
     public static final String RCA_HTMLREPORTFILENAME = RCA_REPORTDIR + RCA_RUNNAME + ".html";
     
@@ -381,4 +386,36 @@ public class GersConfigration {
 	public static String getJLTFileName() {
         return getCWDPrefix() + JLT_DDNAME;
 	}
+
+    public static boolean isCompare() {
+        return parmToValue.get(COMPARE).getValue().equalsIgnoreCase("Y");
+    }
+
+    public static String getReportFormat() {
+        return parmToValue.get(REPORT_FORMAT).getValue();
+    }
+    
+    public static String getXLTReportName() {
+        return isZos() ? XLT_REPORT_DDNAME : getCWDPrefix() + XLT_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getJLTReportName() {
+        return isZos() ? JLT_REPORT_DDNAME : getCWDPrefix() + JLT_REPORT_DDNAME + "." + parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getVDPReportName() {
+        return isZos() ? VDP_REPORT_DDNAME : getCWDPrefix() + VDP_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getRelativeXLTReport() {
+        return isZos() ? XLT_REPORT_DDNAME : "../" + XLT_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getRelativeJLTReport() {
+        return isZos() ? JLT_REPORT_DDNAME : "../" + JLT_REPORT_DDNAME + "." + parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
+    
+    public static String getRelativeVDPReport() {
+        return isZos() ? VDP_REPORT_DDNAME : "../" + VDP_REPORT_DDNAME + "." +  parmToValue.get(REPORT_FORMAT).getValue().toLowerCase();
+    }
 }

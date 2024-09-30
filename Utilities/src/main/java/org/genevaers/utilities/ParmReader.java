@@ -35,7 +35,7 @@ public class ParmReader {
 
 	PARM_RESULT result = PARM_RESULT.OK;
 
-	public void populateConfigFrom(String parmName) throws IOException {
+	public void populateConfigFrom(String parmName) {
 		try(BufferedReader br = new BufferedReader(new GersFile().getReader(parmName))) {
 			parseLines(br);
 		} catch (IOException e) {

@@ -221,14 +221,14 @@ public class SPOTests {
 
     private void readConfigAndBuildRepo() {
         pr = new ParmReader();
-        try {
+        // try {
             pr.populateConfigFrom(GersConfigration.getParmFileName());
             Repository.clearAndInitialise();
             RepositoryBuilder rb = RepositoryBuilderFactory.get();
             rb.run();
-        } catch (IOException e) {
-			logger.atSevere().log("readConfigAndBuildRepo error %s", e.getMessage());
-        }
+        // } catch (IOException e) {
+		// 	logger.atSevere().log("readConfigAndBuildRepo error %s", e.getMessage());
+        // }
     }
 
     private void assertLogicGroupViewSourceNumber(LogicGroup lg, int vsNumber) {

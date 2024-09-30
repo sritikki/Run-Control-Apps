@@ -60,14 +60,14 @@ class RunCompilerBase {
 
     protected void readConfigAndBuildRepo() {
         pr = new ParmReader();
-        try {
+        // try {
             pr.populateConfigFrom(GersConfigration.getParmFileName());
             RepositoryBuilder rb = RepositoryBuilderFactory.get();
             Status retval = rb.run();
             assertEquals(Status.OK, retval);
-        } catch (IOException e) {
-			logger.atSevere().log("readConfigAndBuildRepo error %s", e.getMessage());
-        }
+        // } catch (IOException e) {
+		// 	logger.atSevere().log("readConfigAndBuildRepo error %s", e.getMessage());
+        // }
     }
 
     protected void compilerFormatPhase(int i, String oneCol, String string) {
