@@ -42,11 +42,11 @@ public class RCAApp {
 
     public static void run() {
         ranOkay = Status.OK;
-        // if (RcaConfigration.isValid()) {
+        if (GersConfigration.isRCAConfigValid()) {
             ranOkay = AnalyserDriver.runFromConfig();
-        // } else {
-        //     logger.atSevere().log("Invalid configuration. Processing stopped");
-        // }
+        } else {
+             logger.atSevere().log("Invalid analysis configuration. No report requested");
+        }
         if (ranOkay == Status.OK) {
             System.out.println("Run control analyser completed");
         } else {

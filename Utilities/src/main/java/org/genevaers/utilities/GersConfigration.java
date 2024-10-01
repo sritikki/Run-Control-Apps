@@ -441,4 +441,12 @@ public class GersConfigration {
     public static String getInputType() {
         return parmToValue.get(INPUT_TYPE).getValue();
     }
+
+    public static boolean isRCAConfigValid() {
+        if(isVdpReport() || isXltReport() || isJltReport()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
