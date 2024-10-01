@@ -83,7 +83,7 @@ public class ParmReader {
 	}
 
 	public boolean RCAParmExists() {
-		return new GersFile().exists(GersConfigration.RCA_PARM_FILENAME);
+		return new GersFile().exists(GersConfigration.getParmFileName());
 	}
 
 }
