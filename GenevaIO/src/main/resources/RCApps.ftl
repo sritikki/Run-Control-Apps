@@ -10,7 +10,7 @@ Performance Engine for z/OS - Base Product
 Release PM PM4.18.00 D
  
 Program ID:      GVBRCG
-Program Title:   Run-Control File Generator
+Program Title:   Run-Control App
 Built:           ${rcgversion}
  
 Executed:        ${aDate} : ${aTime}
