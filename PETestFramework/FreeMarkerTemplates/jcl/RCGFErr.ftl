@@ -74,7 +74,7 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 //*
 //*        INPUT GENEVA FILES
 //*
-//MR88VDP  DD DSN=<@qualifiedTest/>.RCG.VDP,
+//MR88VDP  DD DSN=<@qualifiedTest/>.RCA.VDP,
 //            DISP=SHR
 //*
 //SYSIN    DD DSN=<@qualifiedTest/>.OUTE.MR95.SORT${ext.workfile?left_pad(3,"0")},

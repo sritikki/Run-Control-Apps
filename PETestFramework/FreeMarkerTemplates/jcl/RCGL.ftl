@@ -22,15 +22,15 @@
 //SYSIN     DD *
 <#macro qualifiedTest>
 ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
- DELETE  <@qualifiedTest/>.RCG.JLT PURGE
+ DELETE  <@qualifiedTest/>.RCA.JLT PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
 
- DELETE  <@qualifiedTest/>.RCG.VDP PURGE
+ DELETE  <@qualifiedTest/>.RCA.VDP PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
 
- DELETE  <@qualifiedTest/>.RCG.XLT PURGE
+ DELETE  <@qualifiedTest/>.RCA.XLT PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
  DELETE  <@qualifiedTest/>.RCGLOG PURGE
@@ -71,7 +71,7 @@ export APPGIT=${env["GERS_GIT_REPO_DIR"]}/Run-Control-Apps
 export APPTRG=RCApps                                                        
 export BASE=$APPGIT/$APPTRG                                                     
 export APP_HOME=$BASE/target                                                    
-export APP_NAME=rcapps-1.1.0_RC4-jar-with-dependencies.jar                      
+export APP_NAME=rcapps-1.1.0_RC5-jar-with-dependencies.jar                      
 export CLASSPATH=$APP_HOME:"$JAVA_HOME"/lib                                     
                                                                                 
 LIBPATH=/lib:/usr/lib:"$JAVA_HOME"/bin                                          
@@ -105,7 +105,7 @@ export IBM_JAVA_OPTIONS="$IJO "
 //*
 //*        INPUTS
 //*
-//WBXMLI   DD DISP=SHR,DSN=<@qualifiedTest/>.RCG.XMLS
+//WBXMLI   DD DISP=SHR,DSN=<@qualifiedTest/>.RCA.XMLS
 //RCGPARM DD DISP=SHR,DSN=<@qualifiedTest/>.PARM(RCGPARM) 
 <#if test.runviews??>
 //RUNVIEWS  DD *  
@@ -113,19 +113,19 @@ ${test.runviews}</#if>
 //*
 //*        OUTPUT FILES
 //*
-//VDPNEW   DD DSN=<@qualifiedTest/>.RCG.VDP,
+//VDPNEW   DD DSN=<@qualifiedTest/>.RCA.VDP,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=8192,BLKSIZE=0)
 //*
-//JLTNEW   DD DSN=<@qualifiedTest/>.RCG.JLT,
+//JLTNEW   DD DSN=<@qualifiedTest/>.RCA.JLT,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(TRK,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=4004,BLKSIZE=32036)
 //*
-//XLTNEW   DD DSN=<@qualifiedTest/>.RCG.XLT,
+//XLTNEW   DD DSN=<@qualifiedTest/>.RCA.XLT,
 //            DISP=(NEW,CATLG,DELETE),
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
@@ -137,7 +137,7 @@ ${test.runviews}</#if>
 //* SUBMIT NEXT JOB
 //*******************************************************************
 <#if test.mr91only?matches("Y")>
-//* RCG only run - stop here
+//* RCA only run - stop here
 //
 </#if>
 //*

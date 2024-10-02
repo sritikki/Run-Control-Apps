@@ -87,10 +87,10 @@ THRUCOL=${env.THRUCOL}
 //MERGINIT DD DUMMY
 //*
 </#if>
-//MR95VDP  DD DSN=<@qualifiedTest/>.RCG.VDP,
+//MR95VDP  DD DSN=<@qualifiedTest/>.RCA.VDP,
 //            DISP=SHR
 //*
-//EXTRLTBL  DD DSN=<@qualifiedTest/>.RCG.XLT,
+//EXTRLTBL  DD DSN=<@qualifiedTest/>.RCA.XLT,
 //            DISP=SHR
 //*
 //*

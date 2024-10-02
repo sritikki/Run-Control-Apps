@@ -97,7 +97,7 @@ public class TestDriver {
 
 	private static HeldJobs heldJobs;
 
-	private static String appname = "RCG";
+	private static String appname = "RCA";
 
 	public static boolean processSpecList() {
 		try {
