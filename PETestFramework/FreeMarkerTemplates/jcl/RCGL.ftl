@@ -33,7 +33,7 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
  DELETE  <@qualifiedTest/>.RCA.XLT PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
- DELETE  <@qualifiedTest/>.RCGLOG PURGE
+ DELETE  <@qualifiedTest/>.RCALOG PURGE
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
 //*********************************************************************
@@ -106,7 +106,7 @@ export IBM_JAVA_OPTIONS="$IJO "
 //*        INPUTS
 //*
 //WBXMLI   DD DISP=SHR,DSN=<@qualifiedTest/>.RCA.XMLS
-//RCGPARM DD DISP=SHR,DSN=<@qualifiedTest/>.PARM(RCGPARM) 
+//RCAPARM DD DISP=SHR,DSN=<@qualifiedTest/>.PARM(RCAPARM) 
 <#if test.runviews??>
 //RUNVIEWS  DD *  
 ${test.runviews}</#if>
@@ -130,8 +130,8 @@ ${test.runviews}</#if>
 //            UNIT=SYSDA,
 //            SPACE=(CYL,(10,10),RLSE),
 //            DCB=(DSORG=PS,RECFM=VB,LRECL=4004,BLKSIZE=32036)
-//RCGRPT  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
-//RCGLOG  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
+//RCARPT  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
+//RCALOG  DD SYSOUT=*,DCB=(RECFM=VB,LRECL=255)
 //*
 //*******************************************************************
 //* SUBMIT NEXT JOB
