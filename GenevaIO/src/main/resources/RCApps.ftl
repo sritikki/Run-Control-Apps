@@ -1,22 +1,22 @@
 <#assign aDateTime = .now>
 <#assign aDate = aDateTime?date>
 <#assign aTime = aDateTime?time>
-~RCGRPT
+~RCARPT
  
 GenevaERS - The Single-Pass Optimization Engine
 (https://genevaers.org)
 Licensed under the Apache License, Version 2.0
 Performance Engine for z/OS - Base Product
-Release PM PM4.18.00 D
+Release PM ${peversion}
  
-Program ID:      GVBRCG
+Program ID:      GVBRCA (${rcaversion})
 Program Title:   Run-Control App
-Built:           ${rcgversion}
+Built:           ${buildtimestamp}
  
 Executed:        ${aDate} : ${aTime}
  
-Report DD Name:  RCGRPT
-Report Title:    GVBRCG Control Report
+Report DD Name:  RCARPT
+Report Title:    GVBRCA Control Report
  
  
 ================
@@ -25,7 +25,7 @@ Report Sections:
  
     Tag    Section name
     -----  ------------------------------------------------------
-    ~PARM  Contents of RCGPARM file
+    ~PARM  Contents of RCAPARM file
     ~OPTS  Options in effect
 <#if generate> 
     ~DFOL  Contents of DBFLDRS file
@@ -179,6 +179,9 @@ ${err.viewid?c?left_pad(7)} ${err.source?right_pad(12)} ${err.srcLR?c?left_pad(7
 ==========================
  
 <#if generate> 
+Run Control Generation
+----------------------
+
 Number of warnings:              ${warnings?size!0?c?left_pad(11)}
 Number of errors:                ${compErrs?size!0?c?left_pad(11)}
 Number of reference-phase views: ${numrefviews!0?c?left_pad(11)}
@@ -190,6 +193,29 @@ Compilation completed successfully
 There were compilation errors. No Run Control Files written.
 </#if>
 </#if>
+
+<#if analyse> 
+Run Control Analysis
+--------------------
+<#if compare> 
+Comparison Mode
+
+VDP difference count = ${numVDPDiffs}
+XLT difference count = ${numXLTDiffs}
+JLT difference count = ${numJLTDiffs}
+
+</#if>
+<#if vdpreport>
+VDP Report written
+</#if>
+<#if xltreport>
+XLT Report written
+</#if>
+<#if jltreport>
+JLT Report written
+</#if>
+</#if>
+
 
 Overall Status: ${status}
 See log file for details.

@@ -56,21 +56,37 @@ public class ReportWriter {
 
     private static Status rcgStatus = Status.ERROR;
 
+    private static String peVersion;
+
+    private static String rcaVersion;
+
+    private static String buildTimestamp;
+
+    private static Object numVDPDiffs;
+
+    private static Object numXLTDiffs;
+
+    private static Object numJLTDiffs;
+
 	public static void write(Status status){
 		GersEnvironment.initialiseFromTheEnvironment();
 		configureFreeMarker();
         Template template;
         try {
-            String version = "unknown";
+            readProperties();
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             Properties properties = new Properties();
             InputStream resourceStream = loader.getResourceAsStream("application.properties");
 			properties.load(resourceStream);
-            version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
             template = cfg.getTemplate(REPORT_TEMPLATE);
             Map<String, Object> nodeMap = new HashMap<>();
             nodeMap.put("env", "stuff");
             nodeMap.put("generate", GersConfigration.generatorRunRequested());
+            nodeMap.put("analyse", GersConfigration.analyserRunRequested());
+            nodeMap.put("compare", GersConfigration.isCompare());
+            nodeMap.put("numVDPDiffs", numVDPDiffs);
+            nodeMap.put("numXLTDiffs", numXLTDiffs);
+            nodeMap.put("numJLTDiffs", numJLTDiffs);
             nodeMap.put("parmsRead", GersConfigration.getLinesRead());
             nodeMap.put("optsInEffect", GersConfigration.getOptionsInEffect());
             nodeMap.put("dbfolders", DBFoldersReader.getLinesRead());
@@ -79,8 +95,13 @@ public class ReportWriter {
             nodeMap.put("inputReports", Repository.getInputReports());
             nodeMap.put("compErrs", Repository.getCompilerErrors());
             nodeMap.put("warnings", Repository.getWarnings());
-            nodeMap.put("rcgversion", readVersion());
+            nodeMap.put("rcaversion", rcaVersion);
+            nodeMap.put("peversion", peVersion);
+            nodeMap.put("buildtimestamp", buildTimestamp);
             nodeMap.put("status", rcgStatus.toString());
+            nodeMap.put("vdpreport", GersConfigration.isVdpReport());
+            nodeMap.put("xltreport", GersConfigration.isXltReport());
+            nodeMap.put("jltreport", GersConfigration.isJltReport());
             if(Repository.getCompilerErrors().isEmpty()) {
                 nodeMap.put("vdpRecordsWritten", String.format("%,d", vdpRecordsWritten));
                 nodeMap.put("xltRecordsWritten", String.format("%,d", xltRecordsWritten));
@@ -92,7 +113,6 @@ public class ReportWriter {
                 nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
                 nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
             }
-
             logger.atInfo().log(GersConfigration.getReportFileName());
             generateTemplatedOutput(template, nodeMap, GersConfigration.getReportFileName());
         } catch (IOException e) {
@@ -133,13 +153,15 @@ public class ReportWriter {
         vdpRecordsWritten = numberOfRecords;
     }
 
-	public static String readVersion() {
+	public static String readProperties() {
 		String version = "unknown";
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		Properties properties = new Properties();
 		try (InputStream resourceStream = loader.getResourceAsStream("application.properties")) {
 			properties.load(resourceStream);
-            version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
+            rcaVersion = "" + properties.getProperty("build.version");
+            peVersion = "" + properties.getProperty("pe.version");
+            buildTimestamp = "" +  properties.getProperty("buildTimestamp");
 		} catch (IOException e) {
             logger.atSevere().log("Cannot readVersion %s", e.getMessage());
 		}
@@ -148,5 +170,11 @@ public class ReportWriter {
 
     public static void setRCGStatus(Status s) {
         rcgStatus = s;
+    }
+
+    public static void setDiffs(int vdp, int xlt, int jlt) {
+        numVDPDiffs = vdp;
+        numXLTDiffs = xlt;
+        numJLTDiffs = jlt;
     }
 }
