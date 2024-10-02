@@ -279,16 +279,16 @@ public class TestDriver {
 		//copy config
 		//Create WBXMLI
 		//copy XML to above
-		//cd to or run gvbrcg from test dir 
+		//cd to or run gvbrca from test dir 
 		CommandRunner cr = new CommandRunner();
 		try {
 			String mr91String;
 			String rcaString;
 			if(GersEnvironment.get("OSNAME").startsWith("Win")) {
-				mr91String = "gvbrcg.bat";
+				mr91String = "gvbrca.bat";
 				rcaString = "gvbrca.bat";
 			} else {
-				mr91String = "gvbrcg";
+				mr91String = "gvbrca";
 				rcaString = "gvbrca";
 			}
 			cr.run(mr91String, localTest.toFile());
