@@ -98,7 +98,7 @@ public class ReportWriter {
             nodeMap.put("rcaversion", rcaVersion);
             nodeMap.put("peversion", peVersion);
             nodeMap.put("buildtimestamp", buildTimestamp);
-            nodeMap.put("status", rcgStatus.toString());
+            nodeMap.put("status", status.toString());
             nodeMap.put("vdpreport", GersConfigration.isVdpReport());
             nodeMap.put("xltreport", GersConfigration.isXltReport());
             nodeMap.put("jltreport", GersConfigration.isJltReport());
