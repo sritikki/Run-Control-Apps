@@ -39,12 +39,18 @@ public class Runner {
 		System.out.printf("GenevaERS RunControls version %s\n", Runner.getVersion());
 		System.out.printf("Java Vendor %s\n", System.getProperty("java.vendor"));
 		System.out.printf("Java Version %s\n", System.getProperty("java.version"));
-        Runner.choose();
+        GersConfigration.initialise();
+        Runner.run();
         exitWithRC();
     } 
+
+    public static void runFrom(String path) {
+        GersConfigration.initialise();
+        GersConfigration.setCurrentWorkingDirectory(path);
+        run();
+    }
      
-    private static void choose() {
-       GersConfigration.initialise();
+    private static void run() {
         ParmReader pr = new ParmReader();
         if(pr.RCAParmExists()) {
             System.out.printf("Reading Run Control Parm\n");

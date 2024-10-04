@@ -1,4 +1,4 @@
-package org.genevaers.runcontrolgenerator.workbenchinterface;
+package org.genevaers.rcapps;
 
 /*
  * Copyright Contributors to the GenevaERS Project.
@@ -26,7 +26,6 @@ import java.nio.file.Path;
 import org.apache.commons.io.FileUtils;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolanalyser.RCAApp;
-import org.genevaers.runcontrolgenerator.RCGApp;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.GersConfigration;
 
@@ -37,12 +36,6 @@ public class RCDriver {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     
     private static String inputType ;
-    private static String environmentID ;
-    private static String schema ;
-    private static String port ;
-    private static String server ;
-    private static String database ;
-    private static String dbviews ;
     private static Path rcPath;
 
     private static String rcaTextType;
@@ -64,29 +57,29 @@ public class RCDriver {
         RCDriver.inputType = inputType;
     }
 
-    public static void setEnvironmentID(String environmentID) {
-        RCDriver.environmentID = environmentID;
-    }
+    // public static void setEnvironmentID(String environmentID) {
+    //     RCDriver.environmentID = environmentID;
+    // }
 
-    public static void setSchema(String schema) {
-        RCDriver.schema = schema;
-    }
+    // public static void setSchema(String schema) {
+    //     RCDriver.schema = schema;
+    // }
 
-    public static void setPort(String port) {
-        RCDriver.port = port;
-    }
+    // public static void setPort(String port) {
+    //     RCDriver.port = port;
+    // }
 
-    public static void setServer(String server) {
-        RCDriver.server = server;
-    }
+    // public static void setServer(String server) {
+    //     RCDriver.server = server;
+    // }
 
-    public static void setDatabase(String database) {
-        RCDriver.database = database;
-    }
+    // public static void setDatabase(String database) {
+    //     RCDriver.database = database;
+    // }
 
-    public static void setDbviews(String dbviews) {
-        RCDriver.dbviews = dbviews;
-    }
+    // public static void setDbviews(String dbviews) {
+    //     RCDriver.dbviews = dbviews;
+    // }
 
     public static void setOutputPath(Path reportPath) {
         logger.atInfo().log("output to %s", reportPath.toString() );
@@ -102,52 +95,10 @@ public class RCDriver {
         }
     }
 
-    public static void runRCG(String relPath) {
-        writeRCGParms();
-        RCGApp.setCurrentWorkingDirectory(relPath);
-        logger.atInfo().log("Run RCG from %s", relPath );
-        RCGApp.run();
-    }
-
-    private static void runRCG(CommandRunner cmd) {
-        try {
-            logger.atInfo().log("Run gvbrcg from %s", rcPath.toString() );
-            cmd.run("gvbrcg.bat", rcPath.toFile());
-            cmd.clear();
-        } catch (IOException | InterruptedException e) {
-            logger.atSevere().log("gvbrcg command failed %s", e.getMessage() );
-        }
-    }
-
-    //Problem here is the exposure of the database password
-    //No an issue with a local postgres really
-    //Option to use workbench XML instead
-    private static void writeRCGParms() {
-        logger.atInfo().log("Write RCGParms to %s", rcPath.toString() );
-        try (FileWriter fw = new FileWriter(rcPath.resolve(GersConfigration.RCA_PARM_FILENAME).toFile())) {
-            fw.write("# Auto generated Run Control Generator Parms\n");
-            if(inputType.equals("WBXML")) {
-                fw.write(GersConfigration.INPUT_TYPE +"=" + inputType + "\n");
-            } else {
-                fw.write(GersConfigration.INPUT_TYPE + "=" + inputType + "\n");
-                fw.write(GersConfigration.ENVIRONMENT_ID + "=" + environmentID + "\n");
-                fw.write(GersConfigration.DB_SCHEMA + "=" + schema + "\n");
-                fw.write(GersConfigration.DB_PORT + "=" + port + "\n");
-                fw.write(GersConfigration.DB_SERVER + "=" + server + "\n");
-                fw.write(GersConfigration.DB_DATABASE + "=" + database + "\n");
-                fw.write(GersConfigration.DBVIEWS + "="+ dbviews + "\n");
-            }
-            fw.close();
-        } catch (IOException e) {
-            logger.atSevere().log("Unable to write RCG Parms %s", e.getMessage() );
-        }
-    }
-
     public static void runRCA(String relPath) {
         writeRCAParms();
-        RCAApp.setCurrentWorkingDirectory(relPath);
         logger.atInfo().log("Run RCA from %s", relPath );
-        RCAApp.run();
+        Runner.runFrom(relPath);
     }
 
     public static void runRCA(CommandRunner cmd) {
@@ -175,7 +126,9 @@ public class RCDriver {
     private static void writeRCAParms() {
         logger.atInfo().log("Write RCAParms to %s text format %s", rcPath.toString(), rcaTextType);
         try (FileWriter fw = new FileWriter(rcPath.resolve(GersConfigration.RCA_PARM_FILENAME).toFile())) {
-            fw.write("# Auto generated Run Control Analyser Parms\n");
+            fw.write("# Auto generated Run Control Parms\n");
+            fw.write(GersConfigration.GENERATE +"=Y\n");
+            fw.write(GersConfigration.INPUT_TYPE +"=" + inputType + "\n");
             fw.write(GersConfigration.XLT_REPORT + "=Y\n");
             fw.write(GersConfigration.JLT_REPORT + "=Y\n");
             fw.write(GersConfigration.VDP_REPORT + "=Y\n");
