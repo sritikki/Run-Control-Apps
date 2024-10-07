@@ -123,18 +123,14 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("HD_date", true); 
 		ignoreTheseDiffs.put("NV_littleEndian", true); 
 		ignoreTheseDiffs.put("sourceSeqNbr", true); 
+		ignoreTheseDiffs.put("ordinalPosition", true); 
 		ignoreTheseDiffs.put("GOTO_viewId", true); 
 		ignoreTheseDiffs.put("DTC_lrId", true); 
 		ignoreTheseDiffs.put("JOIN_fieldId", true); 
 		ignoreTheseDiffs.put("JOIN_fieldFormat", true); 
 		ignoreTheseDiffs.put("JOIN_startPosition", true); 
-		ignoreTheseDiffs.put("JOIN_ordinalPosition", true); 
 		ignoreTheseDiffs.put("JOIN_justifyId", true); 
 		ignoreTheseDiffs.put("LKE_ordinalPosition", true); 
-		ignoreTheseDiffs.put("DTL_ordinalPosition", true); 
-		ignoreTheseDiffs.put("CFLC_ordinalPosition", true); 
-		ignoreTheseDiffs.put("CFEL_ordinalPosition", true); 
-		ignoreTheseDiffs.put("CFEC_ordinalPosition", true); 
 		ignoreTheseDiffs.put("SETC_viewId_lRecordCount", true); 
 		ignoreTheseDiffs.put("RENX_viewId", true); 
 	}
@@ -166,7 +162,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 
 	@Override
 	protected String getDiffKey(FieldNodeBase n) {
-		if(n.getName().equals("sourceSeqNbr")) {
+		if(n.getName().equals("sourceSeqNbr") || n.getName().equals("ordinalPosition")) {
 			return n.getName();
 		} else {
 			if(n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
