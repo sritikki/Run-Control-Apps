@@ -133,7 +133,10 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("LKE_ordinalPosition", true); 
 		ignoreTheseDiffs.put("DTL_ordinalPosition", true); 
 		ignoreTheseDiffs.put("CFLC_ordinalPosition", true); 
+		ignoreTheseDiffs.put("CFEL_ordinalPosition", true); 
+		ignoreTheseDiffs.put("CFEC_ordinalPosition", true); 
 		ignoreTheseDiffs.put("SETC_viewId_lRecordCount", true); 
+		ignoreTheseDiffs.put("RENX_viewId", true); 
 	}
 
 

@@ -75,6 +75,8 @@ public class VDPTextWriter extends TextRecordWriter {
 	private void addCppIgnores() {
 		ignoreTheseDiffs.put("Generation_lrCount", true); 
 		ignoreTheseDiffs.put("Generation_lrFieldCount", true); 
+		ignoreTheseDiffs.put("Generation_lrIndexFieldCount", true); 
+		ignoreTheseDiffs.put("Generation_joinStepCount", true); 
 		ignoreTheseDiffs.put("Generation_vdpByteCount", true); 
 		ignoreTheseDiffs.put("Generation_recordCount", true); 
 		ignoreTheseDiffs.put("View_Definition_outputPageSizeMax", true); 
@@ -83,6 +85,7 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("Lookup_Paths_valueLength", true); 
 		ignoreTheseDiffs.put("Physical_Files_ddnameOutput", true); 
 		ignoreTheseDiffs.put("Physical_Files_ddnameInput", true); 
+		ignoreTheseDiffs.put("Physical_Files_minimumLength", true); 
 	}
 
 	private void checkIfOldIsCpp(MetadataNode recordsRoot) {
@@ -526,5 +529,6 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("View_Output_File_ddnameOutput", true); 
 		ignoreTheseDiffs.put("Columns_columnName", true); 
 		ignoreTheseDiffs.put("Columns_fieldName", true); 
+		ignoreTheseDiffs.put("Column_Sources_sequenceNbr", true); 
 	}
 }
