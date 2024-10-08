@@ -137,7 +137,7 @@ public class VDPTextWriter extends TextRecordWriter {
 	private void writeExitSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
 		fw.write("\nUser Exit Routines\n");
 		fw.write("==================\n");
-		if(Repository.getUserExits().size() < 0) {
+		if(Repository.getUserExits().size() > 0) {
 			fw.write(String.format("%7s %-48s %-6s %-9s %8s %10s \n", "ID", "Name", "Type", "Optimized", "Language", "Executable"));
 			fw.write(StringUtils.repeat('-', 93)+"\n");
 			Iterator<UserExit> ei = Repository.getUserExits().getIterator();
