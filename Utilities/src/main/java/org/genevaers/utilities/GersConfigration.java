@@ -151,6 +151,14 @@ public class GersConfigration {
         parmToValue.put(RCA_REPORT, new ConfigEntry("N", true));
         parmToValue.put(REPORT_FORMAT, new ConfigEntry("TXT", false));
 
+        parmToValue.put(DB_SCHEMA, new ConfigEntry("", false));
+        parmToValue.put(ENVIRONMENT_ID, new ConfigEntry("", false));
+        parmToValue.put(DB_SERVER, new ConfigEntry("", false));
+        parmToValue.put(DB_PORT, new ConfigEntry("", false));
+        parmToValue.put(DB_DATABASE, new ConfigEntry("", false));
+        parmToValue.put(LOG_LEVEL, new ConfigEntry("STANDARD", false));
+
+
     }
 
     public static void addParmValue(String name, String value) {
