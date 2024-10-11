@@ -215,6 +215,7 @@ public class ViewNode extends ComponentNode{
 	public void setOutputFileFrom(PhysicalFile pf) {
 		outputFile.setName(pf.getName());
 		outputFile.setOutputDDName(pf.getOutputDDName());
+		outputFile.setFileType(pf.getFileType());
 	}
 
     public void setDefaultOutputFile() {
@@ -227,7 +228,7 @@ public class ViewNode extends ComponentNode{
 		outputFile.setLrecl((short)27994);
 		outputFile.setFieldDelimiter(FieldDelimiter.INVALID);
 		outputFile.setRecordDelimiter(RecordDelimiter.INVALID);
-		outputFile.setTextDelimiter(TextDelimiter.INVALID);
+		outputFile.setTextDelimiter(TextDelimiter.DOUBLEQUOTE);
 		outputFile.setLogicalFilename("Auto Generated LF " + ddName );
     }
 

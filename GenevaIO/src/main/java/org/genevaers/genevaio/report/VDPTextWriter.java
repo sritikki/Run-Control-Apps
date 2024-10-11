@@ -86,6 +86,7 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("Physical_Files_ddnameOutput", true); 
 		ignoreTheseDiffs.put("Physical_Files_ddnameInput", true); 
 		ignoreTheseDiffs.put("Physical_Files_minimumLength", true); 
+		ignoreTheseDiffs.put("View_Output_File_textDelimId", true); 
 	}
 
 	private void checkIfOldIsCpp(MetadataNode recordsRoot) {

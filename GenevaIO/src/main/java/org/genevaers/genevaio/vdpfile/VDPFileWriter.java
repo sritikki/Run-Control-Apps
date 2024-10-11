@@ -174,6 +174,7 @@ public class VDPFileWriter {
 			String ddname = String.format("F%07d", view.getID());
 			vof.setOutputDDName(ddname);
 			vof.setName("Auto-generated Name for Extract Phase Output ");
+			vof.setFileType(FileType.DISK);
 	}
 
 	private void writeTheOutputFile(ViewNode view) {
@@ -197,7 +198,6 @@ public class VDPFileWriter {
 			//Keep the writer happy
 			ff.setServerId(1);
 			ff.setDbmsRowFmtOptId(1);
-			ff.setAllocFileType(FileType.DISK);
 			ff.setFieldDelimId(FieldDelimiter.INVALID);
 			ff.setRecordDelimId(RecordDelimiter.INVALID);
 			ff.setTextDelimId(TextDelimiter.INVALID);
