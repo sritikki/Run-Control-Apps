@@ -1419,13 +1419,8 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSKL(LRField f, ViewColumn vc, ViewSortKey sk) {
-        LogicTableF2 skl = makeF2FromFieldAndColumn(f, vc);
+        LogicTableF2 skl = makeF2FromFieldAndSortkey(f, vc, sk);
         skl.setFunctionCode("SKL");
-        LogicTableArg arg2 = skl.getArg2();
-        arg2.setFieldLength(sk.getSkFieldLength());
-        arg2.setFieldFormat(sk.getSortKeyDataType());
-        arg2.setFieldContentId(sk.getSortKeyDateTimeFormat());
-        arg2.setJustifyId(JustifyId.NONE);
         return skl;
     }
 
@@ -1622,7 +1617,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         skarg.setFieldLength(sk.getSkFieldLength());
         skarg.setSignedInd(sk.isSortKeySigned());
         skarg.setPadding2("");  //This seems a little silly
-        skarg.setLogfileId(logFileId);
+        skarg.setLogfileId(0);
         if(sk.getSortKeyDataType() == DataType.ALPHANUMERIC) {
             skarg.setJustifyId(JustifyId.LEFT);
         } else {
@@ -1662,12 +1657,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
         f2.setArg1(arg1);
         
-        f2.setArg2(getColumnArg(vc));
+        LogicTableArg arg2 = getArgFromSortkKey(sk);
+        f2.setArg2(arg2);
         f2.setCompareType(LtCompareType.EQ);
-        LogicTableArg arg2 = f2.getArg2();
-        arg2.setFieldLength(sk.getSkFieldLength());
-        arg2.setFieldFormat(sk.getSortKeyDataType());
-        arg2.setJustifyId(JustifyId.NONE);
+        arg2.setValue(new Cookie(""));
 
         return f2;
     }
