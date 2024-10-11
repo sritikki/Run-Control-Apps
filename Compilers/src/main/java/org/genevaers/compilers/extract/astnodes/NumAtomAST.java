@@ -105,11 +105,8 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
         } else if(col.getViewColumn().getExtractArea() == ExtractArea.AREADATA) {
             ltEmitter.addToLogicTable((LTRecord)fcf.getDTC(numStr, col.getViewColumn()));
         } else {
-            LTRecord ltr = (LTRecord)fcf.getSKC(numStr, col.getViewColumn());
             ViewSortKey sk = Repository.getViews().get(col.getViewColumn().getViewId()).getViewSortKeyFromColumnId(col.getViewColumn().getComponentId());
-            LogicTableArg arg = ((LogicTableF1)ltr).getArg();
-            arg.setFieldLength(sk.getSkFieldLength());
-            arg.setStartPosition(sk.getSkStartPosition());
+            LTRecord ltr = (LTRecord)fcf.getSKC(numStr, col.getViewColumn(), sk);
             ltEmitter.addToLogicTable(ltr);
         }
         return null;

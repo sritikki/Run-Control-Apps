@@ -1397,50 +1397,47 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     }
 
     @Override
-    public LTFileObject getSKC(String v, ViewColumn vc) {
-        LogicTableF1 dtc = new LogicTableF1();
-        dtc.setFunctionCode("SKC");
-        LogicTableArg arg = getArgFromValueAndColumn(v, vc);
-        dtc.setRecordType(LtRecordType.F1);
-        //TODO this can rise as a common function
-        //These may be at adder level
-        //Prefix is not a separate object so each record type needs the set
-        dtc.setViewId(vc.getViewId());
-        dtc.setColumnId(vc.getComponentId());
-        dtc.setSuffixSeqNbr((short)vc.getColumnNumber());
-        dtc.setArg(arg);
-        dtc.setCompareType(LtCompareType.EQ);
-        return dtc;
+    public LTFileObject getSKC(String v, ViewColumn vc, ViewSortKey sk) {
+        LogicTableF1 skc = new LogicTableF1();
+        skc.setFunctionCode("SKC");
+        LogicTableArg arg = getArgFromValueAndSortkKey(v, sk);
+        skc.setRecordType(LtRecordType.F1);
+        skc.setViewId(vc.getViewId());
+        skc.setColumnId(vc.getComponentId());
+        skc.setSuffixSeqNbr((short)vc.getColumnNumber());
+        skc.setArg(arg);
+        skc.setCompareType(LtCompareType.EQ);
+        return skc;
     }
 
     @Override
-    public LTFileObject getSKE(LRField f, ViewColumn vc) {
-        LogicTableF2 ske = makeF2FromFieldAndColumn(f, vc);
+    public LTFileObject getSKE(LRField f, ViewColumn vc, ViewSortKey sk) {
+        LogicTableF2 ske = makeF2FromFieldAndSortkey(f, vc, sk);
         ske.setFunctionCode("SKE");
-        ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
-        LogicTableArg arg2 = ske.getArg2();
-        arg2.setFieldLength(sk.getSkFieldLength());
-        arg2.setFieldFormat(sk.getSortKeyDataType());
-        arg2.setJustifyId(JustifyId.NONE);
         return ske;
     }
 
     @Override
-    public LTFileObject getSKL(LRField f, ViewColumn vc) {
+    public LTFileObject getSKL(LRField f, ViewColumn vc, ViewSortKey sk) {
         LogicTableF2 skl = makeF2FromFieldAndColumn(f, vc);
         skl.setFunctionCode("SKL");
+        LogicTableArg arg2 = skl.getArg2();
+        arg2.setFieldLength(sk.getSkFieldLength());
+        arg2.setFieldFormat(sk.getSortKeyDataType());
+        arg2.setFieldContentId(sk.getSortKeyDateTimeFormat());
+        arg2.setJustifyId(JustifyId.NONE);
         return skl;
     }
 
     @Override
-    public LTFileObject getSKP(LRField f, ViewColumn vc) {
+    public LTFileObject getSKP(LRField f, ViewColumn vc, ViewSortKey sk) {
         LogicTableF2 skp = makeF2FromFieldAndColumn(f, vc);
         skp.setFunctionCode("SKP");
         return skp;
     }
 
     @Override
-    public LTFileObject getSKX(ViewColumn c, ViewColumn v) {
+    public LTFileObject getSKX(ViewColumn c, ViewColumn v, ViewSortKey sk) {
         LogicTableF2 skx = new LogicTableF2();
         skx.setArg1(getColumnArg(c));
         skx.setArg2(getColumnArg(v));
@@ -1608,6 +1605,32 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         return arg;
     }
 
+    private LogicTableArg getArgFromValueAndSortkKey(String v, ViewSortKey sk) {
+        LogicTableArg skarg = getArgFromSortkKey(sk);
+        skarg.setValue(new Cookie(v));
+        return skarg;
+    }
+
+    private LogicTableArg getArgFromSortkKey(ViewSortKey sk) {
+        LogicTableArg skarg = new LogicTableArg(); //This is the column data
+        skarg.setDecimalCount(sk.getSkDecimalCount());
+        skarg.setFieldContentId(sk.getSktDateCode());
+        skarg.setFieldFormat(sk.getSortKeyDataType());
+        skarg.setFieldId(0);
+        skarg.setStartPosition(sk.getSkStartPosition());
+        skarg.setOrdinalPosition(sk.getSkOrdinalPosition());
+        skarg.setFieldLength(sk.getSkFieldLength());
+        skarg.setSignedInd(sk.isSortKeySigned());
+        skarg.setPadding2("");  //This seems a little silly
+        skarg.setLogfileId(logFileId);
+        if(sk.getSortKeyDataType() == DataType.ALPHANUMERIC) {
+            skarg.setJustifyId(JustifyId.LEFT);
+        } else {
+            skarg.setJustifyId(sk.getSkJustifyId() == null ? JustifyId.NONE : sk.getSkJustifyId());
+        }
+        return skarg;
+    }
+
     private LogicTableF2 makeF2FromFieldAndColumn(LRField f, ViewColumn vc) {
         LogicTableF2 dte = new LogicTableF2();
         // want a function to get a populated arg from the field
@@ -1624,6 +1647,29 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         dte.setArg2(getColumnArg(vc));
         dte.setCompareType(LtCompareType.EQ);
         return dte;
+    }
+
+    private LogicTableF2 makeF2FromFieldAndSortkey(LRField f, ViewColumn vc, ViewSortKey sk) {
+        LogicTableF2 f2 = new LogicTableF2();
+        // want a function to get a populated arg from the field
+        LogicTableArg arg1 = getArgFromField(f);
+        f2.setRecordType(LtRecordType.F2);
+        //TODO this can rise as a common function
+        //These may be at adder level
+        f2.setViewId(vc.getViewId());
+        f2.setColumnId(vc.getComponentId());
+        f2.setSuffixSeqNbr((short)vc.getColumnNumber());
+
+        f2.setArg1(arg1);
+        
+        f2.setArg2(getColumnArg(vc));
+        f2.setCompareType(LtCompareType.EQ);
+        LogicTableArg arg2 = f2.getArg2();
+        arg2.setFieldLength(sk.getSkFieldLength());
+        arg2.setFieldFormat(sk.getSortKeyDataType());
+        arg2.setJustifyId(JustifyId.NONE);
+
+        return f2;
     }
 
     private LogicTableF2 makeF2FromColumnAndField(ViewColumn vc, LRField f) {

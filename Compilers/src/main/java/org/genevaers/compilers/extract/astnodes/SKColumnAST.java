@@ -64,7 +64,8 @@ public class SKColumnAST extends ColumnAST {
     @Override
     public LTFileObject getFieldLtEntry(LRField field) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        LogicTableF2 ske = (LogicTableF2) fcf.getSKE(field, vc);
+        ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+        LogicTableF2 ske = (LogicTableF2) fcf.getSKE(field, vc, sk);
         // LogicTableArg arg1 = ske.getArg1();
         LogicTableArg arg2 = ske.getArg2();
         arg2.setFieldFormat(skc.getSortKeyDataType());
@@ -77,15 +78,15 @@ public class SKColumnAST extends ColumnAST {
     @Override
     public LTFileObject getPriorFieldLtEntry(LRField field) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
-        return fcf.getSKP(field, vc);
+        ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+        return fcf.getSKP(field, vc, sk);
     }
 
     @Override
     public LTFileObject getConstLtEntry(String value) {
         LtFuncCodeFactory fcf = LtFactoryHolder.getLtFunctionCodeFactory();
         ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
-        LogicTableF1 skc = (LogicTableF1) fcf.getSKC(value, vc);
-        skc.getArg().setFieldLength(sk.getSkFieldLength());
+        LogicTableF1 skc = (LogicTableF1) fcf.getSKC(value, vc, sk);
         return skc;
     }
 

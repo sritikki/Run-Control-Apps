@@ -37,6 +37,8 @@ import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
+import org.genevaers.repository.components.ViewColumn;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
@@ -145,7 +147,8 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setValue(new Cookie(""));
             ltEmitter.addToLogicTable((LTRecord)ctl);
         } else {
-            LogicTableF2 skl = (LogicTableF2) fcf.getSKL(redField, currentViewColumn);
+            ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+            LogicTableF2 skl = (LogicTableF2) fcf.getSKL(redField, currentViewColumn, sk);
             skl.getArg1().setLogfileId(lookup.getTargetLFID());
             LogicTableArg arg1 = skl.getArg1();
             arg1.setLogfileId(lookup.getTargetLFID());
@@ -154,7 +157,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setFieldFormat(getDataType());
             arg1.setFieldContentId(getDateCode());
             LogicTableArg skarg2 = skl.getArg2();
-            flipDataTypeIfFieldAlphanumeric(arg1, skarg2);
+//            flipDataTypeIfFieldAlphanumeric(arg1, skarg2);
             ltEmitter.addToLogicTable((LTRecord)skl);
         }
         return null;
@@ -269,10 +272,13 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             case INVALID:
                 break;
             case SORTKEY:
-                if (currentViewColumn.getDataType() == DataType.ALPHANUMERIC) {
-                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC(" ", currentViewColumn));
+                DataType colDataType;
+                ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
+                colDataType = sk.getSortKeyDataType();
+                if (colDataType == DataType.ALPHANUMERIC) {
+                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC(" ", currentViewColumn, sk));
                 } else {
-                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC("0", currentViewColumn));
+                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC("0", currentViewColumn, sk));
                 }
                 break;
             case SORTKEYTITLE:

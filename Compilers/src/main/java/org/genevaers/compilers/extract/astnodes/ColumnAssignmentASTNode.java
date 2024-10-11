@@ -204,8 +204,7 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         LogicTableF1 ccol;
         if(vc.getExtractArea() == ExtractArea.SORTKEY) {
             ViewSortKey sk = Repository.getViews().get(vc.getViewId()).getViewSortKeyFromColumnId(vc.getComponentId());
-            ccol = ((LogicTableF1)fcf.getSKC(val, vc));
-            ccol.getArg().setFieldLength(sk.getSkFieldLength());
+            ccol = ((LogicTableF1)fcf.getSKC(val, vc, sk));
         } else if(vc.getExtractArea() == ExtractArea.AREADATA) {
             ccol = ((LogicTableF1)fcf.getDTC(val, vc));
         } else {
