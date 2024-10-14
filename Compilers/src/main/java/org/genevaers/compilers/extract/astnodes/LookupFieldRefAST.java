@@ -258,6 +258,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
                     } 
                 } else if(lkEntry.getFunctionCode().equals("DTA")) {
                     dtc = (LogicTableF1)fcf.getDTC("0", currentViewColumn);
+                    dtc.getArg().setSignedInd(true); //Force signed
                 }
                 ltEmitter.addToLogicTable((LTRecord)dtc );
                 break;
