@@ -57,6 +57,8 @@ public class LogicTableTextWriter extends TextRecordWriter {
 			ignoreTheseDiffs.put("columnId", true); 
 			ignoreTheseDiffs.put("ordinalPosition", true); 
 			ignoreTheseDiffs.put("DTA_signedInd", true); 
+			ignoreTheseDiffs.put("DTE_signedInd", true); 
+			ignoreTheseDiffs.put("DTE_fieldId", true); 
 			ignoreTheseDiffs.put("DTA_logfileId", true); 
 		}
 	}
