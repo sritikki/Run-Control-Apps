@@ -30,10 +30,10 @@ import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
+import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
 import org.genevaers.repository.Repository;
-import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.UserExit;
 import com.google.common.flogger.FluentLogger;
@@ -74,6 +74,7 @@ public class VDPTextWriter extends TextRecordWriter {
 	
 	private void addCppIgnores() {
 		ignoreTheseDiffs.put("Generation_lrCount", true); 
+		ignoreTheseDiffs.put("Generation_inputFileCount", true); 
 		ignoreTheseDiffs.put("Generation_lrFieldCount", true); 
 		ignoreTheseDiffs.put("Generation_lrIndexFieldCount", true); 
 		ignoreTheseDiffs.put("Generation_joinStepCount", true); 
@@ -201,6 +202,8 @@ public class VDPTextWriter extends TextRecordWriter {
 				return "RCGOnly";
 			case CPPONLY:
 				return "CPPOnly";
+			case MAPPED:
+				return "Mapped ";
 			default:
 				break;
 		}
@@ -488,6 +491,18 @@ public class VDPTextWriter extends TextRecordWriter {
 				if(n.getState() == ComparisonState.DIFF) {
 					if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
 						n.setState(ComparisonState.IGNORED);
+					} else if(n.getParent().getParent().getName().equals("Physical_Files")) {
+						RecordNode rec =  (RecordNode) n.getParent();
+						StringFieldNode v =  (StringFieldNode) rec.getChildrenByName("allocFileType");
+						if(!v.equals("DATAB") && n.getName().startsWith("dbms")) {
+							n.setState(ComparisonState.IGNORED);
+						}
+					} else if(n.getParent().getParent().getName().equals("Columns")) {
+						RecordNode rec =  (RecordNode) n.getParent();
+						NumericFieldNode v =  (NumericFieldNode) rec.getChildrenByName("viewId");
+						if(v.getValue() > 900000  && n.getName().equals("signedInd")) {
+							n.setState(ComparisonState.IGNORED);
+						}
 					} else {
 						updateRowState = false;
 					}
@@ -517,11 +532,14 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("Logical_Records_lrName", true); 
 		ignoreTheseDiffs.put("LR_Fields_recordId", true); 
 		ignoreTheseDiffs.put("LR_Fields_ordinalPosition", true); 
+		ignoreTheseDiffs.put("LR_Fields_mask", true); 
 		ignoreTheseDiffs.put("Lookup_Paths_columnId", true); 
 		ignoreTheseDiffs.put("LR_Indexes_columnId", true); 
 		ignoreTheseDiffs.put("LR_Indexes_lrIndexName", true); 
 		ignoreTheseDiffs.put("View_Definition_viewName", true); 
 		ignoreTheseDiffs.put("View_Definition_ownerUser", true); 
+		ignoreTheseDiffs.put("View_Definition_defaultOutputFileId", true); 
+		ignoreTheseDiffs.put("View_Definition_columnId", true); 
 		ignoreTheseDiffs.put("View_Output_File_name", true); 
 		ignoreTheseDiffs.put("View_Output_File_recordDelimId", true); 
 		ignoreTheseDiffs.put("View_Output_File_allocRecfm", true); 
