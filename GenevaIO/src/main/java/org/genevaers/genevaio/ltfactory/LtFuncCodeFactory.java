@@ -685,9 +685,6 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         dtc.setFunctionCode("DTC");
         LogicTableArg arg = getArgFromValueAndColumn(v, vc);
         dtc.setRecordType(LtRecordType.F1);
-        //TODO this can rise as a common function
-        //These may be at adder level
-        //Prefix is not a separate object so each record type needs the set
         dtc.setViewId(vc.getViewId());
         dtc.setColumnId(vc.getComponentId());
         dtc.setSuffixSeqNbr((short)vc.getColumnNumber());
@@ -1592,11 +1589,11 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arg.setValue(new Cookie(v));
         arg.setLogfileId(logFileId);
         arg.setOrdinalPosition(vc.getOrdinalPosition());
-        if(vc.getDataType() == DataType.ALPHANUMERIC) {
-            arg.setJustifyId(JustifyId.LEFT);
-        } else {
+        // if(vc.getDataType() == DataType.ALPHANUMERIC) {
+        //     arg.setJustifyId(JustifyId.LEFT);
+        // } else {
             arg.setJustifyId(vc.getJustifyId() == null ? JustifyId.NONE : vc.getJustifyId());
-        }
+        // }
         return arg;
     }
 
