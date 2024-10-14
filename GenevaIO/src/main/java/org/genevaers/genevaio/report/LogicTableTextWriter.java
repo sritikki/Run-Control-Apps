@@ -20,6 +20,8 @@ package org.genevaers.genevaio.report;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.genevaers.genevaio.fieldnodes.ComparisonState;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
@@ -31,6 +33,8 @@ import com.google.common.flogger.FluentLogger;
 
 public class LogicTableTextWriter extends TextRecordWriter {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+	private Map<String, String> accumulatorNamesMap = new TreeMap<>();
 	boolean jlt;
 	
 	public LogicTableTextWriter() {
@@ -126,6 +130,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("sourceSeqNbr", true); 
 		ignoreTheseDiffs.put("ordinalPosition", true); 
 		ignoreTheseDiffs.put("GOTO_viewId", true); 
+		ignoreTheseDiffs.put("DTA_logfileId", true); 
 		ignoreTheseDiffs.put("DTC_lrId", true); 
 		ignoreTheseDiffs.put("DTC_logfileId", true); 
 		ignoreTheseDiffs.put("JOIN_fieldId", true); 
@@ -135,6 +140,11 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("LKE_ordinalPosition", true); 
 		ignoreTheseDiffs.put("SETC_viewId_lRecordCount", true); 
 		ignoreTheseDiffs.put("RENX_viewId", true); 
+		ignoreTheseDiffs.put("ADDX_columnId", true); 
+		ignoreTheseDiffs.put("DIVX_columnId", true); 
+		ignoreTheseDiffs.put("MULX_columnId", true); 
+		ignoreTheseDiffs.put("SUBX_columnId", true); 
+		ignoreTheseDiffs.put("SETX_columnId", true); 
 	}
 
 
@@ -147,6 +157,8 @@ public class LogicTableTextWriter extends TextRecordWriter {
 				if(n.getState() == ComparisonState.DIFF) {
 					if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
 						n.setState(ComparisonState.IGNORED);
+					} else if (n.getParent().getFieldNodeType() == FieldNodeType.FUNCCODE) {
+							mapAccumulatorNames(n);
 					} else if(jlt) {
 						if(n.getFieldNodeType() == FieldNodeType.STRINGFIELD && ((StringFieldNode)n).getValue().startsWith("Reserve"))  {
 							n.setState(ComparisonState.IGNORED);
@@ -159,6 +171,41 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		}
 		if(updateRowState) {
 			r.setState(ComparisonState.INSTANCE);
+		}
+	}
+
+	private void mapAccumulatorNames(FieldNodeBase n) {
+		String fc = ((FunctionCodeNode)n.getParent()).getFunctionCode();
+		if(n.getFieldNodeType() == FieldNodeType.STRINGFIELD) {
+			StringFieldNode sfn = (StringFieldNode)n;
+			if(fc.equals("DIMN")) {
+				//Save the mapping
+				accumulatorNamesMap.put( sfn.getValue(), sfn.getDiffValue());
+				n.setState(ComparisonState.MAPPED);
+			}
+			switch(fc) {
+				case "DTA":
+				case "SETA":
+				case "SETE":
+				case "SETL":
+				case "SETX":
+				case "ADDA":
+				case "ADDX":
+				case "DIVA":
+				case "MULA":
+				case "SUBA":
+				case "SUBX":
+				case "ADDC":
+				case "DIVC":
+				case "DIVX":
+				case "MULC":
+				case "MULX":
+				case "SUBC":
+					if(accumulatorNamesMap.get(sfn.getValue()).equals(sfn.getDiffValue())) {
+						n.setState(ComparisonState.MAPPED);
+					}
+				break;
+			}
 		}
 	}
 
