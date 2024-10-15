@@ -84,6 +84,7 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("View_Definition_outputLineSizeMax", true); 
 		ignoreTheseDiffs.put("Sources_columnId", true); 
 		ignoreTheseDiffs.put("Lookup_Paths_valueLength", true); 
+		ignoreTheseDiffs.put("Lookup_Paths_joinName", true); 
 		ignoreTheseDiffs.put("Physical_Files_ddnameOutput", true); 
 		ignoreTheseDiffs.put("Physical_Files_ddnameInput", true); 
 		ignoreTheseDiffs.put("Physical_Files_minimumLength", true); 
