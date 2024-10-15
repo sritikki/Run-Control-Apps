@@ -258,6 +258,7 @@ public class ViewNode extends ComponentNode{
 		vc.setColumnNumber(num);
 		vc.setOrdinalPosition((short)num);;
 		vc.setViewId(viewDef.getComponentId());
+		vc.setJustifyId(JustifyId.LEFT);
 		vc.setHeaderJustifyId(JustifyId.LEFT);
 		vc.setHeaderLine1("");
 		addViewColumn(vc);
