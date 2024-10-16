@@ -59,6 +59,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 			ignoreTheseDiffs.put("DTA_signedInd", true); 
 			ignoreTheseDiffs.put("DTE_signedInd", true); 
 			ignoreTheseDiffs.put("DTE_fieldId", true); 
+			ignoreTheseDiffs.put("DTE_fieldFormat", true); 
 			ignoreTheseDiffs.put("DTA_logfileId", true); 
 		}
 	}
@@ -139,6 +140,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("JOIN_fieldFormat", true); 
 		ignoreTheseDiffs.put("JOIN_startPosition", true); 
 		ignoreTheseDiffs.put("JOIN_justifyId", true); 
+		ignoreTheseDiffs.put("JOIN_value", true); 
 		ignoreTheseDiffs.put("LKE_ordinalPosition", true); 
 		ignoreTheseDiffs.put("SETC_viewId_lRecordCount", true); 
 		ignoreTheseDiffs.put("RENX_viewId", true); 
@@ -147,22 +149,42 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("MULX_columnId", true); 
 		ignoreTheseDiffs.put("SUBX_columnId", true); 
 		ignoreTheseDiffs.put("SETX_columnId", true); 
+		ignoreTheseDiffs.put("LKDC_justifyId", true); 
+		ignoreTheseDiffs.put("LKDE_justifyId", true); 
+		ignoreTheseDiffs.put("LKLR_justifyId", true); 
+		ignoreTheseDiffs.put("LKLR_fieldId", true); 
+		ignoreTheseDiffs.put("LKLR_fieldFormat", true); 
+		ignoreTheseDiffs.put("LKLR_startPosition", true); 
+		ignoreTheseDiffs.put("LKLR_value", true); 
+		ignoreTheseDiffs.put("LKS_logfileId", true); 
+		ignoreTheseDiffs.put("FNCC_logfileId", true); 
+		ignoreTheseDiffs.put("FNCC_justifyId", true); 
+		ignoreTheseDiffs.put("CTC_fieldLength", true); 
+		ignoreTheseDiffs.put("CTC_lrId", true); 
+		ignoreTheseDiffs.put("SKC_lrId", true); 
+		ignoreTheseDiffs.put("SKC_logfileId", true); 
 	}
 
 
-	protected  void preCheckAndChangeRowState(FieldNodeBase r) {
+	protected void preCheckAndChangeRowState(FieldNodeBase r) {
 		boolean updateRowState = true;
-		for( FieldNodeBase n : r.getChildren()) {
-			if(n.getFieldNodeType() == FieldNodeType.RECORDPART) {
+		for (FieldNodeBase n : r.getChildren()) {
+			if (n.getFieldNodeType() == FieldNodeType.RECORDPART) {
 				preCheckAndChangeRowState(n);
 			} else {
-				if(n.getState() == ComparisonState.DIFF) {
-					if(ignoreTheseDiffs.get(getDiffKey(n)) != null) {
+				if (n.getState() == ComparisonState.DIFF) {
+					if (ignoreTheseDiffs.get(getDiffKey(n)) != null) {
 						n.setState(ComparisonState.IGNORED);
 					} else if (n.getParent().getFieldNodeType() == FieldNodeType.FUNCCODE) {
-							mapAccumulatorNames(n);
-					} else if(jlt) {
-						if(n.getFieldNodeType() == FieldNodeType.STRINGFIELD && ((StringFieldNode)n).getValue().startsWith("Reserve"))  {
+						mapAccumulatorNames(n);
+					} else if (n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
+						ignoreTrailingZeros(n);
+					} else if (n.getFieldNodeType() == FieldNodeType.STRINGFIELD
+							&& ((StringFieldNode) n).getDiffValue().startsWith("0000")) {
+						n.setState(ComparisonState.IGNORED);
+					} else if (jlt) {
+						if (n.getFieldNodeType() == FieldNodeType.STRINGFIELD
+								&& ((StringFieldNode) n).getValue().startsWith("Reserve")) {
 							n.setState(ComparisonState.IGNORED);
 						}
 					} else {
@@ -171,8 +193,27 @@ public class LogicTableTextWriter extends TextRecordWriter {
 				}
 			}
 		}
-		if(updateRowState) {
+		if (updateRowState) {
 			r.setState(ComparisonState.INSTANCE);
+		}
+	}
+
+	private void ignoreTrailingZeros(FieldNodeBase n) {
+		String fc = ((FunctionCodeNode)n.getParent().getParent()).getFunctionCode();
+		if(n.getFieldNodeType() == FieldNodeType.STRINGFIELD) {
+			StringFieldNode sfn = (StringFieldNode)n;
+			switch(fc) {
+				case "LKDC":
+					if(sfn.getDiffValue().endsWith("0")) {
+						n.setState(ComparisonState.IGNORED);
+					}
+				break;
+				case "CTC":
+				if(sfn.getDiffValue().endsWith("000")) {
+					n.setState(ComparisonState.IGNORED);
+				}
+				break;
+			}
 		}
 	}
 
