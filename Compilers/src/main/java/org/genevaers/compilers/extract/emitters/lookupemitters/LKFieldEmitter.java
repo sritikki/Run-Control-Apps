@@ -58,7 +58,7 @@ public class LKFieldEmitter extends LookupEmitter {
                 if(redfld != null) {
                     LogicTableArg arg1 = lk.getArg1();
                     arg1.setStartPosition((short)(redfld.getStartPosition())); // Remap to RED LR position
-                    arg1.setLogfileId(jltvOfTargetSourceStep.getSourceLF());
+                    arg1.setLogfileId(srcLFID);
                 }
             }
         }
