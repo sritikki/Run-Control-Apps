@@ -20,6 +20,9 @@ package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
+
+import java.math.BigDecimal;
+
 import org.genevaers.genevaio.ltfactory.LtFactoryHolder;
 import org.genevaers.genevaio.ltfactory.LtFuncCodeFactory;
 import org.genevaers.genevaio.ltfile.LTFileObject;
@@ -40,13 +43,9 @@ public class NumAtomAST extends FormattedASTNode  implements GenevaERSValue, Ass
     }
 
     public void setValue(String numString) {
-        if(numString.equals("0.00000000")) {
-            numStr = numString; //Just to keep the C++ comparison sweet for the moment
-        } else {
-            numStr = stripLeadingingZeros(numString);
-            numStr = stripTrailingZeros(numStr);
-            value = Float.parseFloat(numString);
-        }
+        BigDecimal strippedVal = new BigDecimal(numString).stripTrailingZeros();
+        value = strippedVal.floatValue();
+        numStr = strippedVal.toPlainString();
     }
 
     private String stripLeadingingZeros(String numString) {
