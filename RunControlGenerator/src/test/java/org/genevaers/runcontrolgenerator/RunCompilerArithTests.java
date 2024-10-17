@@ -194,7 +194,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableNameValue addc = (LogicTableNameValue) xlt.getFromPosition(9);
         assertEquals("g_9956_1506_1762_1_1", addc.getTableName());        
-        assertEquals("g_9956_1506_1762_1_0", addc.getValue());        
+        assertEquals("g_9956_1506_1762_1_0", addc.getValue().getPrintString());        
     }
 
     @Test void testFieldMinusAccumulator() {
@@ -212,7 +212,7 @@ class RunCompilerArithTests extends RunCompilerBase {
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableNameValue mula = (LogicTableNameValue) xlt.getFromPosition(9);
         assertEquals("g_9956_1506_1762_1_1", mula.getTableName());        
-        assertEquals("g_9956_1506_1762_1_0", mula.getValue());        
+        assertEquals("g_9956_1506_1762_1_0", mula.getValue().getPrintString());        
     }
 
     @Test void testFieldDivideAccumulator() {

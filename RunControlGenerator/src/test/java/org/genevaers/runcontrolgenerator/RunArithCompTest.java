@@ -77,7 +77,7 @@ class RunArithCompTest extends RunCompilerBase {
         int expectedGotos[][] = {{7,8,10},{9,11,0}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableNameValue cfac = (LogicTableNameValue) xlt.getFromPosition(7);
-        assertEquals("0", cfac.getValue());
+        assertEquals("0", cfac.getValue().getPrintString());
         
     }
 
@@ -127,7 +127,7 @@ class RunArithCompTest extends RunCompilerBase {
         int expectedGotos[][] = {{7,8,10},{9,11,0}};
         TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
         LogicTableNameValue cfac = (LogicTableNameValue) xlt.getFromPosition(7);
-        assertEquals("72", cfac.getValue());
+        assertEquals("72", cfac.getValue().getPrintString());
     }
 
     @Test void testCFEA() {
