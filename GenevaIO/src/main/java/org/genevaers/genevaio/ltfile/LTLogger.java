@@ -152,7 +152,7 @@ public class LTLogger {
 				LogicTableF1 j = (LogicTableF1) ltr;
 				LogicTableArg arg = j.getArg();
 				return(String.format(LEAD2GOTOS,
-										leadin + String.format(JOIN, j.getColumnId(), arg.getValue().getString(), arg.getLogfileId(), arg.getLrId()),
+										leadin + String.format(JOIN, j.getColumnId(), arg.getValue().getPrintString(), arg.getLogfileId(), arg.getLrId()),
 										getGotos(ltr)));
 			case "LUSM":
 				return(String.format(LEAD2GOTOS, leadin, getGotos(ltr)));
@@ -210,19 +210,19 @@ public class LTLogger {
 			case "MULC":
 			case "DIVC":
 				LogicTableNameValue setc = (LogicTableNameValue) ltr;
-				return(String.format(ACCUMASSIGNMENT, leadin, setc.getTableName(), setc.getValue()));
+				return(String.format(ACCUMASSIGNMENT, leadin, setc.getTableName(), setc.getValue().getPrintString()));
 			case "SETA":
 				LogicTableNameValue seta = (LogicTableNameValue) ltr;
-				return(String.format(ACCUMAOP, leadin, seta.getTableName(), "<-", seta.getValue()));
+				return(String.format(ACCUMAOP, leadin, seta.getTableName(), "<-", seta.getValue().getPrintString()));
 			case "ADDA":
 				LogicTableNameValue adda = (LogicTableNameValue) ltr;
-				return(String.format(ACCUMAOP, leadin, adda.getTableName(), "/", adda.getValue()));
+				return(String.format(ACCUMAOP, leadin, adda.getTableName(), "/", adda.getValue().getPrintString()));
 			case "DIVA":
 				LogicTableNameValue diva = (LogicTableNameValue) ltr;
-				return(String.format(ACCUMAOP, leadin, diva.getTableName(), "/", diva.getValue()));
+				return(String.format(ACCUMAOP, leadin, diva.getTableName(), "/", diva.getValue().getPrintString()));
 			case "MULA":
 				LogicTableNameValue mula = (LogicTableNameValue) ltr;
-				return(String.format(ACCUMAOP, leadin, mula.getTableName(), "*", mula.getValue()));
+				return(String.format(ACCUMAOP, leadin, mula.getTableName(), "*", mula.getValue().getPrintString()));
 			case "SETE":
 			case "ADDE":
 			case "DIVE":
@@ -238,7 +238,7 @@ public class LTLogger {
 				return(String.format(CTASSIGNMENT, leadin, ct.getAccumulatorName()));
 			case "CTC":
 				LogicTableF1 ctc = (LogicTableF1) ltr;
-				return(String.format(CTASSIGNMENT, leadin, ctc.getArg().getValue().getString()));
+				return(String.format(CTASSIGNMENT, leadin, ctc.getArg().getValue().getPrintString()));
 			case "CTE":
 				LogicTableF1 cte = (LogicTableF1) ltr;
 				return(String.format(CTASSIGNMENT, leadin, getColArgDetails(cte.getArg()) ));
@@ -273,7 +273,7 @@ public class LTLogger {
 				return(String.format(CONSTASSIGNMENT, leadin, getArgConst(dtc.getArg()), getColArgDetails(dtc.getArg())));
 			case "FNCC":
 				LogicTableNameF2 nf2 = (LogicTableNameF2) ltr;
-				return(String.format(FNCC, leadin, nf2.getArg1().getValue().getString(), nf2.getArg2().getValue().getString(), "DaysBetween", nf2.getAccumulatorName()));
+				return(String.format(FNCC, leadin, nf2.getArg1().getValue().getPrintString(), nf2.getArg2().getValue().getPrintString(), "DaysBetween", nf2.getAccumulatorName()));
 			default: {
 				switch (ltr.getRecordType()) {
 					case RE:
@@ -298,7 +298,7 @@ public class LTLogger {
 
 	private static Object getLKLRInfo(LTRecord ltr) {
 		LogicTableF1 lklr = (LogicTableF1) ltr;
-		return String.format("%d/%d %d -> \"%s\"", lklr.getArg().getLogfileId(), lklr.getArg().getLrId(), lklr.getColumnId(), lklr.getArg().getValue().getString());
+		return String.format("%d/%d %d -> \"%s\"", lklr.getArg().getLogfileId(), lklr.getArg().getLrId(), lklr.getColumnId(), lklr.getArg().getValue().getPrintString());
 	}
 
 	private static String getViewLine(LTRecord ltr) {

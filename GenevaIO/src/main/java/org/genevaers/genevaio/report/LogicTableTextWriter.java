@@ -60,6 +60,8 @@ public class LogicTableTextWriter extends TextRecordWriter {
 			ignoreTheseDiffs.put("DTE_signedInd", true); 
 			ignoreTheseDiffs.put("DTE_fieldId", true); 
 			ignoreTheseDiffs.put("DTE_fieldFormat", true); 
+			ignoreTheseDiffs.put("DTE_fieldContentId", true); 
+			ignoreTheseDiffs.put("DTE_startPosition", true); 
 			ignoreTheseDiffs.put("DTA_logfileId", true); 
 		}
 	}
@@ -173,29 +175,35 @@ public class LogicTableTextWriter extends TextRecordWriter {
 				preCheckAndChangeRowState(n);
 			} else {
 				if (n.getState() == ComparisonState.DIFF) {
-					if (ignoreTheseDiffs.get(getDiffKey(n)) != null) {
-						n.setState(ComparisonState.IGNORED);
-					} else if (n.getParent().getFieldNodeType() == FieldNodeType.FUNCCODE) {
-						mapAccumulatorNames(n);
-						if( ((FunctionCodeNode)n.getParent()).getFunctionCode().equals("CFAC")) {
-							if( ((StringFieldNode)n).getDiffValue().endsWith(".00")) {
-								n.setState(ComparisonState.IGNORED);
-							}		
-						} else if (((FunctionCodeNode)n.getParent()).getFunctionCode().equals("CFCC")) {
+					if(jlt) {
+						if (ignoreTheseDiffs.get(getDiffKey(n)) != null) {
 							n.setState(ComparisonState.IGNORED);
-						}
-					} else if (n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
-						ignoreTrailingZeros(n);
-					} else if (n.getFieldNodeType() == FieldNodeType.STRINGFIELD
-							&& ((StringFieldNode) n).getDiffValue().startsWith("0000")) {
-						n.setState(ComparisonState.IGNORED);
-					} else if (jlt) {
-						if (n.getFieldNodeType() == FieldNodeType.STRINGFIELD
-								&& ((StringFieldNode) n).getValue().startsWith("Reserve")) {
+						} else if (n.getFieldNodeType() == FieldNodeType.STRINGFIELD
+								&& ((StringFieldNode) n).getDiffValue().startsWith("<Reserve")) {
 							n.setState(ComparisonState.IGNORED);
+						} else {
+							updateRowState = false;
 						}
 					} else {
-						updateRowState = false;
+						if (ignoreTheseDiffs.get(getDiffKey(n)) != null) {
+							n.setState(ComparisonState.IGNORED);
+						} else if (n.getParent().getFieldNodeType() == FieldNodeType.FUNCCODE) {
+							mapAccumulatorNames(n);
+							if( ((FunctionCodeNode)n.getParent()).getFunctionCode().equals("CFAC")) {
+								if( ((StringFieldNode)n).getDiffValue().endsWith(".00")) {
+									n.setState(ComparisonState.IGNORED);
+								}		
+							} else if (((FunctionCodeNode)n.getParent()).getFunctionCode().equals("CFCC")) {
+								n.setState(ComparisonState.IGNORED);
+							}
+						} else if (n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
+							ignoreTrailingZeros(n);
+						} else if (jlt == false && n.getFieldNodeType() == FieldNodeType.STRINGFIELD
+								&& ((StringFieldNode) n).getDiffValue().startsWith("0000")) {
+							n.setState(ComparisonState.IGNORED);
+						} else {
+							updateRowState = false;
+						}
 					}
 				}
 			}
