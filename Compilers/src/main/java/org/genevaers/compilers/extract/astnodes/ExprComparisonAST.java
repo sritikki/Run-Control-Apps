@@ -364,8 +364,9 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
                     lhsDate = ((LogicTableF1)ltfo).getArg().getFieldContentId();
                 }
             }
-            if(lhsDate == rhsDate || lhsDate == DateCode.NONE || rhsDate == DateCode.NONE) {
-                ((LogicTableF1)ltfo).getArg().setFieldContentId(DateCode.NONE);
+            //if(lhsDate == rhsDate || lhsDate == DateCode.NONE || rhsDate == DateCode.NONE) {
+            if(lhsDate == DateCode.NONE || rhsDate == DateCode.NONE) {
+                    ((LogicTableF1)ltfo).getArg().setFieldContentId(DateCode.NONE);
             } else if(ds.length() > 0) {
                 ((LogicTableF1)ltfo).getArg().setValue(new Cookie(ds.length(), ds));
             }
