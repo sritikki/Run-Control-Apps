@@ -177,6 +177,13 @@ public class LogicTableTextWriter extends TextRecordWriter {
 						n.setState(ComparisonState.IGNORED);
 					} else if (n.getParent().getFieldNodeType() == FieldNodeType.FUNCCODE) {
 						mapAccumulatorNames(n);
+						if( ((FunctionCodeNode)n.getParent()).getFunctionCode().equals("CFAC")) {
+							if( ((StringFieldNode)n).getDiffValue().endsWith(".00")) {
+								n.setState(ComparisonState.IGNORED);
+							}		
+						} else if (((FunctionCodeNode)n.getParent()).getFunctionCode().equals("CFCC")) {
+							n.setState(ComparisonState.IGNORED);
+						}
 					} else if (n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
 						ignoreTrailingZeros(n);
 					} else if (n.getFieldNodeType() == FieldNodeType.STRINGFIELD
@@ -203,6 +210,18 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		if(n.getFieldNodeType() == FieldNodeType.STRINGFIELD) {
 			StringFieldNode sfn = (StringFieldNode)n;
 			switch(fc) {
+				case "CFAC":
+					//really want to look for numerical equivalence
+					if(sfn.getDiffValue().endsWith("0")) {
+						n.setState(ComparisonState.IGNORED);
+					}
+				break;
+				case "CFEC":
+					//really want to look for numerical equivalence
+					if(sfn.getDiffValue().endsWith("0")) {
+						n.setState(ComparisonState.IGNORED);
+					}
+				break;
 				case "LKDC":
 					if(sfn.getDiffValue().endsWith("0")) {
 						n.setState(ComparisonState.IGNORED);
