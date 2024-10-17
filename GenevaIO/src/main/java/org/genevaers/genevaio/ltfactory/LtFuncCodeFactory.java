@@ -141,8 +141,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     @Override
     public LTFileObject getCFAA(String accum, String rhsAccum, String op) {
         LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAA");
-        cfac.setValue(rhsAccum);
-        cfac.setValueLength(rhsAccum.length());
+        cfac.setValue(new Cookie(rhsAccum));
         cfac.setTableName(accum);
         cfac.setCompareType(getCompareType(op));
         return cfac; 
@@ -151,8 +150,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     @Override
     public LTFileObject getCFAC(String accum, String rhs, String op) {
         LogicTableNameValue cfac = makeNameValueFromAccum(accum, "CFAC");
-        cfac.setValue(rhs);
-        cfac.setValueLength(rhs.length());
+        cfac.setValue(new Cookie(rhs));
         cfac.setTableName(accum);
         cfac.setCompareType(getCompareType(op));
         return cfac; 
@@ -193,8 +191,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     @Override
     public LTFileObject getCFCA(String accum, String val, String op) {
         LogicTableNameValue cfca = makeNameValueFromAccum(accum, "CFCA");
-        cfca.setValue(val);
-        cfca.setValueLength(val.length());
+        cfca.setValue(new Cookie(val));
         cfca.setTableName(accum);
         cfca.setCompareType(getCompareType(op));
         return cfca; 
@@ -1745,8 +1742,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         arithfn.setRecordType(LtRecordType.NAMEVALUE);
         arithfn.setFunctionCode(fc);
         arithfn.setTableName(accumName);
-        arithfn.setValue(accum);
-        arithfn.setValueLength(accum.length()); //More to think of here for Cookies
+        arithfn.setValue(new Cookie(accum));
         arithfn.setCompareType(LtCompareType.EQ);
         return arithfn;
     }
