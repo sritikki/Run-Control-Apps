@@ -92,6 +92,10 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         accumMap.clear();
     }
 
+    public void setAccumName(String accumName) {
+        this.accumName = accumName;
+    }
+
     @Override
     public LTFileObject getADDA(String accum, String rhsAccum) {
         LogicTableNameValue adda = makeNameValueFromAccum(rhsAccum, "ADDA");
