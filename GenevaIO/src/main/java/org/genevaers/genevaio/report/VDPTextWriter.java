@@ -34,6 +34,7 @@ import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.fieldnodes.FieldNodeBase.FieldNodeType;
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.UserExit;
 import com.google.common.flogger.FluentLogger;
@@ -133,12 +134,12 @@ public class VDPTextWriter extends TextRecordWriter {
 		addStateColumIfCompareMode(fw);
 		fw.write(String.format("%7s %-48s %-7s\n", "ID", "Name", "Num PFs"));
 		fw.write(StringUtils.repeat('-', 64)+"\n");
-		// Iterator<LogicalFile> lfi = Repository.getLogicalFiles().getIterator();
-		// while (lfi.hasNext()) {
-		// 	LogicalFile lf = lfi.next();
-		// 	addStateValueIfCompareMode(fw, lrd.state);
-		// 	fw.write(String.format("%7s %-48s %-7d\n",lf.getID(), lf.getName(), lf.getNumberOfPFs()));
-		// }
+		Iterator<LogicalFile> lfi = Repository.getLogicalFiles().getIterator();
+		while (lfi.hasNext()) {
+			LogicalFile lf = lfi.next();
+			//addStateValueIfCompareMode(fw, lrd.state);
+			fw.write(String.format("%7s %-48s %-7d\n",lf.getID(), lf.getName(), lf.getNumberOfPFs()));
+		}
 	}
 
 	private void writeExitSummaries(MetadataNode recordsRoot, Writer fw) throws IOException {
@@ -498,8 +499,11 @@ public class VDPTextWriter extends TextRecordWriter {
 						n.setState(ComparisonState.IGNORED);
 					} else if(n.getParent().getParent().getName().equals("Physical_Files")) {
 						RecordNode rec =  (RecordNode) n.getParent();
-						StringFieldNode v =  (StringFieldNode) rec.getChildrenByName("allocFileType");
-						if(!v.equals("DATAB") && n.getName().startsWith("dbms")) {
+						StringFieldNode ft =  (StringFieldNode) rec.getChildrenByName("allocFileType");
+						if(!ft.equals("DATAB") && n.getName().startsWith("dbms")) {
+							n.setState(ComparisonState.IGNORED);
+						}
+						if(!ft.equals("PIPE") && n.getName().equals("textDelimId")) {
 							n.setState(ComparisonState.IGNORED);
 						}
 					} else if(n.getParent().getParent().getName().equals("Columns")) {
