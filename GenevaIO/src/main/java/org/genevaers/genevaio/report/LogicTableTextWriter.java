@@ -43,6 +43,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 
 	@Override
 	public void writeDetails( MetadataNode recordsRoot, Writer fw, String generated) throws IOException {
+		addCppIgnores();
 		addJLTIgnores(recordsRoot);
 		writeHeader(generated, fw);
 		writeContent(recordsRoot,fw);
@@ -64,6 +65,17 @@ public class LogicTableTextWriter extends TextRecordWriter {
 			ignoreTheseDiffs.put("DTE_startPosition", true); 
 			ignoreTheseDiffs.put("DTA_logfileId", true); 
 		}
+	}
+
+	private void addCppIgnores() {
+		ignoreTheseDiffs.put("accumulatorName", true); 
+		ignoreTheseDiffs.put("tableName", true); 
+		ignoreTheseDiffs.put("ADDA_value", true); 
+		ignoreTheseDiffs.put("DIVA_value", true); 
+		ignoreTheseDiffs.put("MULA_value", true); 
+		ignoreTheseDiffs.put("SUBA_value", true); 
+		ignoreTheseDiffs.put("SETA_value", true); 
+		ignoreTheseDiffs.put("CFAA_value", true); 
 	}
 
 	private void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
@@ -271,7 +283,8 @@ public class LogicTableTextWriter extends TextRecordWriter {
 				case "MULC":
 				case "MULX":
 				case "SUBC":
-					if(accumulatorNamesMap.get(sfn.getValue()).equals(sfn.getDiffValue())) {
+					String accName = accumulatorNamesMap.get(sfn.getValue());
+					if(accName != null && accName.equals(sfn.getDiffValue())) {
 						n.setState(ComparisonState.MAPPED);
 					}
 				break;
@@ -281,7 +294,8 @@ public class LogicTableTextWriter extends TextRecordWriter {
 
 	@Override
 	protected String getDiffKey(FieldNodeBase n) {
-		if(n.getName().equals("sourceSeqNbr") || n.getName().equals("ordinalPosition")) {
+		if(n.getName().equals("sourceSeqNbr") || n.getName().equals("ordinalPosition") 
+			|| n.getName().equals("tableName") || n.getName().equals("accumulatorName")) {
 			return n.getName();
 		} else {
 			if(n.getParent().getFieldNodeType() == FieldNodeType.RECORDPART) {
