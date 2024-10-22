@@ -216,7 +216,10 @@ public class LTLogger {
 				return(String.format(ACCUMAOP, leadin, seta.getTableName(), "<-", seta.getValue().getPrintString()));
 			case "ADDA":
 				LogicTableNameValue adda = (LogicTableNameValue) ltr;
-				return(String.format(ACCUMAOP, leadin, adda.getTableName(), "/", adda.getValue().getPrintString()));
+				return (String.format(ACCUMAOP, leadin, adda.getTableName(), "/", adda.getValue().getPrintString()));
+			case "SUBA":
+				LogicTableNameValue suba = (LogicTableNameValue) ltr;
+				return (String.format(ACCUMAOP, leadin, suba.getTableName(), "-", suba.getValue().getPrintString()));
 			case "DIVA":
 				LogicTableNameValue diva = (LogicTableNameValue) ltr;
 				return(String.format(ACCUMAOP, leadin, diva.getTableName(), "/", diva.getValue().getPrintString()));
