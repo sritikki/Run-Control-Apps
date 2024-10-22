@@ -20,6 +20,7 @@ package org.genevaers.genevaio.vdpfile;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileWriter;
@@ -659,17 +660,18 @@ public class VDPFileWriter {
 		Iterator<LogicalFile> lfi = Repository.getLogicalFiles().getIterator();
 		while (lfi.hasNext()) {
 			LogicalFile lf = lfi.next();
-			Iterator<PhysicalFile> pfi = lf.getPFIterator();
-			short seqNum = 1;
+			Iterator<Entry<Integer, PhysicalFile>> pfi = lf.getPFSeqIterator();
 			while (pfi.hasNext()) {
-				PhysicalFile pf = pfi.next();
+				Entry<Integer, PhysicalFile> pfe = pfi.next();
+				PhysicalFile pf = pfe.getValue();
 				pf.setLogicalFileId(lf.getID());
 				pf.setLogicalFilename(lf.getName());
 				VDPPhysicalFile vdppf = new VDPPhysicalFile();
 				if(lf.isRequired() && pf.isRequired()) {
 			        logger.atFine().log("Write PF:%d", pf.getComponentId());
 					vdppf.fillFromComponent(pf);
-					vdppf.setSequenceNbr(seqNum++);
+					int si = pfe.getKey();
+					vdppf.setSequenceNbr((short)si);
 					vdppf.fillTheWriteBuffer(VDPWriter);
 					VDPWriter.writeAndClearTheRecord();
 				} else {
