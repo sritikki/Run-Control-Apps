@@ -1,5 +1,7 @@
 package org.genevaers.genevaio.ltfactory;
 
+import java.text.DateFormat;
+
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
  * 
@@ -967,6 +969,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         lkc.setRecordType(LtRecordType.F1);
         lkc.setFunctionCode("LKC");
         LogicTableArg arg = new LogicTableArg();
+        arg.setFieldContentId(DateCode.NONE);
         lkc.setArg(arg);
         return lkc;
     }
@@ -1405,6 +1408,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         skc.setSuffixSeqNbr((short)vc.getColumnNumber());
         skc.setArg(arg);
         skc.setCompareType(LtCompareType.EQ);
+        arg.setFieldContentId(DateCode.NONE);
         return skc;
     }
 
@@ -1607,7 +1611,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
     private LogicTableArg getArgFromSortkKey(ViewSortKey sk) {
         LogicTableArg skarg = new LogicTableArg(); //This is the column data
         skarg.setDecimalCount(sk.getSkDecimalCount());
-        skarg.setFieldContentId(sk.getSktDateCode());
+        skarg.setFieldContentId(sk.getSortKeyDateTimeFormat());
         skarg.setFieldFormat(sk.getSortKeyDataType());
         skarg.setFieldId(0);
         skarg.setStartPosition(sk.getSkStartPosition());
