@@ -141,6 +141,7 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setFieldFormat(redField.getDatatype());
             arg1.setStartPosition(redField.getStartPosition());
             arg1.setFieldLength(redField.getLength());
+            arg1.setSignedInd(redField.isSigned());
             arg1.setDecimalCount(redField.getNumDecimalPlaces());
             arg1.setOrdinalPosition(currentViewColumn.getOrdinalOffset());
             arg1.setJustifyId(JustifyId.RIGHT);
