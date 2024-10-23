@@ -118,6 +118,8 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
             if(vc.getExtractArea() == ExtractArea.AREACALC) {
                 arg = ((LogicTableF1)ltEntry).getArg();
                 arg.setFieldFormat(getDataType());
+            } else if(vc.getExtractArea() == ExtractArea.SORTKEY) {
+                arg = ((LogicTableF2)ltEntry).getArg1();
             } else {
                 arg = ((LogicTableF2)ltEntry).getArg1();
                 arg.setFieldFormat(getDataType());
