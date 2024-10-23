@@ -76,6 +76,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("SUBA_value", true); 
 		ignoreTheseDiffs.put("SETA_value", true); 
 		ignoreTheseDiffs.put("CFAA_value", true); 
+		ignoreTheseDiffs.put("REEX_viewId", true); 
 	}
 
 	private void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
