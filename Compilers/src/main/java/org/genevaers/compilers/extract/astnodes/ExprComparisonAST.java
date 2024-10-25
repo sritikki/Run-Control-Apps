@@ -321,6 +321,7 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
                 ((LogicTableF2)ltfo).getArg2().setFieldFormat(DataType.ZONED);
                 //flip RHS to Zoned
             }
+            stripDatesIfSame(frmtLhs, frmtRhs);
         }
         //Date mamangement
         //Strip off if equal or only one sided
@@ -370,6 +371,13 @@ public class ExprComparisonAST extends ExtractBaseAST implements EmittableASTNod
             } else if(ds.length() > 0) {
                 ((LogicTableF1)ltfo).getArg().setValue(new Cookie(ds.length(), ds));
             }
+        }
+    }
+
+    private void stripDatesIfSame(FormattedASTNode frmtLhs, FormattedASTNode frmtRhs) {
+        if(frmtLhs.getDataType() == frmtRhs.getDataType() && frmtLhs.getDateCode() == frmtRhs.getDateCode()) {
+           ((LogicTableF2)ltfo).getArg1().setFieldContentId(DateCode.NONE);
+           ((LogicTableF2)ltfo).getArg2().setFieldContentId(DateCode.NONE);
         }
     }
 
