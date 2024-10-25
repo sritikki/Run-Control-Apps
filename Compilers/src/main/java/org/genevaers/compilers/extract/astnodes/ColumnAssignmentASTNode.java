@@ -74,6 +74,7 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
         if (children.size() == 2) {
 
+            int saveColNumber = 0;
             Iterator<ASTBase> ci = children.iterator();
             ExtractBaseAST rhs = (ExtractBaseAST) ci.next();
             ColumnAST colnode = (ColumnAST) ci.next();
@@ -82,7 +83,10 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
             rhs = decastRHS(rhs);
             ColumnAST col = decastColumn(colnode);
-            
+            if(ltEmitter.getSuffixSeqNbr() != col.getViewColumn().getColumnNumber()) {
+                //won't work for single DTE?
+                saveColNumber = ltEmitter.getSuffixSeqNbr();
+            }
             ltEmitter.setSuffixSeqNbr((short) col.getViewColumn().getColumnNumber());
             emitIfNeeded(rhs);
 
@@ -101,6 +105,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
             col.emit(); // In case there is a sort title emit
             col.restoreDateCode();
+            if(saveColNumber > 0) {
+                ltEmitter.setSuffixSeqNbr((short)saveColNumber);
+            }
         } else {
             //Badly constructed AST - should not get here
             //so don't need the If?
